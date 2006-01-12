@@ -43,6 +43,7 @@ BEGIN default_grid.tpl
 <tr>
 	<td colspan="2" class="result_list_data_data" style="text-align: center">
 		{if $query.mygroupid neq ""}	
+			{#mygroup#}
 			{mygroup_isin var=ingroup sql=sql cid=$row.collectionid groupid=$query.mygroupid imageid=$row.imageid}
 			{if $ingroup eq 'no'}
 				<a href="javascript:changemygroup('add','{$row.collectionid}','{$query.mygroupid}','{$row.imageid}');" 

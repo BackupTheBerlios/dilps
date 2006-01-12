@@ -390,7 +390,7 @@
 											{if $lastL1 eq $id}
 												{assign var="l1Offset" value ="`$l1counter*20`"}
 											{/if}											
-											<a href="javascript:switchTo('gid-{$l1.id}','','{$l1counter*20}')" class="navsymbol" title="{$l1.name}">{if $l1.name|count_characters:true gte 15}{assign var="l1counter" value="`$l1counter+1`"}{/if}{$l1.name|truncate:25|wordwrap:15:"<br/>\n":true}</a>
+											<a href="javascript:switchTo('gid-{$l1.id}','','{$l1counter*20}')" class="navsymbol" title="{$l1.name}">{if $l1.name|count_characters:true gte 12}{assign var="l1counter" value="`$l1counter+1`"}{/if}{$l1.name|truncate:20|wordwrap:12:"<br/>\n":true}</a>
 										</td>
 										<td style="vertical-align: top;">
 											{if $target neq "img_group"}
@@ -416,7 +416,7 @@
 														{if $lastL2 eq $id}
 															{assign var="l2Offset" value ="`$l2counter*20`"}
 														{/if}
-														<a href="javascript:switchTo('gid-{$l1.id}','gid-{$l2.id}',{$l2counter*20})" class="navsymbol" title="{$l2.name}">{if $l2.name|count_characters:true gte 15}{assign var="l2counter" value="`$l2counter+1`"}{/if}{$l2.name|truncate:25|wordwrap:15:"<br/>\n":true}</a>														
+														<a href="javascript:switchTo('gid-{$l1.id}','gid-{$l2.id}',{$l2counter*20})" class="navsymbol" title="{$l2.name}">{if $l2.name|count_characters:true gte 12}{assign var="l2counter" value="`$l2counter+1`"}{/if}{$l2.name|truncate:20|wordwrap:12:"<br/>\n":true}</a>														
 													</td>
 													<td style="vertical-align: top;">
 														{if $target neq "img_group"}
@@ -438,7 +438,7 @@
 														<table>
 															<tr>
 																<td style="width: 150px; vertical-align: top;">
-																	<span class="navsymbollike" title="{$l3.name}">{if $l3.name|count_characters:true gte 15}{assign var="l3counter" value="`$l3counter+1`"}{/if}{$l3.name|truncate:25|wordwrap:15:"<br/>\n":true}</span>
+																	<span class="navsymbollike" title="{$l3.name}">{if $l3.name|count_characters:true gte 15}{assign var="l3counter" value="`$l3counter+1`"}{/if}{$l3.name|truncate:20|wordwrap:12:"<br/>\n":true}</span>
 																</td>
 																<td style="vertical-align: top;">
 																	{if $target neq "group"}
