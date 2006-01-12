@@ -48,6 +48,13 @@
 	<style type="text/css">
 	{include file="`$config.skin`/dilps.css"}
 	</style>
+	<style type="text/css">
+	{literal}
+		td{
+			vertical-align: top;
+		}
+	{/literal}
+	</style>
 
 	<script src="include/group/group_edit.inc.js" type="text/javascript"></script>
 
@@ -383,11 +390,11 @@
 								<table>
 									<tr>
 										<td id="edit-{$l1.id}" style="width: 150px;">
-											<a href="javascript:switchTo('gid-{$l1.id}','','{$l1counter*20}')" class="navsymbol" title="{$l1.name}">{$l1.name|truncate:12}</a>
 											{assign var="id" value ="gid-`$l1.id`"}
 											{if $lastL1 eq $id}
 												{assign var="l1Offset" value ="`$l1counter*20`"}
 											{/if}
+											<a href="javascript:switchTo('gid-{$l1.id}','','{$l1counter*20}')" class="navsymbol" title="{$l1.name}">{if $l1.name|count_characters:true gte 15}{assign var="l1counter" value="`$l1counter+1`"}{/if}{$l1.name|truncate:25|wordwrap:15:"<br/>\n":true}</a>
 										</td>
 										<td id="edit-{$l1.id}-buttons">
 											<a href="javascript:edit('{$l1.id}','{$l1.owner}','{$l1.name}');" class="navsymbol">[e]</a>
@@ -404,11 +411,11 @@
 										<table>
 											<tr>
 												<td id="edit-{$l2.id}" style="width: 150px;">
-													<a href="javascript:switchTo('gid-{$l1.id}','gid-{$l2.id}','{$l2counter*20}')" class="navsymbol" title="{$l2.name}">{$l2.name|truncate:12}</a>
 													{assign var="id" value ="gid-`$l2.id`"}
-													{if $lastL2 eq $id}
-														{assign var="l2Offset" value ="`$l2counter*20`"}
-													{/if}
+														{if $lastL2 eq $id}
+															{assign var="l2Offset" value ="`$l2counter*20`"}
+														{/if}
+														<a href="javascript:switchTo('gid-{$l1.id}','gid-{$l2.id}',{$l2counter*20})" class="navsymbol" title="{$l2.name}">{if $l2.name|count_characters:true gte 15}{assign var="l2counter" value="`$l2counter+1`"}{/if}{$l2.name|truncate:25|wordwrap:15:"<br/>\n":true}</a>
 												</td>
 												<td id="edit-{$l2.id}-buttons">
 													<a href="javascript:edit('{$l2.id}','{$l2.owner}','{$l2.name}');" class="navsymbol">[e]</a>
@@ -425,7 +432,7 @@
 												<table>
 													<tr>
 														<td id="edit-{$l3.id}" style="width: 150px;">
-															<span class="navsymbollike" title="{$l3.name}">{$l3.name|truncate:12}</span>
+															<span class="navsymbollike" title="{$l3.name}">{if $l3.name|count_characters:true gte 15}{assign var="l3counter" value="`$l3counter+1`"}{/if}{$l3.name|truncate:25|wordwrap:15:"<br/>\n":true}</span>
 														</td>
 														<td  id="edit-{$l3.id}-buttons">
 															<a href="javascript:edit('{$l3.id}','{$l3.owner}','{$l3.name}');" class="navsymbol">[e]</a>

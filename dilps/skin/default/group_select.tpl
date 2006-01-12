@@ -385,14 +385,14 @@
 							<div id="gcount-{$l1counter}-0-0" style="width: 250px; position: absolute; left: 0px; top: {$l1counter*20}px;">
 								<table>
 									<tr>
-										<td style="width: 150px;">
-											<a href="javascript:switchTo('gid-{$l1.id}','','{$l1counter*20}')" class="navsymbol" title="{$l1.name}">{$l1.name|truncate:12}</a>
+										<td style="width: 150px; vertical-align: top;">
 											{assign var="id" value ="gid-`$l1.id`"}
 											{if $lastL1 eq $id}
 												{assign var="l1Offset" value ="`$l1counter*20`"}
-											{/if}
+											{/if}											
+											<a href="javascript:switchTo('gid-{$l1.id}','','{$l1counter*20}')" class="navsymbol" title="{$l1.name}">{if $l1.name|count_characters:true gte 15}{assign var="l1counter" value="`$l1counter+1`"}{/if}{$l1.name|truncate:25|wordwrap:15:"<br/>\n":true}</a>
 										</td>
-										<td>
+										<td style="vertical-align: top;">
 											{if $target neq "img_group"}
 												<a href="javascript:copy('{$l1.id}','{$l1.name}');" class="navsymbol">
 													[&darr;]
@@ -411,14 +411,14 @@
 										<div id="gcount-{$l1counter}-{$l2counter}-0" style="width: 250px; position: absolute; left: 0px; top: {$l2counter*20}px;">
 											<table>
 												<tr>
-													<td style="width: 150px;">
-														<a href="javascript:switchTo('gid-{$l1.id}','gid-{$l2.id}',{$l2counter*20})" class="navsymbol" title="{$l2.name}">{$l2.name|truncate:12}</a>
+													<td style="width: 150px; vertical-align: top;">
 														{assign var="id" value ="gid-`$l2.id`"}
 														{if $lastL2 eq $id}
 															{assign var="l2Offset" value ="`$l2counter*20`"}
 														{/if}
+														<a href="javascript:switchTo('gid-{$l1.id}','gid-{$l2.id}',{$l2counter*20})" class="navsymbol" title="{$l2.name}">{if $l2.name|count_characters:true gte 15}{assign var="l2counter" value="`$l2counter+1`"}{/if}{$l2.name|truncate:25|wordwrap:15:"<br/>\n":true}</a>														
 													</td>
-													<td>
+													<td style="vertical-align: top;">
 														{if $target neq "img_group"}
 															<a href="javascript:copy('{$l2.id}','{$l2.name}');" class="navsymbol">
 																[&darr;]
@@ -437,10 +437,10 @@
 													<div id="gcount-{$l1counter}-{$l2counter}-{$l3counter}" style="width: 350px; position: absolute; left: 0px; top: {$l3counter*20}px;">
 														<table>
 															<tr>
-																<td style="width: 150px;">
-																	<span class="navsymbollike" title="{$l3.name}">{$l3.name|truncate:12}</span>
+																<td style="width: 150px; vertical-align: top;">
+																	<span class="navsymbollike" title="{$l3.name}">{if $l3.name|count_characters:true gte 15}{assign var="l3counter" value="`$l3counter+1`"}{/if}{$l3.name|truncate:25|wordwrap:15:"<br/>\n":true}</span>
 																</td>
-																<td>
+																<td style="vertical-align: top;">
 																	{if $target neq "group"}
 																		<a href="javascript:changegroup('del','{$l3.id}','{$l3.owner}','{$l3.name}','');" class="navsymbol">[-]</a>
 																	{/if}
@@ -462,9 +462,9 @@
 													<div id="gcount-{$l1counter}-{$l2counter}-{$l3counter}" style="width: 350px; position: absolute; left: 0px; top: {$l3counter*20}px;">
 														<table>
 															<tr>
-																<td style="width: 150px;">
+																<td style="width: 150px; vertical-align: top;">
 																	<input class="queryinputfield" type="text"  name="gcount-{$l1counter}-{$l2counter}-{$l3counter}-groupname" size="14" />
-																<td>
+																<td style="vertical-align: top;">
 																	<a href="javascript:changegroup('add','{$l2.id}','{$user.login}','','gcount-{$l1counter}-{$l2counter}-{$l3counter}-groupname');" class="navsymbol">[+]</a>
 																</td>
 															</tr>
