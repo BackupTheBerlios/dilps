@@ -32,6 +32,9 @@
  * Purpose:  change the membership of an image to a group
  * -------------------------------------------------------------
  */
+
+$path_fix = dirname(__FILE__);
+include_once($path_fix.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'tools.inc.php');
  
 function smarty_function_mygroup_change($params, &$smarty)
 {
@@ -54,49 +57,50 @@ function smarty_function_mygroup_change($params, &$smarty)
     } else {
     	$mygroupid = $params['gid'];
     }
-    
-    if (empty($params['action'])) {
+	
+	if (empty($params['action'])) {
     	$smarty->trigger_error("assign: missing 'action' parameter");
         return;
     } else {
     	$action = $params['action'];
     }
     
-    if (empty($params['cid'])) {
-    	$smarty->trigger_error("assign: missing 'cid' parameter");
-		return;
+	if (empty($params['changes'])) {
+    	$smarty->trigger_error("assign: missing 'changes' parameter");
+        return;
     } else {
-    	$cid = $params['cid'];
-    }    
-    
-    if (empty($params['imageid'])) {
-		$smarty->trigger_error("assign: missing 'imageid' parameter");
-		return;
-    } else {
-		$imageid = $params['imageid'];
-    }    
-
-	if ($action == 'add') {
-		
-		$sql = "INSERT INTO ".$db_prefix."img_group "
-				."(groupid, collectionid, imageid) "
-				."VALUES ("
-				.$db->qstr($mygroupid)." ,"
-				.$db->qstr($cid)." ,"				
-				.$db->qstr($imageid).")";
-		
-		$rs  = $db->Execute ($sql);
+    	$changes = $params['changes'];
+    }
 	
-	}
-	else if ($action == 'delete')
-	{
-		
-		$sql = "DELETE FROM ".$db_prefix."img_group "
-				."WHERE groupid=".$db->qstr($mygroupid)." "
-				."AND collectionid=".$db->qstr($cid)." "
-				."AND imageid=".$db->qstr($imageid);
+	if ($action == 'update')
+	{ 
+		foreach ($changes as $key => $val)
+		{
+			extractID($key, $cid, $imageid );
+			
+			if ($val == 'add') {
 				
-		$rs  = $db->Execute ($sql);
+				$sql = "REPLACE INTO ".$db_prefix."img_group "
+						."(groupid, collectionid, imageid) "
+						."VALUES ("
+						.$db->qstr($mygroupid)." ,"
+						.$db->qstr($cid)." ,"				
+						.$db->qstr($imageid).")";
+				
+				$rs  = @$db->Execute ($sql);
+			
+			}
+			else if ($val == 'del')
+			{
+				
+				$sql = "DELETE FROM ".$db_prefix."img_group "
+						."WHERE groupid=".$db->qstr($mygroupid)." "
+						."AND collectionid=".$db->qstr($cid)." "
+						."AND imageid=".$db->qstr($imageid);
+						
+				$rs  = @$db->Execute ($sql);
+			}
+		}
 	}
 	else 
 	{
@@ -105,15 +109,11 @@ function smarty_function_mygroup_change($params, &$smarty)
 	
 	if (!$rs)
 	{		 	
-    	$smarty->assign($params['result'], 'failed to '.$action.' image '.$imageid.' from group '.$mygroupid);
+    	$smarty->assign($params['result'], 'failed to '.$action.' group '.$mygroupid);
 	}
 	else 
 	{
-		if ($action == 'delete')
-		{
-			$action = 'delet';
-		}
-		$smarty->assign($params['result'], $action.'ed image '.$imageid.' from group '.$mygroupid.' successfully');
+		$smarty->assign($params['result'], $action.'ed group '.$mygroupid.' successfully');
 	}
     
     if( !empty($params['sql'])) {

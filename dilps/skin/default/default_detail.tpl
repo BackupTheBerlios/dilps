@@ -64,60 +64,60 @@ BEGIN default_detail.tpl
 	<table class="result_detail_data" width="100%"  cellpadding="0" cellspacing="0">
 	  <tr>
 	    <td class="result_detail_data_head">ID</td>
-	    <td class="result_detail_data_data">{$row.collectionid}:{$row.imageid|escape:htmlall}</td>
+	    <td class="result_detail_data_data">{$row.collectionid|escape:htmall}:{$row.imageid|escape:htmlall}</td>
 	  </tr>
 	  <tr>
 	    <td class="result_detail_data_head">{#title#}</td>
-	    <td class="result_detail_data_data">{$row.title}</td>
+	    <td class="result_detail_data_data">{$row.title|escape:htmall}</td>
 	  </tr>
 	  <tr>
 	    <td class="result_detail_data_head">{#name#}</td>
-	    <td class="result_detail_data_data">{$row.name1text}{if $row.name2text ne ""} <br /> {$row.name2text|escape:htmlall}{/if}</td>
+	    <td class="result_detail_data_data">{$row.name1text|escape:htmall}{if $row.name2text ne ""} <br /> {$row.name2text|escape:htmlall}{/if}</td>
 	  </tr>
 	  {if $row.addition ne ""}
 	  <tr>
 	    <td class="result_detail_data_head">{#addition#}</td>
-	    <td class="result_detail_data_data">{$row.addition}</td>
+	    <td class="result_detail_data_data">{$row.addition|escape:htmall}</td>
 	  </tr>
 	  {/if}
 	  {if $row.dating ne ""}
 	  <tr>
 	    <td class="result_detail_data_head">{#date#}</td>
-	    <td class="result_detail_data_data">{$row.dating}</td>
+	    <td class="result_detail_data_data">{$row.dating|escape:htmall}</td>
 	  </tr>
 	  {/if}
 	  {if $row.material ne ""}
 	  <tr>
 	    <td class="result_detail_data_head">{#material#}</td>
-	    <td class="result_detail_data_data">{$row.material}</td>
+	    <td class="result_detail_data_data">{$row.material|escape:htmall}</td>
 	  </tr>
 	  {/if}
 	  {if $row.technique ne ""}
 	  <tr>
 	    <td class="result_detail_data_head">{#technics#}</td>
-	    <td class="result_detail_data_data">{$row.technique}</td>
+	    <td class="result_detail_data_data">{$row.technique|escape:htmall}</td>
 	  </tr>
 	  {/if}
 	  {if $row.format ne ""}
 	  <tr>
 	    <td class="result_detail_data_head">{#format#}</td>
-	    <td class="result_detail_data_data">{$row.format}</td>
+	    <td class="result_detail_data_data">{$row.format|escape:htmall}</td>
 	  </tr>
 	  {/if}
           {if $row.city ne "" or $row.institution ne ""}
 	  <tr>
 	    <td class="result_detail_data_head">{#location#}</td>
-	    <td class="result_detail_data_data">{$row.city}{if $row.institution ne "" AND $row.city ne ""} / {/if}{$row.institution|escape:htmlall}</td>
+	    <td class="result_detail_data_data">{$row.city|escape:htmall}{if $row.institution ne "" AND $row.city ne ""} / {/if}{$row.institution|escape:htmlall}</td>
 	  </tr>
           {/if}
 	  <tr>
 	    <td class="result_detail_data_head">{#src#|escape:htmlall}</td>
 	    <td class="result_detail_data_data">
 	    {$row.literature|escape:htmlall}
-	    {if $row.page ne ""}<br>{#page#}: {$row.page}{/if}
-	    {if $row.figure ne ""}<br>{#figure#}: {$row.figure}{/if}
-	    {if $row.table ne ""}<br>{#plate#}: {$row.table}{/if}
-	    {if $row.isbn ne ""}<br>{#isbn#}: {$row.isbn}{/if}
+	    {if $row.page ne ""}<br>{#page#}: {$row.page|escape:htmall}{/if}
+	    {if $row.figure ne ""}<br>{#figure#}: {$row.figure|escape:htmall}{/if}
+	    {if $row.table ne ""}<br>{#plate#}: {$row.table|escape:htmall}{/if}
+	    {if $row.isbn ne ""}<br>{#isbn#}: {$row.isbn|escape:htmall}{/if}
 	    </td>
 	  </tr>
         </table>

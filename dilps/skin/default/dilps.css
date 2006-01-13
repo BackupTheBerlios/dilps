@@ -645,6 +645,29 @@ a.navsmall:hover {
 }
 {/literal}
 
+{literal}	
+.actionbutton {
+	text-align: center;
+	font-size: 9pt;
+	border-width: thin;
+	padding: 2px;
+}
+{/literal}
+
+{literal}	
+.actionbutton2 {
+	text-align: center;
+	border-bottom-style: none;
+	border-left-style: none;
+	font-size: 9pt;
+	padding: 1px;
+	padding-bottom: 0px;
+	padding-top: 0px;
+}
+{/literal}
+
+
+
 
 {literal}	
 table.querypiece {
@@ -656,7 +679,7 @@ table.querypiece {
         padding: 0px;
         margin: 0px;
 }
-{/literal}	
+{/literal}
 
 
 <!--	END dilps.css	-->

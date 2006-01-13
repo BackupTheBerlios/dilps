@@ -51,6 +51,11 @@ else
 	$sessionid = session_id();
 }
 
+if (isset($_REQUEST['mygroup']) && is_array($_REQUEST['mygroup']))
+{
+	$smarty->assign('mygroup',$_REQUEST['mygroup']);
+}
+
 $action = array();
 
 if( isset($_REQUEST['action']) && is_array( $_REQUEST['action'] )) 

@@ -24,7 +24,12 @@
 <!-- --------------------------------------------
 BEGIN advanced_query.tpl
 --------------------------------------------- -->
-{config_load file="`$config.skinBase``$config.skin`/`$config.language`/easy_query.conf"}
+{if $config.utf8 eq "true"}
+	{config_load file="`$config.skinBase``$config.skin`/`$config.language`/easy_query.conf.utf8"}
+{else}
+	{config_load file="`$config.skinBase``$config.skin`/`$config.language`/easy_query.conf"}
+{/if}
+
 {type_list var=types sql=sql}
 <!-- type_list: {$sql} -->
 {collection_list var=collections sql=sql}

@@ -59,8 +59,10 @@
 	$config['soundextreshold'] = 2;
 	
 	// collection to use when no other is selection
-	
 	$config['defaultcollection'] = 4;
+	
+	// utf-8 support
+	$config['utf8'] = true;
 	
 	
 

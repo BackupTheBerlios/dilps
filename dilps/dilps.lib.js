@@ -211,12 +211,16 @@ function clearmygroup() {
 	document.forms["Main"].submit();
 }
 
-function changemygroup(action, cid, mygroupid, imageid) {
+function updatemygroup()
+{
+	// update target for next action
 	document.forms["Main"].elements["action[target]"].value = 'mygroup';
-	document.forms["Main"].elements["action[function]"].value = action;
-	document.forms["Main"].elements["action[cid]"].value = cid;
-	document.forms["Main"].elements["action[gid]"].value = mygroupid;
-	document.forms["Main"].elements["action[imageid]"].value = imageid;
+	document.forms["Main"].elements["action[function]"].value = 'update';
+	
+	// set mygroupid as target
+	document.forms["Main"].elements["action[gid]"].value = document.forms["Main"].elements["query[mygroupid]"].value;
+	
+	// submit
 	document.forms["Main"].submit();
 }
 

@@ -9,7 +9,7 @@ year = Datierung
 advancedsearch = Erweiterte Suche
 simplesearch = Einfache Suche
 closewindow = Fenster schliessen
-newwindow = (Öffnet sich in ein neues Fenster)
+newwindow = (Ã–ffnet sich in ein neues Fenster)
 type = Typ
 addition = Zusatz
 material = Material
@@ -19,20 +19,20 @@ literature = Quelle
 location = Ort
 institution = Institution
 commentary = Kommentar
-keyword = Schlüsselwörter
+keyword = SchlÃ¼sselwÃ¶rter
 all2 = Alle
-like = Ähnlich zu
+like = Ã„hnlich zu
 equals = gleich
-soundslike = klingt ähnlich zu
-likesoundslike = geschrieben oder klingt ähnlich zu
+soundslike = klingt Ã¤hnlich zu
+likesoundslike = geschrieben oder klingt Ã¤hnlich zu
 queryand = UND
 queryor = ODER
 
 group = Gruppe
 nogroup = keine Gruppe
 mygroup = meine Gruppe
-selecthere = bitte hier klicken, um auszuwählen
-applychanges = Änderungen übernehmen
+selecthere = bitte hier klicken, um auszuwÃ¤hlen
+applychanges = Ã„nderungen Ã¼bernehmen
 
 editgroups = Gruppen verwalten
 exportgroup = Gruppe exportieren
@@ -40,9 +40,9 @@ exportgroup = Gruppe exportieren
 sourcefile = Quell-Datei (lokal)
 sourcedirectory = Quell-Verzeichnis (lokal)
 targetdirectory = Ziel-Verzeichnis
-nextstep = wird im nächsten Schritt bestimmt
+nextstep = wird im nÃ¤chsten Schritt bestimmt
 continue = weiter
-insertimages = Bilder einfügen
+insertimages = Bilder einfÃ¼gen
 completedir = Quelle ist ein/e?
 file = Datei
 directory = Verzeichnis
@@ -54,12 +54,12 @@ images_edited = nicht freigegeben
 images_reviewed = freigegeben
 
 no_subdirs = keine Unterverzeichnisse gefunden
-closewindow = Fenster schließen
+closewindow = Fenster schlieÃŸen
 
 imageid = Bild-ID
 
-deleteimagewithid = Soll das Bild mit folgender ID gelöscht werden
-rotateimagewithid = Soll das Bild mit folgender ID um 90° gedreht werden
+deleteimagewithid = Soll das Bild mit folgender ID gelÃ¶scht werden
+rotateimagewithid = Soll das Bild mit folgender ID um 90Â° gedreht werden
 
 withviewer = Export mit DILPS-Leuchtpult und -Projektor
 targetsystem = Welches Betriebssystem verwenden Sie

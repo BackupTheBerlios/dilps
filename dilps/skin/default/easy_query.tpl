@@ -25,7 +25,11 @@
 BEGIN easy_query.tpl
 ================================================= -->
 
-{config_load file="`$config.skinBase``$config.skin`/`$config.language`/easy_query.conf"}
+{if $config.utf8 eq "true"}
+	{config_load file="`$config.skinBase``$config.skin`/`$config.language`/easy_query.conf.utf8"}
+{else}
+	{config_load file="`$config.skinBase``$config.skin`/`$config.language`/easy_query.conf"}
+{/if}
 
 <script type="text/javascript">
 	function rotateimage(cid, imageid)
@@ -154,16 +158,16 @@ BEGIN easy_query.tpl
 		<tr>
 			<td class="queryinputfieldtext">
 		  		{#group#|escape:htmlall}
-				</td>
-				<td class="queryinputfield">
+			</td>
+			<td class="queryinputfield">
 				{if $query.group eq ""}
-					<input class="queryinputfield" type="text" name="query[group]" size="40" readonly="readonly" value=" ({#selecthere#}) " onclick="javascript:window.open('group_select.php?PHPSESSID={$sessionid}&target=group','groupselection1','width=800,height=300,left=10,top=250,dependent=yes');">
+					<input class="queryinputfield" type="text" name="query[group]" size="40" readonly="readonly" value=" ({#selecthere#|escape:htmlall}) " onclick="javascript:window.open('group_select.php?PHPSESSID={$sessionid}&target=group','groupselection1','width=800,height=300,left=10,top=250,dependent=yes');">					
 				{else}
 					<input class="queryinputfield" type="text" name="query[group]" size="40" readonly="readonly" value="{$query.group|escape:html}" onclick="javascript:window.open('group_select.php?PHPSESSID={$sessionid}&target=group','groupselection1','width=800,height=300,left=10,top=250,dependent=yes');">
 				{/if}
 				<input class="queryinputfield" type="hidden" name="query[groupid]" value="{$query.groupid|escape:html}">
 				<input class="queryinputfield" type="hidden" name="query[grouplevel]" value="{$query.grouplevel|escape:html}">
-				<input type="button" onClick="cleargroup();" name="nogroup" value="{#nogroup#|escape:html}">
+				<input type="button" class="actionbutton2" onclick="javascript:cleargroup();" value="&times;" title="{#nogroup#}"/>
 			</td>
 		</tr>
 		<tr>

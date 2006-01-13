@@ -24,7 +24,11 @@
 <!-- =================================================
 BEGIN add_images.tpl
 ================================================= -->
-{config_load file="`$config.skinBase``$config.skin`/`$config.language`/easy_query.conf"}
+{if $config.utf8 eq "true"}
+	{config_load file="`$config.skinBase``$config.skin`/`$config.language`/easy_query.conf.utf8"}
+{else}
+	{config_load file="`$config.skinBase``$config.skin`/`$config.language`/easy_query.conf"}
+{/if}
 
 <html>
 <head>
@@ -34,7 +38,7 @@ BEGIN add_images.tpl
 <meta http-equiv="cache-control" content="no-cache">
 <meta name="keywords" content="Bilddatenbanksystem, Bilddatenbank, Diathek, digitalisiert">
 
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="Content-Script-Type" content="text/javascript">
 <meta http-equiv="Content-Style-Type" content="text/css">
 <meta name="author" content="jrgen enge, thorsten wbbena"> 

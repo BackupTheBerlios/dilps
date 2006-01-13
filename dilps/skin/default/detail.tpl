@@ -24,7 +24,12 @@
 <!-- --------------------------------------------
 BEGIN detail.tpl
 --------------------------------------------- -->
-{config_load file="`$config.skinBase``$config.skin`/`$config.language`/detail.conf"}
+{if $config.utf8 eq "true"}
+	{config_load file="`$config.skinBase``$config.skin`/`$config.language`/detail.conf.utf8"}
+{else}
+	{config_load file="`$config.skinBase``$config.skin`/`$config.language`/detail.conf"}
+{/if}
+
 <html>
 <head>
   <meta name="robots" content="index,follow">
@@ -32,7 +37,7 @@ BEGIN detail.tpl
   <meta http-equiv="expires" content="0">
   <meta http-equiv="cache-control" content="no-cache">
   <meta name="keywords" content="Bilddatenbanksystem, Bilddatenbank, Diathek, digitalisiert">
-  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta http-equiv="Content-Script-Type" content="text/javascript">
   <meta http-equiv="Content-Style-Type" content="text/css">
   <meta name="author" content="jürgen enge, thorsten wübbena"> 

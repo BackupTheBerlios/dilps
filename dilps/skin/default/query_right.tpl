@@ -3,7 +3,7 @@
 	<table class="query" cellspacing="1" cellpadding="0" >
 		{if $user.admin or $user.editor}
 		<tr>
-			<td class="field_name"><strong>{#mygroup#}</strong></td>
+			<td class="field_name"><strong>{#mygroup#|escape:htmlall}</strong></td>
 		</tr>
 		<tr>
 			<td class="queryinputfield">
@@ -12,13 +12,16 @@
 			{else}
 				<input class="queryinputfield" type="text" name="query[mygroup]" size="40" readonly="readonly" value="{$query.mygroup|escape:html}" onclick="javascript:window.open('group_select.php?PHPSESSID={$sessionid}&target=mygroup','groupselection2','width=800,height=300,left=10,top=250,dependent=yes');">
 			{/if}
+				<input type="button" class="actionbutton2" onclick="javascript:clearmygroup();" value="&times;" title="{#nogroup#}"/>
+				<input type="button" class="actionbutton2" onclick="javascript:updatemygroup();" value="&darr;" style="padding-left: 2px; padding-right: 2px;" title="{#applychanges#}"/>
 				<input class="queryinputfield" type="hidden" name="query[mygroupid]" value="{$query.mygroupid|escape:html}">
 				<input class="queryinputfield" type="hidden" name="query[mygrouplevel]" value="{$query.mygrouplevel|escape:html}">
 			</td>
 		</tr>
 		<tr>
 			<td>
-				<input type="button" onClick="clearmygroup();" name="nogroup" value="{#nogroup#|escape:html}">
+				<!-- we insert the nodes for changes in group membership here -->
+				<div id="mygroupchanges" style="visibility: hidden;"></div>		
 			</td>
 		</tr>
 		{else}
@@ -53,14 +56,14 @@
 		<tr>
 			<td class="field_name">
 				{if $user.admin or $user.editor}
-					<a class="navsymbol" href="javascript:;" onclick="javascript:window.open('group_edit.php?PHPSESSID={$sessionid}','groupedit','width=800,height=420,dependent=yes,scrollbars=yes');">{#editgroups#}</a>
+					<a class="navsymbol" href="javascript:;" onclick="javascript:window.open('group_edit.php?PHPSESSID={$sessionid}','groupedit','width=800,height=420,dependent=yes,scrollbars=yes');">{#editgroups#|escape:htmlall}</a>
 				{/if}
 			</td>
 		</tr>
 		<tr>
 			<td>
 				{if $user.admin or $user.editor}
-					<a class="navsymbol" href="javascript:;" onclick="javascript:window.open('add_images.php?PHPSESSID={$sessionid}','imageadd','width=900,height=420,dependent=yes,scrollbars=yes');">{#insertimages#}</a>
+					<a class="navsymbol" href="javascript:;" onclick="javascript:window.open('add_images.php?PHPSESSID={$sessionid}','imageadd','width=900,height=420,dependent=yes,scrollbars=yes');">{#insertimages#|escape:htmlall}</a>
 				{/if}
 			</td>
 		</tr>
@@ -73,7 +76,7 @@
 				<input class="queryinputfield" type="hidden" name="action[gid]" value="">
 				<input class="queryinputfield" type="hidden" name="action[imageid]" value="">
 				{if $action.target eq "mygroup"}
-					{mygroup_change action=$action.function cid=$action.cid gid=$action.gid imageid=$action.imageid result=result sql=sql}
+					{mygroup_change action=$action.function gid=$action.gid changes=$mygroup result=result sql=sql}
 				{/if}
 				{if $action.target eq "image"}
 					{image_change action=$action.function cid=$action.cid imageid=$action.imageid result=result sql=sql}

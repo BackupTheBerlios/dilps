@@ -24,7 +24,12 @@
 <!-- ============================================
 BEGIN result_grid.tpl
 ============================================ -->
-{config_load file="`$config.skinBase``$config.skin`/`$config.language`/result.conf"}
+{if $config.utf8 eq "true"}
+	{config_load file="`$config.skinBase``$config.skin`/`$config.language`/result.conf.utf8"}
+{else}
+	{config_load file="`$config.skinBase``$config.skin`/`$config.language`/result.conf"}
+{/if}
+
 {query var=result sql=sql}
 <!-- {$sql} -->
 <td class="result_grid_nav_top" id="navigation" style="text-align: center"

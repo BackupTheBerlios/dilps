@@ -24,7 +24,12 @@
 <!-- --------------------------------------------
 BEGIN result.tpl
 --------------------------------------------- -->
-{config_load file="`$config.skinBase``$config.skin`/`$config.language`/result.conf"}
+{if $config.utf8 eq "true"}
+	{config_load file="`$config.skinBase``$config.skin`/`$config.language`/result.conf.utf8"}
+{else}
+	{config_load file="`$config.skinBase``$config.skin`/`$config.language`/result.conf"}
+{/if}
+
 {query var=result sql=sql}
 <table class="main" width="100%">
 <tr>

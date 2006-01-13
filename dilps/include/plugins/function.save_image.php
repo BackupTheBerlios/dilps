@@ -195,7 +195,7 @@ function get_or_set_values($db, $db_prefix, $dilpsid, $field, $fieldtext, $recor
     global $config;
     include_once($config['includepath'].'thesauri/soundex_fr.php');
 
-    $db->debug = true;
+    // $db->debug = true;
 
     switch ($field) {
 

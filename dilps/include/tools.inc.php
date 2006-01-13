@@ -34,7 +34,7 @@
 	
 	$path_fix = dirname(__FILE__);
 	include_once($path_fix.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'includes.inc.php');
-	include($config['includepath'].DIRECTORY_SEPARATOR.'mime'.DIRECTORY_SEPARATOR.'Type.php');
+	include_once($path_fix.DIRECTORY_SEPARATOR.'mime'.DIRECTORY_SEPARATOR.'Type.php');
 
 	/**
 	 *	execute stripslashes on a string

@@ -25,55 +25,135 @@
 <!-- --------------------------------------------
 BEGIN default_grid.tpl
 --------------------------------------------- -->
+<script type="text/javascript">
+	{literal}
+	function changemygroup(buttonid, imageid) 
+	{
+		// imageid is a combined id here (=> collectionid:imageid)
+		
+		// do we add or delete?
+		var mode;
+		
+		// change the button
+		if (document.getElementById(buttonid) != null)
+		{				
+			{/literal}
+			if (document.getElementById(buttonid).value == "+")
+			{literal}
+			{
+				{/literal}
+				mode = 'add';
+				document.getElementById(buttonid).value = "-";				
+				document.getElementById(buttonid).title = "{#delfrommygroup#}";
+				{literal}
+			}
+			else
+			{
+				{/literal}
+				mode = 'del';
+				document.getElementById(buttonid).value = "+";
+				document.getElementById(buttonid).title = "{#addtomygroup#}";
+				{literal}
+			}
+		}
+		
+		// test, if button has been clicked before
+		var resid = 'mygroup[' + imageid + ']';
+		
+		if (document.getElementById(resid) != null)
+		{
+			document.getElementById(resid).value = mode;
+		}
+		else
+		{			
+			// create new hidden input field with resid as name
+			var groupElem 				= document.createElement('input');
+			groupElem.name 			= resid
+			groupElem.value 			= mode;
+			groupElem.type				= 'hidden';
+			groupElem.className	= 'queryinputfield';
+			groupElem.setAttribute('id',resid);
+			
+			// attach it to the groupchanges block			
+			document.getElementById('mygroupchanges').appendChild(groupElem);
+		}
+		
+		return;	
+	}
+	{/literal}
+	
+	
+	
+</script>
+
 <table border="0" cellspacing="0" width="100%">
 <tr>
    <td rowspan="2"><img src="/icons/blank.gif" width="1" height="91"></td>
    <td><img src="/icons/blank.gif" width="121" height="1"></td>
 </tr>
-<tr><td style="text-align: center"><a href="javascript:{$viewFunc}('{$sessionid}','{$row.collectionid}:{$row.imageid}');"><img src="image.php?PHPSESSID={$sessionid}&id={$row.collectionid}:{$row.imageid}&resolution=120x90" border="0"></a></td></tr>
 <tr>
-   <td colspan="2" class="result_list_data_data" style="text-align: center">
-   <b>{$row.name1|escape:htmlall}
-   {if $row.name2 ne ""}<br/>
-   {$row.name2|escape:htmlall}{/if}</b>
-   <br>
-   {$row.title|replace:"-":"- "|truncate:50|escape:htmlall}
-   </td>
+	<td style="text-align: center">
+		<a href="javascript:{$viewFunc}('{$sessionid}','{$row.collectionid}:{$row.imageid}');"><img src="image.php?PHPSESSID={$sessionid}&id={$row.collectionid}:{$row.imageid}&resolution=120x90" border="0"></a>
+	</td>
 </tr>
 <tr>
 	<td colspan="2" class="result_list_data_data" style="text-align: center">
-		{if $query.mygroupid neq ""}	
-			{#mygroup#}
-			{mygroup_isin var=ingroup sql=sql cid=$row.collectionid groupid=$query.mygroupid imageid=$row.imageid}
-			{if $ingroup eq 'no'}
-				<a href="javascript:changemygroup('add','{$row.collectionid}','{$query.mygroupid}','{$row.imageid}');" 
-					class="navigationlink">
-					<strong>{#addtomygroup#}</strong>
-				</a>			
-			{else}			
-				<a href="javascript:changemygroup('delete','{$row.collectionid}','{$query.mygroupid}','{$row.imageid}');" 
-					class="navigationlink"><strong>{#delfrommygroup#}</strong>
-				</a>
-			{/if}
-			<!-- {$sql} -->
-			
-			<br /><br />
-		{/if}		
-		
-		{if $user.editor}
-			<a href="javascript:rotateimage('{$row.collectionid}','{$row.imageid}');" 
-				class="navigationlink">
-				<em>{#rotate#}</em>
-			</a>
+	<b>
+	{if $row.name1 ne "" or $row.name2 ne ""}
+		{$row.name1|escape:htmlall}
+		{if $row.name2 ne ""}<br/>
+			{$row.name2|escape:htmlall}
 		{/if}
-		<br />
-		{if $user.admin}
-		  	<a href="javascript:deleteimage('{$row.collectionid}','{$row.imageid}');" 
-				class="navigationlink">
-				<em>{#delete#}</em>
-			</a>
-		{/if}
-		<br />
+		</b>
+	{else}
+		&nbsp;
+	{/if}
+	<br>
+	{if $row.title ne ""}
+		{$row.title|replace:"-":"- "|truncate:50|escape:htmlall}		
+	{else}
+		&nbsp;
+	{/if}	
+	</td>
+</tr>
+<tr>
+	<td colspan="2" style="height: 5px;">		
+	</td>
+</tr>
+<tr>
+	<td rowspan="2"><img src="/icons/blank.gif" width="1"></td>
+	<td colspan="2" class="result_list_data_data" style="text-align: center">
+		<table border="0" cellspacing="0" style="width: 100%">			
+			<tr>
+				<td class="result_list_data_data" style="width: 50%">					
+					{if $query.mygroupid neq ""}
+						{#group#}
+						{mygroup_isin var=ingroup sql=sql cid=$row.collectionid groupid=$query.mygroupid imageid=$row.imageid}
+						{if $ingroup eq 'no'}
+							<input type="button" name="but-{$row.collectionid}-{$row.imageid}" id="but-{$row.collectionid}-{$row.imageid}" class="actionbutton" onclick="javascript:changemygroup('but-{$row.collectionid}-{$row.imageid}','{$row.collectionid}:{$row.imageid}');" value="+" style="height: 22px; width: 22px;" title="{#addtomygroup#}"/>
+						{else}	
+							<input type="button" name="but-{$row.collectionid}-{$row.imageid}" id="but-{$row.collectionid}-{$row.imageid}" class="actionbutton" onclick="javascript:changemygroup('but-{$row.collectionid}-{$row.imageid}','{$row.collectionid}:{$row.imageid}');" value="-" style="height: 22px; width: 22px;" title="{#delfrommygroup#}"/>
+						{/if}
+						<!-- {$sql} -->
+					{else}
+						&nbsp;
+					{/if}
+				</td>				
+				<td class="result_list_data_data">
+					{if $user.editor or $user.admin}
+						{#image#}
+					{else}
+						&nbsp;
+					{/if}
+					{if $user.editor}
+						<button type="button" name="rot-{$row.collectionid}-{$row.imageid}" class="actionbutton" onclick="javascript:rotateimage('{$row.collectionid}','{$row.imageid}');" style="padding: 1px;" title="{#rotate#}"><img src="rotate-90.png" style="width: 12px; height: 12px" /></button>
+					{/if}
+					{if $user.admin}
+						<button type="button" name="del-{$row.collectionid}-{$row.imageid}" class="actionbutton" onclick="javascript:deleteimage('{$row.collectionid}','{$row.imageid}');" style="padding: 1px;" title="{#delete#}"><img src="delete.png" style="width: 12px; height: 12px" /></button>
+					{/if}
+				</td>
+			</tr>
+		</table>
    </td>
 </tr>
 </table>

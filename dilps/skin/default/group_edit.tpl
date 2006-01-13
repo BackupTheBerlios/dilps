@@ -28,7 +28,11 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%;">
 
-{config_load file="`$config.skinBase``$config.skin`/`$config.language`/edit_group.conf"}
+{if $config.utf8 eq "true"}
+	{config_load file="`$config.skinBase``$config.skin`/`$config.language`/edit_group.conf.utf8"}
+{else}
+	{config_load file="`$config.skinBase``$config.skin`/`$config.language`/edit_group.conf"}
+{/if}
 
 <head>
 	<meta name="robots" content="index,follow" />
@@ -36,7 +40,7 @@
 	<meta http-equiv="expires" content="0" />
 	<meta http-equiv="cache-control" content="no-cache" />
 	<meta name="keywords" content="Bilddatenbanksystem, Bilddatenbank, Diathek, digitalisiert" />
-	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta http-equiv="Content-Script-Type" content="text/javascript" />
 	<meta http-equiv="Content-Style-Type" content="text/css" />
 	<meta name="author" content="jürgen enge, thorsten wübbena" />
