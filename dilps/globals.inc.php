@@ -40,8 +40,8 @@
 	if (isset($config['exportdir']) && isset($config['dilpsdir']))
 	{
 		$exportdir 			= substr($config['exportdir'],strlen($config['dilpsdir']),strlen($config['exportdir']));
-		$exportdirlong 		= $config['exportdir'];		
-		$dilpsdir 			= $config['dilpsdir'];
+		$exportdirlong 	= $config['exportdir'];		
+		$dilpsdir 				= $config['dilpsdir'];
 		
 		// $exporturl 			= 'http://'.$_SERVER['SERVER_NAME'].'/'.$exportdir;
 	}
@@ -72,22 +72,22 @@
 	);
 	
 	$formats_suffix = array (
-		"image/jpeg"			=>	"jpg",
+		"image/jpeg"				=>	"jpg",
 		"image/png"				=>	"png",
-		"image/gif"				=>	"gif",
-		"image/tiff"			=>	"tif",
-		"image/x-photoshop"		=>	"psd",
+		"image/gif"					=>	"gif",
+		"image/tiff"					=>	"tif",
+		"image/x-photoshop"	=>	"psd",
 		"image/x-ms-bmp"		=>	"bmp",
 		"image/bmp"				=>	"bmp"
 	);
 	
 	$ext_to_mime = array (
-		"jpg"	=>	"image/jpeg",
+		"jpg"		=>	"image/jpeg",
 		"jpeg"	=>	"image/jpeg",	
 		"png"	=>	"image/png",
-		"gif"	=>	"image/gif",
-		"tif"	=>	"image/tiff",
-		"tiff"	=>	"image/tiff",
+		"gif"		=>	"image/gif",
+		"tif"		=>	"image/tiff",
+		"tiff"		=>	"image/tiff",
 		"psd"	=>	"image/x-photoshop",
 		"bmp"	=> 	"image/bmp"
 	);	

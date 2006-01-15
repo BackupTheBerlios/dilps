@@ -56,18 +56,78 @@ function smarty_block_query($params, $content, &$smarty, &$repeat)
 	$fields = "{$db_prefix}meta.type as type,{$db_prefix}meta.collectionid as collectionid,{$db_prefix}meta.imageid as imageid,ifnull({$db_prefix}meta.name1, '') as name1,ifnull({$db_prefix}meta.name2, '') as name2,{$db_prefix}meta.addition as addition, {$db_prefix}meta.title as title, {$db_prefix}meta.dating as dating";
 
 	if (!empty($query['groupid'])){
+		// add grouptable to query
 			$fields .= ", {$db_prefix}img_group.groupid as groupid";
 	}
 
-/*	$querystruct = transform_query($query);
+	/*	$querystruct = transform_query($query);
 
 	$dbQuery = new dilpsQuery($db, $db_prefix);
 	$where = $dbQuery->buildWhere($querystruct);*/
-//$smarty->assign($params['sql'], var_export($where, true)); return;
+	//$smarty->assign($params['sql'], var_export($where, true)); return;
+	
 	$where = $query['prepared_where'];
 
-	if (!empty($query['groupid'])){
+	if (!empty($query['groupid']))
+	{
+		// query group and all subgroups
+
+		$groupid = $query['groupid'];
+		
+		// our result
+		$groups = array();
+		
+		// first id is the give one
+		$groups[] = $groupid;
+		
+		$db->SetFetchMode(ADODB_FETCH_ASSOC);
+		
+		$sql = "SELECT id FROM ".$db_prefix."group WHERE "
+					."parentid = ".$db->qstr($query['groupid'])
+					." ORDER BY id"; 	
+ 	
+		$rs  = $db->Execute($sql);
+		
+		if (!$rs)
+		{
+			// we have no subgroups, just query one id
 			$where .= " AND {$db_prefix}img_group.groupid = ".$db->qstr($query['groupid']);
+		}
+		else
+		{
+			// get next sublevel		
+			while (!$rs->EOF)
+			{
+				// add group to result array
+				
+				$groups[] = $rs->fields['id'];
+				
+				// get next but one sublevel, if available
+				$sql2 = "SELECT id FROM ".$db_prefix."group WHERE "
+							."parentid = ".$db->qstr($rs->fields['id'])
+							." ORDER BY id"; 	
+				
+				$rs2 = $db->Execute($sql2);
+				
+				while(!$rs2->EOF)
+				{
+					$groups[] = $rs2->fields['id'];				
+					
+					$rs2->MoveNext();
+				}			
+				$rs->MoveNext();
+			}
+			
+			$where .= " AND (0 ";
+			
+			foreach ($groups as $gid)
+			{
+				$where .= " OR {$db_prefix}img_group.groupid = ".$db->qstr($gid);
+			}
+			
+			$where .= ")";
+			
+		}
 	}
 
 	if (!empty($query['imagestatus'])){

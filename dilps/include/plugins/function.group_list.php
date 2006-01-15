@@ -68,7 +68,7 @@ function smarty_function_group_list($params, &$smarty)
 		
 		$rs2 = $db->Execute($sql2);
 		
-		$ls2groups = array();
+		$l2groups = array();
 		
 		while(!$rs2->EOF)
 		{

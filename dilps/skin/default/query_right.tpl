@@ -1,7 +1,7 @@
 <td width="30%" valign="top">
 	<!-- right side of query -->
 	<table class="query" cellspacing="1" cellpadding="0" >
-		{if $user.admin or $user.editor}
+		{if $user.usemygroup}
 		<tr>
 			<td class="field_name"><strong>{#mygroup#|escape:htmlall}</strong></td>
 		</tr>
@@ -55,14 +55,14 @@
 		</tr>
 		<tr>
 			<td class="field_name">
-				{if $user.admin or $user.editor}
+				{if $user.editgroup}
 					<a class="navsymbol" href="javascript:;" onclick="javascript:window.open('group_edit.php?PHPSESSID={$sessionid}','groupedit','width=800,height=420,dependent=yes,scrollbars=yes');">{#editgroups#|escape:htmlall}</a>
 				{/if}
 			</td>
 		</tr>
 		<tr>
 			<td>
-				{if $user.admin or $user.editor}
+				{if $user.insertimage}
 					<a class="navsymbol" href="javascript:;" onclick="javascript:window.open('add_images.php?PHPSESSID={$sessionid}','imageadd','width=900,height=420,dependent=yes,scrollbars=yes');">{#insertimages#|escape:htmlall}</a>
 				{/if}
 			</td>

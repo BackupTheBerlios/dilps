@@ -64,6 +64,9 @@
 	// utf-8 support
 	$config['utf8'] = true;
 	
-	
+	// feature flags - valid values are 'user', 'editor' and 'admin'
+	$config['usemygroup'] 	= 'user';
+	$config['editgroup'] 		= 'editor';
+	$config['insertimage']		= 'editor';	
 
 ?>

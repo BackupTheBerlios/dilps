@@ -56,10 +56,17 @@ $admin = $logins->isInGroup( $config['authdomain'], $config['admingroup'] );
 $editor = $logins->isInGroup( $config['authdomain'], $config['editorgroup'] );
 if( $admin ) $editor = true;
 
-$user = array( 'login'=>$logins->getUID( $config['authdomain'] ),
-				   'editor'=>($editor ? 1 : 0 ),
-				   'admin'=>($admin ? 1 : 0 ));
+$user = array( 	
+							'login'				=>	$logins->getUID( $config['authdomain'] ),
+							'editor'				=>	($editor ? 1 : 0 ),
+							'admin'			=>	($admin ? 1 : 0 ),
+							'usemygroup' 	=>	(($admin || ($config['usemygroup'] 	== 'editor' ? $editor : 0)	| $config['usemygroup'] 	== 'user') ? 1 : 0),
+							'editgroup' 		=>	(($admin || ($config['editgroup'] 		== 'editor' ? $editor : 0)	| $config['editgroup'] 		== 'user') ? 1 : 0),
+							'insertimage' 	=>	(($admin || ($config['insertimage'] 		== 'editor' ? $editor : 0)	| $config['insertimage']	== 'user') ? 1 : 0)	
+						);
+	
 $smarty->assign( 'user', $user );
+	
 					
 $query = array();
 
