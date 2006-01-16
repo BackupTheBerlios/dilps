@@ -18,15 +18,33 @@
  * @param html|htmlall|url|quotes|hex|hexentity|javascript
  * @return string
  */
+
 function smarty_modifier_escape($string, $esc_type = 'html')
 {
-    switch ($esc_type) {
+	$path_fix = dirname(__FILE__);
+	require($path_fix.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'locals.inc.php');
+	
+    switch ($esc_type) {		
         case 'html':
-            return htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
-
+			if ($config['utf8'])
+			{				
+				return htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
+			}
+			else
+			{				
+				return htmlspecialchars($string, ENT_QUOTES);
+			}
+			
         case 'htmlall':
-            return htmlentities($string, ENT_QUOTES, 'UTF-8');
-
+			if ($config['utf8'])
+			{
+				return htmlentities($string, ENT_QUOTES, 'UTF-8');
+			}
+			else
+			{
+				return htmlentities($string, ENT_QUOTES);
+			}
+			
         case 'url':
             return rawurlencode($string);
 

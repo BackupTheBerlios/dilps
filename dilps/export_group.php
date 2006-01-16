@@ -102,9 +102,9 @@ if ($export)
 		$withviewer = trim($_REQUEST['withviewer']);
 	} else {
 		$withviewer = false;
-	}	
-	
-	// which version of the viewer do we use?	
+	}
+
+	// which version of the viewer do we use?
 	if (!empty($_REQUEST['targetsystem'])){
 		$targetsystem = trim($_REQUEST['targetsystem']);
 	} else {
@@ -128,17 +128,17 @@ if ($export)
 	$date = date("Y-m-d__H-i",$time);
 
 	$dir = $exportdir.$user['login'].DIRECTORY_SEPARATOR.$date;
-	
+
 	$ret = check_dir($dir,true, true, 0755);
-	
+
 	if (!$ret){
 		$errorstring = "Error creating export directory\n<br>\n"
 								."Name: ".$dir."\n<br>\n"
 								."\n<br>\n";
 		die ($errorstring);
-	}	
-	
-	$dir = $exportdir.$user['login'].DIRECTORY_SEPARATOR.$date.DIRECTORY_SEPARATOR.'xml';	
+	}
+
+	$dir = $exportdir.$user['login'].DIRECTORY_SEPARATOR.$date.DIRECTORY_SEPARATOR.'xml';
 
 	$ret = check_dir($dir,true, true, 0755);
 
@@ -159,7 +159,7 @@ if ($export)
 								."\n<br>\n";
 		die ($errorstring);
 	}
-	
+
 	$dir = $exportdir.$user['login'].DIRECTORY_SEPARATOR.$date.DIRECTORY_SEPARATOR.'thumbnails';
 
 	$ret = mkdir($dir,0755);
@@ -170,14 +170,14 @@ if ($export)
 								."\n<br>\n";
 		die ($errorstring);
 	}
-	
-	
+
+
 	// do we need to copy the viewer skeleton?
-	
+
 	if ($withviewer)
 	{
 		$viewerdir = '';
-						
+
 		if ($targetsystem == 'mac')
 		{
 			$viewerdir = $dilpsdir.'viewer'.DIRECTORY_SEPARATOR.'mac'.DIRECTORY_SEPARATOR;
@@ -186,11 +186,11 @@ if ($export)
 		{
 			$viewerdir = $dilpsdir.'viewer'.DIRECTORY_SEPARATOR.'windows'.DIRECTORY_SEPARATOR;
 		}
-		
+
 		// copy viewer with PHP-functions
-		
+
 		$olddir = getcwd();
-		
+
 		chdir($viewerdir);
 
 		$ret = copy_recursive('.',$exportdirlong.$user['login'].DIRECTORY_SEPARATOR.$date.DIRECTORY_SEPARATOR);
@@ -200,9 +200,9 @@ if ($export)
 			echo ("\n<br>\n");
 			exit;
 		}
-		
+
 		chdir($olddir);
-		
+
 	}
 
 	// start reading actual data
@@ -278,11 +278,11 @@ if ($export)
 							.DIRECTORY_SEPARATOR.'xml'.DIRECTORY_SEPARATOR
 							.$rs->fields['collectionid'].'-'.$rs->fields['imageid']
 							.'.xml','w');
-							
+
 		fwrite($handle,$xmlout);
-		
+
 		// cleanup
-		fclose($handle);		
+		fclose($handle);
 		unset($xmlout);
 
 		flush();
@@ -321,7 +321,7 @@ if ($export)
 		echo ("\n<br>\n");
 	}
 	*/
-	
+
 	$exportdir_to_url = str_replace("\\","/",$exportdir);
 
 	echo ('<html>');
@@ -331,7 +331,7 @@ if ($export)
 	echo ('<meta http-equiv="expires" content="0">');
 	echo ('<meta http-equiv="cache-control" content="no-cache">');
 	echo ('<meta name="keywords" content="Bilddatenbanksystem, Bilddatenbank, Diathek, digitalisiert">');
-	echo ('<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">');
+	echo ('<meta http-equiv="Content-Type" content="text/html; charset=utf-8">');
 	echo ('<meta http-equiv="Content-Script-Type" content="text/javascript">');
 	echo ('<meta http-equiv="Content-Style-Type" content="text/css">');
 	echo ('<meta name="author" content="Sebastian Doeweling"> ');
@@ -350,12 +350,12 @@ if ($export)
 	echo ("<strong>All Exports:</strong>\n<br><br>\n");
 
 	$exportdir = opendir($exportdir.$user['login']);
-	
-	
+
+
 
 	while ($file = readdir ($exportdir)) {
 		if ($file != "." && $file != "..")
-		{	   		
+		{
 			echo "<a href='".$exportdir_to_url.$user['login'].'/'.$file."'>".$file."</a>\n<br>\n";
 		}
 	}

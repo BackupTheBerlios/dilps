@@ -27,8 +27,8 @@
  * image processor
  * --------------------------------------------------------------------
  * File:     			add_images.php
- * Purpose:  	process and store images that are either 
- *						uploaded via FTP or browser-file-transfer, 
+ * Purpose:  	process and store images that are either
+ *						uploaded via FTP or browser-file-transfer,
  *						add the corresponding database entries
  * Requires:		file, identify and convert (imagemagick)
  * ---------------------------------------------------------------------
@@ -76,7 +76,7 @@ if ($debug)
 	echo ("Source-Dir: \n<br>\n");
 	$file = $tmp['tmp_name']['sourcedirectory'];
 	print_r($file);
-	echo ("\n<br><br>\n");	
+	echo ("\n<br><br>\n");
 }
 
 if (!empty($_REQUEST['query']))
@@ -103,7 +103,7 @@ if ($process == 2) {
 	echo ('<meta http-equiv="expires" content="0">');
 	echo ('<meta http-equiv="cache-control" content="no-cache">');
 	echo ('<meta name="keywords" content="Bilddatenbanksystem, Bilddatenbank, Diathek, digitalisiert">');
-	echo ('<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">');
+	echo ('<meta http-equiv="Content-Type" content="text/html; charset=utf-8">');
 	echo ('<meta http-equiv="Content-Script-Type" content="text/javascript">');
 	echo ('<meta http-equiv="Content-Style-Type" content="text/css">');
 	echo ('<meta name="author" content="Sebastian Doeweling"> ');
@@ -196,20 +196,20 @@ if ($process == 2) {
 				}
 
 				if (is_file($filename)){
-					
+
 					$mimetype = '';
-					
+
 					$fileext = '';
-					
-					$dotpos = strrpos($filename,'.');					
-					
+
+					$dotpos = strrpos($filename,'.');
+
 					if ((strlen($filename) - $dotpos) > 3 && (strlen($filename) - $dotpos) < 6)
 					{
 						$fileext = substr($filename,$dotpos+1);
-					}					
+					}
 
 					$ret = read_mime($filename, $mimetype, $fileext);
-					
+
 					if (!$ret)
 					{
 						$errorstring = "Error reading image mimetype! \n<br>\n";
@@ -223,15 +223,15 @@ if ($process == 2) {
 					   	if (in_array($mimetype,$formats_available)){
 
 					   		// extract image information
-							
+
 							// we already have the mimetype
 							$img_data = array();
 					   		$img_data['mime'] = $mimetype;
-							
+
 							// try to read the rest
-							
+
 							$ret = read_image($filename,$img_data);
-							
+
 							if (!$ret)
 							{
 								$errorstring = "Error reading image information! \n<br>\n";
@@ -244,12 +244,12 @@ if ($process == 2) {
 						 		echo ("Width:\t\t".$img_data["width"]."\n<br>\n");
 						 		echo ("Height:\t\t".$img_data["height"]."\n<br>\n");
 
-								// get output directory								
+								// get output directory
 								$baseid 		= 	$query['baseid'];
 								$sql 			= 	"SELECT base FROM ".$db_prefix."img_base WHERE img_baseid="
 															.$db->qstr($baseid);
 								$output_dir 	= 	$db->GetOne($sql);
-								
+
 								if (empty($output_dir))
 								{
 									$errorstring = "Error reading output directory! \n<br>\n";
@@ -258,33 +258,33 @@ if ($process == 2) {
 								}
 
 								// check if we already have a cache directory structure, otherwise create
-								
+
 								$ret = check_dir($output_dir.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR,true,true,0755);
-								
+
 								if (!$ret)
 								{
 									$errorstring = "Output directory cache does not exist or is not writable! \n<br>\n";
 									die ($errorstring);
-								}								
+								}
 
 								// get new id for filename
 
 								$sql 			=	"SELECT max(imageid)+1 FROM ".$db_prefix."img";
 								$newid 		= $db->GetOne($sql);
 
-								if (!$newid) 
+								if (!$newid)
 								{
 									$newid 	= 1;
 								}
-								
+
 								// iterate through all available resolutions
 								$resolutions = $resolutions_available;
 
-								foreach ($resolutions as $res) 
+								foreach ($resolutions as $res)
 								{
 
 									$ret = check_dir($output_dir.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.$res,true,true, 0755);
-									
+
 									// check if cache subdirectories exist
 									if (!$ret)
 									{
@@ -292,7 +292,7 @@ if ($process == 2) {
 										$errorstring .= "or directory exists and is not writable\n<br>\n";
 										die ($errorstring);
 									}
-									
+
 									if ($res == '120x90')
 									{
 										$is_thumbnail = true;
@@ -301,11 +301,11 @@ if ($process == 2) {
 									{
 										$is_thumbnail = false;
 									}
-									
+
 									$output_filename = $output_dir.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.$res.DIRECTORY_SEPARATOR.$query['collectionid'].'-'.$newid.'.jpg';
-									
+
 									$ret = convert_image($filename,$output_filename,$res, $is_thumbnail);
-									
+
 									if ($ret)
 									{
 										echo ("Writing (".$res.")\t\t\t: success\n<br>\n");
@@ -318,18 +318,18 @@ if ($process == 2) {
 										$convert_success = false;
 								 		break;
 									}
-									
+
 								}
-								
-								// convert to JPEG with original resolution								
+
+								// convert to JPEG with original resolution
 								if ($convert_success)
 								{
 									$output_filename = $output_dir.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.$query['collectionid'].'-'.$newid.'.jpg';
-									
+
 									$res = $img_data['width'].'x'.$img_data['height'];
 
 									$ret = convert_image($filename,$output_filename,$res, false);
-									
+
 									if ($ret)
 									{
 										echo ("Writing (".$res.")\t\t\t: success\n<br>\n");
@@ -342,25 +342,25 @@ if ($process == 2) {
 										$convert_success = false;
 									}
 								}
-								
+
 								if ($convert_success)
 								{
 									$newfilename = $query['collectionid'].'-'.$newid.'.'.$formats_suffix[$img_data["mime"]];
-									
+
 									$source = $filename;
 									$dest = $output_dir.DIRECTORY_SEPARATOR.$newfilename;
 
 									$ret = @copy($filename, $output_dir.DIRECTORY_SEPARATOR.$newfilename);
 
-									if (!$ret) 
-									{	
+									if (!$ret)
+									{
 										echo ("Copying original image\t: failed\n<br>\n");
 										echo ("Aborting...\n<br>\n");
 									}
 									else
 									{
 										echo ("Copying original image\t: success\n<br>\n");
-										
+
 										// set permissions
 										$ret = @chmod($output_dir.DIRECTORY_SEPARATOR.$newfilename,0755);
 
@@ -375,34 +375,34 @@ if ($process == 2) {
 
 										$ret = @unlink($filename);
 
-										if (!$ret) 
+										if (!$ret)
 										{
 											echo ("Removing upload file\t: failed\n<br>\n");
-									 	}										
+									 	}
 										else
 										{
 											echo ("Removing upload file\t: success\n<br>\n");
 										}
 										echo ("\n<br>\n");
-										
+
 										// get current time
-										$sql =	"SELECT NOW()";	
+										$sql =	"SELECT NOW()";
 										$time = $db->GetOne($sql);
-										
+
 										$ret = insert_img($query['collectionid'],$newid,$baseid,$file,$img_data,$time);
-										
-										if (!$ret) 
+
+										if (!$ret)
 										{
 											echo ("Inserting into database (image)\t\t\t: failed\n<br>\n");
 											echo ("Aborting...\n<br>\n");
-									 	}										
+									 	}
 										else
 										{
 											echo ("Inserting into database (image)\t\t\t: success\n<br>\n");
-											
+
 											$ret = insert_meta($query['collectionid'],$newid,$time,$user['login']);
-										
-											if (!$ret) 
+
+											if (!$ret)
 											{
 												echo ("Inserting into database (meta)\t\t\t: failed\n<br>\n");
 												echo ("Aborting...\n<br>\n");
@@ -410,12 +410,12 @@ if ($process == 2) {
 											else
 											{
 												echo ("Inserting into database (meta)\t\t\t: success\n<br>\n");
-												
+
 												if(!empty($query['group1id']))
 												{
 													$ret = insert_img_group($query['group1id'],$query['collectionid'],$newid);
-											
-													if (!$ret) 
+
+													if (!$ret)
 													{
 														// a failed group insertion is non-critical, so we continue
 														echo ("Inserting into database (group1)\t\t\t: failed\n<br>\n");														}
@@ -424,12 +424,12 @@ if ($process == 2) {
 														echo ("Inserting into database (group1)\t\t\t: success\n<br>\n");
 													}
 												}
-												
+
 												if(!empty($query['group2id']))
 												{
 													$ret = insert_img_group($query['group2id'],$query['collectionid'],$newid);
-											
-													if (!$ret) 
+
+													if (!$ret)
 													{
 														// a failed group insertion is non-critical, so we continue
 														echo ("Inserting into database (group2)\t\t\t: failed\n<br>\n");														}
@@ -438,12 +438,12 @@ if ($process == 2) {
 														echo ("Inserting into database (group2)\t\t\t: success\n<br>\n");
 													}
 												}
-												
+
 												if(!empty($query['group3id']))
 												{
 													$ret = insert_img_group($query['group3id'],$query['collectionid'],$newid);
-											
-													if (!$ret) 
+
+													if (!$ret)
 													{
 														// a failed group insertion is non-critical, so we continue
 														echo ("Inserting into database (group3)\t\t\t: failed\n<br>\n");														}
@@ -453,12 +453,12 @@ if ($process == 2) {
 													}
 												}
 											}
-											
+
 											// end of actions - output a newline
 											echo ("\n<br>\n");
-											
-										}										
-									}									
+
+										}
+									}
 								}
 						 	}
 						}
@@ -525,17 +525,17 @@ if ($process == 2) {
 
 		$filename = $_FILES['query']['tmp_name']['sourcedirectory'];
 
-					
+
 		$mimetype = '';
-		
+
 		$userfileext = '';
-		
-		$dotpos = strrpos($userfilename,'.');					
-		
+
+		$dotpos = strrpos($userfilename,'.');
+
 		if ((strlen($userfilename) - $dotpos) > 3 && (strlen($userfilename) - $dotpos) < 6)
 		{
 			$userfileext = substr($userfilename,$dotpos+1);
-		}					
+		}
 
 		$ret = read_mime($filename, $mimetype, $userfileext);
 
@@ -552,15 +552,15 @@ if ($process == 2) {
 			if (in_array($mimetype,$formats_available)){
 
 				// extract image information
-				
+
 				// we already have the mimetype
 				$img_data = array();
 				$img_data['mime'] = $mimetype;
-				
+
 				// try to read the rest
-				
+
 				$ret = read_image($filename,$img_data);
-				
+
 				if (!$ret)
 				{
 					$errorstring = "Error reading image information! \n<br>\n";
@@ -573,12 +573,12 @@ if ($process == 2) {
 					echo ("Width:\t\t".$img_data["width"]."\n<br>\n");
 					echo ("Height:\t\t".$img_data["height"]."\n<br>\n");
 
-					// get output directory								
+					// get output directory
 					$baseid 		= 	$query['baseid'];
 					$sql 			= 	"SELECT base FROM ".$db_prefix."img_base WHERE img_baseid="
 												.$db->qstr($baseid);
 					$output_dir 	= 	$db->GetOne($sql);
-					
+
 					if (empty($output_dir))
 					{
 						$errorstring = "Error reading output directory! \n<br>\n";
@@ -587,33 +587,33 @@ if ($process == 2) {
 					}
 
 					// check if we already have a cache directory structure, otherwise create
-					
+
 					$ret = check_dir($output_dir.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR,true,true,0755);
-					
+
 					if (!$ret)
 					{
 						$errorstring = "Output directory cache does not exist or is not writable! \n<br>\n";
 						die ($errorstring);
-					}								
+					}
 
 					// get new id for filename
 
 					$sql 		=	"SELECT max(imageid)+1 FROM ".$db_prefix."img";
 					$newid 		= $db->GetOne($sql);
 
-					if (!$newid) 
+					if (!$newid)
 					{
 						$newid 	= 1;
 					}
-					
+
 					// iterate through all available resolutions
 					$resolutions = $resolutions_available;
 
-					foreach ($resolutions as $res) 
+					foreach ($resolutions as $res)
 					{
 
 						$ret = check_dir($output_dir.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.$res,true,true, 0755);
-						
+
 						// check if cache subdirectories exist
 						if (!$ret)
 						{
@@ -621,7 +621,7 @@ if ($process == 2) {
 							$errorstring .= "or directory exists and is not writable\n<br>\n";
 							die ($errorstring);
 						}
-						
+
 						if ($res == '120x90')
 						{
 							$is_thumbnail = true;
@@ -630,11 +630,11 @@ if ($process == 2) {
 						{
 							$is_thumbnail = false;
 						}
-						
+
 						$output_filename = $output_dir.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.$res.DIRECTORY_SEPARATOR.$query['collectionid'].'-'.$newid.'.jpg';
-						
+
 						$ret = convert_image($filename,$output_filename,$res, $is_thumbnail);
-						
+
 						if ($ret)
 						{
 							echo ("Writing (".$res.")\t\t\t: success\n<br>\n");
@@ -647,18 +647,18 @@ if ($process == 2) {
 							$convert_success = false;
 							break;
 						}
-						
+
 					}
-					
-					// convert to JPEG with original resolution								
+
+					// convert to JPEG with original resolution
 					if ($convert_success)
 					{
 						$output_filename = $output_dir.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.$query['collectionid'].'-'.$newid.'.jpg';
-						
+
 						$res = $img_data['width'].'x'.$img_data['height'];
 
 						$ret = convert_image($filename,$output_filename,$res, false);
-						
+
 						if ($ret)
 						{
 							echo ("Writing (".$res.")\t\t\t: success\n<br>\n");
@@ -671,25 +671,25 @@ if ($process == 2) {
 							$convert_success = false;
 						}
 					}
-					
+
 					if ($convert_success)
 					{
 						$newfilename = $query['collectionid'].'-'.$newid.'.'.$formats_suffix[$img_data["mime"]];
-						
+
 						$source = $filename;
 						$dest = $output_dir.DIRECTORY_SEPARATOR.$newfilename;
 
 						$ret = @copy($filename, $output_dir.DIRECTORY_SEPARATOR.$newfilename);
 
-						if (!$ret) 
-						{	
+						if (!$ret)
+						{
 							echo ("Copying original image\t: failed\n<br>\n");
 							echo ("Aborting...\n<br>\n");
 						}
 						else
 						{
 							echo ("Copying original image\t: success\n<br>\n");
-							
+
 							// set permissions
 							$ret = @chmod($output_dir.DIRECTORY_SEPARATOR.$newfilename,0755);
 
@@ -704,34 +704,34 @@ if ($process == 2) {
 
 							$ret = @unlink($filename);
 
-							if (!$ret) 
+							if (!$ret)
 							{
 								echo ("Removing upload file\t: failed\n<br>\n");
-							}										
+							}
 							else
 							{
 								echo ("Removing upload file\t: success\n<br>\n");
 							}
 							echo ("\n<br>\n");
-							
+
 							// get current time
-							$sql =	"SELECT NOW()";	
+							$sql =	"SELECT NOW()";
 							$time = $db->GetOne($sql);
-							
+
 							$ret = insert_img($query['collectionid'],$newid,$baseid,$userfilename,$img_data,$time);
-							
-							if (!$ret) 
+
+							if (!$ret)
 							{
 								echo ("Inserting into database (image)\t\t\t: failed\n<br>\n");
 								echo ("Aborting...\n<br>\n");
-							}										
+							}
 							else
 							{
 								echo ("Inserting into database (image)\t\t\t: success\n<br>\n");
-								
+
 								$ret = insert_meta($query['collectionid'],$newid,$time,$user['login']);
-							
-								if (!$ret) 
+
+								if (!$ret)
 								{
 									echo ("Inserting into database (meta)\t\t\t: failed\n<br>\n");
 									echo ("Aborting...\n<br>\n");
@@ -739,12 +739,12 @@ if ($process == 2) {
 								else
 								{
 									echo ("Inserting into database (meta)\t\t\t: success\n<br>\n");
-									
+
 									if(!empty($query['group1id']))
 									{
 										$ret = insert_img_group($query['group1id'],$query['collectionid'],$newid);
-								
-										if (!$ret) 
+
+										if (!$ret)
 										{
 											// a failed group insertion is non-critical, so we continue
 											echo ("Inserting into database (group1)\t\t\t: failed\n<br>\n");														}
@@ -753,12 +753,12 @@ if ($process == 2) {
 											echo ("Inserting into database (group1)\t\t\t: success\n<br>\n");
 										}
 									}
-									
+
 									if(!empty($query['group2id']))
 									{
 										$ret = insert_img_group($query['group2id'],$query['collectionid'],$newid);
-								
-										if (!$ret) 
+
+										if (!$ret)
 										{
 											// a failed group insertion is non-critical, so we continue
 											echo ("Inserting into database (group2)\t\t\t: failed\n<br>\n");														}
@@ -767,12 +767,12 @@ if ($process == 2) {
 											echo ("Inserting into database (group2)\t\t\t: success\n<br>\n");
 										}
 									}
-									
+
 									if(!empty($query['group3id']))
 									{
 										$ret = insert_img_group($query['group3id'],$query['collectionid'],$newid);
-								
-										if (!$ret) 
+
+										if (!$ret)
 										{
 											// a failed group insertion is non-critical, so we continue
 											echo ("Inserting into database (group3)\t\t\t: failed\n<br>\n");														}
@@ -782,12 +782,12 @@ if ($process == 2) {
 										}
 									}
 								}
-								
+
 								// end of actions - output a newline
 								echo ("\n<br>\n");
-								
-							}										
-						}									
+
+							}
+						}
 					}
 				}
 			}
@@ -802,9 +802,9 @@ if ($process == 2) {
 	echo ('</body>');
 	echo ('</html>');
 
-} else {	
-	
-	
+} else {
+
+
 	$smarty->assign('sessionid',$sessionid);
 	$smarty->display( $config['skin'].DIRECTORY_SEPARATOR.'add_images.tpl' );
 
