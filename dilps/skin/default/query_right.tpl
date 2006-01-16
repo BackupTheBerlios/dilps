@@ -8,12 +8,12 @@
 		<tr>
 			<td class="queryinputfield">
 			{if $query.mygroup eq ""}
-				<input class="queryinputfield" type="text" name="query[mygroup]" size="40" readonly="readonly" value=" ({#selecthere#}) " onclick="javascript:window.open('group_select.php?PHPSESSID={$sessionid}&target=mygroup','groupselection2','width=800,height=300,left=10,top=250,dependent=yes');">
+				<input class="queryinputfield" type="text" name="query[mygroup]" size="40" readonly="readonly" value=" ({#selecthere#|escape:htmlall}) " onclick="javascript:window.open('group_select.php?PHPSESSID={$sessionid}&target=mygroup','groupselection2','width=800,height=300,left=10,top=250,dependent=yes');">
 			{else}
 				<input class="queryinputfield" type="text" name="query[mygroup]" size="40" readonly="readonly" value="{$query.mygroup|escape:html}" onclick="javascript:window.open('group_select.php?PHPSESSID={$sessionid}&target=mygroup','groupselection2','width=800,height=300,left=10,top=250,dependent=yes');">
 			{/if}
-				<input type="button" class="actionbutton2" onclick="javascript:clearmygroup();" value="&times;" title="{#nogroup#}"/>
-				<input type="button" class="actionbutton2" onclick="javascript:updatemygroup();" value="&darr;" style="padding-left: 2px; padding-right: 2px;" title="{#applychanges#}"/>
+				<input type="button" class="actionbutton2" onclick="javascript:clearmygroup();" value="&times;" title="{#nogroup#|escape:htmlall}"/>
+				<input type="button" class="actionbutton2" onclick="javascript:updatemygroup();" value="&darr;" style="padding-left: 2px; padding-right: 2px;" title="{#applychanges#|escape:htmlall}"/>
 				<input class="queryinputfield" type="hidden" name="query[mygroupid]" value="{$query.mygroupid|escape:html}">
 				<input class="queryinputfield" type="hidden" name="query[mygrouplevel]" value="{$query.mygrouplevel|escape:html}">
 			</td>
@@ -21,7 +21,7 @@
 		<tr>
 			<td>
 				<!-- we insert the nodes for changes in group membership here -->
-				<div id="mygroupchanges" style="visibility: hidden;"></div>		
+				<div id="mygroupchanges" style="visibility: hidden;"></div>
 			</td>
 		</tr>
 		{else}
@@ -80,11 +80,11 @@
 				{/if}
 				{if $action.target eq "image"}
 					{image_change action=$action.function cid=$action.cid imageid=$action.imageid result=result sql=sql}
-				{/if}								
-				
+				{/if}
+
 				<!-- {$result} -->
 				<!-- {$sql} -->
-									
+
 			</td>
 		</tr>
 		<tr>
@@ -105,7 +105,7 @@
 		<tr>
 			<td>
 				<input class="queryinputfield" type="hidden" name="logout" value="0">
-				<a href="javascript:performlogout();" 
+				<a href="javascript:performlogout();"
 					class="navsymbol">
 					<em>{#logout#|escape:html}</em>
 				</a>

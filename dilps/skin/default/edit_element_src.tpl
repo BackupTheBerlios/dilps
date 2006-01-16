@@ -37,10 +37,14 @@ BEGIN edit_element_src.tpl
   <meta http-equiv="expires" content="0">
   <meta http-equiv="cache-control" content="no-cache">
   <meta name="keywords" content="Bilddatenbanksystem, Bilddatenbank, Diathek, digitalisiert">
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  {if $config.utf8 eq 'true'}
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  {else}
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  {/if}
   <meta http-equiv="Content-Script-Type" content="text/javascript">
   <meta http-equiv="Content-Style-Type" content="text/css">
-  <meta name="author" content="jürgen enge, thorsten wübbena"> 
+  <meta name="author" content="jï¿½rgen enge, thorsten wï¿½bbena">
   <meta name="date" content="2003-01-23">
   <link rel="shortcut icon" href="favicon.ico">
   <title>. : {#title#|escape:"htmlall"} : .  [[{$query.id}]]</title>
@@ -52,7 +56,7 @@ BEGIN edit_element_src.tpl
 function setName( name, givenname )
 {
    window.opener.document.forms["Main"].elements["edit[name]"].value=name;
-	window.opener.document.forms["Main"].elements["edit[givenname]"].value=givenname; 
+	window.opener.document.forms["Main"].elements["edit[givenname]"].value=givenname;
 	close();
 }
 
@@ -104,7 +108,7 @@ function setFocus()
 <tr>
    <td class="result_list_nav_left">
 		<input type="submit" name="query[prev]" value=" << "{if $result.page lte 1} disabled{/if}>
-		<input type="text" name="query[page]" value="{$result.page|escape:html}" size="3">({#of#|escape:htmlall} {$result.lastpage|escape:htmlall}) {$result.maxrecords|escape:htmlall} {#records#|escape:htmlall} 
+		<input type="text" name="query[page]" value="{$result.page|escape:html}" size="3">({#of#|escape:htmlall} {$result.lastpage|escape:htmlall}) {$result.maxrecords|escape:htmlall} {#records#|escape:htmlall}
 		<input type="submit" name="query[next]" value=" >> "{if $result.page gte $result.lastpage} disabled{/if}>
 		<input type="submit" name="query[reload]" value="{#reload#|escape:html}">
   </td>

@@ -37,10 +37,14 @@ BEGIN edit_element_name.tpl
   <meta http-equiv="expires" content="0">
   <meta http-equiv="cache-control" content="no-cache">
   <meta name="keywords" content="Bilddatenbanksystem, Bilddatenbank, Diathek, digitalisiert">
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  {if $config.utf8 eq 'true'}
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  {else}
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  {/if}
   <meta http-equiv="Content-Script-Type" content="text/javascript">
   <meta http-equiv="Content-Style-Type" content="text/css">
-  <meta name="author" content="jürgen enge, thorsten wübbena"> 
+  <meta name="author" content="jï¿½rgen enge, thorsten wï¿½bbena">
   <meta name="date" content="2003-01-23">
   <link rel="shortcut icon" href="favicon.ico">
   <title>. : {#title#|escape:"htmlall"} : .  [[{$query.id}]]</title>
@@ -53,13 +57,13 @@ BEGIN edit_element_name.tpl
 function setNameInParent()
 {
     setNameIds();
-    
+
     window.opener.document.forms["Main"].elements["edit[name1text]"].value = document.Main.elements["query[name1text]"].value;
     window.opener.document.forms["Main"].elements["edit[name2text]"].value = document.Main.elements["query[name2text]"].value;
-    
+
     window.opener.document.forms["Main"].elements["edit[name1id]"].value = document.Main.elements["query[name1id]"].value;
     window.opener.document.forms["Main"].elements["edit[name2id]"].value = document.Main.elements["query[name2id]"].value;
-    
+
     close();
 }
 
@@ -67,9 +71,9 @@ function setNameIds()
 {
     name1id = document.Main.elements["query[name1id]"].value;
     name2id = document.Main.elements["query[name2id]"].value;
-    name1text = document.Main.elements["query[name1text]"].value; 
-    name2text = document.Main.elements["query[name2text]"].value; 
-    
+    name1text = document.Main.elements["query[name1text]"].value;
+    name2text = document.Main.elements["query[name2text]"].value;
+
     if (changed[0]) {
         if (names[name1id] != name1text) {
             if (names[name1id] == "") {
@@ -164,7 +168,7 @@ names["{$row.id}"] = "{$row.name}";
 		<b>{#name#|escape:htmlall}</b><br>
 		<select name="query[artist]" size="20" onChange="nameSelected();" tabindex="3">
 			<option value=""{if $query.artist eq ""} selected{/if}>--------------------------------------------------------------------</option>
-			
+
 			{foreach from=$result item=row}
 			{if $row.name ne ""}
 			<option value="{$row.id}"{if $query.artist eq $row.id} selected{/if}>{$row.name|escape:htmlall}</option>
@@ -186,7 +190,7 @@ names["{$row.id}"] = "{$row.name}";
 	    </p>
 	</td>
 </tr>
-<tr>	
+<tr>
 	<td style="vertical-align: bottom;">
 	   {if $query.artist ne ""}
 	   {artist_altnames_list var="result" sql="sql" query=$query }
@@ -199,7 +203,7 @@ names["{$row.id}"] = "{$row.name}";
            <td class="result_list_data_data">{if $row.name != ''}{$row.name|escape:htmlall}{/if}</td>
         </tr>
         {/foreach}
-        </table>	   
+        </table>
 	    </p>
 	   {/if}
 	   {/if}

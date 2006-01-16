@@ -38,10 +38,14 @@ BEGIN add_images.tpl
 <meta http-equiv="cache-control" content="no-cache">
 <meta name="keywords" content="Bilddatenbanksystem, Bilddatenbank, Diathek, digitalisiert">
 
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+{if $config.utf8 eq 'true'}
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+{else}
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+{/if}
 <meta http-equiv="Content-Script-Type" content="text/javascript">
 <meta http-equiv="Content-Style-Type" content="text/css">
-<meta name="author" content="jrgen enge, thorsten wbbena"> 
+<meta name="author" content="jrgen enge, thorsten wbbena">
 <meta name="date" content="2003-01-23">
 <link rel="shortcut icon" href="favicon.ico">
 <title>. : DILPS : .</title>
@@ -86,7 +90,7 @@ function cleargroup3() {
 					{foreach from=$collections item=row}
 						<option value="{$row.collectionid}"{if $query.collection eq "" and $config.defaultcollection eq $row.collectionid} selected{elseif $query.collection eq $row.collectionid} selected{/if}>{$row.name|escape:htmlall}</option>
 					{/foreach}
-				</select>	      
+				</select>
 		   </td>
 		</tr>
 		<tr>
@@ -96,7 +100,7 @@ function cleargroup3() {
 			<td class="queryinputfield">
 				{if $query.group1 neq ""}
 					<input class="queryinputfield" type="text" name="query[group1]" size="40" readonly="readonly" value="{$query.group1|escape:html}" onclick="javascript:window.open('group_select.php?target=img_group','groupselection1','width=1000,height=300,left=10,top=250,dependent=yes');">
-				{else}					
+				{else}
 					<input class="queryinputfield" type="text" name="query[group1]" size="40" readonly="readonly" value=" ( {#selecthere#} )" onclick="javascript:window.open('group_select.php?PHPSESSID={$sessionid}&target=img_group','groupselection1','width=1000,height=300,left=10,top=250,dependent=yes');">
 				{/if}
 				<input class="queryinputfield" type="hidden" name="query[group1id]" value="{$query.group1id|escape:html}">
@@ -111,7 +115,7 @@ function cleargroup3() {
 			<td class="queryinputfield">
 				{if $query.group2 neq ""}
 					<input class="queryinputfield" type="text" name="query[group2]" size="40" readonly="readonly" value="{$query.group2|escape:html}" onclick="javascript:window.open('group_select.php?PHPSESSID={$sessionid}&target=img_group','groupselection2','width=800,height=300,left=10,top=250,dependent=yes');">
-				{else}					
+				{else}
 					<input class="queryinputfield" type="text" name="query[group2]" size="40" readonly="readonly" value=" ( {#selecthere#} )" onclick="javascript:window.open('group_select.php?PHPSESSID={$sessionid}&target=img_group','groupselection2','width=800,height=300,left=10,top=250,dependent=yes');">
 				{/if}
 				<input class="queryinputfield" type="hidden" name="query[group2id]" value="{$query.group1id|escape:html}">
@@ -126,10 +130,10 @@ function cleargroup3() {
 			<td class="queryinputfield">
 				{if $query.group3 neq ""}
 					<input class="queryinputfield" type="text" name="query[group3]" size="40" readonly="readonly" value="{$query.group3|escape:html}" onclick="javascript:window.open('group_select.php?PHPSESSID={$sessionid}&target=img_group','groupselection3','width=800,height=300,left=10,top=250,dependent=yes');">
-				{else}					
+				{else}
 					<input class="queryinputfield" type="text" name="query[group3]" size="40" readonly="readonly" value=" ( {#selecthere#} )" onclick="javascript:window.open('group_select.php?PHPSESSID={$sessionid}&target=img_group','width=800,height=300,left=10,top=250,dependent=yes');">
 				{/if}
-				
+
 				<input class="queryinputfield" type="hidden" name="query[group3id]" value="{$query.group1id|escape:html}">
 				<input class="queryinputfield" type="hidden" name="query[group3level]" value="{$query.group1level|escape:html}">
 				<input type="button" onClick="cleargroup3();" name="nogroup3" value="{#nogroup#|escape:html}">
@@ -143,7 +147,7 @@ function cleargroup3() {
 				<select class="queryselectfield" name="query[completedir]">
 					<option value="0">{#file#}</option>
 					<option value="1">{#directory#}</option>
-				</select>	  
+				</select>
 			</td>
 		</tr>
 		<tr>
@@ -159,7 +163,7 @@ function cleargroup3() {
 				&nbsp;
 			</td>
 			<td>
-				<input type="hidden" name="query[process]" value="1">	
+				<input type="hidden" name="query[process]" value="1">
 				<input type="submit" name="query[new]" value="{#continue#|escape:html}">
 			</td>
 		</tr>
@@ -183,7 +187,7 @@ function cleargroup3() {
 				<!--
 				<input class="queryinputfield" type="text" name="query[sourcedirectory]" value="{$config.uploaddir|escape:html}" size="40">
 				-->
-				
+
 				<select class="queryselectfield" name="query[sourcedirectory]">
 				{dir_list var=basedirs dir=$config.uploaddir}
 					{foreach from=$basedirs item=row}
@@ -205,7 +209,7 @@ function cleargroup3() {
 					{foreach from=$basedirs item=row}
 						<option value="{$row.img_baseid}" {if $query.baseid eq $row.img_baseid} selected{/if}>{if $row.host neq ""}{$row.host}{else}localhost{/if} :: {$row.base}</option>
 					{/foreach}
-				</select>	      
+				</select>
 			</td>
 		</tr>
 		<tr>
@@ -230,12 +234,12 @@ function cleargroup3() {
 			</td>
 		</tr>
 	{/if}
-	
+
 	<tr>
 		<td>
 		&nbsp;
 		</td>
-	</tr>	
+	</tr>
 	</table>
 </form>
 </body>

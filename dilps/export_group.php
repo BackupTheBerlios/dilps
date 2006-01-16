@@ -331,7 +331,14 @@ if ($export)
 	echo ('<meta http-equiv="expires" content="0">');
 	echo ('<meta http-equiv="cache-control" content="no-cache">');
 	echo ('<meta name="keywords" content="Bilddatenbanksystem, Bilddatenbank, Diathek, digitalisiert">');
-	echo ('<meta http-equiv="Content-Type" content="text/html; charset=utf-8">');
+	if ($config['utf8'])
+	{
+		echo ('<meta http-equiv="Content-Type" content="text/html; charset=utf-8">');
+	}
+	else
+	{
+		echo ('<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">');
+	}
 	echo ('<meta http-equiv="Content-Script-Type" content="text/javascript">');
 	echo ('<meta http-equiv="Content-Style-Type" content="text/css">');
 	echo ('<meta name="author" content="Sebastian Doeweling"> ');

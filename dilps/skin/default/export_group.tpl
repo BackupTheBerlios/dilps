@@ -38,10 +38,14 @@ BEGIN add_images.tpl
 <meta http-equiv="cache-control" content="no-cache">
 <meta name="keywords" content="Bilddatenbanksystem, Bilddatenbank, Diathek, digitalisiert">
 
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+{if $config.utf8 eq 'true'}
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+{else}
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+{/if}
 <meta http-equiv="Content-Script-Type" content="text/javascript">
 <meta http-equiv="Content-Style-Type" content="text/css">
-<meta name="author" content="jrgen enge, thorsten wbbena"> 
+<meta name="author" content="jrgen enge, thorsten wbbena">
 <meta name="date" content="2003-01-23">
 <link rel="shortcut icon" href="favicon.ico">
 <title>. : DILPS : .</title>
@@ -60,7 +64,7 @@ BEGIN add_images.tpl
 			</td>
 			<td width="20%">
 				&nbsp;
-			</td>			
+			</td>
 		</tr>
 		<tr>
 			<td class="queryinputfieldtext">
@@ -70,11 +74,11 @@ BEGIN add_images.tpl
 				<select class="queryselectfield" name="withviewer">
 					<option value="1">{#yes#}</option>
 					<option value="0">{#no#}</option>
-				</select>	  
+				</select>
 			</td>
 			<td>
 				&nbsp;
-			</td>		
+			</td>
 		</tr>
 		<tr>
 			<td class="queryinputfieldtext">
@@ -84,11 +88,11 @@ BEGIN add_images.tpl
 				<select class="queryselectfield" name="targetsystem">
 					<option value="win">Windows</option>
 					<option value="mac">MacOS</option>
-				</select>	  
+				</select>
 			</td>
 			<td>
 				&nbsp;
-			</td>		
+			</td>
 		</tr>
 		<tr>
 			<td colspan="3">
@@ -99,10 +103,10 @@ BEGIN add_images.tpl
 			<td class="queryinputfieldtext">
 				<input type="submit" name="continue" value="{#continue#|escape:html}">
 				<input type="hidden" name="export" value="1">
-				<input type="hidden" name="groupid" value="{$groupid}">	
-				<input type="hidden" name="groupname" value="{$groupname}">	
-				<input type="hidden" name="collectionid" value="{$collectionid}">	
-				
+				<input type="hidden" name="groupid" value="{$groupid}">
+				<input type="hidden" name="groupname" value="{$groupname}">
+				<input type="hidden" name="collectionid" value="{$collectionid}">
+
 			</td>
 			<td colspan="2">
 				&nbsp;

@@ -41,7 +41,11 @@
 	<meta http-equiv="expires" content="0" />
 	<meta http-equiv="cache-control" content="no-cache" />
 	<meta name="keywords" content="Bilddatenbanksystem, Bilddatenbank, Diathek, digitalisiert" />
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	{if $config.utf8 eq 'true'}
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	{else}
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	{/if}
 	<meta http-equiv="Content-Script-Type" content="text/javascript" />
 	<meta http-equiv="Content-Style-Type" content="text/css" />
 	<meta name="author" content="jürgen enge, thorsten wübbena" />
@@ -331,7 +335,7 @@
 	<input type="hidden" name="target" value="{$target}" />
 
 	<input type="hidden" name="lastL1" value="{$lastL1}" />
-	<input type="hidden" name="lastL2" value="{$lastL2}" />	
+	<input type="hidden" name="lastL2" value="{$lastL2}" />
 
 	<input type="hidden" name="action[function]" value="" />
 	<input type="hidden" name="action[gid]" value="" />
@@ -393,7 +397,7 @@
 											{assign var="id" value ="gid-`$l1.id`"}
 											{if $lastL1 eq $id}
 												{assign var="l1Offset" value ="`$l1counter*20`"}
-											{/if}											
+											{/if}
 											<a href="javascript:switchTo('gid-{$l1.id}','','{$l1counter*20}')" class="navsymbol" title="{$l1.name}">{if $l1.name|count_characters:true gte 12}{assign var="l1counter" value="`$l1counter+1`"}{/if}{$l1.name|truncate:20|wordwrap:12:"<br/>\n":true}</a>
 										</td>
 										<td style="vertical-align: top;">
@@ -420,7 +424,7 @@
 														{if $lastL2 eq $id}
 															{assign var="l2Offset" value ="`$l2counter*20`"}
 														{/if}
-														<a href="javascript:switchTo('gid-{$l1.id}','gid-{$l2.id}',{$l2counter*20})" class="navsymbol" title="{$l2.name}">{if $l2.name|count_characters:true gte 12}{assign var="l2counter" value="`$l2counter+1`"}{/if}{$l2.name|truncate:20|wordwrap:12:"<br/>\n":true}</a>														
+														<a href="javascript:switchTo('gid-{$l1.id}','gid-{$l2.id}',{$l2counter*20})" class="navsymbol" title="{$l2.name}">{if $l2.name|count_characters:true gte 12}{assign var="l2counter" value="`$l2counter+1`"}{/if}{$l2.name|truncate:20|wordwrap:12:"<br/>\n":true}</a>
 													</td>
 													<td style="vertical-align: top;">
 														{if $target neq "img_group"}

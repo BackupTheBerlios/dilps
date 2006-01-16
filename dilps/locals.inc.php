@@ -28,45 +28,45 @@
 	 * user specific configuration data
 	 * -------------------------------------------------------------
 	 * File:     		locals.inc.php
-	 * Purpose:  		user specific configuration data that is not 
+	 * Purpose:  		user specific configuration data that is not
 	 * 					handled in the DILPS-Installer and is mainly
 	 *					system dependent
 	 * -------------------------------------------------------------
 	 */
-	
+
 	// please specify full pathes for DILPS to work correctly
-	
+
 	// path to imagemagick binary
-	
+
 	$imagemagick_convert = '/usr/bin/convert';
 	$imagemagick_identify = '/usr/bin/identify';
-	
+
 	// path to file
-	
+
 	$file_binary = '/usr/bin/file';
-	
+
 	// path to zip
-	
+
 	$zip_binary = '/usr/bin/zip';
 
 	// configure soundex-search option
-	
+
 	$config['soundex'] = true;
-	
+
 	// if soundex is active, we use it only when the soundex-string is longer than
-	// treshold letters. 
+	// treshold letters.
 	// set to -1 for no limitation
 	$config['soundextreshold'] = 2;
-	
+
 	// collection to use when no other is selection
 	$config['defaultcollection'] = 4;
-	
+
 	// utf-8 support
 	$config['utf8'] = true;
-	
+
 	// feature flags - valid values are 'user', 'editor' and 'admin'
-	$config['usemygroup'] 	= 'user';
+	$config['usemygroup']		= 'editor';
 	$config['editgroup'] 		= 'editor';
-	$config['insertimage']		= 'editor';	
+	$config['insertimage']		= 'editor';
 
 ?>
