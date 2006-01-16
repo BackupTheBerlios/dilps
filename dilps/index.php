@@ -55,6 +55,10 @@ if (isset($_REQUEST['mygroup']) && is_array($_REQUEST['mygroup']))
 {
 	$smarty->assign('mygroup',$_REQUEST['mygroup']);
 }
+else
+{
+	$smarty->assign('mygroup','');
+}
 
 $action = array();
 

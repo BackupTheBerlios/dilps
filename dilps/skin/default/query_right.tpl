@@ -76,7 +76,9 @@
 				<input class="queryinputfield" type="hidden" name="action[gid]" value="">
 				<input class="queryinputfield" type="hidden" name="action[imageid]" value="">
 				{if $action.target eq "mygroup"}
-					{mygroup_change action=$action.function gid=$action.gid changes=$mygroup result=result sql=sql}
+					{if $mygroup neq ""}
+						{mygroup_change action=$action.function gid=$action.gid changes=$mygroup result=result sql=sql}
+					{/if}
 				{/if}
 				{if $action.target eq "image"}
 					{image_change action=$action.function cid=$action.cid imageid=$action.imageid result=result sql=sql}

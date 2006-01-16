@@ -213,15 +213,22 @@ function clearmygroup() {
 
 function updatemygroup()
 {
-	// update target for next action
-	document.forms["Main"].elements["action[target]"].value = 'mygroup';
-	document.forms["Main"].elements["action[function]"].value = 'update';
+	// check, if someone has use a group button
+	if (document.forms["Main"].elements["query[mygroupid]"].value != '')
+	{
+		// set mygroupid as target
+		document.forms["Main"].elements["action[gid]"].value = document.forms["Main"].elements["query[mygroupid]"].value
+		
+		// update target for next action
+		document.forms["Main"].elements["action[target]"].value = 'mygroup';
+		document.forms["Main"].elements["action[function]"].value = 'update';
+
+		// submit
+		document.forms["Main"].submit();
+	}
 	
-	// set mygroupid as target
-	document.forms["Main"].elements["action[gid]"].value = document.forms["Main"].elements["query[mygroupid]"].value;
-	
-	// submit
-	document.forms["Main"].submit();
+	// otherwise: do nothing
+	return;		
 }
 
 function performlogout() {
