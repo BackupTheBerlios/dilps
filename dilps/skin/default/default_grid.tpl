@@ -146,10 +146,10 @@ BEGIN default_grid.tpl
 						&nbsp;
 					{/if}
 					{if $user.editor}
-						<button type="button" name="rot-{$row.collectionid}-{$row.imageid}" class="actionbutton" onclick="javascript:rotateimage('{$row.collectionid}','{$row.imageid}');" style="padding: 1px;" title="{#rotate#}"><img src="rotate-90.png" style="width: 12px; height: 12px" /></button>
+						<button type="button" name="rot-{$row.collectionid}-{$row.imageid}" class="actionbutton" onclick="javascript:rotateimage('{$row.collectionid}','{$row.imageid}');" style="padding: 1px;" title="{#rotate#|escape:htmlall}"><img src="rotate-90.png" style="width: 12px; height: 12px" /></button>
 					{/if}
 					{if $user.admin}
-						<button type="button" name="del-{$row.collectionid}-{$row.imageid}" class="actionbutton" onclick="javascript:deleteimage('{$row.collectionid}','{$row.imageid}');" style="padding: 1px;" title="{#delete#}"><img src="delete.png" style="width: 12px; height: 12px" /></button>
+						<button type="button" name="del-{$row.collectionid}-{$row.imageid}" class="actionbutton" onclick="javascript:deleteimage('{$row.collectionid}','{$row.imageid}');" style="padding: 1px;" title="{#delete#|escape:htmlall}"><img src="delete.png" style="width: 12px; height: 12px" /></button>
 					{/if}
 				</td>
 			</tr>

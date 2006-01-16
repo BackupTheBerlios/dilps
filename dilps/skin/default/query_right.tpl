@@ -7,13 +7,13 @@
 		</tr>
 		<tr>
 			<td class="queryinputfield">
-			{if $query.mygroup eq ""}
-				<input class="queryinputfield" type="text" name="query[mygroup]" size="40" readonly="readonly" value=" ({#selecthere#|escape:htmlall}) " onclick="javascript:window.open('group_select.php?PHPSESSID={$sessionid}&target=mygroup','groupselection2','width=800,height=300,left=10,top=250,dependent=yes');">
-			{else}
-				<input class="queryinputfield" type="text" name="query[mygroup]" size="40" readonly="readonly" value="{$query.mygroup|escape:html}" onclick="javascript:window.open('group_select.php?PHPSESSID={$sessionid}&target=mygroup','groupselection2','width=800,height=300,left=10,top=250,dependent=yes');">
-			{/if}
-				<input type="button" class="actionbutton2" onclick="javascript:clearmygroup();" value="&times;" title="{#nogroup#|escape:htmlall}"/>
-				<input type="button" class="actionbutton2" onclick="javascript:updatemygroup();" value="&darr;" style="padding-left: 2px; padding-right: 2px;" title="{#applychanges#|escape:htmlall}"/>
+				{if $query.mygroup eq ""}
+					<input class="queryinputfield" type="text" name="query[mygroup]" size="40" readonly="readonly" value=" ({#selecthere#|escape:htmlall}) " onclick="javascript:window.open('group_select.php?PHPSESSID={$sessionid}&target=mygroup','groupselection2','width=800,height=300,left=10,top=250,dependent=yes');">
+				{else}
+					<input class="queryinputfield" type="text" name="query[mygroup]" size="40" readonly="readonly" value="{$query.mygroup|escape:html}" onclick="javascript:window.open('group_select.php?PHPSESSID={$sessionid}&target=mygroup','groupselection2','width=800,height=300,left=10,top=250,dependent=yes');">
+				{/if}
+				<button type="button" class="actionbutton2" onclick="javascript:clearmygroup();" title="{#nogroup#|escape:htmall}"><img src="clear.png" style="width: 12px; height: 12px;" /></button>
+				<button type="button" class="actionbutton2" onclick="javascript:clearmygroup();" title="{#applychanges#|escape:htmlall}"><img src="apply.png" style="width: 12px; height: 12px;" /></button>
 				<input class="queryinputfield" type="hidden" name="query[mygroupid]" value="{$query.mygroupid|escape:html}">
 				<input class="queryinputfield" type="hidden" name="query[mygrouplevel]" value="{$query.mygrouplevel|escape:html}">
 			</td>

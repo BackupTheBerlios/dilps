@@ -167,7 +167,7 @@ BEGIN easy_query.tpl
 				{/if}
 				<input class="queryinputfield" type="hidden" name="query[groupid]" value="{$query.groupid|escape:html}">
 				<input class="queryinputfield" type="hidden" name="query[grouplevel]" value="{$query.grouplevel|escape:html}">
-				<input type="button" class="actionbutton2" onclick="javascript:cleargroup();" value="&times;" title="{#nogroup#}"/>
+				<button type="button" class="actionbutton2" onclick="javascript:cleargroup();" title="{#nogroup#|escape:htmall}"><img src="clear.png" style="width: 12px; height: 12px;" /></button>
 			</td>
 		</tr>
 		<tr>
