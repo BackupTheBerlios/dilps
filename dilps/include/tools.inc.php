@@ -438,7 +438,7 @@
 		
 		if (function_exists('mime_content_type'))
 		{
-			$mime = mime_content_type($file);
+			$mime = @mime_content_type($file);
 		}
 		
 		if ($mime != '')
@@ -448,7 +448,7 @@
 		
 		if (function_exists('MIME_TYPE::autoDetect'))
 		{
-			$mime = MIME_Type::autoDetect($file);
+			$mime = @MIME_Type::autoDetect($file);
 		}
 		
 		if ($mime != '')
@@ -459,7 +459,7 @@
 		unset($result);
 		
 		$cmd = $file_binary." -b -i \"".$file."\"";
-		exec($cmd, $result);
+		@exec($cmd, $result);
 
 		if (isset($result[0]))
 		{
@@ -479,7 +479,7 @@
 			{				
 				if (key_exists($fallback_extension,$ext_to_mime))
 				{
-					$mime = $ext_to_mime[$fallback_extension];
+					$mime = @$ext_to_mime[$fallback_extension];
 				}
 			}
 		}		
@@ -518,7 +518,7 @@
 						." -depth 8 -format "
 						."\"%m %w %h %b\" \"".$file."\"";
 		
-		exec($cmd, $result);		
+		@exec($cmd, $result);		
 
 		if(!preg_match_all( "/[\w(\/|\.)]+/", trim($result[0]), $matches))
 		{
@@ -593,7 +593,7 @@
 		}
 		
 		unset($result);
-		exec($cmd, $result, $ret);
+		@exec($cmd, $result, $ret);
 		
 		if ($ret == 0)
 		{
@@ -642,7 +642,7 @@
 				.$db->qstr($img_data['type']).","
 				.$db->qstr($time).")";
 	
-		$rs = $db->Execute($sql);
+		$rs = @$db->Execute($sql);
 	
 		if (!$rs)
 		{
@@ -683,7 +683,7 @@
 					.$db->qstr($creator)
 					.")";
 	
-		$rs = $db->Execute($sql);		
+		$rs = @$db->Execute($sql);		
 	
 		if (!$rs)
 		{
@@ -721,7 +721,7 @@
 				.$db->qstr($collectionid)." ,"
 				.$db->qstr($imageid).")";
 
-		$rs  = $db->Execute ($sql);		
+		$rs  = @$db->Execute ($sql);		
 		
 		if (!$rs)
 		{
