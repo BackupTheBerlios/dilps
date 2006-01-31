@@ -518,7 +518,12 @@
 						." -depth 8 -format "
 						."\"%m %w %h %b\" \"".$file."\"";
 		
-		@exec($cmd, $result);		
+		@exec($cmd, $result);
+		
+		if (!$result)
+		{
+			return false;
+		}
 
 		if(!preg_match_all( "/[\w(\/|\.)]+/", trim($result[0]), $matches))
 		{

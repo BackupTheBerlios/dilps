@@ -67,15 +67,18 @@
 	
 	$lib_include_path = ini_get('include_path');
 	
+	if(!defined('PATH_SEPARATOR')) {
+		define('PATH_SEPARATOR',(preg_match('/WIN/i',PHP_OS) ? ';' : ':'));
+	}
 	$new_include_path = 	$lib_include_path.":"
-										.$config['includepath'].'pear'.":"
-										.$config['includepath'].'xml'.":"
-										.$config['includepath'].'mime'.":"
-										.$config['includepath'].'console'.":"
-										.$config['includepath'].'system'.":"
-										.$config['includepath'].":"
+										.$config['includepath'].'pear'.PATH_SEPARATOR
+										.$config['includepath'].'xml'.PATH_SEPARATOR
+										.$config['includepath'].'mime'.PATH_SEPARATOR
+										.$config['includepath'].'console'.PATH_SEPARATOR
+										.$config['includepath'].'system'.PATH_SEPARATOR
+										.$config['includepath'].PATH_SEPARATOR
 										.$config['dilpsdir'];
-	
+										
 	ini_set('include_path', $new_include_path);
 	
 	// we use this nearly everywhere

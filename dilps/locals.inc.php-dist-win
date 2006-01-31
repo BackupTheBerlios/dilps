@@ -38,16 +38,16 @@
 
 	// path to imagemagick binary
 
-	$imagemagick_convert = '/usr/bin/convert';
-	$imagemagick_identify = '/usr/bin/identify';
+	$imagemagick_convert = 'C:\Programme\ImageMagick\convert.exe';
+	$imagemagick_identify = 'C:\Programme\ImageMagick\identify.exe';
 
 	// path to file
 
-	$file_binary = '/usr/bin/file';
+	$file_binary = 'C:\Programme\GnuWin32\bin\file.exe';
 
 	// path to zip
 
-	$zip_binary = '/usr/bin/zip';
+	$zip_binary = 'C:\Programme\GnuWin32\bin\zip.exe';
 
 	// configure soundex-search option
 
@@ -62,7 +62,7 @@
 	$config['defaultcollection'] = 4;
 
 	// utf-8 support
-	$config['utf8'] = true;
+	$config['utf8'] = false;
 
 	// feature flags - valid values are 'user', 'editor' and 'admin'
 	$config['usemygroup']		= 'editor';
