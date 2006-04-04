@@ -36,7 +36,7 @@ FieldUpdater.prototype = {
         		method: 'get', 
         		parameters: params, 
         		onFailure: function (xhr, response){ this.ajaxUpdateFailure(field.id, xhr, response);}.bind(this),
-        		onException: function (xhr, exception){ this.ajaxUpdateException(field.id, xhr, exception);}.bind(this),
+        		onException: function (xhr, exception){ this.ajaxUpdateException(field.id, xhr, exception);}.bind(this)
         	});
         return updater;
     },
