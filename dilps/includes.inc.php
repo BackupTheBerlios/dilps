@@ -31,7 +31,7 @@
  *						standard includes and their order
  * -------------------------------------------------------------
  */
-
+//error_reporting(E_ALL);
 	/* configuration start */
 
 	// read db-config from file
@@ -46,22 +46,23 @@
 	
 	// read the rest of the configuration (global part)
 	include( 'locals.inc.php' );
-	
 	// session management
-	include( $config['includepath'].'session.inc.php' );
-	
-	// user management
-	include( $config['includepath'].'userList.class.php' );
-	include( $config['includepath'].'authUser.class.php' );
-	include( $config['includepath'].'authStaticUser.class.php' );
-	
-	// authentication handling
-	include( $config['includepath'].'auth.inc.php' );
-	
-	// smarty base include
-	include( $config['includepath'].'smarty/Smarty.class.php' );
-	// smarty customization
-	include( $config['includepath'].'smarty.inc.php' );
+	if (!defined('DILPS_SOAP_QUERY') && !defined('DILPS_INTER_DILPS_IMAGE_REQUEST')) {
+	   include( $config['includepath'].'session.inc.php' );
+	   
+    	// user management
+    	include( $config['includepath'].'userList.class.php' );
+    	include( $config['includepath'].'authUser.class.php' );
+    	include( $config['includepath'].'authStaticUser.class.php' );
+    	
+    	// authentication handling
+    	include( $config['includepath'].'auth.inc.php' );
+    	
+    	// smarty base include
+    	include( $config['includepath'].'smarty/Smarty.class.php' );
+    	// smarty customization
+    	include( $config['includepath'].'smarty.inc.php' );
+	}
 	
 	// add some libraries to include path
 	

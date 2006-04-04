@@ -44,7 +44,8 @@
 		{if $query.mygroupid neq ""}
 		<tr>
 			<td class="field_name">
-				<a class="navsymbol" href="javascript:;" onclick="javascript:window.open('export_group.php?PHPSESSID={$sessionid}&collectionid={$query.querypiece.0.val.0}&groupid={$query.mygroupid}&groupname={$query.mygroup}','groupexport','width=800,height=420,dependent=yes,scrollbars=yes');">{#exportgroup#}</a>
+				<!--<a class="navsymbol" href="javascript:;" onclick="javascript:window.open('export_group.php?PHPSESSID={$sessionid}&collectionid={$query.querypiece.0.val.0}&groupid={$query.mygroupid}&groupname={$query.mygroup}','groupexport','width=800,height=420,dependent=yes,scrollbars=yes');">{#exportgroup#}</a>-->
+				<a class="navsymbol" href="javascript:;" onclick="javascript:window.open('export_group.php?PHPSESSID={$sessionid}&collectionid={$query.collectionid}&groupid={$query.mygroupid}&groupname={$query.mygroup}','groupexport','width=800,height=420,dependent=yes,scrollbars=yes');">{#exportgroup#}</a>
 			</td>
 		</tr>
 		{/if}

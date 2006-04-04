@@ -30,8 +30,8 @@
  * Purpose:  provided by smarty installation
  * -------------------------------------------------------------
  */
+//error_reporting(E_ALL);
 require_once( $config['includepath'].'htmlquery.inc.php' );
-
 $smarty = new Smarty();
 $smarty->template_dir = $config['skinBase'];
 $smarty->compile_dir = $config['smartyBase'].'template_c/';
@@ -42,6 +42,21 @@ $smarty->force_compile = true;
 $smarty->caching = false;
 $smarty->compile_check = true;
 $smarty->debugging = false;
+
+$query = array();
+if( isset($_REQUEST['query']) && is_array( $_REQUEST['query'] )) {
+	$query = $_REQUEST['query'];
+} else {
+    $query = array('querypiece'=>array());
+}
+cleanQuery($query);
+$query['queryid'] = empty($_SESSION['counter']) ? 0 : $_SESSION['counter'];
+$query = prepare_html_query($query);
+//debug($_REQUEST);
+/*if ($query['collectionid'] == '-1') {
+    $config['remotequery'] = 1;
+}*/
+$config['soapresults'] = (!empty($query['collectionid']) && $query['collectionid'] == '-1') ? true : false;
 
 $smarty->assign( 'config', $config );
 
@@ -66,17 +81,7 @@ $user = array(
 						);
 	
 $smarty->assign( 'user', $user );
-	
 					
-$query = array();
-
-if( isset($_REQUEST['query']) && is_array( $_REQUEST['query'] )) {
-	$query = $_REQUEST['query'];
-} else {
-    $query = array();
-}
-$query = prepare_query($query);
-
 $view = array();
 if( isset($_REQUEST['view']) && is_array( $_REQUEST['view'] ))
 	$view = $_REQUEST['view'];

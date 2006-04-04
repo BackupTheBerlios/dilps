@@ -36,7 +36,7 @@ BEGIN result_detail.tpl
 {$error|escape:htmlall}<p>
 {/if}
 {if $id ne ""}
-{query_image id=$id var=result sql=sql}
+{query_image id=$id remoteCollection=$query.remoteCollection var=result sql=sql}
 <!-- {$sql} -->
 {if $result.id ne ""}
   {assign var="tpl" value=$template[$result.rs.type]}

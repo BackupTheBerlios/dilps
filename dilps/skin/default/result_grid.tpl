@@ -31,7 +31,9 @@ BEGIN result_grid.tpl
 {/if}
 
 {query var=result sql=sql}
-<!-- {$sql} -->
+{if $result.result_type eq "collections"}
+    {include file="`$config.skinBase``$config.skin`/result_grid_collections.tpl" result=$result}
+{else}
 <td class="result_grid_nav_top" id="navigation" style="text-align: center"
 {if $view.detail.id ne "" or $view.edit.id ne ""}
 colspan="2"
@@ -63,8 +65,8 @@ colspan="2"
 		   <td width="{$colwidth}%" class="result_list_data_img">
 				{assign var="row" value=$result.rs[$id]}
 			   {if $row.imageid ne ""}
-		              {assign var="tpl" value=$template[$row.type]}
-			      {include file="`$config.skinBase``$config.skin`/`$tpl.grid`" row=$row viewFunc=$viewFunc query=$query}
+		          {assign var="tpl" value=$template[$row.type]}
+			      {include file="`$config.skinBase``$config.skin`/`$tpl.grid`" row=$row viewFunc=$viewFunc query=$query result=$result}
 				{else}
 				&nbsp;
 				{/if}
@@ -76,8 +78,7 @@ colspan="2"
    </td>
 </tr>
 </table>
-
-
+{/if}
 {/query}
 <!-- ============================================
 END result_grid.tpl

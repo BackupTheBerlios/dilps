@@ -50,10 +50,17 @@ BEGIN grid.tpl
   <meta name="date" content="2003-01-23">
   <link rel="shortcut icon" href="favicon.ico">
   <title>. : {#title#|escape:"htmlall"} : .</title>
+  {if $config.soapresults }
+      <script src="prototype.js" type="text/javascript"></script>
+      <script src="FieldUpdater.js" type="text/javascript"></script>
+      {if $config.debug }
+        <script src="debug.js" type="text/javascript"></script>
+      {/if}
+  {/if}
   <script src="dilps.lib.js" type="text/javascript"></script>
   <link rel="stylesheet" type="text/css" href="css.php">
 </head>
-<body class="main">
+<body class="main" {if $config.soapresults }onload="updateRemoteCollectionFields('{$sessionid}','{$query.queryid}')"{/if}>
 <table width="100%" cellpadding="0" cellspacing="0">
 <tr>
 <td>
@@ -61,6 +68,8 @@ BEGIN grid.tpl
 <input type="hidden" name="view[type]" value="grid">
 <input type="hidden" name="view[detail][id]" value="{$view.detail.id}">
 <input type="hidden" name="view[edit][id]" value="{$view.edit.id}">
+<input type="hidden" name="query[remoteCollection]" value="{$query.remoteCollection}">
+<input type="hidden" name="query[remote]" value="">
 <table class="header" width="100%">
 <tr>
    <td>

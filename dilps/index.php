@@ -30,13 +30,12 @@
  * Purpose:  	startpoint of the DILPS system
  * -------------------------------------------------------------
  */
-
 ini_set( 'zend.ze1_compatibility_mode', 'On' );
 ini_set( 'session.use_cookies' , 0 );
-
 // import standard libraries and configuraiton values
 include('includes.inc.php');
 
+//debug($_REQUEST, false);
 if (isset($_REQUEST['Login']))
 {
 	$smarty->assign('newlogin', '1');
@@ -74,6 +73,11 @@ else
 $smarty->assign('action',$action);
 $smarty->assign('sessionid',$sessionid);
 
+//bk: debugging
+//error_reporting(E_ALL);
+//$smarty->error_reporting = E_ALL;
+
+//debug(array($config, $tpl));
 $smarty->display( $config['skin'].'/'.$tpl);
 
 //phpinfo();

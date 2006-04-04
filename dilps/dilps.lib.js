@@ -1,13 +1,13 @@
-function viewDetail( sessionid, imageid ) {
+function viewDetail( sessionid, imageid, remoteCollectionId) {
    props = 'toolbar=no,location=no,directories=no,status=yes,scrollbars=yes,resizable=yes,menubar=no,copyhistory=no';
-   win = window.open( 'view_detail.php?PHPSESSID='+sessionid+'&newwin=1&query[id]='+imageid+'&view[detail][id]='+imageid, 'imageView', props + ',width=700,height=720' );
+   win = window.open( 'view_detail.php?PHPSESSID='+sessionid+'&newwin=1&query[id]='+imageid+'&query[remoteCollection]='+remoteCollectionId+'&view[detail][id]='+imageid, 'imageView', props + ',width=700,height=720' );
    win.focus();
 }
 
 
 function editElement( sessionid, imageid, element, val ) {
    props = 'toolbar=no,location=no,directories=no,status=yes,scrollbars=yes,resizable=yes,menubar=no,copyhistory=no';
-   win = window.open( 'edit_element.php?PHPSESSID='+sessionid+'&query[id]='+imageid+'&query[element]='+element+'&query[value]='+val, 'elementView', props + ',width=900,height=500' );
+   win = window.open( 'edit_element.php?PHPSESSID='+sessionid+'&query[id]='+imageid+'&query[element]='+element+'&query[value]='+val+'&query[remoteCollection]=0', 'elementView', props + ',width=900,height=500' );
    win.focus();
 }
 
@@ -66,11 +66,11 @@ function changepage(page )
 }
 
 
-function showDetail( sessionid, id )
+function showDetail( sessionid, id, remoteCollectionId)
 {
 	document.forms["Main"].elements["view[edit][id]"].value="";
 	document.forms["Main"].elements["view[detail][id]"].value=id;
-	
+	document.forms["Main"].elements["query[remoteCollection]"].value=remoteCollectionId;
 	document.forms["Main"].submit();
 }
 
@@ -144,21 +144,32 @@ function changeQueryType(type) {
 
 function UpdateSelectList(selectlist, operatorlist, field, form) {
 
+    var i;
     var operators = operator_lists[column_operators[field.value]];
     for (i=form.elements[selectlist].options.length-1;i>=0;i--) {
         form.elements[selectlist].options[i] = null;
     }
 
     j = 0;
-    for (i in operators) {
-        form.elements[selectlist].options[j] = new Option(operators[i], i, false, false);
-        j++;
+    
+    if (PrototypeIncluded()) {
+        // this syntax is necessary when prototype.js is included (regular "for i in obj" loops don't work as expected):
+        $H(operators).each( function(val){
+            form.elements[selectlist].options[j] = new Option(val.value, val.key, false, false);
+            j++;        
+        });
+    } else {
+        for (i in operators) {
+            form.elements[selectlist].options[j] = new Option(operators[i], i, false, false);
+            j++;        
+        }
     }
-
+    
     form.elements[operatorlist].value=column_operators[field.value];
 
     // some things need a drop down list instead of a free text entry field, which requires a reload
     // set the value for the field to something, so that it won't get removed in the pre-processing
+    //var selectboxfields = ":type:collectionid:status:";
     var selectboxfields = ":type:collectionid:";
     var valstr = selectlist.replace('operator', 'val');
     var needsreload = false;
@@ -178,6 +189,34 @@ function UpdateSelectList(selectlist, operatorlist, field, form) {
         form.submit();
     }
 }
+
+function showCollection( sessionid, collectionid, queryid )
+{
+	//document.forms["Main"].elements["view[edit][id]"].value="";
+	//document.forms["Main"].elements["view[detail][id]"].value=id;
+	//document.forms["Main"].elements["view[type]"].value = "soap";
+	//document.forms["Main"].elements["query[remote]"].value = collectionid+":"+queryid;
+	document.forms["Main"].elements["query[collectionid]"].value = collectionid;
+	document.forms["Main"].submit();
+}
+
+function updateRemoteCollectionFields(sessionid, queryid) {
+    afu = new FieldUpdater('ajax-update-field', 'remoteCount.php', 'wait.gif', sessionid, queryid);
+    afu.updateAll();
+}
+
+function PrototypeIncluded() {
+    var included = false;
+    try {
+        if (Prototype) {
+            included = true;
+        }
+    } catch (e) {
+        //it's not included
+    }
+    return included;
+}
+
 
 function queryCheckbox(form, hiddenvalue, cbox) {
 	if (form.elements[cbox].checked == false) {

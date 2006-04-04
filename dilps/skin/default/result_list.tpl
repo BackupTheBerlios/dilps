@@ -31,41 +31,44 @@ BEGIN result_list.tpl
 {/if}
 
 {query var=result sql=sql}
-<!-- {$sql} -->
-<td class="result_list_nav_top" id="navigation" style="text-align: center"
-{if $view.detail.id ne "" or $view.edit.id ne ""}
-colspan="2"
-{/if}
->
-{#page#|escape:html}
- {include file="`$config.skinBase``$config.skin`/browse.tpl"}  
-</td>
-</tr>
-<tr>
-<td>
-<table class="result_list" width="100%">
-  <tr>
-   <td class="result_grid_nav_left">
-    {include file="`$config.skinBase``$config.skin`/select.tpl"}  
-  </td>
-  </tr>
-  <tr>
-   <td colspan="2">
-	   <table class="result_list_data" width="100%">
-		<tr>
-		   <td width="10%" class="result_list_data_head">{#image#|escape:htmlall}</td>
-		   <td width="40%" class="result_list_data_head">{#title#|escape:htmlall}</td>
-		   <td width="30%" class="result_list_data_head">{#name#|escape:htmlall}</td>
-		   <td width="10%" class="result_list_data_head">{#date#|escape:htmlall}</td>
-		</tr>
-	   {foreach from=`$result.rs` item=row}
-	      {assign var="tpl" value=$template[$row.type]}
-	      {include file="`$config.skinBase``$config.skin`/`$tpl.list`" row=$row}
-	   {/foreach}
-	</table>
-   </td>
-</tr>
-</table>
+{if $result.result_type eq "collections"}
+    {include file="`$config.skinBase``$config.skin`/result_grid_collections.tpl" result=$result}
+{else}    
+    <td class="result_list_nav_top" id="navigation" style="text-align: center"
+    {if $view.detail.id ne "" or $view.edit.id ne ""}
+    colspan="2"
+    {/if}
+    >
+    {#page#|escape:html}
+     {include file="`$config.skinBase``$config.skin`/browse.tpl"}  
+    </td>
+    </tr>
+    <tr>
+    <td>
+    <table class="result_list" width="100%">
+      <tr>
+       <td class="result_grid_nav_left">
+        {include file="`$config.skinBase``$config.skin`/select.tpl"}  
+      </td>
+      </tr>
+      <tr>
+       <td colspan="2">
+    	   <table class="result_list_data" width="100%">
+    		<tr>
+    		   <td width="10%" class="result_list_data_head">{#image#|escape:htmlall}</td>
+    		   <td width="40%" class="result_list_data_head">{#title#|escape:htmlall}</td>
+    		   <td width="30%" class="result_list_data_head">{#name#|escape:htmlall}</td>
+    		   <td width="10%" class="result_list_data_head">{#date#|escape:htmlall}</td>
+    		</tr>
+    	   {foreach from=`$result.rs` item=row}
+    	      {assign var="tpl" value=$template[$row.type]}
+    	      {include file="`$config.skinBase``$config.skin`/`$tpl.list`" row=$row}
+    	   {/foreach}
+    	</table>
+       </td>
+    </tr>
+    </table>
+{/if}    
 {/query}
 <!-- --------------------------------------------
 END result_list.tpl

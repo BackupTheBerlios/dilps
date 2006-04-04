@@ -93,7 +93,7 @@ BEGIN default_grid.tpl
 </tr>
 <tr>
 	<td style="text-align: center">
-		<a href="javascript:{$viewFunc}('{$sessionid}','{$row.collectionid}:{$row.imageid}');"><img src="image.php?PHPSESSID={$sessionid}&id={$row.collectionid}:{$row.imageid}&resolution=120x90" border="0"></a>
+		<a href="javascript:{$viewFunc}('{$sessionid}','{$row.collectionid}:{$row.imageid}', '{$result.remoteCollection}');"><img src="image.php?PHPSESSID={$sessionid}&id={$row.collectionid}:{$row.imageid}&resolution=120x90&remoteCollection={$result.remoteCollection}" border="0"></a>
 	</td>
 </tr>
 <tr>
@@ -120,6 +120,7 @@ BEGIN default_grid.tpl
 	<td colspan="2" style="height: 5px;">		
 	</td>
 </tr>
+{if $result.local}
 <tr>
 	<td rowspan="2"><img src="/icons/blank.gif" width="1"></td>
 	<td colspan="2" class="result_list_data_data" style="text-align: center">
@@ -156,6 +157,7 @@ BEGIN default_grid.tpl
 		</table>
    </td>
 </tr>
+{/if}
 </table>
 <!-- --------------------------------------------
 END default_grid.tpl

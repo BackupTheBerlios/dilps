@@ -31,6 +31,10 @@ BEGIN result.tpl
 {/if}
 
 {query var=result sql=sql}
+{if $result.result_type eq "collections"}
+    {include file="`$config.skinBase``$config.skin`/result_grid_collections.tpl" result=$result}
+{else}    
+
 <table class="main" width="100%">
 <tr>
    <td>
@@ -43,6 +47,7 @@ BEGIN result.tpl
    </td>
 </tr>
 </table>
+{/if}
 {/query}
 <!-- --------------------------------------------
 END result.tpl

@@ -31,7 +31,9 @@
  * 					handled in the DILPS-Installer
  * -------------------------------------------------------------
  */
-
+    //error_reporting(E_ALL);
+    error_reporting(0);
+    
 	// activate compatibility mode
 	ini_set( 'zend.ze1_compatibility_mode', 'On' );
 	

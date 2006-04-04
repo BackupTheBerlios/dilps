@@ -30,7 +30,7 @@ BEGIN default_detail.tpl
   <tr>
     <td class="result_detail_top" style="padding-bottom: 6px; text-align: right"> 
 
-    {if $user.editor}
+    {if $user.editor && $result.local}
     [<a class="result_detail_image_list" href="javascript:editDetail('{$id}');">{#edit#}</a>]
     {/if}
     </td>
@@ -41,16 +41,16 @@ BEGIN default_detail.tpl
       <tr>
         <td colspan="2" class="result_detail_data_image">
         <div class="outer">
-        <img src="image.php?PHPSESSID={$sessionid}&id={$result.id}&resolution=640x480" border="0"><br>
+        <img src="image.php?PHPSESSID={$sessionid}&id={$result.id}&resolution=640x480&remoteCollection={$query.remoteCollection}" border="0"><br>
         [{$row.width|escape:htmlall}x{$row.height|escape:htmlall}]
         </div>
         </td>
       </tr>
       <tr style="border-bottom: 6px solid #778898">
         <td colspan="2">
-	  (<a class="result_detail_image_list" href="image.php?PHPSESSID={$sessionid}&id={$result.id}&resolution=1024x768" target="_blank">1024x768</a>)
-	  (<a class="result_detail_image_list" href="image.php?PHPSESSID={$sessionid}&id={$result.id}&resolution=1280x1024" target="_blank">1280x1024</a>)
-	  (<a class="result_detail_image_list" href="image.php?PHPSESSID={$sessionid}&id={$result.id}&resolution=1600x1200" target="_blank">1600x1200</a>)
+	  (<a class="result_detail_image_list" href="image.php?PHPSESSID={$sessionid}&id={$result.id}&resolution=1024x768&remoteCollection={$query.remoteCollection}" target="_blank">1024x768</a>)
+	  (<a class="result_detail_image_list" href="image.php?PHPSESSID={$sessionid}&id={$result.id}&resolution=1280x1024&remoteCollection={$query.remoteCollection}" target="_blank">1280x1024</a>)
+	  (<a class="result_detail_image_list" href="image.php?PHPSESSID={$sessionid}&id={$result.id}&resolution=1600x1200&remoteCollection={$query.remoteCollection}" target="_blank">1600x1200</a>)
 	</td>
       </tr>
     </table>

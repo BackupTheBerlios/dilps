@@ -31,41 +31,44 @@ BEGIN result_list_short.tpl
 {/if}
 
 {query var=result sql=sql}
-<!-- {$sql} -->
-<td class="result_list_nav_top" id="navigation" style="text-align: center"
-{if $view.detail.id ne "" or $view.edit.id ne ""}
-colspan="2"
+{if $result.result_type eq "collections"}
+    {include file="`$config.skinBase``$config.skin`/result_grid_collections.tpl" result=$result}
+{else}    
+    <td class="result_list_nav_top" id="navigation" style="text-align: center"
+    {if $view.detail.id ne "" or $view.edit.id ne ""}
+    colspan="2"
+    {/if}
+    >
+    {#page#|escape:html}
+     {include file="`$config.skinBase``$config.skin`/browse.tpl"}  
+    </td>
+    </tr>
+    <tr>
+    <td width="50%" valign="top">
+    <table class="result_list" width="100%" cellpadding="0">
+    <tr>
+       <td class="result_list_nav_left">
+       <div class="outer">
+         {include file="`$config.skinBase``$config.skin`/select.tpl"}
+       </div>
+       </td>
+    </tr>
+    <tr>
+       <td colspan="2">
+    	   <table class="result_list_data" width="100%">
+         <colgroup>
+            <col width="20%">
+            <col width="80%">
+         </colgroup>
+    	   {foreach from=`$result.rs` item=row}
+    	      {assign var="tpl" value=$template[$row.type]}
+    	      {include file="`$config.skinBase``$config.skin`/`$tpl.list_short`" row=$row}
+    	   {/foreach}
+    	</table>
+       </td>
+    </tr>
+    </table>
 {/if}
->
-{#page#|escape:html}
- {include file="`$config.skinBase``$config.skin`/browse.tpl"}  
-</td>
-</tr>
-<tr>
-<td width="50%" valign="top">
-<table class="result_list" width="100%" cellpadding="0">
-<tr>
-   <td class="result_list_nav_left">
-   <div class="outer">
-     {include file="`$config.skinBase``$config.skin`/select.tpl"}
-   </div>
-   </td>
-</tr>
-<tr>
-   <td colspan="2">
-	   <table class="result_list_data" width="100%">
-     <colgroup>
-        <col width="20%">
-        <col width="80%">
-     </colgroup>
-	   {foreach from=`$result.rs` item=row}
-	      {assign var="tpl" value=$template[$row.type]}
-	      {include file="`$config.skinBase``$config.skin`/`$tpl.list_short`" row=$row}
-	   {/foreach}
-	</table>
-   </td>
-</tr>
-</table>
 {/query}
 <!-- --------------------------------------------
 END result_list_short.tpl

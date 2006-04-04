@@ -44,7 +44,6 @@ function smarty_function_collection_list($params, &$smarty)
 	 $rs = $db->GetArray( $sql );
 	 
     $smarty->assign($params['var'], $rs);
-	 
 	 if( !empty($params['sql'])) {
 		     $smarty->assign($params['sql'], $sql);
 	 }

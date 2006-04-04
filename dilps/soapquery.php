@@ -1,0 +1,29 @@
+<?
+// handles remote queries with soap
+
+/*
+    *** REQUIREMENTS FOR USING the version of PEAR:SOAP that this code uses: ***
+    SOAP-0.9.3
+    HTTP_Request >= 1.3.0
+    Net_URL >= 1.0.14
+*/
+
+if (!defined('DILPS_SOAP_QUERY')) define('DILPS_SOAP_QUERY', 1);
+error_reporting(0);  // suppress warnings related to unfound (and unnecessary) soap include files
+require_once('./config.inc.php');
+ini_set('include_path', ini_get('include_path').":{$config['includepath']}pear");
+require_once('SOAP/Server.php');
+require_once("{$config['includepath']}dilpsSoapServer.class.php");
+
+// Create the SOAP server
+$soapServer = new SOAP_Server();
+$dilpsSoap = new DilpsSoapServer(!$config['utf8']);
+$soapServer->addObjectMap($dilpsSoap, 'urn:DILPSQuery');
+
+// Service the request
+$status = $soapServer->service($GLOBALS['HTTP_RAW_POST_DATA']);
+if (is_a($status, 'SOAP_Fault')) {
+    $fault = $response->getFault();
+    //mail('brian@mediagonal.ch', 'soapserverFault', var_export($fault));
+}
+?>

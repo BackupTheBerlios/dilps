@@ -34,26 +34,20 @@
  *				latter one doesn't exist.
  * -------------------------------------------------------------
  */
-
 ini_set( 'zend.ze1_compatibility_mode', 'On' );
 
 // read sessiond id from get/post
-if (isset($_REQUEST['PHPSESSID']))
-{
+if (isset($_REQUEST['PHPSESSID'])) {
 	$sessionid = $_REQUEST['PHPSESSID'];
-}
-else
-{
+} else {
 	$sessionid = '';
 }
-
 include_once( 'config.inc.php');
+include_once( $config['includepath'].'interdilps.inc.php' );
+if ($invalidRequestor) no_file();
 include_once( $config['includepath'].'tools.inc.php' );
 
-
 global $formats_suffix, $db, $db_prefix;
-
-// $db->debug = true;
 
 if( !isset( $_REQUEST['id'] ))
 {
@@ -61,6 +55,7 @@ if( !isset( $_REQUEST['id'] ))
 	readfile( 'empty.jpg' );
 	exit;
 }
+$id = $_REQUEST['id'];
 
 if( !isset( $_REQUEST['resolution'] ))
 {
@@ -71,73 +66,109 @@ else
 	$resolution = $_REQUEST['resolution'];
 }
 
-if ( isset($_REQUEST['debug']))
-{
-	$debug = $_REQUEST['debug'];
+$remoteCollectionId = isset($_REQUEST['remoteCollection']) ? intval($_REQUEST['remoteCollection']) : 0;
+
+if ($remoteCollectionId) {
+    
+    // fetch image from remote server
+    include_once ($config['includepath'].'remote.inc.php');
+    include_once "HTTP/Request.php";
+    if ($collection = get_remote_collection_info($remoteCollectionId)) {
+        $path = dirname($collection['soap_url']) . '/image.php';
+        $url = "http://{$collection['host']}/$path";
+        $params = array (
+            'id' => $id,
+            'resolution' => $resolution,
+            'inter-dilps-request' => true,
+            );
+        $req =& new HTTP_Request($url);
+        foreach ($params as $param=>$value) {
+            $req->addQueryString($param, $value);
+        }
+        
+        $result = $req->sendRequest();
+        if (PEAR::isError($result)) {
+            no_file();
+        } else {
+            header( "Content-type: image/jpeg\n\n" );
+            echo $req->getResponseBody();
+        }
+    } else {
+        no_file();
+    }
+    
+} else {
+    //local image
+    
+    if ( isset($_REQUEST['debug']))
+    {
+    	$debug = $_REQUEST['debug'];
+    }
+    else 
+    {
+    	$debug = false;
+    }
+    
+    extractID( $id, $collectionid, $imageid );
+    
+    $sql = "SELECT filename,base FROM {$db_prefix}img,{$db_prefix}img_base WHERE {$db_prefix}img.imageid=".intval($imageid)
+    		." AND {$db_prefix}img.collectionid=".intval($collectionid)
+    		." AND {$db_prefix}img.collectionid={$db_prefix}img_base.collectionid"
+    		." AND {$db_prefix}img.img_baseid={$db_prefix}img_base.img_baseid";
+    	
+    $row = @$db->GetRow( $sql );
+    $base = $row['base'];
+    $file = intval($imageid).'.jpg';
+    if( $base != '' && $base{strlen($base)-1} != DIRECTORY_SEPARATOR )
+    {
+    	$base .= DIRECTORY_SEPARATOR;
+    }
+    
+    $file_exists_test = false;
+    
+    foreach ($formats_suffix as $mime => $suffix){
+    	$path = $base.'cache'.DIRECTORY_SEPARATOR.$resolution.DIRECTORY_SEPARATOR.intval($collectionid).'-'.intval($imageid).".".$suffix;
+    	// $path = $base.$resolution.'/'.intval($collectionid).'-'.intval($imageid).".".$suffix;
+    
+    	// echo "Test-Path: $path";
+    
+    	if (file_exists($path)){
+    		$file_exists_test = true;
+    		break;
+    	}
+    }
+    
+    /*
+    if ( !($file_exists_test)){
+    	
+    	$path = $base.'cache/'.$resolution.'/'.$file;
+    	$file_exists_test = file_exists($path);
+    }
+    */
+    
+    if ($debug)
+    {
+    	echo ("Path: ".$path."\n<br>\n");
+    	exit;
+    }
+    
+    if( !$file_exists_test )
+    {
+    	// echo "$path<br>$sql";
+    	no_file();
+    	
+    	
+    }
+    
+    header( "Content-type: image/jpeg\n\n" );
+    readfile( $path );
+    // echo ("Pfad: ".$path."\n");
 }
-else 
-{
-	$debug = false;
-}
 
-$id = $_REQUEST['id'];
-extractID( $id, $collectionid, $imageid );
-
-$sql = "SELECT filename,base FROM {$db_prefix}img,{$db_prefix}img_base WHERE {$db_prefix}img.imageid=".intval($imageid)
-		." AND {$db_prefix}img.collectionid=".intval($collectionid)
-		." AND {$db_prefix}img.collectionid={$db_prefix}img_base.collectionid"
-		." AND {$db_prefix}img.img_baseid={$db_prefix}img_base.img_baseid";
-	
-$row = @$db->GetRow( $sql );
-$base = $row['base'];
-$file = intval($imageid).'.jpg';
-if( $base != '' && $base{strlen($base)-1} != DIRECTORY_SEPARATOR )
-{
-	$base .= DIRECTORY_SEPARATOR;
-}
-
-$file_exists_test = false;
-
-foreach ($formats_suffix as $mime => $suffix){
-	$path = $base.'cache'.DIRECTORY_SEPARATOR.$resolution.DIRECTORY_SEPARATOR.intval($collectionid).'-'.intval($imageid).".".$suffix;
-	// $path = $base.$resolution.'/'.intval($collectionid).'-'.intval($imageid).".".$suffix;
-
-	// echo "Test-Path: $path";
-
-	if (file_exists($path)){
-		$file_exists_test = true;
-		break;
-	}
-}
-
-/*
-if ( !($file_exists_test)){
-	
-	$path = $base.'cache/'.$resolution.'/'.$file;
-	$file_exists_test = file_exists($path);
-}
-*/
-
-if ($debug)
-{
-	echo ("Path: ".$path."\n<br>\n");
-	exit;
-}
-
-if( !$file_exists_test )
-{
-	// echo "$path<br>$sql";
-	
+function no_file() {
 	header( "Content-type: image/jpeg\n\n" );
 	readfile( 'empty.jpg' );
 	exit;
-	
-	
 }
-
-header( "Content-type: image/jpeg\n\n" );
-readfile( $path );
-
-// echo ("Pfad: ".$path."\n");
 
 ?>

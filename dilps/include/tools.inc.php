@@ -33,8 +33,10 @@
 	 */
 	
 	$path_fix = dirname(__FILE__);
+
 	include_once($path_fix.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'includes.inc.php');
 	include_once($path_fix.DIRECTORY_SEPARATOR.'mime'.DIRECTORY_SEPARATOR.'Type.php');
+	//include_once($config['includepath'].'dating.inc.php');
 
 	/**
 	 *	execute stripslashes on a string
@@ -69,6 +71,62 @@
 		array_walk( $arr, '__stripslashes' );
 	}
 	
+	
+	/**
+	 *	deep-converts object to array
+	 *
+	 *	@access		public
+	 *	@param 		object $o
+	 * 	@return		array
+	 *
+	 */
+    function _stdclass2array($o) {
+        $a = array();
+        foreach ($o as $p => $v){
+            if (is_object($v)) {
+                $v = (array) $v;
+            }
+            if (is_array($v)) {
+                $a1 = array();
+                foreach ($v as $p1 => $v1){
+                    if (is_object($v1)  || is_array($v1)) {
+                        $a1[$p1] = _stdclass2array($v1);
+                    } else {
+                        $a1[$p1] = $v1;
+                    }
+                }
+                $a[$p] = $a1;
+            } else { 
+                $a[$p] = $v;
+            }
+        }
+        return  $a;
+    }
+    
+    function utf8_encode_recursive($array) {
+        foreach ($array as $key => $val){
+            if (is_string($val)) {
+                    $array[$key] = utf8_encode($val);
+            }
+            elseif (is_array($val)){
+                $array[$key] = utf8_encode_recursive($val);
+            }
+        }
+        return $array;
+    }
+    
+    function utf8_decode_recursive($array) {
+        foreach ($array as $key => $val){
+            if (is_string($val)) {
+                    $array[$key] = utf8_decode($val);
+            }
+            elseif (is_array($val)){
+                $array[$key] = utf8_decode_recursive($val);
+            }
+        }
+        return $array;
+    }
+    
 	/**
 	 *	extracts collectionid and imageid from a string
 	 *
@@ -95,117 +153,6 @@
 		$imageid = substr( $id, $p+1 );
 	}
 	
-	/**
-	 *	determines the time that passed since a given year
-	 *
-	 *	determines the time that passed since the year passed to the
-	 *	function, the resolution can be specified via a and b
-	 *
-	 *	@access		public
-	 *	@param		string	$year
-	 *	@param		double	$a
-	 *	@param		double	$b
-	 *	@return		void
-	 *
-	 */
-	
-	function intervalFromYear( $year, $a = 0.0001, $b = 0.00008 )
-	{
-		$jd = GregorianToJD( 1, 1, intval( $year ));
-		$now = UnixToJD( time());
-		$d = $now - $jd;
-		$res = $d*$a + $d*$b*$b;
-		return round(max( 1, $res)) * ($year < -3500 ? 1 : 365);
-	}
-	
-	/**
-	 *	wrapper for GregorianToJD
-	 *
-	 *	applies some extra checking on GregorianToJD
-	 *
-	 *	@access		public
-	 *	@param		int	$month
-	 *	@param		int	$day
-	 *	@param		int	$year
-	 *	@return		void
-	 *
-	 */
-	
-	function _GregorianToJD( $month, $day, $year )
-	{
-	//	echo "_GregorianToJD( $month, $day, $year )\n";
-	   if( $year < -3500 ) return $year;
-		if( $year == 0 ) return GregorianToJD( $month, $day, 1 );
-	   return GregorianToJD( $month, $day, $year );
-	}
-	
-	/**
-	 *	formats a datespring according the DILPS-rules
-	 *
-	 *	formats a given datestring according to the rules
-	 *	in the DILPS database, returns the result in datelist
-	 *
-	 *	@access		public
-	 *	@param		object	$db
-	 *	@param		string	$datestring
-	 *	@param		array	$datelist
-	 *	@return		void
-	 *
-	 */
-	
-	function dating( $db, &$datestring, &$datelist )
-	{
-		global $db_prefix;
-		static $dating_match = NULL;
-		static $dating_replacement = NULL;
-		static $dating_pattern = NULL;
-		if( $dating_match == NULL )
-		{
-			$sql = "SELECT * FROM {$db_prefix}dating_rules WHERE `type`='match' ORDER BY seq ASC";
-			$dating_match = $db->GetArray( $sql );
-			
-			for( $i = 0; $i < sizeof( $dating_match ); $i++ )
-			{
-				$dating_match[$i]['regexp'] = strtolower( stripslashes( $dating_match[$i]['regexp'] ));
-			}
-		}
-		if( $dating_replacement == NULL )
-		{
-			$sql = "SELECT * FROM {$db_prefix}dating_rules WHERE `type`='replace' ORDER BY seq ASC";
-			$rs = $db->Execute( $sql );
-			
-			$dating_pattern = array();
-			$dating_replacement = array();
-			while( !$rs->EOF )
-			{
-				$dating_pattern[] = strtolower( stripslashes( $rs->fields['from'] ));
-				$dating_replacement[] = strtolower( stripslashes( $rs->fields['to'] ));
-				$rs->MoveNext();
-			}
-			$rs->Close();
-		}
-		$datelist = array();
-	//	echo "[$datestring] --> ";
-		$datestring = trim( preg_replace( $dating_pattern, $dating_replacement, strtolower( $datestring )));
-	//	echo "[$datestring]\n";
-		$dates = explode( ';', $datestring );
-	//    print_r( $dates );
-		foreach( $dates as $date )
-		{ 
-			for( $i = 0; $i < sizeof( $dating_match ); $i++ )
-			{
-				$matches = array();
-				if( preg_match( $dating_match[$i]['regexp'], $date, $match ))
-				{
-					$result = array( 'from' => eval( $dating_match[$i]['from'] ),
-										 'to' => eval( $dating_match[$i]['to'] ));
-					$datelist[] = $result;
-					break;
-				}
-			}
-		}
-		return true;
-	}
 	
 	/**
 	 *	check, if a directory exists, is writeable and create
@@ -414,6 +361,119 @@
 	function cmp ($a, $b) {
 	   if (strlen($a) == ($b)) return 0;
 	   return (strlen($a) < strlen($b)) ? 1 : -1;
+	}
+	
+	/**
+	 *	determines the time that passed since a given year
+	 *
+	 *	determines the time that passed since the year passed to the
+	 *	function, the resolution can be specified via a and b
+	 *
+	 *	@access		public
+	 *	@param		string	$year
+	 *	@param		double	$a
+	 *	@param		double	$b
+	 *	@return		void
+	 *
+	 */
+	
+	function intervalFromYear( $year, $a = 0.0001, $b = 0.00008 )
+	{
+		$jd = GregorianToJD( 1, 1, intval( $year ));
+		$now = UnixToJD( time());
+		$d = $now - $jd;
+		$res = $d*$a + $d*$b*$b;
+		return round(max( 1, $res)) * ($year < -3500 ? 1 : 365);
+	}
+	
+	/**
+	 *	wrapper for GregorianToJD
+	 *
+	 *	applies some extra checking on GregorianToJD
+	 *
+	 *	@access		public
+	 *	@param		int	$month
+	 *	@param		int	$day
+	 *	@param		int	$year
+	 *	@return		void
+	 *
+	 */
+	
+	function _GregorianToJD( $month, $day, $year )
+	{
+	//	echo "_GregorianToJD( $month, $day, $year )\n";
+	   if( $year < -3500 ) return $year;
+		if( $year == 0 ) return GregorianToJD( $month, $day, 1 );
+	   return GregorianToJD( $month, $day, $year );
+	}
+	
+	/**
+	 *	formats a datespring according the DILPS-rules
+	 *
+	 *	formats a given datestring according to the rules
+	 *	in the DILPS database, returns the result in datelist
+	 *
+	 *	@access		public
+	 *	@param		object	$db
+	 *	@param		string	$datestring
+	 *	@param		array	$datelist
+	 *	@return		void
+	 *
+	 */
+	
+	function dating( $db, &$datestring, &$datelist )
+	{
+		global $db_prefix;
+		static $dating_match = NULL;
+		static $dating_replacement = NULL;
+		static $dating_pattern = NULL;
+		if( $dating_match == NULL )
+		{
+			$sql = "SELECT * FROM {$db_prefix}dating_rules WHERE `type`='match' ORDER BY seq ASC";
+
+			$dating_match = $db->GetArray( $sql );
+			
+			for( $i = 0; $i < sizeof( $dating_match ); $i++ )
+			{
+				$dating_match[$i]['regexp'] = strtolower( stripslashes( $dating_match[$i]['regexp'] ));
+			}
+		}
+		if( $dating_replacement == NULL )
+		{
+			$sql = "SELECT * FROM {$db_prefix}dating_rules WHERE `type`='replace' ORDER BY seq ASC";
+			$rs = $db->Execute( $sql );
+			
+			$dating_pattern = array();
+			$dating_replacement = array();
+			while( !$rs->EOF )
+			{
+				$dating_pattern[] = strtolower( stripslashes( $rs->fields['from'] ));
+				$dating_replacement[] = strtolower( stripslashes( $rs->fields['to'] ));
+				$rs->MoveNext();
+			}
+			$rs->Close();
+		}
+		$datelist = array();
+	//	echo "[$datestring] --> ";
+		$datestring = trim( preg_replace( $dating_pattern, $dating_replacement, strtolower( $datestring )));
+	//	echo "[$datestring]\n";
+		$dates = explode( ';', $datestring );
+	//    print_r( $dates );
+		foreach( $dates as $date )
+		{ 
+			for( $i = 0; $i < sizeof( $dating_match ); $i++ )
+			{
+				$matches = array();
+				if( preg_match( $dating_match[$i]['regexp'], $date, $match ))
+				{
+					$result = array( 'from' => eval( $dating_match[$i]['from'] ),
+										 'to' => eval( $dating_match[$i]['to'] ));
+					$datelist[] = $result;
+					break;
+				}
+			}
+		}
+		return true;
 	}
 	
 	/**
@@ -738,5 +798,4 @@
 		}
 	}	
 
-	
 ?>

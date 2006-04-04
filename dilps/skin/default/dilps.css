@@ -681,5 +681,56 @@ table.querypiece {
 }
 {/literal}
 
+{literal}
+td.result_list_collection {
+   font-family: Times;
+   font-weight: normal;
+   font-size: 10pt;
+   text-align: left;
+   color: #778898;
+   vertical-align: top;
+   border-bottom: 1px solid #778898; 
+}
+{/literal}
 
+{literal}
+td.result_list_collection_header {
+   font-family: Times;
+   font-weight: normal;
+   font-size: 11pt;
+   text-align: left;
+   color: #99AABA;
+   vertical-align: top;
+}
+{/literal}
+
+{literal}
+a.collection_navsymbol:link, a.collection_navsymbol:visited {
+        color: #778898;
+        text-align: center;
+        font-weight: bold;
+        text-decoration: none;
+        border: 0px;
+        padding: 0px;
+        margin: 0px;
+}
+{/literal}
+
+{literal}	
+a.collection_navsymbol:hover {
+        color: #778898;
+        text-align: center;
+        font-weight: bold;
+        text-decoration: underline;
+        border: 0px;
+        padding: 0px;
+        margin: 0px;
+}
+{/literal}
+
+{literal}	
+td.right-pad {
+    padding-right: 33px;
+}
+{/literal}
 <!--	END dilps.css	-->

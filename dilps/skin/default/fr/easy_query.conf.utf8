@@ -46,6 +46,7 @@ file = fichier
 directory = répertoire
 
 imagestatus = statut d'image
+status = statut d'image
 images_all = tout
 images_new = nouvelle entrée
 images_edited = pas d'accès 

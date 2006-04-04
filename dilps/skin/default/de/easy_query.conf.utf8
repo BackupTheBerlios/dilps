@@ -20,6 +20,7 @@ location = Ort
 institution = Institution
 commentary = Kommentar
 keyword = Schlüsselwörter
+status = Bildstatus
 all2 = Alle
 like = Ähnlich zu
 equals = gleich

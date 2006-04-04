@@ -32,10 +32,11 @@
  * Purpose:  assign the column metainfo to a template var
  * -------------------------------------------------------------
  */
- 
+
 global $config;
 require_once( $config['includepath'].'htmlquery.inc.php' );
- 
+
+// returns information used for dynamic creation of drop-down lists in the html query form
 function smarty_function_column_metainfo($params, &$smarty)
 {
     if (empty($params['var'])) {
@@ -43,8 +44,10 @@ function smarty_function_column_metainfo($params, &$smarty)
         return;
     }
     
+    $excludeFields = array('status');
+    
     $dq = new dilpsQuery();
-    $colinfo = $dq->getColumnMetainfo();
+    $colinfo = $dq->getColumnMetainfo($excludeFields);
     $smarty->assign($params['var'], $colinfo);
 }
 

@@ -45,7 +45,7 @@ BEGIN view_detail.tpl
   {/if}
   <meta http-equiv="Content-Script-Type" content="text/javascript">
   <meta http-equiv="Content-Style-Type" content="text/css">
-  <meta name="author" content="jï¿½rgen enge, thorsten wï¿½bbena">
+  <meta name="author" content="jürgen enge, thorsten wübbena">
   <meta name="date" content="2003-01-23">
   <link rel="shortcut icon" href="favicon.ico">
   <title>. : {#title#|escape:"htmlall"} : .  [[{$query.id}]]</title>

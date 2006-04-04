@@ -118,152 +118,26 @@ column_operators["{$column}"] = "{$op.operators}";
 		<table class="query" cellspacing="1" cellpadding="0">
 			<tr>
 				<td>
-				{foreach from=$query.querypiece key=qpindex item=qp name=qploop}
-					{if $qpindex eq 0}
-						<table class="querypiece">
-							<tr>
-							   <td class="queryinputfieldtext">
-							      {#collection#}
-							   </td>
-							   <td>
-							      <select class="queryselectfield" name="query[querypiece][0][val][0]">
-									   <option value="-1">{#all_collections#|escape:htmlall}</option>
-										{foreach from=$collections item=row name=collectionloop}
-										<option value="{$row.collectionid}"{if $query.querypiece[0].val[0] eq "" and $config.defaultcollection eq $row.collectionid} selected{elseif $query.querypiece[0].val[0] eq $row.collectionid} selected{/if}>{$row.name|escape:htmlall}</option>
-										{/foreach}
-								  </select>
-							      <input type="hidden" name="query[querypiece][0][field][0]" value="collectionid" />
-							      <input type="hidden" name="query[querypiece][0][connector][0]" value="and" />
-							      <input type="hidden" name="query[querypiece][0][operator][0]" value="equals" />
-							      <input type="hidden" name="query[querypiece][0][not][0]" value="0" />
-							      <input type="hidden" name="query[querypiece][0][operator_list][0]" value="equals" />
-
-							   </td>
-
-							</tr>
-						</table>
-					{else}
-						<table class="querypiece">
-							{foreach from=$qp.field key=key item=ignore name=phraseloop}
-								<tr>
-								   <input type="hidden" name="query[querypiece][{$qpindex}][operator_list][{$key}]" value="{$qp.operator_list[$key]}" />
-								   <td align="left">
-								      <select  class="queryselectfield" name="query[querypiece][{$qpindex}][field][{$key}]" onChange="UpdateSelectList('query[querypiece][{$qpindex}][operator][{$key}]', 'query[querypiece][{$qpindex}][operator_list][{$key}]', this, this.form);">
-											{foreach from=$column_operators key=column item=ignored}
-											<option value="{$column}"{if $qp.field[$key] eq $column} selected{/if}>{$smarty.config.$column|escape:htmlall}</option>
-											{/foreach}
-									  </select>
-								   </td>
-								   <td align="left">
-								      <input type="hidden" name="query[querypiece][{$qpindex}][not][{$key}]" value="{if $qp.not[$key] == 1 or $qp.not[$key] eq 'on'}1{else}0{/if}" />
-								      <input type="checkbox" class="queryinputfield" name="query[querypiece][{$qpindex}][not][{$key}]box" onchange="queryCheckbox(this.form, 'query[querypiece][{$qpindex}][not][{$key}]', 'query[querypiece][{$qpindex}][not][{$key}]box');" {if $qp.not[$key] == 1  or $qp.not[$key] eq 'on'}checked="checked" {/if}/>
-								   </td>
-								   <td align="left">
-								   {if $qp.operator_list[$key] eq 'normal'}
-								      <select  class="queryselectfield" name="query[querypiece][{$qpindex}][operator][{$key}]" >
-											<option value="like" {if $qp.operator[$key] eq "like"} selected="selected"{/if}>{#like#}</option>
-											<option value="equals" {if $qp.operator[$key] eq "equals"} selected="selected"{/if}>{#equals#}</option>
-									  </select>
-								   {elseif $qp.operator_list[$key] eq 'extended'}
-								      <select  class="queryselectfield" name="query[querypiece][{$qpindex}][operator][{$key}]" >
-											<option value="like" {if $qp.operator[$key] eq "like"} selected="selected"{/if}>{#like#}</option>
-											<option value="equals" {if $qp.operator[$key] eq "equals"} selected="selected"{/if}>{#equals#}</option>
-											<option value="soundslike" {if $qp.operator[$key] eq "soundslike"} selected="selected"{/if}>{#soundslike#}</option>
-									  </select>
-								   {elseif $qp.operator_list[$key] eq 'like'}
-								      <select  class="queryselectfield" name="query[querypiece][{$qpindex}][operator][{$key}]" >
-											<option value="like" {if $qp.operator[$key] eq "like"} selected="selected"{/if}>{#like#}</option>
-									  </select>
-								   {elseif $qp.operator_list[$key] eq 'equals'}
-								      <select  class="queryselectfield" name="query[querypiece][{$qpindex}][operator][{$key}]" >
-											<option value="equals" {if $qp.operator[$key] eq "equals"} selected="selected"{/if}>{#equals#}</option>
-									  </select>
-								   {else}
-								      <select  class="queryselectfield" name="query[querypiece][{$qpindex}][operator][{$key}]" >
-											<option value="-1">&nbsp;&nbsp;&nbsp;&nbsp;</option>
-											<option value="-1">&nbsp;&nbsp;&nbsp;&nbsp;</option>
-											<option value="-1">&nbsp;&nbsp;&nbsp;&nbsp;</option>
-											<option value="-1">&nbsp;&nbsp;&nbsp;&nbsp;</option>
-											<option value="-1">&nbsp;&nbsp;&nbsp;&nbsp;</option>
-											<option value="-1">&nbsp;&nbsp;&nbsp;&nbsp;</option>
-									  </select>
-								   {/if}
-								   </td>
-								   <td align="left">
-								   {if $qp.field[$key] eq "type"}
-								      <select  class="queryselectfield" name="query[querypiece][{$qpindex}][val][{$key}]">
-								        <option value="-1" {if $qp.val[$key] eq "-"}selected{/if}>{#all2#|escape:htmlall}</option>
-								    	{foreach from=$types item=type name=typeloop}
-								    	<option value="{$type.name}"{if $qp.val[$key] eq $type.name} selected{/if}>{$type.print_name|escape:htmlall}</option>
-								    	{/foreach}
-								      </select>
-								   {else}
-								      <input class="queryinputfield" type="text" name="query[querypiece][{$qpindex}][val][{$key}]" size="15" value="{$qp.val[$key]|escape:html}">
-								   {/if}
-								   </td>
-								   <td align="left">
-								      <input type="radio" name="query[querypiece][{$qpindex}][connector][{$key}]" value="and" {if $qp.connector[$key] eq "and"}checked="checked"{/if}
-								        {if $smarty.foreach.phraseloop.last} onclick="submit()"{/if} />{#queryand#}
-								      <input type="radio" name="query[querypiece][{$qpindex}][connector][{$key}]" value="or" {if $qp.connector[$key] eq "or"}checked="checked"{/if}
-								        {if $smarty.foreach.phraseloop.last} onclick="submit()"{/if} />{#queryor#}
-								      <input type="button" name="delete[{$qpindex}][{$key}]" value="X" onclick="setAndSubmit(this.form, 'query[delete_phrase]', '{$qpindex}:{$key}')" />
-								   </td>
-								</tr>
-							{/foreach}
-							{math assign="lastphraseindex" equation="num - 1" num="`$smarty.foreach.phraseloop.total`"}
-						</table>
-					{/if}
-					{if $smarty.foreach.phraseloop.total > 1 or $qpindex < $lastqpindex or $qpindex == 0}
-					<tr>
-						<td>
-						<input type="radio" name="query[querypiece][{$qpindex}][piece_connector]" value="and" {if $qp.piece_connector eq "and"}checked="checked"{/if} {if $smarty.foreach.qploop.last} onclick="submit()"{/if} />{#queryand#}
-						<input type="radio" name="query[querypiece][{$qpindex}][piece_connector]" value="or" {if $qp.piece_connector eq "or"}checked="checked"{/if} {if $smarty.foreach.qploop.last} onclick="submit()"{/if} />{#queryor#}
-						</td>
-					</tr>
-					{/if}
-					{math assign="lastqpindex" equation="num - 1" num="`$smarty.foreach.qploop.total`"}
-				{/foreach}
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<input type="radio" name="query[imagestatusconnector]" value="and" checked="checked"/>{#queryand#}
-				</td>
-			</tr>
-			<tr>
-				<td>
 					<table class="querypiece">
 						<tr>
-							<td class="queryinputfieldtext">
-					  			{#imagestatus#|escape:htmlall}
-							</td>
-							<td class="queryinputfield">
-							<select class="queryselectfield" name="query[imagestatus]" onchange="submit()">
-								{if $user.admin or $user.editor}
-									<option value="all" {if $query.imagestatus eq "all"}selected="selected"{/if}>{#images_all#}</option>
-									<option value="new" {if $query.imagestatus eq "new"}selected="selected"{/if}>{#images_new#}</option>
-									<option value="edited" {if $query.imagestatus eq "edited"}selected="selected"{/if}>{#images_edited#}</option>
-								{/if}
-								<option value="reviewed" {if $query.imagestatus eq "reviewed"}selected="selected"{/if}>{#images_reviewed#}</option>
-							</select>
-							</td>
+						   <td class="queryinputfieldtext">
+						      {#collection#}
+						   </td>
+						   <td class="queryinputfield right-pad" align="right">
+						      <select class="queryselectfield" name="query[collectionid]">
+								   <option value="-1">{#all_collections#|escape:htmlall}</option>
+									{foreach from=$collections item=row name=collectionloop}
+									<option value="{$row.collectionid}"{if $query.collectionid eq "" and $config.defaultcollection eq $row.collectionid} selected{elseif $query.collectionid eq $row.collectionid} selected{/if}>{$row.name|escape:htmlall}</option>
+									{/foreach}
+							  </select>
+          					  <input type="hidden" name="query[collectionidconnector]" value="and" />
+						   </td>
 						</tr>
-					</table>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<input type="radio" name="query[groupconnector]" value="and" checked="checked"/>{#queryand#}
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<table class="querypiece">
 						<tr>
 							<td class="queryinputfieldtext">
 						  		{#group#|escape:htmlall}
 								</td>
-								<td class="queryinputfield">
+								<td class="queryinputfield" align="right">
 								{if $query.group eq ""}
 									<input class="queryinputfield" type="text" name="query[group]" size="40" readonly="readonly" value=" ({#selecthere#|escape:htmlall}) " onclick="javascript:window.open('group_select.php?PHPSESSID={$sessionid}&target=group','groupselection1','width=800,height=300,left=10,top=250,dependent=yes');">					
 								{else}
@@ -272,14 +146,116 @@ column_operators["{$column}"] = "{$op.operators}";
 								<input class="queryinputfield" type="hidden" name="query[groupid]" value="{$query.groupid|escape:html}">
 								<input class="queryinputfield" type="hidden" name="query[grouplevel]" value="{$query.grouplevel|escape:html}">
 								<button type="button" class="actionbutton2" onclick="javascript:cleargroup();" title="{#nogroup#|escape:htmall}"><img src="clear.png" style="width: 12px; height: 12px;" /></button>
+            					<input type="hidden" name="query[groupconnector]" value="and" checked="checked"/>
+							</td>
+						</tr>
+						<tr>
+							<td class="queryinputfieldtext">
+					  			{#imagestatus#|escape:htmlall}
+							</td>
+							<td class="queryinputfield right-pad" align="right">
+							<select class="queryselectfield" name="query[status]" onchange="submit()">
+								{if $user.admin or $user.editor}
+									<option value="all" {if $query.status eq "all"}selected="selected"{/if}>{#images_all#}</option>
+									<option value="new" {if $query.status eq "new"}selected="selected"{/if}>{#images_new#}</option>
+									<option value="edited" {if $query.status eq "edited"}selected="selected"{/if}>{#images_edited#}</option>
+								{/if}
+								<option value="reviewed" {if $query.status eq "reviewed"}selected="selected"{/if}>{#images_reviewed#}</option>
+							</select>
+        					<input type="hidden" name="query[statusconnector]" value="and" />
 							</td>
 						</tr>
 					</table>
-				</td>
-			</tr>
-			<tr>
-				<td>
-				&nbsp;
+		  			{#queryand#|escape:htmlall}
+				    {foreach from=$query.querypiece key=qpindex item=qp name=qploop}
+					<table class="querypiece">
+						{foreach from=$qp.field key=key item=ignore name=phraseloop}
+							<tr>
+							   <input type="hidden" name="query[querypiece][{$qpindex}][operator_list][{$key}]" value="{$qp.operator_list[$key]}" />
+							   <td align="left">
+							      <select  class="queryselectfield" name="query[querypiece][{$qpindex}][field][{$key}]" onChange="UpdateSelectList('query[querypiece][{$qpindex}][operator][{$key}]', 'query[querypiece][{$qpindex}][operator_list][{$key}]', this, this.form);">
+							            <option value=""></option>
+										{foreach from=$column_operators key=column item=ignored}
+										{if $column ne 'collectionid'}
+										   <option value="{$column}"{if $qp.field[$key] eq $column} selected{/if}>{$smarty.config.$column|escape:htmlall}</option>
+										{/if}
+										{/foreach}
+								  </select>
+							   </td>
+							   <td align="left">
+							      <input type="hidden" name="query[querypiece][{$qpindex}][not][{$key}]" value="{if $qp.not[$key] == 1 or $qp.not[$key] eq 'on'}1{else}0{/if}" />
+							      <input type="checkbox" class="queryinputfield" name="query[querypiece][{$qpindex}][not][{$key}]box" onchange="queryCheckbox(this.form, 'query[querypiece][{$qpindex}][not][{$key}]', 'query[querypiece][{$qpindex}][not][{$key}]box');" {if $qp.not[$key] == 1  or $qp.not[$key] eq 'on'}checked="checked" {/if}/>
+							   </td>
+							   <td align="left">
+							   {if $qp.operator_list[$key] eq 'normal'}
+							      <select  class="queryselectfield" name="query[querypiece][{$qpindex}][operator][{$key}]" >
+										<option value="like" {if $qp.operator[$key] eq "like"} selected="selected"{/if}>{#like#}</option>
+										<option value="equals" {if $qp.operator[$key] eq "equals"} selected="selected"{/if}>{#equals#}</option>
+								  </select>
+							   {elseif $qp.operator_list[$key] eq 'extended'}
+							      <select  class="queryselectfield" name="query[querypiece][{$qpindex}][operator][{$key}]" >
+										<option value="like" {if $qp.operator[$key] eq "like"} selected="selected"{/if}>{#like#}</option>
+										<option value="equals" {if $qp.operator[$key] eq "equals"} selected="selected"{/if}>{#equals#}</option>
+										<option value="soundslike" {if $qp.operator[$key] eq "soundslike"} selected="selected"{/if}>{#soundslike#}</option>
+								  </select>
+							   {elseif $qp.operator_list[$key] eq 'like'}
+							      <select  class="queryselectfield" name="query[querypiece][{$qpindex}][operator][{$key}]" >
+										<option value="like" {if $qp.operator[$key] eq "like"} selected="selected"{/if}>{#like#}</option>
+								  </select>
+							   {elseif $qp.operator_list[$key] eq 'equals'}
+							      <select  class="queryselectfield" name="query[querypiece][{$qpindex}][operator][{$key}]" >
+										<option value="equals" {if $qp.operator[$key] eq "equals"} selected="selected"{/if}>{#equals#}</option>
+								  </select>
+							   {else}
+							      <select  class="queryselectfield" name="query[querypiece][{$qpindex}][operator][{$key}]" >
+										<option value="-1">&nbsp;&nbsp;&nbsp;&nbsp;</option>
+										<option value="-1">&nbsp;&nbsp;&nbsp;&nbsp;</option>
+										<option value="-1">&nbsp;&nbsp;&nbsp;&nbsp;</option>
+										<option value="-1">&nbsp;&nbsp;&nbsp;&nbsp;</option>
+										<option value="-1">&nbsp;&nbsp;&nbsp;&nbsp;</option>
+										<option value="-1">&nbsp;&nbsp;&nbsp;&nbsp;</option>
+								  </select>
+							   {/if}
+							   </td>
+							   <td align="left">
+							   {if $qp.field[$key] eq "type"}
+							      <select  class="queryselectfield" name="query[querypiece][{$qpindex}][val][{$key}]">
+							        <option value="-1" {if $qp.val[$key] eq "-"}selected{/if}>{#all2#|escape:htmlall}</option>
+							    	{foreach from=$types item=type name=typeloop}
+							    	<option value="{$type.name}"{if $qp.val[$key] eq $type.name} selected{/if}>{$type.print_name|escape:htmlall}</option>
+							    	{/foreach}
+							      </select>
+							   {elseif $qp.field[$key] eq "status"}
+							      <select  class="queryselectfield" name="query[querypiece][{$qpindex}][val][{$key}]">
+        							{if $user.admin or $user.editor}
+        								<option value="all" {if $qp.val[$key] eq "all"}selected="selected"{/if}>{#images_all#}</option>
+        								<option value="new" {if $qp.val[$key] eq "new"}selected="selected"{/if}>{#images_new#}</option>
+        								<option value="edited" {if $qp.val[$key] eq "edited"}selected="selected"{/if}>{#images_edited#}</option>
+        							{/if}
+        							<option value="reviewed" {if $qp.val[$key] eq "reviewed"}selected="selected"{/if}>{#images_reviewed#}</option>
+							      </select>
+							   {else}
+							      <input class="queryinputfield" type="text" name="query[querypiece][{$qpindex}][val][{$key}]" size="15" value="{$qp.val[$key]|escape:html}">
+							   {/if}
+							   </td>
+							   <td align="left">
+							      <input type="radio" name="query[querypiece][{$qpindex}][connector][{$key}]" value="and" {if $qp.connector[$key] eq "and"}checked="checked"{/if}
+							        {if $smarty.foreach.phraseloop.last} onclick="submit()"{/if} />{#queryand#}
+							      <input type="radio" name="query[querypiece][{$qpindex}][connector][{$key}]" value="or" {if $qp.connector[$key] eq "or"}checked="checked"{/if}
+							        {if $smarty.foreach.phraseloop.last} onclick="submit()"{/if} />{#queryor#}
+							      <input type="button" name="delete[{$qpindex}][{$key}]" value="X" onclick="setAndSubmit(this.form, 'query[delete_phrase]', '{$qpindex}:{$key}')" />
+							   </td>
+							</tr>
+						{/foreach}
+					</table>
+					{if not $smarty.foreach.qploop.last}
+						<input type="radio" name="query[querypiece][{$qpindex}][piece_connector]" value="and" {if $qp.piece_connector eq "and"}checked="checked"{/if} {if $smarty.foreach.qploop.last} onclick="submit()"{/if} />{#queryand#}
+						<input type="radio" name="query[querypiece][{$qpindex}][piece_connector]" value="or" {if $qp.piece_connector eq "or"}checked="checked"{/if} {if $smarty.foreach.qploop.last} onclick="submit()"{/if} />{#queryor#}
+					{elseif count($query.querypiece[$qpindex].field) > 0}
+						  <input type="radio" name="query[querypiece][{$qpindex}][piece_connector]" value="and" {if $qp.piece_connector eq "and"}checked="checked"{/if} onclick="submit()" />{#queryand#}
+						  <input type="radio" name="query[querypiece][{$qpindex}][piece_connector]" value="or" {if $qp.piece_connector eq "or"}checked="checked"{/if} onclick="submit()" />{#queryor#}
+					{/if}
+				{/foreach}
 				</td>
 			</tr>
 			<tr>
