@@ -43,7 +43,7 @@ FieldUpdater.prototype = {
     ajaxUpdateFailure: function(elementId, xhr, response) {
 
         // update the field with a failure message ...
-        Element.update(elementId, "Error f");
+        Element.update(elementId, "? (failed)");
         
         if (this.debug) {
             var info = 'function: ajaxUpdateFailure<br/>'
@@ -56,7 +56,7 @@ FieldUpdater.prototype = {
     ajaxUpdateException: function(elementId, xhr, exception) {
 
         // update the field with a failure message ...
-        Element.update(elementId, "Error");
+        Element.update(elementId, "? (failed:exception)");
         
         if (this.debug) {
             var info = 'function: ajaxUpdateException<br/>'
