@@ -31,9 +31,7 @@
 	 *					system
 	 * -------------------------------------------------------------
 	 */
-	
 	$path_fix = dirname(__FILE__);
-
 	include_once($path_fix.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'includes.inc.php');
 	include_once($path_fix.DIRECTORY_SEPARATOR.'mime'.DIRECTORY_SEPARATOR.'Type.php');
 	//include_once($config['includepath'].'dating.inc.php');

@@ -7,13 +7,11 @@
     HTTP_Request >= 1.3.0
     Net_URL >= 1.0.14
 */
-
 if (!defined('DILPS_SOAP_QUERY')) define('DILPS_SOAP_QUERY', 1);
 error_reporting(0);  // suppress warnings related to unfound (and unnecessary) soap include files
 require_once('./config.inc.php');
-ini_set('include_path', ini_get('include_path').":{$config['includepath']}pear");
-require_once('SOAP/Server.php');
 require_once("{$config['includepath']}dilpsSoapServer.class.php");
+require_once('SOAP/Server.php');
 
 // Create the SOAP server
 $soapServer = new SOAP_Server();

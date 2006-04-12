@@ -71,8 +71,10 @@
 	if(!defined('PATH_SEPARATOR')) {
 		define('PATH_SEPARATOR',(preg_match('/WIN/i',PHP_OS) ? ';' : ':'));
 	}
-	$new_include_path = 	$lib_include_path.":"
-										.$config['includepath'].'pear'.PATH_SEPARATOR
+
+    //bk: use the pear classes included with dilps code before any installed in system-default locations
+	$new_include_path = 	$config['includepath'].'pear'.PATH_SEPARATOR
+                            .$lib_include_path.PATH_SEPARATOR
 										.$config['includepath'].'xml'.PATH_SEPARATOR
 										.$config['includepath'].'mime'.PATH_SEPARATOR
 										.$config['includepath'].'console'.PATH_SEPARATOR

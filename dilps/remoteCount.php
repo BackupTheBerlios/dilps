@@ -8,15 +8,13 @@
 */
 define('DILPS_SOAP_QUERY', 1);
 require_once('./config.inc.php');
-ini_set('include_path', ini_get('include_path').":{$config['includepath']}pear");
-include_once('SOAP/Client.php');
 require_once("{$config['includepath']}db.inc.php");
 require_once("{$config['includepath']}session.inc.php");
 require_once("{$config['includepath']}tools.inc.php");
 require_once("{$config['includepath']}remote.inc.php");
+include_once('SOAP/Client.php');
 
 global $db, $db_prefix;
-
 // get querystruct from session
 $queryid = empty($_REQUEST['queryid']) ? 0 : $_REQUEST['queryid'];
 if (!isset($_SESSION['queries'][$queryid])) {

@@ -342,8 +342,7 @@
         function loadDB_names($sourcefile) {    
             global $config;
             
-            ini_set('include_path', ini_get('include_path') . ':' . $config['includepath'].'pear');
-            //ini_set('include_path', ini_get('include_path') . ':' . $config['includepath'].'pear/XML');
+            ini_set('include_path',  $config['includepath'].'pear'.':'.ini_get('include_path'));
             ini_set("memory_limit", "64M");
             
             setlocale(LC_CTYPE, 'en_US.iso88591');
@@ -425,7 +424,7 @@
             
             $source = 'Getty TGN';
             
-            ini_set('include_path', ini_get('include_path') . ':' . $config['includepath'].'pear');
+            ini_set('include_path', $config['includepath'].'pear'. ':' . ini_get('include_path'));
             //ini_set("memory_limit", "64M");
             ini_set("memory_limit", "1024M");
             setlocale(LC_CTYPE, 'en_US.iso88591');

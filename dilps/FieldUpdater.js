@@ -4,7 +4,7 @@ function FieldUpdater(targetClass, url, waitImage, sessionid, queryid) {
     this.waitImage = waitImage;
     this.sessionid = sessionid;
     this.queryid = queryid;
-    this.debug = 0;  // for this to work: include debug.js 
+    this.debug = false;  // for this to work: include debug.js 
 }
 
 FieldUpdater.prototype = {
