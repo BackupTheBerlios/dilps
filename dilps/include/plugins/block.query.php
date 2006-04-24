@@ -194,20 +194,20 @@ function query_local_collection($query, $options, $db, $db_prefix) {
 // gets an overview of local collections, with a count of records that match as per the query
 function query_local_collection_overview($query, $options, $db, $db_prefix) {
     $querystruct = transform_query($query['querypiece']);
-    
 	$dbQuery = new dilpsQuery($db, $db_prefix);
-    $fields =  "1 as local, {$db_prefix}collection.collectionid, {$db_prefix}collection.name, count({$db_prefix}meta.id) as count";
-	$from = "{$db_prefix}meta, {$db_prefix}collection ";
-	$where = $dbQuery->buildWhere($querystruct);
-
-	if (!empty($query['groupid'])){
+    $fields =  "1 as local, {$db_prefix}collection.collectionid, {$db_prefix}collection.name";
+	$joinOn = $dbQuery->buildWhere($querystruct);
+    $joinOn .= " and {$db_prefix}collection.collectionid = {$db_prefix}meta.collectionid ";
+    $from = "{$db_prefix}collection left join {$db_prefix}meta  on $joinOn";
+    $where = "{$db_prefix}collection.host = 'local'";
+    if (!empty($query['groupid'])){
 		// add grouptable to query
-		$fields .= ", {$db_prefix}img_group.groupid as groupid";
-		$from .= "LEFT JOIN {$db_prefix}img_group ON {$db_prefix}img_group.imageid = {$db_prefix}meta.imageid AND {$db_prefix}img_group.collectionid = {$db_prefix}meta.collectionid";
-		$where .= get_groupid_where_clause($query, $db, $db_prefix);
+		$fields .= ", sum(if(groupid, 1, 0)) as count";
+		$from .= " LEFT JOIN {$db_prefix}img_group ON {$db_prefix}img_group.imageid = {$db_prefix}meta.imageid AND {$db_prefix}img_group.collectionid = {$db_prefix}meta.collectionid";
+		$from .= get_groupid_where_clause($query, $db, $db_prefix);
+	} else {
+		$fields .= ", count({$db_prefix}meta.id) as count";
 	}
-
-    $where .= " and {$db_prefix}collection.collectionid = {$db_prefix}meta.collectionid";
 
 	$sql = "SELECT DISTINCT $fields FROM $from WHERE $where"
             ." group by {$db_prefix}collection.collectionid, {$db_prefix}collection.name";

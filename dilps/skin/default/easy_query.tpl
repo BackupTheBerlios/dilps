@@ -79,6 +79,7 @@ BEGIN easy_query.tpl
 <input type="hidden" name="query[querytype]" value="simple">
 <input type="hidden" name="query[fromquerytype]" value="simple">
 <input type="hidden" name="query[all_op]" value="likesoundslike">
+<input type="hidden" name="query[showoverviewlink]" value="{$query.showoverviewlink}">
 <!--<input type="hidden" name="query[querypiece][0][piece_connector]" value="and">-->
 <table class="query" cellspacing="0" cellpadding="0" width="100%">
 <tr>
@@ -321,7 +322,7 @@ BEGIN easy_query.tpl
 		      &nbsp;
 		   </td>
 		   <td>
-		      <input type="button" onClick="editDetail(''); return true;" name="query[new]" value="{#search#|escape:html}">
+		      <input type="button" onClick="newQuery(); return true;" name="query[new]" value="{#search#|escape:html}">
 		      <br />
 		      <input type="button" onClick="changeQueryType('advanced')" name="changequerytype" value="{#advancedsearch#|escape:html}">
 		   </td>

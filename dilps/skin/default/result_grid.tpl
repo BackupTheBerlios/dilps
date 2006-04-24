@@ -38,7 +38,9 @@ BEGIN result_grid.tpl
 {if $view.detail.id ne "" or $view.edit.id ne ""}
 colspan="2"
 {/if}
-><div class="outer">
+>
+{if $query.showoverviewlink}<div style="float:right"><a class="collection_navsymbol" href="javascript:queryAllCollections()">{#collectionoverview#|escape:html}</a></div>{/if}
+<div class="outer">
 {#page#|escape:html}
  {include file="`$config.skinBase``$config.skin`/browse.tpl"}
 </div>

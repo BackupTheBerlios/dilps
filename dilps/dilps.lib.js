@@ -197,6 +197,7 @@ function showCollection( sessionid, collectionid, queryid )
 	//document.forms["Main"].elements["view[type]"].value = "soap";
 	//document.forms["Main"].elements["query[remote]"].value = collectionid+":"+queryid;
 	document.forms["Main"].elements["query[collectionid]"].value = collectionid;
+	document.forms["Main"].elements["query[showoverviewlink]"].value="1";
 	document.forms["Main"].submit();
 }
 
@@ -217,6 +218,17 @@ function PrototypeIncluded() {
     return included;
 }
 
+function queryAllCollections()
+{
+	document.forms["Main"].elements["query[collectionid]"].value='-1';
+	editDetail('');
+}
+
+function newQuery()
+{
+	document.forms["Main"].elements["query[showoverviewlink]"].value="0";
+	editDetail('');
+}
 
 function queryCheckbox(form, hiddenvalue, cbox) {
 	if (form.elements[cbox].checked == false) {

@@ -110,6 +110,7 @@ column_operators["{$column}"] = "{$op.operators}";
 <input type="hidden" name="query[fromquerytype]" value="advanced">
 <input type="hidden" name="query[transforming_field]" value="">
 <input type="hidden" name="query[delete_phrase]" value="">
+<input type="hidden" name="query[showoverviewlink]" value="{$query.showoverviewlink}">
 
 <table class="query" cellspacing="0" cellpadding="0" width="100%">
 <tr>
@@ -260,7 +261,7 @@ column_operators["{$column}"] = "{$op.operators}";
 			</tr>
 			<tr>
 			   <td class="queryinputfieldtext" align="left">
-			      <input type="button" onClick="editDetail('', 'advanced'); return true;" name="submitquery" value="{#search#|escape:html}">
+			      <input type="button" onClick="newQuery(); return true;" name="submitquery" value="{#search#|escape:html}">
 			      <input type="button" onClick="changeQueryType('simple');" name="changequerytype" value="{#simplesearch#|escape:html}">
 			   </td>
 			</tr>

@@ -52,6 +52,7 @@ if( isset($_REQUEST['query']) && is_array( $_REQUEST['query'] )) {
 cleanQuery($query);
 $query['queryid'] = empty($_SESSION['counter']) ? 0 : $_SESSION['counter'];
 $query = prepare_html_query($query);
+//var_dump($query); exit;
 //debug($_REQUEST);
 /*if ($query['collectionid'] == '-1') {
     $config['remotequery'] = 1;
