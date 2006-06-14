@@ -1,0 +1,1 @@
+This folder is the standard store for your images. You can create you collection bases inside.
