@@ -3,6 +3,7 @@
     */
 
 class dilpsQuery {
+
     var $db;
     var $db_prefix;
 
@@ -34,12 +35,7 @@ class dilpsQuery {
                         'commentary' =>     array('function'=>'get_meta_where_query',
                         						'operators'=>'normal'),
                         'keyword' =>        array('function'=>'get_meta_where_query',
-                                                'operators'=>'normal'),
-                        'status'  =>        array('function'=>'get_status_where_query',
-                                                'operators'=>'equals'),
-                        'imageid' =>        array('function'=>'get_meta_where_query',
-                                                'operators'=>'equals'),
-                                                );
+                                                'operators'=>'normal'));
 
     function dilpsQuery($db = null, $db_prefix = null) {
 
@@ -49,14 +45,8 @@ class dilpsQuery {
             $this->db_prefix = $db_prefix;
     }
 
-    function getColumnMetainfo($exclude=array()) {
-        $info = $this->column_metainfo;
-        foreach ($exclude as $toexclude) {
-            if (isset($info[$toexclude])) {
-                unset($info[$toexclude]);
-            }
-        }
-        return $info;
+    function getColumnMetainfo() {
+        return $this->column_metainfo;
     }
 
     function buildWhere($querystruct) {
@@ -64,28 +54,36 @@ class dilpsQuery {
         query = array(phrases, connectors)
         phrases = array(atoms, connectors)
         connectors = array ({and | or})
-        atoms = array(field=>'...', val=>'...', operator=>'...', not=>{0|1})
+        atoms = array(field, val, operator, not)
         */
-        if (empty($querystruct) || empty($querystruct['phrases'])) {
+        if (empty($querystruct)) {
             return '1';
         }
-        $where = '';
-        $rawphrases = $querystruct['phrases'];
-        $connectors = $querystruct['connectors'];
-        $where .= '(';
-        $phrases = array();
-        foreach ($rawphrases as $rawphrase) {
-        	$phrases[] = $this->buildPhrase($rawphrase);
-        }
 
+        $where = '';
+
+        $phrases = $querystruct['phrases'];
+        $connectors = $querystruct['connectors'];
+        //$count = count($connectors);
+        $count = count($phrases) - 1;
+
+        $where .= '(';
         $connector = '';
-        foreach ($phrases as $phrase) {
-        	if ($phrase !== '') {
+        for ($i = 0; $i < $count; $i++) {
+        	$phrase = $this->buildPhrase($phrases[$i]);
+        	if ($phrase != '') {
+	            //$where .= $phrase;
+	            //$where .= " {$connectors[$i]} ";
 	            $where .= " $connector $phrase";
+	            $connector = $connectors[$i];
         	}
-        	list($ckey, $connector) = each($connectors);
+        }
+        $phrase = $this->buildPhrase($phrases[$i]);
+        if ($phrase != '') {
+        	$where .= " $connector $phrase";
         }
         $where .= ')';
+
         if ($where == '()') {
         	$where = '1';
         }
@@ -98,31 +96,37 @@ class dilpsQuery {
         $atoms = $pieces['atoms'];
         $connectors = $pieces['connectors'];
 
+        $count = count($atoms) - 1;
+
         $known_columns = array_keys($this->column_metainfo);
 
-        $phrase = '(';
-        
-        $atomtexts = array();
-        foreach ($atoms as $atom) {
-            $atomtexts[] = $this->getPhraseBit($atom, $known_columns);
-        }
         $connector = '';
-        foreach ($atomtexts as $atomtext) {
-        	if ($atomtext !== '') {
-	            $phrase .= " $connector $atomtext";
-        	}
-        	list($ckey, $connector) = each($connectors);
+        $phrase = '(';
+        for ($i = 0; $i < $count; $i++) {
+
+			$bit = $this->getPhraseBit($atoms[$i], $known_columns);
+			if ($bit != '') {
+	            $phrase .= " $connector $bit";
+	            $connector = $connectors[$i];
+			}
         }
+
+		$bit = $this->getPhraseBit($atoms[$i], $known_columns);
+		if ($bit != '') {
+	            $phrase .= " $connector $bit";
+		}
 	    $phrase .= ')';
 
         if ($phrase == '()') {
         	$phrase = '';
         }
+
         return $phrase;
 
     }
 
     function getPhraseBit($atom, $known_columns) {
+
         if (isset($atom['field']) && in_array($atom['field'], $known_columns)) {
 
             $function = $this->column_metainfo[$atom['field']]['function'];
@@ -140,7 +144,6 @@ class dilpsQuery {
         return $phrase_bit;
 
     }
-    
 
     function get_meta_where_query($column, $value, $operator) {
 
@@ -167,9 +170,12 @@ class dilpsQuery {
     function get_dropdown_where_query($column, $value, $operator) {
         if ($value != "-1") {
             $where = "{$this->db_prefix}meta.$column = " .$this->db->qstr($value);
+
         } else {
             $where = '';
+            //$where = '1';
         }
+
     	return $where;
     }
 
@@ -178,7 +184,6 @@ class dilpsQuery {
 
         global $config;
 
-        $value = strtolower($value);
         switch ($operator) {
 
         	case "equals":
@@ -208,12 +213,11 @@ class dilpsQuery {
 
     	return $where;
     }
-    
+
     function get_artist_where_query($column, $value, $operator) {
 
         global $config;
 
-        $value = strtolower($value);
         switch ($operator) {
 
         	case "equals":
@@ -249,8 +253,10 @@ class dilpsQuery {
     }
 
     function get_dating_where_query($column, $value, $operator) {
+
         global $config;
         require_once( $config['includepath'].'tools.inc.php' );
+
         dating( $this->db, $value, $datelist );
 
     	if( count( $datelist ))
@@ -259,7 +265,8 @@ class dilpsQuery {
     		$date_from = $datelist[0]['from'];
 
     		$sql = "select metaid from {$this->db_prefix}dating where {$this->db_prefix}dating.`from`<=$date_to AND {$this->db_prefix}dating.`to`>=$date_from";
-    		$metaids = $this->db->GetCol($sql);  
+
+    		$metaids = $this->db->GetCol($sql);
 
     		if ($metaids === false) {
     			$where = "'error trying to execute sql for dating: $sql'";
@@ -274,16 +281,6 @@ class dilpsQuery {
     	}
 
     	return $where;
-    }
-    
-    function get_status_where_query($column, $value, $operator) {
-        $value = strtolower($value);
-        if ($value == 'all') {
-            $where = '';
-        } else {
-    	    $where = "lower({$this->db_prefix}meta.$column) = ".$this->db->qstr($value);
-        }
-        return $where;
     }
 
 
