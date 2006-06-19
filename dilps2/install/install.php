@@ -38,7 +38,7 @@
 	# See the README and LICENSE files for details
 
 	# --------------------------------------------------------
-	# $Id: install.php,v 1.1 2006/06/14 18:34:29 sdoeweling Exp $
+	# $Id: install.php,v 1.2 2006/06/19 11:55:27 fabtho Exp $
 	# --------------------------------------------------------
 ?>
 <?php
@@ -461,7 +461,7 @@ if ( 2 == $t_install_state ) {
 </tr>
  <tr>
 	<td bgcolor="#ffffff">
-		Smarty template_c directory (must be writeable)
+		Smarty template_c directory: <?php echo  $f_smartybasepath.'template_c'?> (must be writeable)
 	</td>
 	<?php
 	  if ((!empty($f_smartybasepath)) && (file_exists($f_smartybasepath.'template_c')) && is_writable($f_smartybasepath.'template_c'))  {
@@ -473,7 +473,7 @@ if ( 2 == $t_install_state ) {
 </tr>
  <tr>
 	<td bgcolor="#ffffff">
-		Smarty cache directory (must be writeable)
+		Smarty cache directory: <?php echo  $g_absolute_path.'template_c'?> (must be writeable)
 	</td>
 	<?php
 	  if ((!empty($g_absolute_path)) && (is_writable($g_absolute_path.'cache')))  {
@@ -485,7 +485,7 @@ if ( 2 == $t_install_state ) {
 </tr>
  <tr>
 	<td bgcolor="#ffffff">
-		Upload directory (must be writeable)
+		Upload directory: <?php echo  $f_upload ?> (must be writeable)
 	</td>
 	<?php
 	  if ((!empty($f_upload)) && (is_writable($f_upload)))  {
@@ -497,7 +497,7 @@ if ( 2 == $t_install_state ) {
 </tr>
  <tr>
 	<td bgcolor="#ffffff">
-		Export directory (must be writeable)
+		Export directory: <?php echo $f_export  ?>  (must be writeable)
 	</td>
 	<?php
 	  if ((!empty($f_export)) && (is_writable($f_export)))  {
@@ -509,7 +509,7 @@ if ( 2 == $t_install_state ) {
 </tr>
 <tr>
 	<td bgcolor="#ffffff">
-		Dilps directory (must be writeable)
+		Dilps directory: <?php echo $f_dilps ?> (must be writeable)
 	</td>
 	<?php
 	  if ((!empty($f_dilps)) && (is_writable($f_dilps)))  {
