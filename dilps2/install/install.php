@@ -38,7 +38,7 @@
 	# See the README and LICENSE files for details
 
 	# --------------------------------------------------------
-	# $Id: install.php,v 1.2 2006/06/19 11:55:27 fabtho Exp $
+	# $Id: install.php,v 1.3 2006/06/19 12:13:47 fabtho Exp $
 	# --------------------------------------------------------
 ?>
 <?php
@@ -473,7 +473,7 @@ if ( 2 == $t_install_state ) {
 </tr>
  <tr>
 	<td bgcolor="#ffffff">
-		Smarty cache directory: <?php echo  $g_absolute_path.'template_c'?> (must be writeable)
+		Smarty cache directory: <?php echo  $g_absolute_path.'cache'?> (must be writeable)
 	</td>
 	<?php
 	  if ((!empty($g_absolute_path)) && (is_writable($g_absolute_path.'cache')))  {
