@@ -162,7 +162,7 @@ BEGIN easy_query.tpl
 				{/if}
 				<input class="queryinputfield" type="hidden" name="query[groupid]" value="{$query.groupid|escape:html}">
 				<input class="queryinputfield" type="hidden" name="query[grouplevel]" value="{$query.grouplevel|escape:html}">
-				<button type="button" class="actionbutton2" onclick="javascript:cleargroup();" title="{#nogroup#|escape:htmall}"><img src="clear.png" style="width: 12px; height: 12px;" /></button>
+				<button type="button" class="actionbutton2" onclick="javascript:cleargroup();" title="{#nogroup#|escape:htmall}"><img src="img/clear.png" style="width: 12px; height: 12px;" /></button>
 			</td>
 		</tr>
 		<tr>
@@ -265,7 +265,7 @@ BEGIN easy_query.tpl
 				{/if}
 				<input class="queryinputfield" type="hidden" name="query[groupid]" value="{$query.groupid|escape:html}">
 				<input class="queryinputfield" type="hidden" name="query[grouplevel]" value="{$query.grouplevel|escape:html}">
-				<button type="button" class="actionbutton2" onclick="javascript:cleargroup();" title="{#nogroup#|escape:htmall}"><img src="clear.png" style="width: 12px; height: 12px;" /></button>
+				<button type="button" class="actionbutton2" onclick="javascript:cleargroup();" title="{#nogroup#|escape:htmall}"><img src="img/clear.png" style="width: 12px; height: 12px;" /></button>
 			</td>
 		</tr>
 		<tr>

@@ -59,7 +59,7 @@ BEGIN login.tpl
 <table class="logonheader" width="100%" border="0">
 <tr>
 <td>
-   <img src="login.jpg">
+   <img src="img/login.jpg">
 </td>
 </tr>
 </table>
