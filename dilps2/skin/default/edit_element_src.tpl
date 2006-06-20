@@ -90,7 +90,7 @@ function setFocus()
 		<input type="text" name="query[artist]" value="{$query.artist|escape:html}"><input type="submit" name="search" value="{#search#|escape:html}">
 	</td>
 	<td>
-	   <img src="/icons/blank.gif" width="10" height="1">
+	   <img src="/img/blank.gif" width="10" height="1">
 	</td>
 	<td>
 		<b>{#surname#|escape:htmlall}</b><br>

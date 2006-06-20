@@ -5,10 +5,10 @@ BEGIN select.tpl
 <table border="0" cellspacing="0" cellpadding="2">
            <tr>	
 	   <td style="color: #FF0000" vertical-align:middle;>{#mode#|escape:html}</td>
-           <td><a href="javascript: changeView( 'liste' );"><img style="vertical-align:middle;" src="liste{if $view.type eq "liste"}_marked{/if}.gif" border="0"></a></td>
-	   <td><a href="javascript: changeView( 'detail' );"><img  style="vertical-align:middle;" src="detail{if $view.type eq "detail"}_marked{/if}.gif" border="0"></a></td>
-	   <td><a href="javascript: changeView( 'grid' );"><img  style="vertical-align:middle;" src="grid{if $view.type eq "grid"}_marked{/if}.gif" border="0"></a></td>
-	   <td><a href="javascript: changeView( 'grid_detail' );"><img  style="vertical-align:middle;" src="grid_detail{if $view.type eq "grid_detail"}_marked{/if}.gif" border="0"></a></td>
+           <td><a href="javascript: changeView( 'liste' );"><img style="vertical-align:middle;" src="img/liste{if $view.type eq "liste"}_marked{/if}.gif" border="0"></a></td>
+	   <td><a href="javascript: changeView( 'detail' );"><img  style="vertical-align:middle;" src="img/detail{if $view.type eq "detail"}_marked{/if}.gif" border="0"></a></td>
+	   <td><a href="javascript: changeView( 'grid' );"><img  style="vertical-align:middle;" src="img/grid{if $view.type eq "grid"}_marked{/if}.gif" border="0"></a></td>
+	   <td><a href="javascript: changeView( 'grid_detail' );"><img  style="vertical-align:middle;" src="img/grid_detail{if $view.type eq "grid_detail"}_marked{/if}.gif" border="0"></a></td>
            <td><a class="reloadbutton" href="javascript: editDetail('');">{#reload#|escape:html}</a></td>
   	   <td>
                 <input type="hidden" name="query[cols]" value="{$query.cols}">

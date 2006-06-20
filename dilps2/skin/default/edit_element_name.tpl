@@ -154,7 +154,7 @@ names["{$row.id}"] = "{$row.name}";
 		<input type="text" name="query[searchartist]" value="{$query.searchartist|escape:html}" tabindex="1"><input type="button" name="search" value="{#search#|escape:html}" onclick="searchName()" tabindex="2">
 	</td>
 	<td>
-	   <img src="/icons/blank.gif" width="10" height="1">
+	   <img src="/img/blank.gif" width="10" height="1">
 	</td>
 </tr>
 </table>
@@ -211,7 +211,7 @@ names["{$row.id}"] = "{$row.name}";
 </tr>
 <!--<tr>
 	<td colspan="2">
-	   <img src="/icons/blank.gif" width="1" height="3">
+	   <img src="/img/blank.gif" width="1" height="3">
 	</td>
 </tr>-->
 </table>

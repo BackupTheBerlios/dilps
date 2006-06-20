@@ -88,8 +88,8 @@ BEGIN default_grid.tpl
 
 <table border="0" cellspacing="0" width="100%">
 <tr>
-   <td rowspan="2"><img src="/icons/blank.gif" width="1" height="91"></td>
-   <td><img src="/icons/blank.gif" width="121" height="1"></td>
+   <td rowspan="2"><img src="/img/blank.gif" width="1" height="91"></td>
+   <td><img src="/img/blank.gif" width="121" height="1"></td>
 </tr>
 <tr>
 	<td style="text-align: center">
@@ -122,7 +122,7 @@ BEGIN default_grid.tpl
 </tr>
 {if $result.local}
 <tr>
-	<td rowspan="2"><img src="/icons/blank.gif" width="1"></td>
+	<td rowspan="2"><img src="/img/blank.gif" width="1"></td>
 	<td colspan="2" class="result_list_data_data" style="text-align: center">
 		<table border="0" cellspacing="0" style="width: 100%">			
 			<tr>

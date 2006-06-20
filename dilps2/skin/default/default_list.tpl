@@ -29,7 +29,7 @@ BEGIN default_list.tpl
 	   <td class="result_list_data_img">
 	      <table border="0" cellspacing="0" cellpadding="0">
 	      <tr>
-	         <td><img src="/icons/blank.gif" width="1" height="90"></td>
+	         <td><img src="/img/blank.gif" width="1" height="90"></td>
 	         <td width="100%" style="text-align: center; vertical-align: middle;"><a href="javascript:viewDetail('{$sessionid}', '{$row.collectionid}:{$row.imageid}', '{$result.remoteCollection}');"><img src="image.php?PHPSESSID={$sessionid}&id={$row.collectionid}:{$row.imageid}&resolution=120x90&remoteCollection={$result.remoteCollection}" border="0"></a></td>
 	      </tr>
 	      </table>
