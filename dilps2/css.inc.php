@@ -31,14 +31,24 @@
  * -------------------------------------------------------------
  */
 
-header("content-type: text/css");
+//header("content-type: text/css");
 
 /**
 * import standard libraries and configuraiton values
 */
 
-require('includes.inc.php');
+//require($config['includepath'].'includes.inc.php');
 
-$smarty->display( $config['skin'].DIRECTORY_SEPARATOR.'dilps.css' );
+$filename = $config['skin'].DIRECTORY_SEPARATOR.'dilps.css';
+$handle = fopen($filename, 'r');
+
+$contents = fread($handle, filesize($filename));
+
+fclose($handle);
+
+print $contents;
+
+//$smarty->display( $config['skin'].DIRECTORY_SEPARATOR.'dilps.css' );
+
 //phpinfo();
 ?>
