@@ -32,8 +32,18 @@
  */
 ini_set( 'zend.ze1_compatibility_mode', 'On' );
 ini_set( 'session.use_cookies' , 0 );
+/**
+*read db-config from file
+*/
+$config = array();
+include('config.inc.php');
+
 // import standard libraries and configuraiton values
-include('includes.inc.php');
+
+include($config['includepath'].'includes.inc.php');
+
+//include('includes.inc.php');
+
 
 //debug($_REQUEST, false);
 if (isset($_REQUEST['Login']))
