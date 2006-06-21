@@ -63,7 +63,7 @@ BEGIN head.tpl
   {/if}
   <script src="dilps.lib.js" type="text/javascript"></script>
     <script type="text/javascript" src="include/ajax.inc.php?client=all"></script>
-  <link rel="stylesheet" type="text/css" href="css.php">
+  <link rel="stylesheet" type="text/css" href="{$config.includedir_relative}css.php">
 </head>
 
 <!-- ============================================

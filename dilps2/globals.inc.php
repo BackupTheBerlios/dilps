@@ -37,23 +37,44 @@
 	// activate compatibility mode
 	ini_set( 'zend.ze1_compatibility_mode', 'On' );
 	
-	// configuration for group exports - set when we have values from db
+  /**
+  * configuration for group exports - set when we have values from db
+  */
 	
 	if (isset($config['exportdir']) && isset($config['dilpsdir']))
 	{
+    
+    /**
+    * relative path to exportdir
+    */
 		$exportdir 			= substr($config['exportdir'],strlen($config['dilpsdir']),strlen($config['exportdir']));
-		$exportdirlong 	= $config['exportdir'];		
-		$dilpsdir 				= $config['dilpsdir'];
+    
+    /**
+    * full pyth to export dir, bad name
+    */
+		$exportdirlong 	= $config['exportdir'];
 		
-		// $exporturl 			= 'http://'.$_SERVER['SERVER_NAME'].'/'.$exportdir;
+    /**
+    * relative path for use in html
+    */
+    
+    $config['includedir_relative'] = substr($config['includedir'],strlen($config['dilpsdir']),strlen($config['includedir']));
+    $config['exportdir_relative'] = $exportdir;
+    
+		$dilpsdir 				=  $config['dilpsdir'];
+      // $exporturl 			= 'http://'.$_SERVER['SERVER_NAME'].'/'.$exportdir;
 	}
 	
-	// configure editor and admin-group
+	/**
+  * configure editor and admin-group
+  */
 	
 	$config['admingroup'] = 'archivmaster';
 	$config['editorgroup'] = 'archiveditor';	
 	
-	// available resolutions for
+	/**
+  * available resolutions for
+  */
 	$resolutions_available = array (
 		"0"	=>	"120x90",
 		"1"	=>	"640x480",
