@@ -1,20 +1,21 @@
 <!-- BEGIN dilps.css -->
 
 {literal}
+
 td.heading2 {
 }
-{/literal}
 
-{literal}
+
+
 td.heading {
 	font-family: Courier New, Courier, mono;
 	font-weight: bold;
 	font-size: 16pt;
 	text-align: center;
 }
-{/literal}
 
-{literal}
+
+
 body.main {
 	font-family: Courier New, Courier, mono;
 	font-weight: normal;
@@ -26,28 +27,28 @@ body.main {
 	margin: 0px 0px 0px 0px;
 	border-style:  none;
 }
-{/literal}
 
-{literal}
+
+
 .outer {
   border-left: 1px solid #FFFFFF;
   border-top:  1px solid #FFFFFF;
 }
-{/literal}
 
-{literal}
+
+
 .top {
   border-top:  1px solid #FFFFFF;
 }
-{/literal}
 
-{literal}
+
+
 table.main {
    border-style: none;
 }
-{/literal}
 
-{literal}
+
+
 table.maincontent {
    border-style: none;
    margin-right: 80px;
@@ -56,9 +57,9 @@ table.maincontent {
    width: 95%;
    table-layout:: fixed;
   }
-{/literal}
 
-{literal}
+
+
 table.header {
    border-style: none;
    background-color: #778898; 
@@ -69,10 +70,10 @@ table.header {
    padding-bottom: 25px;
    margin: 0px 0px 0px 0px;
 }
-{/literal}
 
 
-{literal}
+
+
 td.result_list_nav_left {
    font-family: Times;
    font-weight: normal;
@@ -88,9 +89,9 @@ td.result_list_nav_left {
    border-top: 2px solid #778898;
   /* border-bottom: 3px solid #778898;*/
 }
-{/literal}
 
-{literal}
+
+
 td.result_grid_nav_left {
    font-family: Times;
    font-weight: normal;
@@ -104,10 +105,10 @@ td.result_grid_nav_left {
    border-top: 4px solid #778898;
    border-bottom: 2px solid #778898;
 }
-{/literal}
 
 
-{literal}
+
+
 td.result_list_nav_top {
    font-family: Times;
    font-weight: normal;
@@ -121,9 +122,9 @@ td.result_list_nav_top {
    border-left: 5px solid #778898;
    border-right: 5px solid #778898;
 }
-{/literal}
 
-{literal}
+
+
 td.result_grid_nav_top {
    font-family: Times;
    font-weight: normal;
@@ -137,9 +138,9 @@ td.result_grid_nav_top {
    border-left: 4px solid #778898;
    border-right: 4px solid #778898;
 }
-{/literal}
 
-{literal}
+
+
 td.result_detail_top {
    font-family: Times;
    font-weight: normal;
@@ -151,10 +152,10 @@ td.result_detail_top {
    border-top: 1px solid #FFFFFF;
    border-right: 1px solid #FFFFFF;
 }
-{/literal}
 
 
-{literal}
+
+
 table.result_list {
 	/* border-top: 1px solid #778898;
 	border-bottom: 1px solid #778898;
@@ -166,9 +167,9 @@ table.result_list {
 	margin: 0px 0px 0px 0px;
 	padding: 0px 0px 0px 0px;
 }
-{/literal}
 
-{literal}
+
+
 td.result_list_nav_right {
    font-family: Times;
 	font-weight: normal;
@@ -178,9 +179,9 @@ td.result_list_nav_right {
 	background-color: #dcdcdc;
 	border: solid 2px #778898; 
 }
-{/literal}
 
-{literal}
+
+
 table.result_list_data {
 /*	border-left: 2px solid #778898; 
 	border-right: 2px solid #778898; */
@@ -189,9 +190,9 @@ table.result_list_data {
 	margin: 0px 0px 0px 0px;
 	width: 100%;
 }
-{/literal}
 
-{literal}
+
+
 table.result_grid_data {
 	border-left: 2px solid #778898; 
 	border-right: 2px solid #778898; 
@@ -200,9 +201,9 @@ table.result_grid_data {
 	margin: 0px 0px 0px 0px;
 	width: 100%;
 }
-{/literal}
 
-{literal}
+
+
 td.result_list_data_head {
     font-family: Times;
 	font-weight: bold;
@@ -212,9 +213,9 @@ td.result_list_data_head {
 	background-color: #dcdcdc;
 	border: none;
 }
-{/literal}
 
-{literal}
+
+
 td.result_list_data_data {
    font-family: Times;
    font-weight: normal;
@@ -224,9 +225,9 @@ td.result_list_data_data {
    vertical-align: top;
    background-color: #dcdcdc;
 }
-{/literal}
 
-{literal}
+
+
 td.result_list_data_img {
    font-family: Times;
 	font-weight: normal;
@@ -242,9 +243,9 @@ td.result_list_data_img {
     vertical-align: top;
 	background-color: #dcdcdc;
 }
-{/literal}
 
-{literal}
+
+
 td.result_detail_head {
    font-family: Times;
 	font-weight: normal;
@@ -252,9 +253,9 @@ td.result_detail_head {
 	text-align: left;
 	color: #505050;
 }
-{/literal}
 
-{literal}
+
+
 table.result_detail {
 	border-top: 4px solid #778898;
 	border-left: 5px solid #778898;
@@ -263,55 +264,55 @@ table.result_detail {
 	padding: 0px 0px 0px 0px;
 	margin: 0px 0px 0px 0px;
 }
-{/literal}
 
-{literal}
+
+
 table.result_detail_imagedetails {
 	border-bottom: 4px solid #778898;
 	padding: 0px 0px 0px 0px;
 	margin: 0px 0px 0px 0px;
 }
-{/literal}
 
-{literal}
+
+
 table.result_detail_data {
 	margin: 0 0 0 0;
 	padding: 0 0 0 0;
 }
-{/literal}
 
-{literal}
+
+
 table.result_detail_data_image {
 	border-bottom: 4px solid #778898;
 	margin: 0 0 0 0;
 	padding: 0 0 0 0;
 }
-{/literal}
 
 
-{literal}
+
+
 td.result_detail_image {
   border-top: 4px solid #778898;
   padding: 0 0 0 0;
   margin: 0 0 0 0;
 }
-{/literal}
 
-{literal}
+
+
 a.result_detail_image_list:link {
   color: #000000;
   text-decoration: none;
 }
-{/literal}
 
-{literal}
+
+
 a.result_detail_image_list:visited {
   color: #000000;
   text-decoration: none;
 }
-{/literal}
 
-{literal}
+
+
 a.result_detail_furtherinfo_link:link {
   color: #3300CC;
   text-decoration: none;
@@ -319,9 +320,9 @@ a.result_detail_furtherinfo_link:link {
    font-weight: normal;
    font-size: 12pt;
 }
-{/literal}
 
-{literal}
+
+
 a.result_detail_furtherinfo_link:visited {
   color: #3300CC;
   text-decoration: none;
@@ -329,9 +330,9 @@ a.result_detail_furtherinfo_link:visited {
    font-weight: normal;
    font-size: 12pt;
 }
-{/literal}
 
-{literal}
+
+
 td.result_detail_data_image {
    font-family: Times;
 	font-weight: normal;
@@ -343,9 +344,9 @@ td.result_detail_data_image {
 	padding: 0 0 0 0;
 	margin: 0 0 0 0;
 }
-{/literal}
 
-{literal}
+
+
 td.result_detail_data_data {
    font-family: Times;
 	font-weight: normal;
@@ -362,9 +363,9 @@ td.result_detail_data_data {
 	border-left: 1px solid #778898;
         border-top: 1px solid #FFFFFF;
 }
-{/literal}
 
-{literal}
+
+
 td.result_detail_data_head {
    font-family: Times;
 	font-weight: bold;
@@ -377,9 +378,9 @@ td.result_detail_data_head {
         border-left: 1px solid #FFFFFF;
 	padding-right: 10px;
 }
-{/literal}
 
-{literal}
+
+
 td.result_detail_amazonimage {
    font-family: Times;
    font-weight: bold;
@@ -390,10 +391,10 @@ td.result_detail_amazonimage {
    border-right: 1px solid #778898;
    margin-right: 20px;
 }
-{/literal}
 
 
-{literal}
+
+
 body.logon {
 	font-family: Courier New, Courier, mono;
 	font-weight: normal;
@@ -407,9 +408,9 @@ body.logon {
 	color: #000000;
     background-color: #dcdcdc;
 }
-{/literal}
 
-{literal}
+
+
 table.logonheader {
   background-color: #778898;
   padding: 0px 0px 0px 0px;
@@ -417,9 +418,9 @@ table.logonheader {
   margin: 0 0 0 0;
   width: 100%;
 }
-{/literal}
 
-{literal}
+
+
 a.login {
 	font-family: Courier New, Courier, mono;
 	font-weight: normal;
@@ -427,9 +428,9 @@ a.login {
 	text-align: left;
 	color: #000000;
 }
-{/literal}
 
-{literal}
+
+
 td.logo_left {
 	text-align:right;
 	font-weight: normal;
@@ -437,9 +438,9 @@ td.logo_left {
 	vertical-align: middle;
 	font-family: Courier New, Courier, mono;
 }
-{/literal}
 
-{literal}
+
+
 td.logo_middle {
 	text-align:center;
 	font-weight: normal;
@@ -447,9 +448,9 @@ td.logo_middle {
 	vertical-align: middle;
 	font-family: Courier New, Courier, mono;
 }
-{/literal}
 
-{literal}
+
+
 td.logo_right {
 	text-align:left;
 	font-weight: normal;
@@ -457,17 +458,17 @@ td.logo_right {
 	vertical-align: middle;
 	font-family: Courier New, Courier, mono;
 }
-{/literal}
 
 
-{literal}
+
+
 table.query {
   color: #DCDCDC;
 }
-{/literal}
 
 
-{literal}
+
+
 td.queryinputfieldtext {
 	font-family: Courier New, Courier, mono;
 	font-weight: bold;
@@ -477,15 +478,15 @@ td.queryinputfieldtext {
     padding-bottom: 1px;
 	padding-left: 30px;
 }
-{/literal}
 
-{literal}
+
+
 td.queryinputfield {
   padding-bottom: 2px;
 }
-{/literal}
 
-{literal}
+
+
 input.queryinputfield {
   background-color: #DCDCDC;
   border-top-color: #FFFFFF;
@@ -495,9 +496,7 @@ input.queryinputfield {
   border-bottom-style: none;
   border-left-style: none;
 }
-{/literal}
 
-{literal}
 select.queryselectfield {
   background-color: #DCDCDC;
   border-top-color: #FFFFFF;
@@ -507,9 +506,7 @@ select.queryselectfield {
   border-bottom-style: none;
   border-left-style: none;
 }
-{/literal}
 
-{literal}
 select.navselectfield {
   background-color: #DCDCDC;
   border-top-color: #FFFFFF;
@@ -519,67 +516,48 @@ select.navselectfield {
   border-bottom-style: none;
   border-left-style: none;
 }
-{/literal}
 
-{literal}
 input.querysubmitfield {
   padding-bottom: 2px;
 }
-{/literal}
 
-{literal}
 a.navigationlink:link {
   color: #000000;
   text-decoration: none;
 }
-{/literal}
 
-{literal}
 a.navigationlink:visited {
   color: #000000;
   text-decoration: none;
 }
-{/literal}
 
-{literal}
 a.reloadbutton:link {
   color: #FF0000;
   text-decoration: none;
 }
-{/literal}
 
-{literal}
 a.reloadbutton:visited {
   color: #FF0000;
   text-decoration: none;
 }
-{/literal}
 
-
-{literal}
 .groupmanager {
 }
-{/literal}
 
-{literal}
 table.group_list {
 	padding: 4;
 	border-spacing: 0;
 	border: solid 1px black;
 	vertical-align: center;
 }
-{/literal}
 
-{literal}
 table.group_detail {
 	padding: 4;
 	border-spacing: 0;
 	border: solid 1px black;
 	vertical-align: center;
 }
-{/literal}
 
-{literal}
 a.navsymbol:link, a.navsymbol:visited {
         color: #cccccc;
         text-align: center;
@@ -589,9 +567,7 @@ a.navsymbol:link, a.navsymbol:visited {
         padding: 0px;
         margin: 0px;
 }
-{/literal}
 
-{literal}	
 a.navsymbol:hover {
         color: #cccccc;
         text-align: center;
@@ -601,9 +577,7 @@ a.navsymbol:hover {
         padding: 0px;
         margin: 0px;
 }
-{/literal}
 
-{literal}
 a.navsmall:link, a.navsmall:visited {
         color: #cccccc;
         text-align: center;
@@ -615,9 +589,7 @@ a.navsmall:link, a.navsmall:visited {
         margin: 0px;
 		vertical-align: top;
 }
-{/literal}
-
-{literal}	
+	
 a.navsmall:hover {
         color: #cccccc;
         text-align: center;
@@ -630,9 +602,7 @@ a.navsmall:hover {
         margin: 0px;
 		vertical-align: top;
 }
-{/literal}
 
-{literal}	
 .navsymbollike {
          color: #cccccc;
         text-align: center;
@@ -643,18 +613,14 @@ a.navsmall:hover {
 		padding-bottom: 3px;
         margin: 0px;
 }
-{/literal}
 
-{literal}	
 .actionbutton {
 	text-align: center;
 	font-size: 9pt;
 	border-width: thin;
 	padding: 2px;
 }
-{/literal}
 
-{literal}	
 .actionbutton2 {
 	text-align: center;
 	border-bottom-style: none;
@@ -664,12 +630,7 @@ a.navsmall:hover {
 	padding-bottom: 0px;
 	padding-top: 0px;
 }
-{/literal}
 
-
-
-
-{literal}	
 table.querypiece {
         color: #cccccc;
         text-align: center;
@@ -679,9 +640,7 @@ table.querypiece {
         padding: 0px;
         margin: 0px;
 }
-{/literal}
 
-{literal}
 td.result_list_collection {
    font-family: Times;
    font-weight: normal;
@@ -691,9 +650,8 @@ td.result_list_collection {
    vertical-align: top;
    border-bottom: 1px solid #778898; 
 }
-{/literal}
 
-{literal}
+
 td.result_list_collection_header {
    font-family: Times;
    font-weight: normal;
@@ -702,9 +660,8 @@ td.result_list_collection_header {
    color: #99AABA;
    vertical-align: top;
 }
-{/literal}
 
-{literal}
+
 a.collection_navsymbol:link, a.collection_navsymbol:visited {
         color: #778898;
         text-align: center;
@@ -714,9 +671,7 @@ a.collection_navsymbol:link, a.collection_navsymbol:visited {
         padding: 0px;
         margin: 0px;
 }
-{/literal}
 
-{literal}	
 a.collection_navsymbol:hover {
         color: #778898;
         text-align: center;
@@ -726,11 +681,11 @@ a.collection_navsymbol:hover {
         padding: 0px;
         margin: 0px;
 }
-{/literal}
 
-{literal}	
 td.right-pad {
     padding-right: 33px;
 }
+
 {/literal}
+
 <!--	END dilps.css	-->

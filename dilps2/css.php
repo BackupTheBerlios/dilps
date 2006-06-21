@@ -36,7 +36,6 @@ header("content-type: text/css");
 // import standard libraries and configuraiton values
 require('includes.inc.php');
 
-
 $smarty->display( $config['skin'].DIRECTORY_SEPARATOR.'dilps.css' );
 //phpinfo();
 ?>

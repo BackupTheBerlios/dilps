@@ -25,43 +25,9 @@
 <!-- ============================================
 BEGIN grid_detail.tpl
 ============================================ -->
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-  "http://www.w3.org/TR/html4/strict.dtd">
+{include file="`$config.skinBase``$config.skin`/head.tpl"}
 
-{if $config.utf8 eq "true"}
-	{config_load file="`$config.skinBase``$config.skin`/`$config.language`/detail.conf.utf8"}
-{else}
-	{config_load file="`$config.skinBase``$config.skin`/`$config.language`/detail.conf"}
-{/if}
 
-<html>
-<head>
-  <meta name="robots" content="index,follow">
-  <meta http-equiv="pragma" content="no-cache">
-  <meta http-equiv="expires" content="0">
-  <meta http-equiv="cache-control" content="no-cache">
-  <meta name="keywords" content="Bilddatenbanksystem, Bilddatenbank, Diathek, digitalisiert">
-  {if $config.utf8 eq 'true'}
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  {else}
-	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-  {/if}
-  <meta http-equiv="Content-Script-Type" content="text/javascript">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <meta name="author" content="jrgen enge, thorsten wbbena">
-  <meta name="date" content="2003-01-23">
-  <link rel="shortcut icon" href="favicon.ico">
-  <title>. : {#title#|escape:"htmlall"} : .</title>
-  <script src="dilps.lib.js" type="text/javascript"></script>
-  {if $config.soapresults }
-      <script src="prototype.js" type="text/javascript"></script>
-      <script src="FieldUpdater.js" type="text/javascript"></script>
-      {if $config.debug }
-        <script src="debug.js" type="text/javascript"></script>
-      {/if}
-  {/if}
-  <link rel="stylesheet" type="text/css" href="css.php">
-</head>
 <body class="main" {if $config.soapresults }onload="updateRemoteCollectionFields('{$sessionid}','{$query.queryid}')"{/if}>
 <table width="100%" cellspacing="0" cellpadding="0">
 <tr>
