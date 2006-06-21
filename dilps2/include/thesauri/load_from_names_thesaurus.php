@@ -1,6 +1,6 @@
 <?php
 // to load names into db from thesaurus file:    
-require_once('../../globals.inc.php');
+require_once( $config['includepath'].'globals.inc.php');
 include_once( $config['includepath'].'adodb/adodb.inc.php' );
 
 $db = NewADOConnection( "mysql" );

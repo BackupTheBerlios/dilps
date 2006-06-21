@@ -1,6 +1,6 @@
 <?php
 
-	include( '../globals.inc.php' );
+	include( $config['includepath'].'globals.inc.php' );
 	include( $config['includepath'].'convert_v1.inc.php');
 	include( $config['includepath'].'adodb/adodb.inc.php' );
 	include( $config['includepath'].'tools.inc.php' );

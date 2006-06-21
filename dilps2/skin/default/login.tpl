@@ -45,7 +45,7 @@ BEGIN login.tpl
   <meta http-equiv="Content-Script-Type" content="text/javascript">
   <meta http-equiv="Content-Style-Type" content="text/css">
   <meta name="author" content="jrgen enge, thorsten wbbena">
-  <meta name="date" content="2003-01-23">
+  <meta name="date" content="2003-01-22">
   <link rel="shortcut icon" href="favicon.ico">
 <style type="text/css">
 {include file="`$config.skin`/dilps.css"}

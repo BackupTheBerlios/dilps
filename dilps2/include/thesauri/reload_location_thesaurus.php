@@ -6,7 +6,7 @@
 
 //$load_sourcedir is defined in thesauri_load_config.inc.php
 
-require_once('../../globals.inc.php');
+require_once( $config['includepath'].'globals.inc.php');
 include_once( $config['includepath'].'adodb/adodb.inc.php' );
 include_once( $config['includepath'].'thesauri/thesauri_load_config.inc.php' );
 

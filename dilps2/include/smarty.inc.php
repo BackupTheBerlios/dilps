@@ -32,6 +32,7 @@
  */
 //error_reporting(E_ALL);
 require_once( $config['includepath'].'htmlquery.inc.php' );
+   
 $smarty = new Smarty();
 $smarty->template_dir = $config['skinBase'];
 $smarty->compile_dir = $config['smartyBase'].'template_c/';
@@ -41,7 +42,7 @@ $smarty->plugins_dir[] = $config['includepath'].'plugins/';
 $smarty->force_compile = true;
 $smarty->caching = false;
 $smarty->compile_check = true;
-$smarty->debugging = false;
+$smarty->debugging = true;
 
 $query = array();
 if( isset($_REQUEST['query']) && is_array( $_REQUEST['query'] )) {
@@ -65,7 +66,7 @@ if( !$valid_login )
 {
   $logins->logout();
   $smarty->display( $config['skin'].'/login.tpl' );
-   exit();
+  exit();
 }
 
 $admin = $logins->isInGroup( $config['authdomain'], $config['admingroup'] );

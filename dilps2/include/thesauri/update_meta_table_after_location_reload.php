@@ -2,7 +2,7 @@
 /*  to update meta table after running reload_location_thesaurus.php
  * NOTE: backup the meta table before running this script
 */
-require_once('../../globals.inc.php');
+require_once( $config['includepath'].'globals.inc.php');
 include_once( $config['includepath'].'adodb/adodb.inc.php' );
 
 $db = NewADOConnection( "mysql" );

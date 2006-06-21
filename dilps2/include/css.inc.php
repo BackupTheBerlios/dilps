@@ -23,17 +23,20 @@
    +----------------------------------------------------------------------+
 */
 
-/*
+/**
  * Style Sheet Include File
  * -------------------------------------------------------------
- * File:     	css.php
+ * File:     	css.inc.php
  * Purpose:  	includes the style sheet into smarty
  * -------------------------------------------------------------
  */
 
 header("content-type: text/css");
 
-// import standard libraries and configuraiton values
+/**
+* import standard libraries and configuraiton values
+*/
+
 require('includes.inc.php');
 
 $smarty->display( $config['skin'].DIRECTORY_SEPARATOR.'dilps.css' );
