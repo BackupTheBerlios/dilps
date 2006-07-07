@@ -1,0 +1,47 @@
+html user access
+-----------------
+checkLoggedIn
+if search terms recieved
+    description = new ItemDescription
+    description.setDescriptionFromFormValues()
+libraries = getLibraryList()
+if no library specified
+    if search terms received:
+        matchCount = getLocalLibrarian().getItemCount()
+        store query so that it can be reused for requests to other libraries
+else 
+    librarian = getLibrarian(libraryid, user)
+    collections = librarian.getCollections()
+    if library is locallibrary and data edit action submitted
+        handle edit action with librarian
+    collections = librarian.getCollections()
+    if showOverviews
+        overviews = librarian.getItemOverviews(description)
+    if form.showDetailsView or form.editItemView
+        details = librarian.getItemDetails(detailIds)
+showTemplates()
+
+
+remote user access to local DILPS
+---------------------------------
+checkInterDilpsAccess
+librarian = getIncomingDilpsLibrarian()
+collections = librarian.getCollections()
+if query recieved
+    description = new ItemDescription
+    description.setDescriptionFromSOAPStruct()
+    librarian.getItem{count|details|overviews}(description)
+
+
+checkLoggedIn:
+start session
+if not user logged in 
+    redirect -> home page
+
+checkInterDilpsAccess:
+  return false unless request coming from allowed ip
+
+  
+  
+what should be reworked:
+standardization of html form variables for easy & advanced query
