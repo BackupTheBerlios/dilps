@@ -41,25 +41,30 @@ class LibraryItemResource
      /*** Attributes: ***/
 
     /**
-     * @access private
+     * @access public
      */
     var $id;
     /**
-     * @access private
+     * @access public
      */
     var $libraryId;
     /**
-     * @access private
+     * @access public
      */
     var $resourceType;
     /**
-     * @access private
+     * @access public
      */
     var $name;
     /**
-     * @access private
+     * @access public
      */
     var $description;
+    /**
+     * url for resource
+     * @access public
+     */
+    var $url;  
     
     /**
      * constructor
