@@ -62,6 +62,11 @@ class LibraryItem
     }
 
     /**
+     * get all available information about this object
+     *
+     * standard fields: author / title / date / location / source
+     * subclasses should massage any appropriate data into these standard fields, setting them to an empty string if there is no appropriate value
+     * any number of implementation-specific further fields are possible
      *
      * @return array
      * @abstract
@@ -69,6 +74,17 @@ class LibraryItem
      */
     function getDetails( )
     {
+        /* dummy implementation:
+           return array (
+                    'author'=>'john doe', 
+                    'title'=>'The Wheel', 
+                    'date' =>'About 1970'
+                    'location' => 'Ontario, Canada',
+                    'source'   => 'SK Merion: La joie de vivre - die nie gesehenen Meisterwerke der Barnes Collection. Berlin 1993
+Seite: 157
+ISBN: 3-463-40221-1',
+                        );
+        */
         die ('abstract class - subclass must implement this function. '. __CLASS__.'::'.__FUNCTION__);        
     } // end of member function getDetails
 
@@ -81,6 +97,12 @@ class LibraryItem
     function getResources( )
     {
         die ('abstract class - subclass must implement this function. '. __CLASS__.'::'.__FUNCTION__);
+          // possible dummy response:
+            return array(
+                            0 => /*Image*/ $img1,
+                            1 => /*Image*/ $img2,
+                            2 => /*Book*/  $book1
+                ); 
     } // end of member function getResources
 
     /**
@@ -96,6 +118,12 @@ class LibraryItem
     } // end of member function getTemplate
 
     /**
+     *  gets basic information about this item
+     *
+     * this information can be used to fill in the text fields in an overview template 
+     *
+     * standard fields: author / title 
+     * any number of implementation-specific further fields are possible
      *
      * @return array
      * @abstract
@@ -103,6 +131,14 @@ class LibraryItem
      */
     function getOverview( )
     {
+        /*
+           dummy implementation:
+           return array (
+                    'author'=>'john doe', 
+                    'title'=>'The Wheel', 
+                        );
+           // where, for example, resource_type 1 indicates a picture, and 23 indicates  
+        */
         die ('abstract class - subclass must implement this function. '. __CLASS__.'::'.__FUNCTION__);
     } // end of member function getOverview
 
