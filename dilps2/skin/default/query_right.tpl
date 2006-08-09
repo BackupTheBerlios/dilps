@@ -1,21 +1,23 @@
-<td width="30%" valign="top">
-	<!-- right side of query -->
+<!-- =================================================
+BEGIN query_right.tpl
+================================================= -->
+
 	<table class="query" cellspacing="1" cellpadding="0" >
 		{if $user.usemygroup}
 		<tr>
-			<td class="field_name"><strong>{#mygroup#|escape:htmlall}</strong></td>
+			<td class="field_name"><strong>{#mygroup#}</strong></td>
 		</tr>
 		<tr>
 			<td class="queryinputfield">
 				{if $query.mygroup eq ""}
-					<input class="queryinputfield" type="text" name="query[mygroup]" size="40" readonly="readonly" value=" ({#selecthere#|escape:htmlall}) " onclick="javascript:window.open('group_select.php?PHPSESSID={$sessionid}&target=mygroup','groupselection2','width=800,height=300,left=10,top=250,dependent=yes');">
+					<input class="queryinputfield" type="text" name="query[mygroup]" size="40" readonly="readonly" value=" ({#selecthere#}) " onclick="javascript:window.open('group_select.php?target=mygroup','groupselection2','width=800,height=300,left=10,top=250,dependent=yes');">
 				{else}
-					<input class="queryinputfield" type="text" name="query[mygroup]" size="40" readonly="readonly" value="{$query.mygroup|escape:html}" onclick="javascript:window.open('group_select.php?PHPSESSID={$sessionid}&target=mygroup','groupselection2','width=800,height=300,left=10,top=250,dependent=yes');">
+					<input class="queryinputfield" type="text" name="query[mygroup]" size="40" readonly="readonly" value="{$query.mygroup}" onclick="javascript:window.open('group_select.php?target=mygroup','groupselection2','width=800,height=300,left=10,top=250,dependent=yes');">
 				{/if}
-				<button type="button" class="actionbutton2" onclick="javascript:clearmygroup();" title="{#nogroup#|escape:htmall}"><img src="img/clear.png" style="width: 12px; height: 12px;" /></button>
-				<button type="button" class="actionbutton2" onclick="javascript:updatemygroup();" title="{#applychanges#|escape:htmlall}"><img src="img/apply.png" style="width: 12px; height: 12px;" /></button>
-				<input class="queryinputfield" type="hidden" name="query[mygroupid]" value="{$query.mygroupid|escape:html}">
-				<input class="queryinputfield" type="hidden" name="query[mygrouplevel]" value="{$query.mygrouplevel|escape:html}">
+				<button type="button" class="actionbutton2" onclick="javascript:clearmygroup();" title="{#nogroup#}"><img src="img/clear.png" style="width: 12px; height: 12px;" /></button>
+				<button type="button" class="actionbutton2" onclick="javascript:updatemygroup();" title="{#applychanges#}"><img src="img/apply.png" style="width: 12px; height: 12px;" /></button>
+				<input class="queryinputfield" type="hidden" name="query[mygroupid]" value="{$query.mygroupid}">
+				<input class="queryinputfield" type="hidden" name="query[mygrouplevel]" value="{$query.mygrouplevel}">
 			</td>
 		</tr>
 		<tr>
@@ -44,8 +46,8 @@
 		{if $query.mygroupid neq ""}
 		<tr>
 			<td class="field_name">
-				<!--<a class="navsymbol" href="javascript:;" onclick="javascript:window.open('export_group.php?PHPSESSID={$sessionid}&collectionid={$query.querypiece.0.val.0}&groupid={$query.mygroupid}&groupname={$query.mygroup}','groupexport','width=800,height=420,dependent=yes,scrollbars=yes');">{#exportgroup#}</a>-->
-				<a class="navsymbol" href="javascript:;" onclick="javascript:window.open('export_group.php?PHPSESSID={$sessionid}&collectionid={$query.collectionid}&groupid={$query.mygroupid}&groupname={$query.mygroup}','groupexport','width=800,height=420,dependent=yes,scrollbars=yes');">{#exportgroup#}</a>
+				<!--<a class="navsymbol" href="javascript:;" onclick="javascript:window.open('export_group.php?collectionid={$query.querypiece.0.val.0}&groupid={$query.mygroupid}&groupname={$query.mygroup}','groupexport','width=800,height=420,dependent=yes,scrollbars=yes');">{#exportgroup#}</a>-->
+				<a class="navsymbol" href="javascript:;" onclick="javascript:window.open('export_group.php?collectionid={$query.collectionid}&groupid={$query.mygroupid}&groupname={$query.mygroup}','groupexport','width=800,height=420,dependent=yes,scrollbars=yes');">{#exportgroup#}</a>
 			</td>
 		</tr>
 		{/if}
@@ -57,14 +59,14 @@
 		<tr>
 			<td class="field_name">
 				{if $user.editgroup}
-					<a class="navsymbol" href="javascript:;" onclick="javascript:window.open('group_edit.php?PHPSESSID={$sessionid}','groupedit','width=800,height=420,dependent=yes,scrollbars=yes');">{#editgroups#|escape:htmlall}</a>
+					<a class="navsymbol" href="javascript:;" onclick="javascript:window.open('group_edit.php','groupedit','width=800,height=420,dependent=yes,scrollbars=yes');">{#editgroups#}</a>
 				{/if}
 			</td>
 		</tr>
 		<tr>
 			<td>
 				{if $user.insertimage}
-					<a class="navsymbol" href="javascript:;" onclick="javascript:window.open('add_images.php?PHPSESSID={$sessionid}','imageadd','width=900,height=420,dependent=yes,scrollbars=yes');">{#insertimages#|escape:htmlall}</a>
+					<a class="navsymbol" href="javascript:;" onclick="javascript:window.open('add_images.php','imageadd','width=900,height=420,dependent=yes,scrollbars=yes');">{#insertimages#}</a>
 				{/if}
 			</td>
 		</tr>
@@ -110,10 +112,11 @@
 				<input class="queryinputfield" type="hidden" name="logout" value="0">
 				<a href="javascript:performlogout();"
 					class="navsymbol">
-					<em>{#logout#|escape:html}</em>
+					<em>{#logout#}</em>
 				</a>
 			</td>
 		</tr>
 	</table>
-	<!-- right side of query - end -->
-</td>
+<!-- =================================================
+END query_right.tpl
+================================================= -->

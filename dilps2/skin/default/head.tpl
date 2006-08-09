@@ -26,15 +26,15 @@
 BEGIN head.tpl
 ============================================ -->
 
-<?xml version="1.0" encoding="UTF-8"?>
+{php}
+
+header("Content-Type: application/xhtml+xml; charset=utf-8")
+{/php}
+<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE html 
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-{if $config.utf8 eq "true"}
-	{config_load file="`$config.skinBase``$config.skin`/`$config.language`/liste.conf.utf8"}
-{else}
-	{config_load file="`$config.skinBase``$config.skin`/`$config.language`/liste.conf"}
-{/if}
+{config_load file="`$config.skinBase``$config.skin`/`$config.language`/liste.conf"}
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
@@ -43,11 +43,8 @@ BEGIN head.tpl
   <meta http-equiv="expires" content="0">
   <meta http-equiv="cache-control" content="no-cache">
   <meta name="keywords" content="Bilddatenbanksystem, Bilddatenbank, Diathek, digitalisiert">
-  {if $config.utf8 eq 'true'}
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  {else}
-	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-  {/if}
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  
   <meta http-equiv="Content-Script-Type" content="text/javascript">
   <meta http-equiv="Content-Style-Type" content="text/css">
   <meta name="author" content="jrgen enge, thorsten wbbena, fabian thommen">

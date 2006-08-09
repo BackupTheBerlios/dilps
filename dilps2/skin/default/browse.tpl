@@ -1,3 +1,6 @@
+<!-- ============================================
+BEGIN browse.tpl
+============================================ -->
 {php}
 
   $lastpage = $this->_tpl_vars['result']['lastpage'];
@@ -13,8 +16,6 @@
      if ($i==$lastpage) $pLastpage  = true;
   }
 
-
-
   for($i=$curpage;$i<($curpage+5) && $i<=$lastpage && $curpage>=1; $i++) {
      if ($i==$curpage) $out.='<b>';
      $out .= '<a class="navigationlink" href="javascript:changepage('.$i.')">'.$i.' </a>'; 
@@ -22,7 +23,6 @@
      if ($i==1) $pfirstpage = true;
      if ($i==$lastpage) $pLastpage  = true;
   }
-
 
   if (!$pfirstpage) 
     if (($curpage-4) > 2)
@@ -42,3 +42,7 @@
   echo $out;
 
 {/php}
+
+<!-- ============================================
+END browse.tpl
+============================================ -->

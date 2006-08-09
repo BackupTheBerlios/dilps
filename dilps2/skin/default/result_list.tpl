@@ -24,11 +24,7 @@
 <!-- --------------------------------------------
 BEGIN result_list.tpl
 --------------------------------------------- -->
-{if $config.utf8 eq "true"}
-	{config_load file="`$config.skinBase``$config.skin`/`$config.language`/result.conf.utf8"}
-{else}
-	{config_load file="`$config.skinBase``$config.skin`/`$config.language`/result.conf"}
-{/if}
+{config_load file="`$config.skinBase``$config.skin`/`$config.language`/result.conf"}
 
 {query var=result sql=sql}
 {if $result.result_type eq "collections"}

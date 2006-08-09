@@ -24,11 +24,7 @@
 <!-- --------------------------------------------
 BEGIN result_detail.tpl
 --------------------------------------------- -->
-{if $config.utf8 eq "true"}
-	{config_load file="`$config.skinBase``$config.skin`/`$config.language`/result.conf.utf8"}
-{else}
-	{config_load file="`$config.skinBase``$config.skin`/`$config.language`/result.conf"}
-{/if}
+{config_load file="`$config.skinBase``$config.skin`/`$config.language`/result.conf"}
 
 {save_image error="error" sql="sql"}
 <!-- {$sql} -->

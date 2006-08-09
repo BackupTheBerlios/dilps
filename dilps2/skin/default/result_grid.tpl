@@ -24,11 +24,7 @@
 <!-- ============================================
 BEGIN result_grid.tpl
 ============================================ -->
-{if $config.utf8 eq "true"}
-	{config_load file="`$config.skinBase``$config.skin`/`$config.language`/result.conf.utf8"}
-{else}
-	{config_load file="`$config.skinBase``$config.skin`/`$config.language`/result.conf"}
-{/if}
+{config_load file="`$config.skinBase``$config.skin`/`$config.language`/result.conf"}
 
 {query var=result sql=sql}
 {if $result.result_type eq "collections"}
@@ -48,7 +44,7 @@ colspan="2"
 </tr>
 <tr>
 <td style="width: 50%;" valign="top">
-<table class="result_list" width="100%" cellspacing="0" cellpadding="0">
+<table class="result_list" width="100%" cellspacing="0" cellpadding="0" border="10">
 <tr>
    <td class="result_grid_nav_left">
    <div class="outer">

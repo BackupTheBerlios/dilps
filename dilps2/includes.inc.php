@@ -34,6 +34,10 @@
 //error_reporting(E_ALL);
 	/* configuration start */
   
+  $config = array();
+  include('config.inc.php');
+
+  
 	// read config-variables from db and connect
 	include( $config['includepath'].'db.inc.php' );
 	
@@ -60,9 +64,10 @@
       
     	// smarty customization
     	require( $config['includepath'].'smarty.inc.php' );
-  
+      
+      require_once( $config['includepath'].'htmlquery.inc.php' );
 	}
-	
+  
 	// add some libraries to include path
 	
 	$lib_include_path = ini_get('include_path');

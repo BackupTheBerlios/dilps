@@ -29,48 +29,54 @@ BEGIN grid_detail.tpl
 
 
 <body class="main" {if $config.soapresults }onload="updateRemoteCollectionFields('{$sessionid}','{$query.queryid}')"{/if}>
-<table width="100%" cellspacing="0" cellpadding="0">
-<tr>
-<td>
+
 <form name="Main" action="{$SCRIPT_NAME}" method="POST">
 <input type="hidden" name="view[type]" value="grid_detail">
 <input type="hidden" name="view[detail][id]" value="{$view.detail.id}">
 <input type="hidden" name="view[edit][id]" value="{$view.edit.id}">
 <input type="hidden" name="query[remoteCollection]" value="{$query.remoteCollection}">
-<table class="header" width="100%">
-<tr>
-   <td>
+
+<div id="query">
    {if $query.querytype eq 'advanced'}
-      {include file="`$config.skinBase``$config.skin`/advanced_query.tpl"}
+        <div id="query_advanced">
+      {include file="`$config.skinBase``$config.skin`/query_advanced.tpl"}
+        </div>
+        <div id="query_right">
+      {include file="`$config.skinBase``$config.skin`/query_right.tpl"}
+        </div>
    {else}
-      {include file="`$config.skinBase``$config.skin`/easy_query.tpl"}
+    <div id="query_easy">
+      {include file="`$config.skinBase``$config.skin`/query_easy.tpl"}
+    </div> 
+    <div id="query_right">
+      {include file="`$config.skinBase``$config.skin`/query_right.tpl"}
+    </div> 
    {/if}
-   </td>
-</tr>
-</table>
+</div> 
 
 {if $newlogin neq '1'}
-	<table class="maincontent" border="0" cellpadding="0" cellspacing="0">
-	<tr>
-		{include file="`$config.skinBase``$config.skin`/result_grid.tpl" viewFunc="showDetail"}
-		</td>
-		<td style="width: 50%;  padding: 0px 0px 0px 0px" valign="top">
+	<div class="maincontent">
+	
+    <div id="grid_result">
+		  {include file="`$config.skinBase``$config.skin`/result_grid.tpl" viewFunc="showDetail"}
+    </div>
+		
 			{if $view.edit.id ne ""}
+      <div id="detail_edit">
 				{include file="`$config.skinBase``$config.skin`/edit_detail.tpl" id=$view.edit.id}
-			{else}
+			</div>
+        {else}
+      <div id="detail_result">
 				{include file="`$config.skinBase``$config.skin`/result_detail.tpl" id=$view.detail.id}
-			{/if}
-		</td>
-	</tr>
-	</table>
+			</div>
+        {/if}
+		</div>
+	</div>
 {/if}
 
 </form>
-</td>
-</tr>
-</table>
 </body>
 </html>
 <!-- ============================================
-END detail.tpl
+END grid_detail.tpl
 ============================================ -->

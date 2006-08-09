@@ -31,64 +31,21 @@
  * -------------------------------------------------------------
  */
 ini_set( 'zend.ze1_compatibility_mode', 'On' );
-ini_set( 'session.use_cookies' , 0 );
+ini_set( 'session.use_cookies' , 1 );
+ini_set( 'session.use_only_cookies', 1);
+session_start();
+
 /**
-*read db-config from file
+*  import standard libraries and configuraiton values
 */
-$config = array();
-include('config.inc.php');
 
-// import standard libraries and configuraiton values
+include('includes.inc.php');
 
-include($config['includepath'].'includes.inc.php');
+require_once( $config['includepath'].'param.inc.php' );
 
-//include('includes.inc.php');
+//$smarty->display( $config['skin'].'/'.$tpl);
 
-
-//debug($_REQUEST, false);
-if (isset($_REQUEST['Login']))
-{
-	$smarty->assign('newlogin', '1');
-}
-
-if (isset($_REQUEST['PHPSESSID']))
-{
-	$sessionid = $_REQUEST['PHPSESSID'];
-}
-else
-{
-	$sessionid = session_id();
-}
-
-if (isset($_REQUEST['mygroup']) && is_array($_REQUEST['mygroup']))
-{
-	$smarty->assign('mygroup',$_REQUEST['mygroup']);
-}
-else
-{
-	$smarty->assign('mygroup','');
-}
-
-$action = array();
-
-if( isset($_REQUEST['action']) && is_array( $_REQUEST['action'] )) 
-{
-	$action = $_REQUEST['action'];	
-}
-else 
-{
-	$action = array();
-}
-
-$smarty->assign('action',$action);
-$smarty->assign('sessionid',$sessionid);
-
-//bk: debugging
-//error_reporting(E_ALL);
-//$smarty->error_reporting = E_ALL;
-
-//debug(array($config, $tpl));
-$smarty->display( $config['skin'].'/'.$tpl);
+$smarty->display( $config['skin'].'/'.'index.tpl');
 
 //phpinfo();
 ?>
