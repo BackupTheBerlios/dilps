@@ -1,0 +1,1 @@
+This folder is the used to store temporary images during the image generation process.

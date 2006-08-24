@@ -78,7 +78,7 @@
 
 	# --------------------------------------------------------
 
-	# $Id: install.php,v 1.1 2006/08/24 16:02:28 sdoeweling Exp $
+	# $Id: install.php,v 1.2 2006/08/24 16:09:43 sdoeweling Exp $
 
 	# --------------------------------------------------------
 
@@ -1997,7 +1997,7 @@ if ( 1 == $t_install_state ) {
 
 	<td>
 
-		Dilps directory
+		Temporary directory for image generation
 
 	</td>
 
