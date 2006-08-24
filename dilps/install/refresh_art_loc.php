@@ -24,7 +24,7 @@
 <html>
 <head>
 <title> DILPS Installer  </title>
-<link rel="stylesheet" type="text/css" href="install.css" />
+<link rel="stylesheet" type="text/css" href="admin.css" />
 </head>
 <body>
 <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#ffffff">

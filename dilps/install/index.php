@@ -1,7 +1,7 @@
 <html>
 <head>
 <title>DILPS Administration </title>
-<link rel="stylesheet" type="text/css" href="install.css" />
+<link rel="stylesheet" type="text/css" href="admin.css" />
 </head>
 <body>
 <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#ffffff">
@@ -23,6 +23,7 @@
 	<p>[ <a href="appearance.php">Change appearance/language</a> ]</p>
 	<p>[ <a href="createcol.php">Create new collection</a> ]</p>
 	<p>[ <a href="addbase.php">Add an image base to a collection</a> ]</p>
+	<p>[ <a href="manageusers.php">Manage user logins and permissions</a> ]</p>
 	<br />
 	<p>[ <a href="migrate.php">Migrate a DILPS v1 collection</a> ]</p>
 	<p>[ <a href="refresh_art_loc.php">Refresh artist and location database</a> ]</p>
