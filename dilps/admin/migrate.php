@@ -593,10 +593,21 @@
 
 		}
 		elseif (3 == $step) {
+			
 
 			$old_db = NewADOConnection("mysql");
 			$old_res = $old_db->NConnect( $old_hostname, $old_username, $old_password, $old_name);
 			$old_db->SetFetchMode(ADODB_FETCH_ASSOC);
+			
+			// $old_db->debug = true;
+			
+			$ng_db = NewADOConnection("mysql");
+			$ng_res = $ng_db->NConnect( $ng_hostname, $ng_username, $ng_password, $ng_name);
+			$ng_db->SetFetchMode(ADODB_FETCH_ASSOC);
+			
+			// $ng_db->debug = true;
+			
+			// get old image base and image table
 
 			$sql = "SELECT smg.sammlungid as sammlungid, smg.tabelle as tabelle, imb.base as base, imb.img_baseid AS baseid "
 					."FROM sammlung AS smg LEFT JOIN img_base imb ON smg.sammlungid = imb.sammlungid "
@@ -606,14 +617,8 @@
 			$old_table = $rs->fields['tabelle'];
 
 			$old_img_dir = $rs->fields['base'];
-
-			$sql2 = "SELECT ".$old_table.".*,".$old_table."_bild.bildid FROM ".$old_table.",".$old_table."_bild WHERE ".$old_table.".bildnr = ".$old_table."_bild.bildnr";
-			// echo "$sql2\n";
-			$rs2 = $old_db->Execute( $sql2 );
-
-			$ng_db = NewADOConnection("mysql");
-			$ng_res = $ng_db->NConnect( $ng_hostname, $ng_username, $ng_password, $ng_name);
-			$ng_db->SetFetchMode(ADODB_FETCH_ASSOC);
+			
+			// get new image base
 
 			$sql3 = "SELECT col.collectionid AS collectionid, col.name AS name, col.sammlung_ort AS sammlung_ort, imb.base AS base, imb.img_baseid AS baseid "
 							."FROM ".$ng_prefix."collection AS col "
@@ -622,12 +627,50 @@
 			$rs3 = @$ng_db->Execute( $sql3 );
 
 			$new_img_dir = $rs3->fields['base'];
+			
+			/*
+			
+			// convert all old database entries
 
+			$sql2 = "SELECT ".$old_table.".*,".$old_table."_bild.bildid FROM ".$old_table.",".$old_table."_bild WHERE ".$old_table.".bildnr = ".$old_table."_bild.bildnr";
+			// echo "$sql2\n";
+			$rs2 = $old_db->Execute( $sql2 );			
+			
 			while( !$rs2->EOF )
 			{
-				insert_meta($_REQUEST['old_collection'], $_REQUEST['ng_baseid'], $rs2->fields, $old_db, $ng_db, $ng_prefix );
+				migrate_insert_meta($_REQUEST['ng_collection'], $_REQUEST['ng_baseid'], $rs2->fields, $ng_db, $ng_prefix, $old_db );
 				$rs2->MoveNext();
 			}
+			
+			// convert all old groups
+			
+			$sql4 = "SELECT groupsid, owner, name FROM `groups` WHERE 1";
+			$rs4 = @$old_db->Execute( $sql4 );
+			
+			while( !$rs4->EOF)
+			{
+				migrate_insert_group($rs4->fields['groupsid'],$rs4->fields['name'],$rs4->fields['owner'],0,$ng_db,$ng_prefix);
+				$rs4->MoveNext();
+			}
+			
+			// transfer the group content (imageid's) to new groups (only for images for which we
+			// have db entries
+			
+			
+			$sql2 = "SELECT ".$old_table.".*,".$old_table."_bild.bildid FROM ".$old_table.",".$old_table."_bild WHERE ".$old_table.".bildnr = ".$old_table."_bild.bildnr";
+			
+			$sql5 	= 	"SELECT g.groupsid as groupsid, g.bildid as bildid FROM `groups_bild` as g, `".$old_table."_bild` as b WHERE "
+						."g.bildid = b.bildid";
+			$rs5 	= 	@$old_db->Execute( $sql5 );
+			
+			while( !$rs5->EOF)
+			{
+				migrate_insert_into_group($rs5->fields['groupsid'],$_REQUEST['ng_collection'],$rs5->fields['bildid'],$ng_db,$ng_prefix);
+				$rs5->MoveNext();
+			}			
+			
+			
+			// generate an artist cache
 
 			$sql = "SELECT DISTINCT name1 FROM {$ng_prefix}meta WHERE"
 					." collectionid = ".$ng_db->qstr($_REQUEST['ng_collection'])
@@ -804,7 +847,7 @@
 				
 				$rs->MoveNext();
 			}
-
+			
 			$sql = "SELECT DISTINCT location, locationsounds FROM {$ng_prefix}meta WHERE"
 					." collectionid = ".$ng_db->qstr($_REQUEST['ng_collection'])
 					." AND location != ''";
@@ -841,8 +884,12 @@
 				}
 				$rs->MoveNext();
 			}
+			
+			*/
 
 			// database updates done, copy files
+			
+			echo ("Database conversion complete. Your old files will now be copied.\n<br>\n");
 
 			$resolutions = array(
 				"0"	=>	"120x90",
@@ -852,7 +899,6 @@
 				"4"	=>	"1280x1024",
 				"5"	=>	"1600x1200"
 			);
-
 
 			$ng_sql = "SELECT * FROM ".$ng_prefix."img WHERE collectionid = ".$ng_db->qstr($_REQUEST['ng_collection']);
 			$ng_rs = $ng_db->Execute($ng_sql);
@@ -872,11 +918,9 @@
 						$old_file = $old_img_dir.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.$res.DIRECTORY_SEPARATOR.$imageid.'.jpg';
 						$new_file = $new_img_dir.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.$res.DIRECTORY_SEPARATOR.$collectionid.'-'.$imageid.'.jpg';
 
-						/*
 						echo ("Res:".$res."\n<br>\n");
 						echo ("Old: ".$old_file."\n<br>\n");
 						echo ("New: ".$new_file."\n<br>\n");
-						*/
 
 						if (file_exists($old_file)) {
 
@@ -904,9 +948,9 @@
 						}
 
 					}
-
-					$ng_rs->MoveNext();
 				}
+				
+				$ng_rs->MoveNext();
 
 			}
 

@@ -27,13 +27,13 @@ ini_set( 'zend.ze1_compatibility_mode', 'On' );
 
 // header( "Content-type: text/plain" );
 
-function insert_img( $collectionid, $baseid, $imageid, &$db, &$db2, $dp_prefix )
+function migrate_insert_img( $collectionid, $baseid, $imageid, &$db, $db_prefix, &$db2 )
 {
 	$sql = "SELECT * FROM bild WHERE bildid=$imageid";
 	$bild = $db2->GetRow( $sql );
 	if( $bild )
 	{
-		$sql = "REPLACE `ng_img` (`collectionid`".
+		$sql = "REPLACE INTO `{$db_prefix}img` (`collectionid`".
 									", `imageid`".
 									", `img_baseid`".
 									", `filename`".
@@ -62,7 +62,7 @@ function insert_img( $collectionid, $baseid, $imageid, &$db, &$db2, $dp_prefix )
 	}
 }
 
-function insert_meta( $collectionid, $baseid, $fields, &$db, &$db2, $db_prefix )
+function migrate_insert_meta( $collectionid, $baseid, $fields, &$db, $db_prefix, &$db2 )
 {
 	$name = preg_replace( "/([kK]\\.[[:space:]]*[aA])\\.?/", "", trim(stripslashes($fields['name'])));
 
@@ -76,7 +76,7 @@ function insert_meta( $collectionid, $baseid, $fields, &$db, &$db2, $db_prefix )
 
 	}
 
-	$sql = 	"REPLACE `{$db_prefix}meta` (`collectionid`".
+	$sql = 	"REPLACE INTO `{$db_prefix}meta` (`collectionid`".
 			", `imageid`".
 			", `type`".
 			", `status`".
@@ -159,7 +159,42 @@ function insert_meta( $collectionid, $baseid, $fields, &$db, &$db2, $db_prefix )
 	   }
 	}
 
- 	insert_img( $collectionid, $baseid, $fields['bildid'], $db, $db2, $db_prefix);
+ 	migrate_insert_img( $collectionid, $baseid, $fields['bildid'], $db, $db_prefix, $db2);
+}
+
+
+function migrate_insert_group( $groupid, $name, $owner, $parentid, &$db, $db_prefix )
+{
+	$sql = "REPLACE INTO `ng_img` ("
+				."`groupid`"
+				.", `name`"
+				.", `owner`"
+				.", `parentid`)"
+				." VALUES ( "
+				.$db->qstr($groupid).", "
+				.$db->qstr($name).", "
+				.$db->qstr($owner).", "
+				.$db->qstr($parentid).				
+				");";
+				
+		echo "$sql\n<br>\n";
+		$db->Execute( $sql );
+}
+
+function migrate_insert_into_group( $groupid, $collectionid, $imageid, &$db, $db_prefix )
+{
+	$sql = "REPLACE INTO `ng_img_group` ("
+				."`groupid`"
+				.", `collectionid`"
+				.", `imageid`)"
+				." VALUES ( "
+				.$db->qstr($groupid).", "
+				.$db->qstr($collectionid).", "
+				.$db->qstr($imageid).
+				");";
+				
+		echo "$sql\n<br>\n";
+		$db->Execute( $sql );
 }
 
 

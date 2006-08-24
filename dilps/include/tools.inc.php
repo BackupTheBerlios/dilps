@@ -33,7 +33,7 @@
 	 */
 	
 	global $config;
-	include_once($config['dilpsdir'].'includes.inc.php');
+	//include_once($config['dilpsdir'].'includes.inc.php');
 	include_once($config['includepath'].'mime'.DIRECTORY_SEPARATOR.'Type.php');
 	//include_once($config['includepath'].'dating.inc.php');
 
