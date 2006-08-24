@@ -28,7 +28,11 @@ include_once( 'config.inc.php');
 include_once( 'globals.inc.php');
 include( $config['includepath'].'adodb/adodb.inc.php' );
 
-global $db_db, $db_host, $db_prefix, $db_pwd, $db_user, $config;
+global $db, $config;
+
+// $db->debug = true;
+
+
 
 //error_reporting("E_ALL");
 
@@ -111,7 +115,7 @@ if (!empty($auth['uid']))
 		if ( strpos($auth['uid'],'@') > 0)
 		{
 			// if the user gave us a domain in the username, look for a corresponding rule	
-			$domain = substr($auth['uid'],strpos($auth['uid'],'@')-1);
+			$domain = substr($auth['uid'],strpos($auth['uid'],'@')+1);
 		}
 		else 
 		{
@@ -167,7 +171,7 @@ switch ($authtype)
 		{
 			if ( strpos($auth['uid'],'@') > 0){
 				// complete email address, 
-				$authdomain = substr($auth['uid'],strpos($auth['uid'],'@')-1);
+				$authdomain = substr($auth['uid'],strpos($auth['uid'],'@')+1);
 			} else {
 				// only userid given, use default domain (imap users will not have 'static' as their domain)
 				$authdomain = $config['authdomain'];

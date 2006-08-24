@@ -59,7 +59,7 @@ class authIMAPUser extends authUser
 			$userid		= $uid;
 		}
 		
-		echo ("UserID: $userid\n<br>\n");
+		// echo ("UserID: $userid\n<br>\n");
 
 		$ms = @imap_open($hoststring,$userid,$pwd);
 
