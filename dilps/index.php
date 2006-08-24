@@ -32,6 +32,14 @@
  */
 ini_set( 'zend.ze1_compatibility_mode', 'On' );
 ini_set( 'session.use_cookies' , 0 );
+
+if (!file_exists('config.inc.php'))
+{
+	echo ("It seems, your installation has not been configured or your configuration file has been deleted.\n<br>\n");
+	echo ("Please go to <a href='admin/index.php'>the administration area</a> to setup your installation\n<br>\n");
+	exit();
+}
+
 // import standard libraries and configuraiton values
 include('includes.inc.php');
 
@@ -74,11 +82,11 @@ $smarty->assign('action',$action);
 $smarty->assign('sessionid',$sessionid);
 
 //bk: debugging
-//error_reporting(E_ALL);
+error_reporting(E_ALL);
 //$smarty->error_reporting = E_ALL;
 
 //debug(array($config, $tpl));
 $smarty->display( $config['skin'].'/'.$tpl);
 
-//phpinfo();
+// phpinfo();
 ?>

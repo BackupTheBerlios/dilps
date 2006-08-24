@@ -21,8 +21,11 @@
 
 function smarty_modifier_escape($string, $esc_type = 'html')
 {
+	global $config;
+	/*
 	$path_fix = dirname(__FILE__);
 	require($path_fix.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'locals.inc.php');
+	*/
 	
     switch ($esc_type) {		
         case 'html':

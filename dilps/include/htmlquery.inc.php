@@ -15,8 +15,8 @@ is two pieces.  the second piece has two phrases.
 
 function prepare_html_query($query) {
 
-    $query['submitted_query'] = $query;  // save a copy of the clean, submitted html query - to use for creating the databse query
-    
+    $query['submitted_query'] = $query;  // save a copy of the clean, submitted html query - to use for creating the databse query    
+       
     if ($query['querytype'] == 'advanced') {
         if ($query['fromquerytype'] == 'simple') {
             // when switching from simple to advanced, add non-empty, non-standard fields from the simple query to the advanced query html data structure

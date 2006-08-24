@@ -34,8 +34,12 @@
 require_once( $config['includepath'].'htmlquery.inc.php' );
 $smarty = new Smarty();
 $smarty->template_dir = $config['skinBase'];
+/*
 $smarty->compile_dir = $config['smartyBase'].'template_c/';
 $smarty->cache_dir = $config['smartyBase'].'cache/';
+*/
+$smarty->compile_dir = $config['dilpsdir'].'cache/';
+$smarty->cache_dir = $config['dilpsdir'].'cache/';
 $smarty->plugins_dir[] = $config['includepath'].'plugins/';
 
 $smarty->force_compile = true;
@@ -47,7 +51,7 @@ $query = array();
 if( isset($_REQUEST['query']) && is_array( $_REQUEST['query'] )) {
 	$query = $_REQUEST['query'];
 } else {
-    $query = array('querypiece'=>array());
+    $query = array('querypiece'=>array(), 'querytype' => '');
 }
 cleanQuery($query);
 $query['queryid'] = empty($_SESSION['counter']) ? 0 : $_SESSION['counter'];
@@ -65,21 +69,34 @@ if( !$valid_login )
 {
   $logins->logout();
   $smarty->display( $config['skin'].'/login.tpl' );
-   exit();
+  exit();
 }
 
+/*
 $admin = $logins->isInGroup( $config['authdomain'], $config['admingroup'] );
 $editor = $logins->isInGroup( $config['authdomain'], $config['editorgroup'] );
-if( $admin ) $editor = true;
+*/
+
+$admin 			=	$permissions['admin'];
+$editor 		= 	$permissions['editor'];
+$usemygroup		=	$permissions['usegroups'];
+$usemyfolder	= 	$permissions['usefolders'];
+$insertimage	=	$permissions['addimages'];
+
+if( $admin ) 
+{
+	$editor = true;
+}
 
 $user = array( 	
-							'login'				=>	$logins->getUID( $config['authdomain'] ),
-							'editor'				=>	($editor ? 1 : 0 ),
-							'admin'			=>	($admin ? 1 : 0 ),
-							'usemygroup' 	=>	(($admin || ($config['usemygroup'] 	== 'editor' ? $editor : 0)	| $config['usemygroup'] 	== 'user') ? 1 : 0),
-							'editgroup' 		=>	(($admin || ($config['editgroup'] 		== 'editor' ? $editor : 0)	| $config['editgroup'] 		== 'user') ? 1 : 0),
-							'insertimage' 	=>	(($admin || ($config['insertimage'] 		== 'editor' ? $editor : 0)	| $config['insertimage']	== 'user') ? 1 : 0)	
-						);
+			'login'			=>	$logins->getUID( $config['authdomain'] ),
+			'editor'		=>	($editor ? 1 : 0 ),
+			'admin'			=>	($admin ? 1 : 0 ),
+			'usemygroup' 	=>	(($admin || $usemygroup) ? 1 : 0),
+			'usemyfolder' 	=>	(($admin || $usemyfolder) ? 1 : 0),
+			'editgroup' 	=>	($admin ? 1 : 0),
+			'insertimage' 	=>	(($admin || $insertimage) ? 1 : 0)	
+		);
 	
 $smarty->assign( 'user', $user );
 					

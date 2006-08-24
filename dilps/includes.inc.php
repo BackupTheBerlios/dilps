@@ -32,28 +32,29 @@
  * -------------------------------------------------------------
  */
 //error_reporting(E_ALL);
-	/* configuration start */
+
+/* configuration start */
 
 	// read db-config from file
 	$config = array();
-	include('config.inc.php');
+	include('config.inc.php');	
 	
 	// read config-variables from db and connect
-	include( $config['includepath'].'db.inc.php' );
+	include( $config['includepath'].'db.inc.php' );	
 	
-	// read the rest of the configuration (global part)
+	// read the rest of the configuration
 	include( 'globals.inc.php' );
 	
-	// read the rest of the configuration (global part)
-	include( 'locals.inc.php' );
 	// session management
 	if (!defined('DILPS_SOAP_QUERY') && !defined('DILPS_INTER_DILPS_IMAGE_REQUEST')) {
 	   include( $config['includepath'].'session.inc.php' );
 	   
     	// user management
+    	/*
     	include( $config['includepath'].'userList.class.php' );
     	include( $config['includepath'].'authUser.class.php' );
     	include( $config['includepath'].'authStaticUser.class.php' );
+    	*/
     	
     	// authentication handling
     	include( $config['includepath'].'auth.inc.php' );

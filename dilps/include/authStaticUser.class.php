@@ -23,9 +23,6 @@
    +----------------------------------------------------------------------+
 */
 
-include('users.inc.php');
-
-
 class authStaticUser extends authUser
 {
 	var $uid;
@@ -33,15 +30,26 @@ class authStaticUser extends authUser
 
    function authStaticUser($domain)
    {
-		global $theUser;
-      	authUser::authUser( $domain );
-      /*
-		$this->users = array();
-		$this->users['john'] = array( 'password'=>'doe',
-										  'groups'=>array( 'archivmaster' ));
-		*/
-
-      	$this->users = $theUser;
+		global $db, $db_prefix;
+		
+		$sql 	= 	"SELECT a.userid, passwd FROM ".$db_prefix."user_auth as a, ".$db_prefix."user_passwd as p WHERE "
+					."a.userid = p.userid AND a.authtype = 'static' AND active > 0";
+					
+		$rs 	= $db->Execute($sql);
+		
+		if (!$rs)
+		{
+			die("Error reading users from database\n<br>\n");
+		}
+		
+		while (!$rs->EOF)
+		{
+			$this->users[$rs->fields['userid']] = array('password' => $rs->fields['passwd'], 'groups' => array());
+			
+			$rs->MoveNext();
+		}		
+   	
+      	authUser::authUser( $domain );      	
    }
 
    function isLoggedIn()
@@ -52,7 +60,7 @@ class authStaticUser extends authUser
    function login( $uid, $pwd, $ip=0 )
    {
 		if( !array_key_exists( $uid, $this->users )) return false;
-		if( $this->users[$uid]['password'] != $pwd ) return false;
+		if( $this->users[$uid]['password'] != md5($pwd) ) return false;
 		$this->uid = $uid;
 		sess_log( LOG_LOGIN, 0, "uid=$uid", 1 );
 		return true;
@@ -75,13 +83,7 @@ class authStaticUser extends authUser
       authUser::setData( $data );
       $this->uid = $data["uid"];
    }
-
-   function getGroups()
-   {
-      if( !$this->isLoggedIn()) return array();
-      return $this->users[$this->uid]['groups'];
-   }
-
+   
    function getUID()
    {
       return $this->uid;

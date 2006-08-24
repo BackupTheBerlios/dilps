@@ -43,9 +43,21 @@ if (isset($_REQUEST['PHPSESSID'])) {
 	$sessionid = '';
 }
 include_once( 'config.inc.php');
-include_once( $config['includepath'].'interdilps.inc.php' );
-if ($invalidRequestor) no_file();
-include_once( $config['includepath'].'tools.inc.php' );
+include_once( $config['includepath'].'../includes.inc.php' );
+//include_once( $config['includepath'].'tools.inc.php' );
+
+function extractID( $id, &$sammlung, &$imageid )
+{
+	$p = strpos( $id, ':' );
+	if( !$p )
+	{
+		$sammlung = false;
+		$imageid = false;
+		return;
+	}
+	$sammlung = intval( substr( $id, 0, $p ));
+	$imageid = substr( $id, $p+1 );
+}
 
 global $formats_suffix, $db, $db_prefix;
 
@@ -98,6 +110,7 @@ if ($remoteCollectionId) {
     }
     
 } else {
+
     //local image
     
     if ( isset($_REQUEST['debug']))
@@ -109,19 +122,29 @@ if ($remoteCollectionId) {
     	$debug = false;
     }
     
-    extractID( $id, $collectionid, $imageid );
+    if ($debug)
+    {
+    	echo ("Local image\n<br>\n");
+    }
     
+	extractID( $id, $collectionid, $imageid );    
+  
     $sql = "SELECT filename,base FROM {$db_prefix}img,{$db_prefix}img_base WHERE {$db_prefix}img.imageid=".intval($imageid)
     		." AND {$db_prefix}img.collectionid=".intval($collectionid)
     		." AND {$db_prefix}img.collectionid={$db_prefix}img_base.collectionid"
     		." AND {$db_prefix}img.img_baseid={$db_prefix}img_base.img_baseid";
     	
-    $row = @$db->GetRow( $sql );
+    $row =	@$db->GetRow( $sql );
     $base = $row['base'];
     $file = intval($imageid).'.jpg';
     if( $base != '' && $base{strlen($base)-1} != DIRECTORY_SEPARATOR )
     {
     	$base .= DIRECTORY_SEPARATOR;
+    }
+    
+    if ($debug)
+    {
+    	echo "Base Directory: $base\n<br>\n";
     }
     
     $file_exists_test = false;
@@ -155,14 +178,20 @@ if ($remoteCollectionId) {
     if( !$file_exists_test )
     {
     	// echo "$path<br>$sql";
-    	no_file();
     	
+    	if ($debug)
+    	{
+    		echo "No corresponding file found\n<br>\n";
+    	}
     	
+    	no_file();    	
     }
     
-    header( "Content-type: image/jpeg\n\n" );
+    header( "Content-type: image/jpeg\n\n" ); 
+
     readfile( $path );
     // echo ("Pfad: ".$path."\n");
+    
 }
 
 function no_file() {

@@ -1,1 +1,1 @@
-Used by smarty to cache compiled templates
+smarty default directory for template caching - not used in dilps

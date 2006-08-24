@@ -3,3 +3,6 @@ login = Anmeldung
 domain = Domäne
 userid = Benutzerkennung
 password = Paßwort
+intern = Intern
+extern = Extern
+logintype = Anmeldungstyp

@@ -31,8 +31,9 @@
  * 					handled in the DILPS-Installer
  * -------------------------------------------------------------
  */
-    //error_reporting(E_ALL);
-    error_reporting(0);
+    // error_reporting(E_ALL);
+    // error_reporting(0);
+    error_reporting(E_ALL ^ E_NOTICE);
     
 	// activate compatibility mode
 	ini_set( 'zend.ze1_compatibility_mode', 'On' );
@@ -42,18 +43,29 @@
 	if (isset($config['exportdir']) && isset($config['dilpsdir']))
 	{
 		$exportdir 			= substr($config['exportdir'],strlen($config['dilpsdir']),strlen($config['exportdir']));
-		$exportdirlong 	= $config['exportdir'];		
-		$dilpsdir 				= $config['dilpsdir'];
+		$exportdirlong		= $config['exportdir'];		
+		$dilpsdir 			= $config['dilpsdir'];
 		
 		// $exporturl 			= 'http://'.$_SERVER['SERVER_NAME'].'/'.$exportdir;
 	}
 	
-	// configure editor and admin-group
+	// load executable pathes from database
+	// you can change these now from the admin menu
 	
-	$config['admingroup'] = 'archivmaster';
-	$config['editorgroup'] = 'archiveditor';	
+	if (isset($config['imagick_convert']))
+	{
+		// if the first one was loaded from the database, all others are probably there, too
+		$imagemagick_convert 	= $config['imagick_convert'];
+		$imagemagick_identify 	= $config['imagick_identify'];
+		$file_binary 			= $config['gnu_file'];
+		$zip_binary 			= $config['gnu_zip'];	
+	}
 	
-	// available resolutions for
+	
+	// available resolutions and formats for dilps image generation
+	// 
+	// ATT: Only change this, if you really know what you are doing!
+	
 	$resolutions_available = array (
 		"0"	=>	"120x90",
 		"1"	=>	"640x480",
@@ -74,25 +86,35 @@
 	);
 	
 	$formats_suffix = array (
-		"image/jpeg"				=>	"jpg",
+		"image/jpeg"			=>	"jpg",
 		"image/png"				=>	"png",
-		"image/gif"					=>	"gif",
-		"image/tiff"					=>	"tif",
-		"image/x-photoshop"	=>	"psd",
+		"image/gif"				=>	"gif",
+		"image/tiff"			=>	"tif",
+		"image/x-photoshop"		=>	"psd",
 		"image/x-ms-bmp"		=>	"bmp",
 		"image/bmp"				=>	"bmp"
 	);
 	
 	$ext_to_mime = array (
 		"jpg"		=>	"image/jpeg",
-		"jpeg"	=>	"image/jpeg",	
-		"png"	=>	"image/png",
+		"jpeg"		=>	"image/jpeg",	
+		"png"		=>	"image/png",
 		"gif"		=>	"image/gif",
 		"tif"		=>	"image/tiff",
 		"tiff"		=>	"image/tiff",
-		"psd"	=>	"image/x-photoshop",
-		"bmp"	=> 	"image/bmp"
-	);	
+		"psd"		=>	"image/x-photoshop",
+		"bmp"		=> 	"image/bmp"
+	);
+		
+	
+	// configure editor and admin-group
+	
+	// $config['admingroup'] = 'archivmaster';
+	// $config['editorgroup'] = 'archiveditor';	
+	
+	// no longer needed
+
+	
 	
 	function __autoload( $className )
 	{

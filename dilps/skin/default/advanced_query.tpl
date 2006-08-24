@@ -249,6 +249,7 @@ column_operators["{$column}"] = "{$op.operators}";
 							</tr>
 						{/foreach}
 					</table>
+					<!--
 					{if not $smarty.foreach.qploop.last}
 						<input type="radio" name="query[querypiece][{$qpindex}][piece_connector]" value="and" {if $qp.piece_connector eq "and"}checked="checked"{/if} {if $smarty.foreach.qploop.last} onclick="submit()"{/if} />{#queryand#}
 						<input type="radio" name="query[querypiece][{$qpindex}][piece_connector]" value="or" {if $qp.piece_connector eq "or"}checked="checked"{/if} {if $smarty.foreach.qploop.last} onclick="submit()"{/if} />{#queryor#}
@@ -256,6 +257,7 @@ column_operators["{$column}"] = "{$op.operators}";
 						  <input type="radio" name="query[querypiece][{$qpindex}][piece_connector]" value="and" {if $qp.piece_connector eq "and"}checked="checked"{/if} onclick="submit()" />{#queryand#}
 						  <input type="radio" name="query[querypiece][{$qpindex}][piece_connector]" value="or" {if $qp.piece_connector eq "or"}checked="checked"{/if} onclick="submit()" />{#queryor#}
 					{/if}
+					-->
 				{/foreach}
 				</td>
 			</tr>

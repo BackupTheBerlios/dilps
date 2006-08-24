@@ -218,8 +218,8 @@ function sess_log( $type, $subtype, $descr, $status )
 
 function killSession()
 {
-	session_unset();
-	session_destroy();
+	@session_unset();
+	@session_destroy();
 }
 
 session_set_save_handler( "sess_open", "sess_close", "sess_read", "sess_write", "sess_destroy", "sess_gc" );

@@ -16,12 +16,14 @@
 // | Authors: Ian Eure <ieure@php.net>                                    |
 // +----------------------------------------------------------------------+
 //
-// $Id: Type.php,v 1.2 2006/04/04 15:06:45 bking Exp $
+// $Id: Type.php,v 1.3 2006/08/24 15:48:00 sdoeweling Exp $
 
-$path_fix = dirname(__FILE__);
-include_once($path_fix.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'includes.inc.php');
+// $path_fix = dirname(__FILE__);
+// include_once($path_fix.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'includes.inc.php');
+global $config;
 //include($config['includepath'].'pear'.DIRECTORY_SEPARATOR.'pear.php');
 include_once($config['includepath'].'pear'.DIRECTORY_SEPARATOR.'PEAR.php');
+include_once($config['dilpsdir'].'includes.inc.php');
 
 
 $_fileCmd = &PEAR::getStaticProperty('MIME_Type', 'fileCmd');
