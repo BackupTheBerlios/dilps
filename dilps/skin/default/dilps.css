@@ -571,15 +571,6 @@ table.group_list {
 {/literal}
 
 {literal}
-table.group_detail {
-	padding: 4;
-	border-spacing: 0;
-	border: solid 1px black;
-	vertical-align: center;
-}
-{/literal}
-
-{literal}
 a.navsymbol:link, a.navsymbol:visited {
         color: #cccccc;
         text-align: center;

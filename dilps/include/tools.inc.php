@@ -796,5 +796,72 @@
 			return true;
 		}
 	}	
+	
+	/**
+	 *	modified version of get_groupid_where_clause
+	 *
+	 *	this version is working without the query array
+	 *
+	 *	@access		public
+	 *	@param 		int		$groupid
+	 *	@param 		object	$db
+	 *	@param 		string	$db_prefix
+	 *	@param 		bool	$subgroups
+	 *	@return		string
+	 *
+	 */
+	
+	// 
+
+	function get_groupid_where($groupid, &$db, $db_prefix, $subgroups = true) {
+	    
+	    $where = '';
+	    
+		if (!empty($groupid))
+		{
+			// our result
+			$groups = array();
+			// first id is the give one
+			$groups[] = $groupid;
+			$db->SetFetchMode(ADODB_FETCH_ASSOC);
+			$sql = "SELECT id FROM ".$db_prefix."group WHERE "
+						."parentid = ".$db->qstr($groupid)
+						." ORDER BY id"; 	
+			$rs  = $db->Execute($sql);
+			if (!$rs || !$subgroups)
+			{
+				// we have no subgroups, just query one id
+				$where .= " AND {$db_prefix}img_group.groupid = ".$db->qstr($groupid);
+			}
+			else
+			{
+				// get next sublevel		
+				while (!$rs->EOF)
+				{
+					// add group to result array
+					$groups[] = $rs->fields['id'];
+					// get next but one sublevel, if available
+					$sql2 = "SELECT id FROM ".$db_prefix."group WHERE "
+								."parentid = ".$db->qstr($rs->fields['id'])
+								." ORDER BY id"; 	
+					$rs2 = $db->Execute($sql2);
+					
+					while(!$rs2->EOF)
+					{
+						$groups[] = $rs2->fields['id'];				
+						$rs2->MoveNext();
+					}			
+					$rs->MoveNext();
+				}
+				$where .= " AND (0 ";
+				foreach ($groups as $gid)
+				{
+					$where .= " OR {$db_prefix}img_group.groupid = ".$db->qstr($gid);
+				}
+				$where .= ") ";
+			}
+		}
+	    return $where;
+	}
 
 ?>

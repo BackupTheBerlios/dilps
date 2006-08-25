@@ -165,7 +165,7 @@ function migrate_insert_meta( $collectionid, $baseid, $fields, &$db, $db_prefix,
 
 function migrate_insert_group( $groupid, $name, $owner, $parentid, &$db, $db_prefix )
 {
-	$sql = "REPLACE INTO `ng_img` ("
+	$sql = "REPLACE INTO `".$db_prefix."group` ("
 				."`groupid`"
 				.", `name`"
 				.", `owner`"
@@ -183,7 +183,7 @@ function migrate_insert_group( $groupid, $name, $owner, $parentid, &$db, $db_pre
 
 function migrate_insert_into_group( $groupid, $collectionid, $imageid, &$db, $db_prefix )
 {
-	$sql = "REPLACE INTO `ng_img_group` ("
+	$sql = "REPLACE INTO `".$db_prefix."img_group` ("
 				."`groupid`"
 				.", `collectionid`"
 				.", `imageid`)"

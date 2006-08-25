@@ -628,8 +628,6 @@
 
 			$new_img_dir = $rs3->fields['base'];
 			
-			/*
-			
 			// convert all old database entries
 
 			$sql2 = "SELECT ".$old_table.".*,".$old_table."_bild.bildid FROM ".$old_table.",".$old_table."_bild WHERE ".$old_table.".bildnr = ".$old_table."_bild.bildnr";
@@ -649,7 +647,7 @@
 			
 			while( !$rs4->EOF)
 			{
-				migrate_insert_group($rs4->fields['groupsid'],$rs4->fields['name'],$rs4->fields['owner'],0,$ng_db,$ng_prefix);
+				migrate_insert_group($rs4->fields['groupsid'],$rs4->fields['name'],'public',0,$ng_db,$ng_prefix);
 				$rs4->MoveNext();
 			}
 			
@@ -885,8 +883,6 @@
 				$rs->MoveNext();
 			}
 			
-			*/
-
 			// database updates done, copy files
 			
 			echo ("Database conversion complete. Your old files will now be copied.\n<br>\n");

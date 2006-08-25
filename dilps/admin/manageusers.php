@@ -281,7 +281,13 @@
 						}
 						else 
 						{
-							$sql = 	"INSERT INTO ".$db_prefix."user_auth VALUES("
+							if ($userid == 'public')
+							{
+								echo ("<tr>\n<td colspan='9'>Data not added - you cannot use 'public' as UserID</td>\n<tr>");
+							}
+							else 
+							{
+								$sql = 	"INSERT INTO ".$db_prefix."user_auth VALUES("
 									.$db->qstr($userid).","
 									.$db->qstr($authtype).","
 									.$db->qstr($admin).","
@@ -291,31 +297,33 @@
 									.$db->qstr($usefolders).","
 									.$db->qstr($active).")";
 							
-							$rs = $db->Execute($sql);
-		
-							if ($rs === false)				
-							{
-								echo ("<tr>\n<td colspan='9'>Data not added - a database error occured while saving your data</td>\n<tr>");
-							}
-							
-							if ($authtype == 'static')
-							{
-								$randompassword = genpassword(8);
-								
-								$pwd_hash = md5($randompassword);
-								
-								$sql = "INSERT INTO ".$db_prefix."user_passwd VALUES("
-								.$db->qstr($userid).","
-								.$db->qstr($pwd_hash).")";
-								
 								$rs = $db->Execute($sql);
 			
 								if ($rs === false)				
 								{
-									echo ("<tr>\n<td colspan='9'>Data not added - a database error occured while setting the new password</td>\n<tr>");
+									echo ("<tr>\n<td colspan='9'>Data not added - a database error occured while saving your data</td>\n<tr>");
 								}
 								
-								echo ("<tr>\n<td colspan='9'>A new static user has been created with the password '".$randompassword."'. You can change it with the link in the list.</td>\n<tr>");
+								if ($authtype == 'static')
+								{
+									$randompassword = genpassword(8);
+									
+									$pwd_hash = md5($randompassword);
+									
+									$sql = "INSERT INTO ".$db_prefix."user_passwd VALUES("
+									.$db->qstr($userid).","
+									.$db->qstr($pwd_hash).")";
+									
+									$rs = $db->Execute($sql);
+				
+									if ($rs === false)				
+									{
+										echo ("<tr>\n<td colspan='9'>Data not added - a database error occured while setting the new password</td>\n<tr>");
+									}
+									
+									echo ("<tr>\n<td colspan='9'>A new static user has been created with the password '".$randompassword."'. You can change it with the link in the list.</td>\n<tr>");
+									
+								}
 								
 							}
 							

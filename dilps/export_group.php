@@ -39,6 +39,59 @@ require('includes.inc.php');
 // import helper functions
 include($config['includepath'].'tools.inc.php');
 
+// from block.query.php
+
+function get_groupid_where_clause($groupid, &$db, $db_prefix, $subgroups = true) {
+    
+    $where = '';
+    
+	if (!empty($groupid))
+	{
+		// our result
+		$groups = array();
+		// first id is the give one
+		$groups[] = $groupid;
+		$db->SetFetchMode(ADODB_FETCH_ASSOC);
+		$sql = "SELECT id FROM ".$db_prefix."group WHERE "
+					."parentid = ".$db->qstr($groupid)
+					." ORDER BY id"; 	
+		$rs  = $db->Execute($sql);
+		if (!$rs || !$subgroups)
+		{
+			// we have no subgroups, just query one id
+			$where .= " AND {$db_prefix}img_group.groupid = ".$db->qstr($groupid);
+		}
+		else
+		{
+			// get next sublevel		
+			while (!$rs->EOF)
+			{
+				// add group to result array
+				$groups[] = $rs->fields['id'];
+				// get next but one sublevel, if available
+				$sql2 = "SELECT id FROM ".$db_prefix."group WHERE "
+							."parentid = ".$db->qstr($rs->fields['id'])
+							." ORDER BY id"; 	
+				$rs2 = $db->Execute($sql2);
+				
+				while(!$rs2->EOF)
+				{
+					$groups[] = $rs2->fields['id'];				
+					$rs2->MoveNext();
+				}			
+				$rs->MoveNext();
+			}
+			$where .= " AND (0 ";
+			foreach ($groups as $gid)
+			{
+				$where .= " OR {$db_prefix}img_group.groupid = ".$db->qstr($gid);
+			}
+			$where .= ") ";
+		}
+	}
+    return $where;
+}
+
 // read sessiond id from get/post
 if (isset($_REQUEST['PHPSESSID']))
 {
@@ -80,9 +133,7 @@ if (!empty($_REQUEST['groupid'])){
 		$groupid = $_REQUEST['groupid'];
 } else {
 	$groupid = '';
-	echo ("Error - no group ID\n<br>\n");
-	flush();
-	exit;
+	die ("Error - no group ID\n<br>\n");	
 }
 
 if (!empty($_REQUEST['groupname'])){
@@ -102,6 +153,18 @@ if ($export)
 		$withviewer = trim($_REQUEST['withviewer']);
 	} else {
 		$withviewer = false;
+	}
+	
+	// with or without subgroup content
+	
+	if (!empty($_REQUEST['subgroups'])){
+		if ($_REQUEST['subgroups'] == '1') {
+			$subgroups = true;	
+		} else  {
+			$subgroups = false;
+		}		
+	} else {
+		$subgroups = false;
 	}
 
 	// which version of the viewer do we use?
@@ -125,7 +188,7 @@ if ($export)
 	}
 
 	$time = time();
-	$date = date("Y-m-d__H-i",$time);
+	$date = date("Y-m-d - H-i-s",$time);
 
 	$dir = $exportdir.$user['login'].DIRECTORY_SEPARATOR.$date;
 
@@ -206,19 +269,26 @@ if ($export)
 	}
 
 	// start reading actual data
+	
+	// $db->debug = true;
 
-	$sql = "SELECT * FROM ".$db_prefix."img, ".$db_prefix."img_group, ".$db_prefix."meta"
-			." WHERE ".$db_prefix."img.imageid = ".$db_prefix."meta.imageid"
+	$sql = "SELECT DISTINCT * FROM ".$db_prefix."img, ".$db_prefix."img_group, ".$db_prefix."meta"
+			." WHERE ".$db_prefix."img.collectionid = ".$db_prefix."meta.collectionid"
 			." AND ".$db_prefix."img.imageid = ".$db_prefix."meta.imageid"
+			." AND ".$db_prefix."img.collectionid = ".$db_prefix."img_group.collectionid"
 			." AND ".$db_prefix."img.imageid = ".$db_prefix."img_group.imageid"
-			." AND ".$db_prefix."img_group.groupid =".$db->qstr($groupid);
+			.get_groupid_where_clause($groupid,$db,$db_prefix,$subgroups);
 
 	$rs = $db->Execute( $sql );
+	
+	// die ($sql);
 
-	// print_r($rs->fields);
+	
 
 	while ( !$rs->EOF )
 	{
+		// print_r($rs->fields);
+		
 		$xmlout = "<?"."xml version=\"1.0\" encoding=\"UTF-8\" ?".">\n";
 		$xmlout .= "<imgdata>\n";
 		$xmlout .= "<width>".utf8_encode($rs->fields['width'])."</width>\n";
@@ -230,15 +300,17 @@ if ($export)
 		$xmlout .= "<material>".utf8_encode($rs->fields['material'])."</material>\n";
 		$xmlout .= "<technik>".utf8_encode($rs->fields['technique'])."</technik>\n";
 		$xmlout .= "<format>".utf8_encode($rs->fields['format'])."</format>\n";
-		$xmlout .= "<stadt>".utf8_encode($rs->fields['material'])."</stadt>\n";
+		$xmlout .= "<stadt>".utf8_encode($rs->fields['location'])."</stadt>\n";
 		$xmlout .= "<institution>".utf8_encode($rs->fields['institution'])."</institution>\n";
 		$xmlout .= "<literatur>".utf8_encode($rs->fields['literature'])."</literatur>\n";
 	    $xmlout .= "<url>".utf8_encode("images".DIRECTORY_SEPARATOR.$rs->fields['filename'])."</url>\n";
 		$xmlout .= "<thumbnail>".utf8_encode("thumbnail".DIRECTORY_SEPARATOR.$rs->fields['filename'])."</thumbnail>\n";
 	    $xmlout .= "<schlagworte>".utf8_encode($rs->fields['keyword'])."</schlagworte>\n";
-	   	$xmlout .= "<quelle>".utf8_encode($rs->fields['location'])."</quelle>\n";
+	   	$xmlout .= "<quelle>".utf8_encode($rs->fields['imagerights'])."</quelle>\n";
 		$xmlout .= "<comment>".utf8_encode($rs->fields['commentary'])."</comment>\n";
 		$xmlout .= "</imgdata>\n";
+		
+		// print_r($xmlout);
 
 		$sql2 = "SELECT base FROM ".$db_prefix."img_base WHERE "
 				.$db_prefix."img_base.img_baseid = ".$db->qstr($rs->fields['img_baseid']);
@@ -256,7 +328,7 @@ if ($export)
 		echo ("Dest: ".$dest."\n<br>\n");
 		*/
 
-		$ret = copy($source,$dest);
+		$ret = @copy($source,$dest);
 
 		if (!$ret){
 			echo ("Error copying image ".$rs->fields['filename']."\n<br>\n");
@@ -267,7 +339,7 @@ if ($export)
 
 		$dest = $exportdir.$user['login'].DIRECTORY_SEPARATOR.$date.DIRECTORY_SEPARATOR.'thumbnails'.DIRECTORY_SEPARATOR.$copyfilename;
 
-		$ret = copy($source,$dest);
+		$ret = @copy($source,$dest);
 
 		if (!$ret){
 			echo ("Error copying thumbnail for image ".$rs->fields['filename']."\n<br>\n");

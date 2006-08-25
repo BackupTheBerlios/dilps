@@ -20,7 +20,7 @@ function prepare_html_query($query) {
     if ($query['querytype'] == 'advanced') {
         if ($query['fromquerytype'] == 'simple') {
             // when switching from simple to advanced, add non-empty, non-standard fields from the simple query to the advanced query html data structure
-            addSimpleQueryPieces($query);
+            addSimpleQueryPieces($query, false);
         }
         //
         // add new html fields for the advanced query, if required
