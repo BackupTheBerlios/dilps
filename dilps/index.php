@@ -33,6 +33,15 @@
 ini_set( 'zend.ze1_compatibility_mode', 'On' );
 ini_set( 'session.use_cookies' , 0 );
 
+// ini_set('display_errors',1);
+
+ini_set('display_errors',0);
+ini_set('magic_quotes_runtime',0);
+error_reporting (E_ALL ^ E_NOTICE);
+
+
+// error_reporting (E_ALL);
+
 if (!file_exists('config.inc.php'))
 {
 	echo ("It seems, your installation has not been configured or your configuration file has been deleted.\n<br>\n");
@@ -82,7 +91,7 @@ $smarty->assign('action',$action);
 $smarty->assign('sessionid',$sessionid);
 
 //bk: debugging
-error_reporting(E_ALL);
+//error_reporting(E_ALL);
 //$smarty->error_reporting = E_ALL;
 
 //debug(array($config, $tpl));

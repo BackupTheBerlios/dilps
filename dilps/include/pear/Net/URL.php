@@ -32,7 +32,7 @@
 // | Author: Richard Heyes <richard at php net>                            |
 // +-----------------------------------------------------------------------+
 //
-// $Id: URL.php,v 1.1 2006/04/04 15:06:45 bking Exp $
+// $Id: URL.php,v 1.2 2006/11/22 20:55:23 sdoeweling Exp $
 //
 // Net_URL Class
 

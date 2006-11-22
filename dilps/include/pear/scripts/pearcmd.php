@@ -18,7 +18,7 @@
 // |                                                                      |
 // +----------------------------------------------------------------------+
 //
-// $Id: pearcmd.php,v 1.1 2006/01/11 01:40:18 sdoeweling Exp $
+// $Id: pearcmd.php,v 1.2 2006/11/22 20:55:23 sdoeweling Exp $
 
 ob_end_clean();
 if (!defined('PEAR_RUNTYPE')) {

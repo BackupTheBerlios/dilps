@@ -2,7 +2,7 @@
 /**
  * several examples for the methods of XML_Util
  *
- * $Id: example.php,v 1.1 2006/01/11 01:40:06 sdoeweling Exp $
+ * $Id: example.php,v 1.2 2006/11/22 20:57:33 sdoeweling Exp $
  *
  * @author      Stephan Schmidt
  * @package     XML_Util

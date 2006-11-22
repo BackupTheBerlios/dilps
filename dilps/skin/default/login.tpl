@@ -50,7 +50,7 @@ BEGIN login.tpl
 
 --------------------------------------------- -->
 
-{if $config.utf8 eq "true"}
+{if $config.utf8 eq 'true'}
 
 	{config_load file="`$config.skinBase``$config.skin`/`$config.language`/login.conf.utf8"}
 

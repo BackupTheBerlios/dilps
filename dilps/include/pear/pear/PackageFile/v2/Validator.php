@@ -17,7 +17,7 @@
 // |                                                                      |
 // +----------------------------------------------------------------------+
 //
-// $Id: Validator.php,v 1.1 2006/01/11 01:40:34 sdoeweling Exp $
+// $Id: Validator.php,v 1.2 2006/11/22 20:56:51 sdoeweling Exp $
 /**
  * Private validation class used by PEAR_PackageFile_v2 - do not use directly, its
  * sole purpose is to split up the PEAR/PackageFile/v2.php file to make it smaller

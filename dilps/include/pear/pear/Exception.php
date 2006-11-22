@@ -19,7 +19,7 @@
  * @author     Greg Beaver <cellog@php.net>
  * @copyright  1997-2005 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    CVS: $Id: Exception.php,v 1.1 2006/01/11 01:40:24 sdoeweling Exp $
+ * @version    CVS: $Id: Exception.php,v 1.2 2006/11/22 20:55:23 sdoeweling Exp $
  * @link       http://pear.php.net/package/PEAR
  * @since      File available since Release 1.3.3
  */
