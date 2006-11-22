@@ -78,7 +78,7 @@
 
 	# --------------------------------------------------------
 
-	# $Id: install.php,v 1.3 2006/11/22 20:48:49 sdoeweling Exp $
+	# $Id: install.php,v 1.4 2006/11/22 21:20:08 sdoeweling Exp $
 
 	# --------------------------------------------------------
 
@@ -2469,7 +2469,6 @@ if ( 3 == $t_install_state ) {
 
 <?php
 			// $g_db->debug = true;
-
 
             $sql = file_get_contents('schema.sql');
 
