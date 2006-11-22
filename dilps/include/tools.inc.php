@@ -31,6 +31,12 @@
 	 *					system
 	 * -------------------------------------------------------------
 	 */
+	 
+	
+	/*
+	ini_set('display_errors',1);
+	error_reporting(E_ALL);
+	*/
 	
 	global $config;
 	//include_once($config['dilpsdir'].'includes.inc.php');
@@ -47,8 +53,8 @@
 	 *	@return		void
 	 *
 	 */
-	
-	
+	 
+
 	function __stripslashes( &$str )
 	{
 		$str = stripslashes( $str );
@@ -484,7 +490,7 @@
 	 *
 	 *	@access		public
 	 *	@param 		string	$file
-	 * @param		string	&$mime
+	 *  @param		string	&$mime
 	 *	@return		bool
 	 *
 	 */
@@ -497,7 +503,7 @@
 		
 		if (function_exists('mime_content_type'))
 		{
-			$mime = @mime_content_type($file);
+			$mime = mime_content_type($file);
 		}
 		
 		if ($mime != '')
@@ -507,7 +513,7 @@
 		
 		if (function_exists('MIME_TYPE::autoDetect'))
 		{
-			$mime = @MIME_Type::autoDetect($file);
+			$mime = MIME_Type::autoDetect($file);
 		}
 		
 		if ($mime != '')
@@ -518,13 +524,35 @@
 		unset($result);
 		
 		$cmd = $file_binary." -b -i \"".$file."\"";
-		@exec($cmd, $result);
-
+		exec($cmd, $result);
+		
 		if (isset($result[0]))
 		{
 			if( preg_match( "/^[a-zA-Z0-9-]+\/[a-zA-Z0-9-]+$/", trim($result[0])))				
 			{
 				$mime = trim($result[0]);
+			}
+		}
+		else 
+		{
+			// probably this version of file is too old to understand "-b", try without
+			$cmd = $file_binary." \"".$file."\"";
+			exec($cmd, $result);
+			
+			// strip path from result
+			
+			$result[0] = trim(substr($result[0],strlen($file)+1));
+			
+			// combine the results
+			
+			$tmp_result = @explode(" ",$result[0]);
+			
+			if (isset($tmp_result[2]))
+			{			
+				if($tmp_result[2] == 'file')
+				{
+					$mime = $tmp_result[1].'/'.$tmp_result[0];
+				}
 			}
 		}
 		
@@ -562,7 +590,7 @@
 	 *
 	 *	@access		public
 	 *	@param 		string	$file
-	 * @param		array	&$imagedata
+	 *  @param		array	&$imagedata
 	 *	@return		bool
 	 *
 	 */
@@ -577,13 +605,13 @@
 						." -depth 8 -format "
 						."\"%m %w %h %b\" \"".$file."\"";
 		
-		@exec($cmd, $result);
+		exec($cmd, $result);
 		
 		if (!$result)
 		{
 			return false;
 		}
-
+		
 		if(!preg_match_all( "/[\w(\/|\.)]+/", trim($result[0]), $matches))
 		{
 			return false;
@@ -609,13 +637,17 @@
 			else
 			{
 				$imagedata["size"] = $rawsize;
-			}
+			}			
 			
-			// echo ("Imagedata:\n<br>\n");
-			// print_r($imagedata);
+			/*
+			echo ("Imagedata:\n<br>\n");
+			print_r($imagedata);
+			*/
 			
 			return true;
-		}	
+		}		
+		
+		
 	}
 	
 	/**
@@ -657,7 +689,33 @@
 		}
 		
 		unset($result);
-		@exec($cmd, $result, $ret);
+		exec($cmd, $result, $ret);
+						
+		if (empty($result))
+		{
+			// probably this version of convert is too old, try parameter "-scale"
+			// instead of "-resize"
+			
+			if ($is_thumbnail)
+			{
+				// we sharpen thumbnails
+				$cmd = $imagemagick_convert
+								." \"".$input."\" "
+								."-flatten -scale ".$to_res
+								." -colorspace RGB -sharpen 4 \"".$output."\"";
+			}
+			else
+			{
+				$cmd = $imagemagick_convert
+								." \"".$input."\" "
+								."-flatten -scale ".$to_res
+								." -colorspace RGB \"".$output."\"";
+			}
+			
+			unset($result);
+			exec($cmd, $result, $ret);
+			
+		}
 		
 		if ($ret == 0)
 		{

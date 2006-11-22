@@ -78,7 +78,7 @@
 
 	# --------------------------------------------------------
 
-	# $Id: install.php,v 1.2 2006/08/24 16:09:43 sdoeweling Exp $
+	# $Id: install.php,v 1.3 2006/11/22 20:48:49 sdoeweling Exp $
 
 	# --------------------------------------------------------
 
@@ -2478,16 +2478,21 @@ if ( 3 == $t_install_state ) {
             $ret = TRUE;
 
             foreach ($sqlarray as $sqlstatement ) {
+			
+				if (get_magic_quotes_runtime()) {
+					$sqlstatement = stripslashes($sqlstatement);
+				}
+				$sqlstatement = trim($sqlstatement);
 
-            if (!empty($sqlstatement)) {
-
-              $sqlstatement = str_replace('!prefix_!', $f_db_prefix, $sqlstatement);
-
-			  $sret = $g_db->Execute($sqlstatement);
-
-			  $ret = $ret && $sret;
-
-			}
+				if (!empty($sqlstatement)) {
+	
+				  $sqlstatement = str_replace('!prefix_!', $f_db_prefix, $sqlstatement);
+	
+				  $sret = $g_db->Execute($sqlstatement);
+	
+				  $ret = $ret && $sret;
+	
+				}
 
             }
 
@@ -2591,51 +2596,34 @@ if ( 4 == $t_install_state ) {
 
 	<?php
 
-	 $ret = true;
+ 	$ret = true;
 
-
-
-	 foreach ( $g_config_db_entry as $key => $value) {
-
-	 	
-
-		/*
-
-		if (get_magic_quotes_gpc()) {
-
-			$value = stripslashes($value);
-
-		}
-
-		*/
-
-
-
-		$value = $g_db->qstr($value);
-
+	foreach ( $g_config_db_entry as $key => $value) {
 		
-
-		$sqlstatement = 'insert '.$f_db_prefix.'config (name, val) values (\''.$key.'\','.($value).');';
-
+		if (DIRECTORY_SEPARATOR != '\\')
+		{		
+			$value = gpc_strip_slashes(stripslashes($value));
+		}
+		
+		$sqlstatement = 'insert '.$f_db_prefix.'config (name, val) values ('.$g_db->qstr($key).','.$g_db->qstr($value).');';
+		
 		if (!empty($sqlstatement)) {
 
 			$sret = $g_db->Execute($sqlstatement);
 
 			$ret = $ret && $sret;
 
-	 	}
+		}
 
-	 }
+	}
+	 
+	if ( $ret != FALSE ) {
 
-
-
- 	if ( $ret != FALSE ) {
-
-	print_test_result( GOOD );
+		print_test_result( GOOD );
 
 	} else {
 
-	print_test_result( BAD);
+		print_test_result( BAD);
 
 	}
 

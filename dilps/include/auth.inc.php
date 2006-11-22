@@ -28,6 +28,13 @@ include_once( 'config.inc.php');
 include_once( 'globals.inc.php');
 include( $config['includepath'].'adodb/adodb.inc.php' );
 
+// fix problems with user management
+include_once( $config['includepath'].'userList.class.php');
+include_once( $config['includepath'].'authUser.class.php');
+include_once( $config['includepath'].'authIMAPUser.class.php');
+include_once( $config['includepath'].'authLDAPUser.class.php');
+include_once( $config['includepath'].'authStaticUser.class.php');
+
 global $db, $config;
 
 // $db->debug = true;

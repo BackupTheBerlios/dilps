@@ -383,32 +383,6 @@ CREATE TABLE `!prefix_!session` (
 
 );
 
-CREATE TABLE `!prefix_!folder` (
-
-  `id` int(11) NOT NULL default '0',
-  
-  `name` text NOT NULL,
-  
-  `parentid` int(11) NOT NULL default '0',
-  
-  `owner` text NOT NULL,
-  
-  PRIMARY KEY  (`id`)
-  
-);
-
-CREATE TABLE `!prefix_!img_folder` (
-
-  `folderid` int(11) NOT NULL default '0',
-  
-  `collectionid` int(11) NOT NULL default '0',
-  
-  `imageid` int(11) NOT NULL default '0',
-  
-  PRIMARY KEY  (`folderid`,`collectionid`,`imageid`)
-  
-);
-
 CREATE TABLE `!prefix_!user_auth` (
 
   `userid` varchar(100) NOT NULL,
@@ -426,17 +400,6 @@ CREATE TABLE `!prefix_!user_auth` (
   `usefolders` tinyint(4) NOT NULL default '1',
   
   `active` tinyint(4) NOT NULL default '0',
-  
-  PRIMARY KEY  (`userid`)
-  
-);
-
-
-CREATE TABLE `!prefix_!user_folder` (
-
-  `userid` varchar(100) NOT NULL,
-  
-  `folderid` int(11) NOT NULL,
   
   PRIMARY KEY  (`userid`)
   

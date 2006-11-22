@@ -62,6 +62,9 @@
 
 */
 
+	// ini_set('display_errors',1);
+	// error_reporting (E_ALL);
+
 	$g_absolute_path	= dirname(dirname( __FILE__ )) . DIRECTORY_SEPARATOR;
 
 	define( 'BAD', 0 );
@@ -487,7 +490,7 @@ $status = 0;
 
    	  if ($result &&  ($_POST['host']=='local')) {        
         
-        if ($path{0} != '/' && $path{0} != DIRECTORY_SEPARATOR)
+        if ($path{0} != '/' && $path{0} != DIRECTORY_SEPARATOR && $path{1} != ':')
         {
         	$sql = "SELECT val FROM {$db_prefix}config WHERE name='dilpsdir'";
 
@@ -496,21 +499,21 @@ $status = 0;
             $path = $add_to_path.'images'.DIRECTORY_SEPARATOR.$path;
         }
         
-        @mkdir($path);
+		mkdir($path);
 
-        @mkdir($path.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR);
+        mkdir($path.DIRECTORY_SEPARATOR.'cache');
 
-        @mkdir($path.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.'120x90'.DIRECTORY_SEPARATOR);
+        mkdir($path.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.'120x90');
 
-        @mkdir($path.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.'1600x1200'.DIRECTORY_SEPARATOR);
+        mkdir($path.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.'1600x1200');
 
-        @mkdir($path.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.'1280x1024'.DIRECTORY_SEPARATOR);
+        mkdir($path.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.'1280x1024');
 
-        @mkdir($path.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.'1024x768'.DIRECTORY_SEPARATOR);
+        mkdir($path.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.'1024x768');
 
-        @mkdir($path.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.'640x480'.DIRECTORY_SEPARATOR);
+        mkdir($path.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.'640x480');
 
-        @mkdir($path.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.'800x600'.DIRECTORY_SEPARATOR);
+        mkdir($path.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.'800x600');
 
 
    	    $failure = !is_writable($path);

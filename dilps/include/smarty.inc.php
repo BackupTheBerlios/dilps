@@ -30,7 +30,7 @@
  * Purpose:  provided by smarty installation
  * -------------------------------------------------------------
  */
-//error_reporting(E_ALL);
+// error_reporting(E_ALL);
 require_once( $config['includepath'].'htmlquery.inc.php' );
 $smarty = new Smarty();
 $smarty->template_dir = $config['skinBase'];
@@ -77,11 +77,11 @@ $admin = $logins->isInGroup( $config['authdomain'], $config['admingroup'] );
 $editor = $logins->isInGroup( $config['authdomain'], $config['editorgroup'] );
 */
 
-$admin 			=	$permissions['admin'];
-$editor 		= 	$permissions['editor'];
-$usemygroup		=	$permissions['usegroups'];
-$usemyfolder	= 	$permissions['usefolders'];
-$insertimage	=	$permissions['addimages'];
+$admin 			=	(isset($permissions['admin']) ? $permissions['admin'] : 0);
+$editor 		= 	(isset($permissions['editor']) ? $permissions['editor'] : 0);
+$usemygroup		=	(isset($permissions['usegroups']) ? $permissions['usegroups'] : 0);
+$usemyfolder	= 	(isset($permissions['usefolders']) ? $permissions['usefolders'] : 0);
+$insertimage	=	(isset($permissions['addimages']) ? $permissions['addimages'] : 0);;
 
 if( $admin ) 
 {

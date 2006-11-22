@@ -33,10 +33,17 @@
  */
     // error_reporting(E_ALL);
     // error_reporting(0);
+	// ini_set('display_errors',1);
+	ini_set('magic_quotes_runtime',0);
+	
     error_reporting(E_ALL ^ E_NOTICE);
     
 	// activate compatibility mode
 	ini_set( 'zend.ze1_compatibility_mode', 'On' );
+	
+	// set the default timezone - you may want to adjust this according to your needs
+	date_default_timezone_set('Europe/Berlin');
+
 	
 	// configuration for group exports - set when we have values from db
 	

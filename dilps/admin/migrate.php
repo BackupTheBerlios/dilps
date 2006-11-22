@@ -629,6 +629,8 @@
 			$new_img_dir = $rs3->fields['base'];
 			
 			// convert all old database entries
+			
+			/*
 
 			$sql2 = "SELECT ".$old_table.".*,".$old_table."_bild.bildid FROM ".$old_table.",".$old_table."_bild WHERE ".$old_table.".bildnr = ".$old_table."_bild.bildnr";
 			// echo "$sql2\n";
@@ -728,7 +730,7 @@
 				}
 				$rs->MoveNext();
 			}
-
+			
 			$sql = "SELECT * FROM {$ng_prefix}artist";
 			$rs = $ng_db->Execute( $sql );
 			while( !$rs->EOF )
@@ -883,6 +885,8 @@
 				$rs->MoveNext();
 			}
 			
+			*/
+			
 			// database updates done, copy files
 			
 			echo ("Database conversion complete. Your old files will now be copied.\n<br>\n");
@@ -914,31 +918,42 @@
 						$old_file = $old_img_dir.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.$res.DIRECTORY_SEPARATOR.$imageid.'.jpg';
 						$new_file = $new_img_dir.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.$res.DIRECTORY_SEPARATOR.$collectionid.'-'.$imageid.'.jpg';
 
+						/*
 						echo ("Res:".$res."\n<br>\n");
 						echo ("Old: ".$old_file."\n<br>\n");
 						echo ("New: ".$new_file."\n<br>\n");
+						*/
 
 						if (file_exists($old_file)) {
-
-							$ret = @copy($old_file,$new_file);
-
-							if (!$ret) {
-								$errorstring = "Error copying file! \n<br>\n";
+							
+							if (file_exists($new_file))
+							{
+								/*
+								$errorstring = "Skipping file! \n<br>\n";
 								$errorstring .= "File:\t\t ".$old_file." \n<br>\n";
 								$errorstring .= "Resolution:\t ".$res." \n<br>\n";
 								echo ($errorstring);
-								flush();
-								ob_flush();
+								*/
+							}
+							else 
+							{
 
-							} else {
-
-								$errorstring = "\n File successfully copied!\n<br>\n";
-								$errorstring .= "File:\t\t ".$old_file." \n<br>\n";
-								$errorstring .= "Resolution:\t ".$res." \n<br>\n";
-								echo ($errorstring);
-								flush();
-								ob_flush();
-
+								$ret = @copy($old_file,$new_file);
+	
+								if (!$ret) {
+									$errorstring = "Error copying file! \n<br>\n";
+									$errorstring .= "File:\t\t ".$old_file." \n<br>\n";
+									$errorstring .= "Resolution:\t ".$res." \n<br>\n";
+									echo ($errorstring);
+	
+								} else {
+	
+									$errorstring = "\n File successfully copied!\n<br>\n";
+									$errorstring .= "File:\t\t ".$old_file." \n<br>\n";
+									$errorstring .= "Resolution:\t ".$res." \n<br>\n";
+									echo ($errorstring);
+	
+								}
 							}
 
 						}

@@ -373,6 +373,8 @@ $status = 0;
 		<select name="skin">
 
 		<?php
+		
+		
 
         if ($handle = opendir($config['skinBase'])) {
 

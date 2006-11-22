@@ -34,6 +34,11 @@
  * ---------------------------------------------------------------------
  */
 
+	/*
+	ini_set('display_errors',1);
+	error_reporting(E_ALL);
+	*/
+
 // import standard libraries and configuraiton values
 include_once('includes.inc.php');
 
@@ -205,7 +210,7 @@ if ($process == 2) {
 
 					if ((strlen($filename) - $dotpos) > 3 && (strlen($filename) - $dotpos) < 6)
 					{
-						$fileext = substr($filename,$dotpos+1);
+						$fileext = strtolower(substr($filename,$dotpos+1));
 					}
 
 					$ret = read_mime($filename, $mimetype, $fileext);
@@ -667,7 +672,7 @@ if ($process == 2) {
 
 		if ((strlen($userfilename) - $dotpos) > 3 && (strlen($userfilename) - $dotpos) < 6)
 		{
-			$userfileext = substr($userfilename,$dotpos+1);
+			$userfileext = strtolower(substr($userfilename,$dotpos+1));
 		}
 
 		$ret = read_mime($filename, $mimetype, $userfileext);
@@ -913,23 +918,24 @@ if ($process == 2) {
 						if ($convert_success)
 						{
 							
-							// all generated versions copied, so we finally try the original
+							// all generated versions copied, so we try to move the uploaded original
 							
 							$newfilename = $query['collectionid'].'-'.$newid.'.'.$formats_suffix[$img_data["mime"]];
 	
 							$source = $filename;
 							$dest = $output_dir.DIRECTORY_SEPARATOR.$newfilename;
-	
-							$ret = @copy($filename, $output_dir.DIRECTORY_SEPARATOR.$newfilename);
+
+							// this will give a warning (which we suppress), but work in the end
+							$ret = @move_uploaded_file($source,$dest);							
 	
 							if (!$ret)
 							{
-								echo ("Copying original image\t: failed\n<br>\n");
+								echo ("Moving uploaded original image\t: failed\n<br>\n");
 								echo ("Aborting...\n<br>\n");
 							}
 							else
 							{
-								echo ("Copying original image\t: success\n<br>\n");
+								echo ("Moving uploaded original image\t: success\n<br>\n");
 	
 								// set permissions
 								$ret = @chmod($output_dir.DIRECTORY_SEPARATOR.$newfilename,0755);
@@ -943,18 +949,6 @@ if ($process == 2) {
 									echo ("Modyfing permissions\t: success\n<br>\n");
 								}
 	
-								$ret = @unlink($filename);
-	
-								if (!$ret)
-								{
-									echo ("Removing uploaded file\t: failed\n<br>\n");
-							 	}
-								else
-								{
-									echo ("Removing uploaded file\t: success\n<br>\n");
-								}
-								echo ("\n<br>\n");
-								
 								// here our critical section ends, after the next command, the image counter
 								// is increased by 1
 	
