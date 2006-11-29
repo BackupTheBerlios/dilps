@@ -628,20 +628,87 @@
 
 			$new_img_dir = $rs3->fields['base'];
 			
-			// convert all old database entries
+			// clear information in target image tables (img, meta) for the selected
+			// collection and baseid
+				
+			$sql4 	= 	"DELETE img.*, meta.* FROM "
+						."{$ng_prefix}img as img LEFT JOIN {$ng_prefix}meta as meta ON "
+						."(img.collectionid = meta.collectionid AND img.imageid = meta.imageid) "
+						."WHERE "
+						."(img.collectionid = ".$ng_db->qstr($_REQUEST['ng_collection'])." AND "
+						."img.img_baseid = ".$ng_db->qstr($_REQUEST['ng_baseid']).")";
+			$rs4 	= 	@$ng_db->Execute( $sql4 );
 			
-			$sql2 = "SELECT ".$old_table.".*,".$old_table."_bild.bildid FROM ".$old_table.",".$old_table."_bild WHERE ".$old_table.".bildnr = ".$old_table."_bild.bildnr";
+			echo ("Clearing target images tables: ");
+			if ($rs4){
+				echo ("OK\n<br>\n");
+			} 
+			else {
+				echo ("<b>Failed</b>\n<br>\n");
+				echo ("SQL: $sql4\n<br>\n");
+				echo ("\n<br>\n");
+			}
+			
+			// clear all groups and group content
+			
+			$sql4 = "DELETE FROM ".$ng_prefix."group WHERE 1";
+			$rs4 = @$ng_db->Execute( $sql4 );
+			
+			echo ("Clearing target group table: ");
+			if ($rs4){
+				echo ("OK\n<br>\n");
+			} 
+			else {
+				echo ("<b>Failed</b>\n<br>\n");
+				echo ("SQL: $sql4\n<br>\n");
+				echo ("\n<br>\n");
+			}
+			
+			$sql4 = "DELETE FROM ".$ng_prefix."img_group WHERE 1";
+			$rs4 = @$ng_db->Execute( $sql4 );
+			
+			echo ("Clearing target group content: ");
+			if ($rs4){
+				echo ("OK\n<br>\n");
+			} 
+			else {
+				echo ("<b>Failed</b>\n<br>\n");
+				echo ("SQL: $sql4\n<br>\n");
+				echo ("\n<br>\n");
+			}
+			
+			// get the entries to import from the old database
+			
+			$sql2 = "SELECT ".$old_table.".*,".$old_table."_bild.bildid "
+					."FROM ".$old_table." INNER JOIN ".$old_table."_bild "
+					."ON ".$old_table.".bildnr = ".$old_table."_bild.bildnr "
+					."ORDER BY {$old_table}_bild.bildid";
+			$rs2 = $old_db->Execute( $sql2 );
+			
+			echo ("Loading old database entries: ");
+			if ($rs2){
+				echo ("OK\n<br>\n");
+			} 
+			else {
+				echo ("<b>Failed</b>\n<br>\n");
+				echo ("SQL: $sql2\n<br>\n");
+				echo ("\n<br>\n");
+			}
+			
 			// echo "$sql2\n";
-			$rs2 = $old_db->Execute( $sql2 );			
+			
+			// insert converted entries
 			
 			while( !$rs2->EOF )
 			{		
+				echo ("\n<br>\n<em>Inserting entry (".$_REQUEST['ng_collection'].":".$rs2->fields['bildid']."):</em>\n<br>\n");
+				
 				migrate_insert_meta($_REQUEST['ng_collection'], $_REQUEST['ng_baseid'], $rs2->fields, $ng_db, $ng_prefix, $old_db );
 				
 				$rs2->MoveNext();
 			}
 			
-			// convert all old groups
+			// insert all old groups
 			
 			$sql4 = "SELECT groupsid, owner, name FROM `groups` WHERE 1";
 			$rs4 = @$old_db->Execute( $sql4 );
@@ -655,11 +722,8 @@
 			// transfer the group content (imageid's) to new groups (only for images for which we
 			// have db entries
 			
-			
-			$sql2 = "SELECT ".$old_table.".*,".$old_table."_bild.bildid FROM ".$old_table.",".$old_table."_bild WHERE ".$old_table.".bildnr = ".$old_table."_bild.bildnr";
-			
 			$sql5 	= 	"SELECT g.groupsid as groupsid, g.bildid as bildid FROM `groups_bild` as g, `".$old_table."_bild` as b WHERE "
-						."g.bildid = b.bildid";
+						."g.bildid = b.bildid ORDER BY groupsid, bildid";
 			$rs5 	= 	@$old_db->Execute( $sql5 );
 			
 			while( !$rs5->EOF)
@@ -670,8 +734,14 @@
 			
 			// database updates done, copy files
 			
-			echo ("Database conversion complete. Your old files will now be copied.\n<br>\n");
+			echo ("\n<br>\n<em>Database conversion complete.</em>\n<br>\n");
 
+			echo ("\n<br>\n<em>Your old files will now be copied (this can take very long, depending on the number of files that are copied).</em>\n<br>\n");
+			echo ("\n<br>\n");
+			
+			echo ("Source directory: ".$old_img_dir.DIRECTORY_SEPARATOR."\n<br>\n");
+			echo ("Target directory: ".$new_img_dir.DIRECTORY_SEPARATOR."\n<br>\n");
+			
 			$resolutions = array(
 				"0"	=>	"120x90",
 				"1"	=>	"640x480",
@@ -681,8 +751,13 @@
 				"5"	=>	"1600x1200"
 			);
 
-			$ng_sql = "SELECT * FROM ".$ng_prefix."img WHERE collectionid = ".$ng_db->qstr($_REQUEST['ng_collection']);
+			$ng_sql = 	"SELECT * FROM ".$ng_prefix."img "
+						."WHERE collectionid = ".$ng_db->qstr($_REQUEST['ng_collection'])." "
+						."ORDER BY imageid";
 			$ng_rs = $ng_db->Execute($ng_sql);
+			
+			// for every database entry, lookup the old filename and see whether
+			// it has been copied before or not
 
 			while (!$ng_rs->EOF) {
 
@@ -694,6 +769,11 @@
 
 				if( $old_rs )
 				{
+					echo ("\n<br>\n<em>Copying image for entry (".$collectionid.":".$imageid."):</em>\n<br>\n");
+					
+					$source = 'cache'.DIRECTORY_SEPARATOR.'<em>resolution</em>'.DIRECTORY_SEPARATOR.$imageid.'.jpg';
+					$target = $new_img_dir.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.'<em>resolution</em>'.DIRECTORY_SEPARATOR.$collectionid.'-'.$imageid.'.jpg';
+					
 					foreach ($resolutions as $res) {
 
 						$old_file = $old_img_dir.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.$res.DIRECTORY_SEPARATOR.$imageid.'.jpg';
@@ -704,46 +784,34 @@
 						echo ("Old: ".$old_file."\n<br>\n");
 						echo ("New: ".$new_file."\n<br>\n");
 						*/
+						
+						echo ($res.": ");
 
 						if (file_exists($old_file)) {
 							
 							if (file_exists($new_file))
 							{
-								/*
-								$errorstring = "Skipping file! \n<br>\n";
-								$errorstring .= "File:\t\t ".$old_file." \n<br>\n";
-								$errorstring .= "Resolution:\t ".$res." \n<br>\n";
-								echo ($errorstring);
-								*/
+								echo ("Target exists");
 							}
 							else 
 							{
-
 								$ret = @copy($old_file,$new_file);
 	
 								if (!$ret) {
-									$errorstring = "Error copying file! \n<br>\n";
-									$errorstring .= "File:\t\t ".$old_file." \n<br>\n";
-									$errorstring .= "Resolution:\t ".$res." \n<br>\n";
-									echo ($errorstring);
-	
+									echo ("<b>Copying failed!</b>");
 								} else {
-	
-									$errorstring = "\n File successfully copied!\n<br>\n";
-									$errorstring .= "File:\t\t ".$old_file." \n<br>\n";
-									$errorstring .= "Resolution:\t ".$res." \n<br>\n";
-									echo ($errorstring);
-	
+									echo ("Copying succesful");
 								}
 							}
-
 						}
-
+						else 
+						{
+							echo ("<b>Failed!</b> (Source not found)");
+						}
+						echo ("\n<br>\n");
 					}
 				}
-				
 				$ng_rs->MoveNext();
-
 			}
 
 			$old_db->Close();

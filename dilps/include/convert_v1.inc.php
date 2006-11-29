@@ -36,7 +36,7 @@ function migrate_insert_img( $collectionid, $baseid, $imageid, &$db, $db_prefix,
 	
 	if( $bild )
 	{
-		$sql = "REPLACE INTO `{$db_prefix}img` (`collectionid`".
+		$sql = "INSERT INTO `{$db_prefix}img` (`collectionid`".
 									", `imageid`".
 									", `img_baseid`".
 									", `filename`".
@@ -60,9 +60,23 @@ function migrate_insert_img( $collectionid, $baseid, $imageid, &$db, $db_prefix,
 				", ".$db->qstr(stripslashes($bild['insert_date'])).
 				", ".$db->qstr(stripslashes($bild['modify_date'])).
 				");";
-		echo "$sql\n<br>\n";
-		$db->Execute( $sql );
+				
+		// echo "$sql\n<br>\n";
+		
+		$rs = $db->Execute( $sql );
+		
+		echo ("Inserting image data: ");
+		if ($rs){
+			echo ("OK\n<br>\n");
+		} 
+		else {
+			echo ("<b>Failed</b>\n<br>\n");
+			echo ("SQL: $sql\n<br>\n");
+			echo ("\n<br>\n");
+		}
+
 	}
+	
 }
 
 function migrate_insert_meta( $collectionid, $baseid, $fields, &$db, $db_prefix, &$db2 )
@@ -98,7 +112,7 @@ function migrate_insert_meta( $collectionid, $baseid, $fields, &$db, $db_prefix,
 	// echo ("Ort: $locationname, ID: $locationid \n<br>\n");
 	
 
-	$sql = 	"REPLACE INTO `{$db_prefix}meta` ".
+	$sql = 	"INSERT INTO `{$db_prefix}meta` ".
 			"(`collectionid`".
 			", `imageid`".
 			", `type`".
@@ -118,16 +132,20 @@ function migrate_insert_meta( $collectionid, $baseid, $fields, &$db, $db_prefix,
 			", `keyword`".
 			", `insert_date`".
 			", `modify_date`".
-			", `name1id`".
-			", `locationid`".
+			/* Name1ID - from get_or_set_artistid - Name2ID is always empty when importing*/
+			(($artistid !== false) ? ", `name1id`" : '').
+			/* LocationID - erhalten aus get_or_set_locationid */
+			(($locationid !== false) ? ", `locationid`" : '').
 			", `exp_prometheus`".
 			", `exp_sid`".
 			", `exp_unimedia`".
 			", `metacreator`".
 			", `name1`".
 			", `location`".
-			", `locationsounds`".
-			", `name1sounds`".
+			/* Locationsounds */
+			(($locationname != '' && $locationid !== false) ? ", `locationsounds`" : '').
+			/* Name1sounds */			
+			(($artistname != '' && $artistid !== false) ? ", `name1sounds`" : '').
 			" ) VALUES (".
 			intval($collectionid).
 			", ".$fields['bildid'].
@@ -151,11 +169,11 @@ function migrate_insert_meta( $collectionid, $baseid, $fields, &$db, $db_prefix,
 
 			/* Name1ID - from get_or_set_artistid - Name2ID is always empty when importing*/
 
-			", ".(($artistid !== false) ? intval($artistid) : 0).
+			(($artistid !== false) ? ", ".intval($artistid) : '').
 			
 			/* LocationID - erhalten aus get_or_set_locationid */
 			
-			", ".(($locationid !== false) ? intval($locationid) : 0).
+			(($locationid !== false) ? ", ".intval($locationid) : '').
 
 			/* Export alle auf 0 */
 
@@ -169,25 +187,65 @@ function migrate_insert_meta( $collectionid, $baseid, $fields, &$db, $db_prefix,
 			", ".$db->qstr($locationname).
 
 			/* Locationsounds */
-			", ".(($locationname != '') ? $db->qstr(migrate_get_sounds_string($locationname)) : '').
+			(($locationname != '' && $locationid !== false) ? ", ".$db->qstr(migrate_get_sounds_string($locationname)) : '').
 			
 			/* Name1sounds */
-			", ".(($artistname != '') ? $db->qstr(migrate_get_sounds_string($artistname)) : '').
+			(($artistname != '' && $artistid !== false) ? ", ".$db->qstr(migrate_get_sounds_string($artistname)) : '').
 
 			");";
 
-	echo "$sql\n<br>\n";
-	$db->Execute( $sql );
+	// echo "$sql\n<br>\n";
+	
+	$rs = $db->Execute( $sql );
+	
+	echo ("Inserting meta data: ");
+	if ($rs){
+		echo ("OK\n<br>\n");
+	} 
+	else {
+		echo ("<b>Failed</b>\n<br>\n");
+		echo ("SQL: $sql\n<br>\n");
+		echo ("\n<br>\n");
+	}
+
+	// clear old dating information
+	$sql = "DELETE FROM {$db_prefix}dating WHERE collectionid={$collectionid} AND imageid={$fields['bildid']}";
+	// echo "$sql\n";
+	$rs = $db->Execute( $sql );
+	
+	echo ("Clearing old dating information: ");
+	if ($rs){
+		echo ("OK\n<br>\n");
+	} 
+	else {
+		echo ("<b>Failed</b>\n<br>\n");
+		echo ("SQL: $sql\n<br>\n");
+		echo ("\n<br>\n");
+	}
 
     dating( $db, stripslashes($fields['datierung']), $datelist );
+    
+    $rs2 = true;
 	if( count( $datelist ))
 	{
-	   foreach( $datelist as $date )
-	   {
-	   		$sql = "REPLACE INTO {$db_prefix}dating(collectionid,imageid,`from`,`to`) VALUES({$collectionid},{$fields['bildid']},{$date['from']},{$date['to']})";
-	   		echo "$sql\n";
-	   		$db->Execute( $sql );
-	   }
+	   	foreach( $datelist as $date )
+	   	{
+	   		$sql = 	"INSERT INTO {$db_prefix}dating(`collectionid`, `imageid`, `from`, `to`) "
+	   				."VALUES({$collectionid},{$fields['bildid']},{$date['from']},{$date['to']})";
+	   		$rs = $db->Execute( $sql );
+	   	}
+	   	
+	   	$rs2 = $rs2 && $rs;
+	}
+	
+	echo ("Inserting new dating information: ");
+	if ($rs2){
+		echo ("OK\n<br>\n");
+	} 
+	else {
+		echo ("<b>Failed</b>\n<br>\n");
+		echo ("SQL: $sql\n<br>\n");
+		echo ("\n<br>\n");
 	}
 
  	migrate_insert_img( $collectionid, $baseid, $fields['bildid'], $db, $db_prefix, $db2);
@@ -196,8 +254,8 @@ function migrate_insert_meta( $collectionid, $baseid, $fields, &$db, $db_prefix,
 
 function migrate_insert_group( $groupid, $name, $owner, $parentid, &$db, $db_prefix )
 {
-	$sql = "REPLACE INTO `".$db_prefix."group` ("
-				."`groupid`"
+	$sql = "INSERT INTO `".$db_prefix."group` ("
+				."`id`"
 				.", `name`"
 				.", `owner`"
 				.", `parentid`)"
@@ -207,14 +265,24 @@ function migrate_insert_group( $groupid, $name, $owner, $parentid, &$db, $db_pre
 				.$db->qstr($owner).", "
 				.$db->qstr($parentid).				
 				");";
-				
-		echo "$sql\n<br>\n";
-		$db->Execute( $sql );
+	$rs = $db->Execute( $sql );
+	
+	// echo "$sql\n<br>\n";
+	
+	echo ("Inserting new group ($groupid, $name): ");
+	if ($rs){
+		echo ("OK\n<br>\n");
+	} 
+	else {
+		echo ("<b>Failed</b>\n<br>\n");
+		echo ("SQL: $sql\n<br>\n");
+		echo ("\n<br>\n");
+	}
 }
 
 function migrate_insert_into_group( $groupid, $collectionid, $imageid, &$db, $db_prefix )
 {
-	$sql = "REPLACE INTO `".$db_prefix."img_group` ("
+	$sql = "INSERT INTO `".$db_prefix."img_group` ("
 				."`groupid`"
 				.", `collectionid`"
 				.", `imageid`)"
@@ -223,9 +291,20 @@ function migrate_insert_into_group( $groupid, $collectionid, $imageid, &$db, $db
 				.$db->qstr($collectionid).", "
 				.$db->qstr($imageid).
 				");";
-				
-		echo "$sql\n<br>\n";
-		$db->Execute( $sql );
+	$rs = $db->Execute( $sql );
+	
+	// echo "$sql\n<br>\n";
+	
+	echo ("Inserting new group entry ($groupid, $collectionid, $imageid): ");
+	if ($rs){
+		echo ("OK\n<br>\n");
+	} 
+	else {
+		echo ("<b>Failed</b>\n<br>\n");
+		echo ("\n<br>\n");
+		echo ("SQL: $sql\n<br>\n");
+	}
+	
 }
 
  function migrate_get_sounds_string($string) {
@@ -267,9 +346,10 @@ function migrate_insert_into_group( $groupid, $collectionid, $imageid, &$db, $db
 
 function migrate_get_or_set_locationid($location_name, $sourceid,  $db, $db_prefix)
 {
-    $sql = "SELECT id FROM ".$db_prefix."location WHERE location=".$db->qstr($location_name);
-    echo ($sql."\n<br>\n");
+    $sql = "SELECT id FROM ".$db_prefix."location WHERE location=".$db->qstr($location_name);    
 	$location_id  = $db->GetOne( $sql );
+	
+	// echo ($sql."\n<br>\n");
 	
 	if(!$location_id)
 	{
@@ -277,10 +357,11 @@ function migrate_get_or_set_locationid($location_name, $sourceid,  $db, $db_pref
 				.$db->qstr('dilps').","
 				.$db->qstr($sourceid).","
 				.$db->qstr($location_name).","
-				.$db->qstr(migrate_get_sounds_string($location_name)).")";
-		echo ($sql."\n<br>\n");
+				.$db->qstr(migrate_get_sounds_string($location_name)).")";		
 		
 		$rs = $db->Execute($sql);
+		
+		// echo ($sql."\n<br>\n");
 		
 		if (!$rs)
 		{
@@ -289,14 +370,16 @@ function migrate_get_or_set_locationid($location_name, $sourceid,  $db, $db_pref
 		else 
 		{
 			$sql = "SELECT id FROM ".$db_prefix."location WHERE location=".$db->qstr($location_name);
-			echo ($sql."\n<br>\n");
-			
 			$location_id  = $db->GetOne( $sql );
+			
+			// echo ($sql."\n<br>\n");
 			
 			if (!$location_id)
 			{
 				return false;
 			}
+			
+			echo ("New location entry ($location_id, $location_name)! \n<br>\n");
 		}
 	}
 	
@@ -322,10 +405,10 @@ function migrate_get_or_set_locationid($location_name, $sourceid,  $db, $db_pref
 
 function migrate_get_or_set_artistid($artist_name, $db, $db_prefix)
 {
-    $sql = "SELECT id FROM ".$db_prefix."artist WHERE name=".$db->qstr($artist_name);
-    echo ($sql."\n<br>\n");
-    
+    $sql = "SELECT id FROM ".$db_prefix."artist WHERE name=".$db->qstr($artist_name);    
 	$artist_id  = $db->GetOne( $sql );
+	
+	// echo ($sql."\n<br>\n");
 	
 	if(!$artist_id)
 	{
@@ -334,9 +417,9 @@ function migrate_get_or_set_artistid($artist_name, $db, $db_prefix)
 				.$db->qstr($artist_name).","
 				.$db->qstr(0).","
 				.$db->qstr(migrate_get_sounds_string($artist_name)).")";
-				
-		echo ($sql."\n<br>\n");		
 		$rs = $db->Execute($sql);
+		
+		// echo ($sql."\n<br>\n");		
 		
 		if (!$rs)
 		{
@@ -345,13 +428,16 @@ function migrate_get_or_set_artistid($artist_name, $db, $db_prefix)
 		else 
 		{
 			$sql = "SELECT id FROM ".$db_prefix."artist WHERE name=".$db->qstr($artist_name);
-			echo ($sql."\n<br>\n");
 			$artist_id  = $db->GetOne( $sql );
+			
+			// echo ($sql."\n<br>\n");
 			
 			if (!$artist_id)
 			{
 				return false;
 			}
+			
+			echo ("New artist entry ($artist_id, $artist_name)! \n<br>\n");
 		}
 	}
 	
