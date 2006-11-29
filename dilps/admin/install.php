@@ -78,7 +78,7 @@
 
 	# --------------------------------------------------------
 
-	# $Id: install.php,v 1.5 2006/11/29 02:56:10 sdoeweling Exp $
+	# $Id: install.php,v 1.6 2006/11/29 21:20:42 sdoeweling Exp $
 
 	# --------------------------------------------------------
 
@@ -2492,6 +2492,8 @@ if ( 3 == $t_install_state ) {
 
 <?php
 			// $g_db->debug = true;
+			
+			// schema part
 
             $sql = file_get_contents('schema.sql');
 
@@ -2517,6 +2519,34 @@ if ( 3 == $t_install_state ) {
 				}
 
             }
+            
+            // data part
+            
+            $handle = @fopen('data.sql', 'r');
+            
+			if ($handle) {
+				
+			   while (!feof($handle)) {
+			   	
+			   		$sqlstatement = fgets($handle);
+
+			   		if (get_magic_quotes_runtime()) {
+						$sqlstatement = stripslashes($sqlstatement);
+					}
+					
+					$sqlstatement = trim($sqlstatement);
+	
+					if (!empty($sqlstatement)) {
+					  $sqlstatement = str_replace('!prefix_!', $f_db_prefix, $sqlstatement);
+		
+					  $sret = $g_db->Execute($sqlstatement);
+					  $ret = $ret && $sret;
+		
+					}
+			   }
+			   fclose($handle);
+			}
+            
 
 			if ( $ret != FALSE ) {
 
