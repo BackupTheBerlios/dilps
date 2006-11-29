@@ -78,7 +78,7 @@
 
 	# --------------------------------------------------------
 
-	# $Id: install.php,v 1.4 2006/11/22 21:20:08 sdoeweling Exp $
+	# $Id: install.php,v 1.5 2006/11/29 02:56:10 sdoeweling Exp $
 
 	# --------------------------------------------------------
 
@@ -644,6 +644,8 @@
     
     $f_utf8	=  gpc_get_string('utf8','false');
     
+    $f_imagick_mode	=  gpc_get_string('imagick_mode','compatible');
+    
     
     $f_imagick_convert = gpc_get_string('imagick_convert','');
     
@@ -685,6 +687,8 @@
     
     
     $g_config_db_entry['utf8'] 					= $f_utf8;
+        
+    $g_config_db_entry['imagick_mode'] 			= $f_imagick_mode;
     
     
     $g_config_db_entry['imagick_convert'] 		= $f_imagick_convert;
@@ -2200,6 +2204,25 @@ if ( 1 == $t_install_state ) {
 
 		<span class="title">Misc. Options</span>
 
+	</td>
+
+</tr>
+
+<tr>
+
+	<td>
+
+		ImageMagick operation mode ('fast' requires at least ImageMagick version 6.0.0)
+
+	</td>
+
+	<td>
+	
+		<select name="imagick_mode">
+			<option value="compatible" <?php if ( $f_imagick_mode == 'compatible' ) echo ("selected='selected' "); ?> >		compatible	</option>
+			<option value="fast" <?php if ( $f_imagick_mode == 'fast' ) echo ("selected='selected' "); ?> >		fast	</option>
+		</select>
+	
 	</td>
 
 </tr>

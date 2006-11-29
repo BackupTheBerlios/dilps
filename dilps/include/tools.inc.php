@@ -688,6 +688,8 @@
 							." -colorspace RGB \"".$output."\"";
 		}
 		
+		// echo ("Cmd: $cmd\n<br>\n");
+		
 		unset($result);
 		exec($cmd, $result, $ret);
 						
@@ -717,6 +719,74 @@
 			
 		}
 		
+		if ($ret == 0)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+		
+	}
+	
+	/**
+	 *	convert an image to a JPEG-file (batch-mode)
+	 *
+	 *  converts an image to a series of JPEG files 
+	 *  of the specified resolutions,
+	 *  sharpens thumbnails, applies some
+	 *  corrections to ensure conversion
+	 *  success
+	 * 
+	 *  pass resolution with array values,
+	 *  optionally pass different resolution to be used as thumbnail
+	 * 
+	 *  this requires ImageMagick version > 6
+	 * 
+	 *
+	 *	@access		public
+	 *	@param 		string	$input
+	 *	@param		string	$output_directory
+	 *	@param		string	$output_file_basename
+	 *	@param 		array	$to_res	 
+	 *	@return		bool
+	 *
+	 */
+	
+	function convert_image_batch($input, $output_directory,$output_file_basename, $to_res, $thumbnail_res = '120x90')
+	{
+		global $imagemagick_convert;	
+		
+		// build up command
+		
+		// base part
+		
+		$cmd = 	$imagemagick_convert.' '.escapeshellarg($input)
+				.' -flatten -colorspace RGB ';
+				
+		// add options for target images
+		foreach ($to_res as $res)
+		{
+			if ($res != $thumbnail_res)
+			{
+				// standard image
+				$cmd .= ' ( +clone -resize '.$res.' -write '.escapeshellarg($output_directory.DIRECTORY_SEPARATOR.$res.DIRECTORY_SEPARATOR.$output_file_basename.'.jpg').' +delete ) ';
+			}
+			else 
+			{
+				// thumbnail				
+				$trail = ' -resize '.$res.' -sharpen 4 '.escapeshellarg($output_directory.DIRECTORY_SEPARATOR.$res.DIRECTORY_SEPARATOR.$output_file_basename.'.jpg');
+			}
+		}			
+		
+		$cmd .= $trail;
+		
+		// echo ("Cmd: $cmd\n<br>\n");
+		
+		unset($result);
+		exec($cmd, $result, $ret);
+						
 		if ($ret == 0)
 		{
 			return true;
@@ -869,8 +939,6 @@
 	 *
 	 */
 	
-	// 
-
 	function get_groupid_where($groupid, &$db, $db_prefix, $subgroups = true) {
 	    
 	    $where = '';
@@ -921,5 +989,5 @@
 		}
 	    return $where;
 	}
-
+	
 ?>

@@ -1,11 +1,10 @@
 <?php
 
 	include( '../config.inc.php' );
-	include( '../globals.inc.php' );
+	include( '../globals.inc.php' );	
 	include( $config['includepath'].'convert_v1.inc.php');
 	include( $config['includepath'].'adodb/adodb.inc.php' );
-	include( $config['includepath'].'tools.inc.php' );
-	include( $config['includepath'].'thesauri/soundex_fr.php' );
+	include( $config['includepath'].'tools.inc.php' );	
 
 	global $db_db, $db_host, $db_prefix, $db_pwd, $db_user;
 
@@ -455,8 +454,9 @@
 				<tr>
 					<td width="48%">
 						<strong>
-							Please note that this migration tool will only work <br/>
-							predictably, if the target collection is still empty!
+							Please note that this migration tool will overwrite <br/>
+							all changes to images in the target collection <br />
+							that have been made since the last import!
 						</strong>
 						<input type="hidden" name="step" value="2">
 					</td>
@@ -630,15 +630,14 @@
 			
 			// convert all old database entries
 			
-			/*
-
 			$sql2 = "SELECT ".$old_table.".*,".$old_table."_bild.bildid FROM ".$old_table.",".$old_table."_bild WHERE ".$old_table.".bildnr = ".$old_table."_bild.bildnr";
 			// echo "$sql2\n";
 			$rs2 = $old_db->Execute( $sql2 );			
 			
 			while( !$rs2->EOF )
-			{
+			{		
 				migrate_insert_meta($_REQUEST['ng_collection'], $_REQUEST['ng_baseid'], $rs2->fields, $ng_db, $ng_prefix, $old_db );
+				
 				$rs2->MoveNext();
 			}
 			
@@ -668,224 +667,6 @@
 				migrate_insert_into_group($rs5->fields['groupsid'],$_REQUEST['ng_collection'],$rs5->fields['bildid'],$ng_db,$ng_prefix);
 				$rs5->MoveNext();
 			}			
-			
-			
-			// generate an artist cache
-
-			$sql = "SELECT DISTINCT name1 FROM {$ng_prefix}meta WHERE"
-					." collectionid = ".$ng_db->qstr($_REQUEST['ng_collection'])
-					." AND name1 != ''";
-			$rs = $ng_db->Execute( $sql );
-			while( !$rs->EOF )
-			{
-				$name = $ng_db->qstr(stripslashes($rs->fields['name1']));
-				$artistnames = explode(',',$name);
-
-				if (isset($artistnames[0])){
-
-					if (strlen($artistnames[0]))
-					{
-						$art_name = trim(stripslashes(($artistnames[0])));
-					}
-
-				}
-				else
-				{
-					$art_name = '';
-				}
-
-				if (isset($artistnames[1])){
-					if (strlen($artistnames[1]))
-					{
-						$art_surname = trim(stripslashes($artistnames[1]));
-					}
-				}
-				else
-				{
-						$art_surname = '';
-				}
-
-				$soundslike = '';
-
-				if (strlen($art_surname) > 0){
-
-					$soundslike .= '.'.soundex2($art_surname).'.';
-
-				}
-
-				if (strlen($art_name) > 0){
-
-					$soundslike .= soundex2($art_name).'.';
-
-				}
-
-				$soundslike = $ng_db->qstr($soundslike);
-
-				$sql = "REPLACE INTO `{$ng_prefix}artist` (src,name,sounds) VALUES('dilps',$name,".$soundslike.")";
-				echo $sql."\n<br>\n";
-				$rs2 = $ng_db->Execute($sql);
-				if( !$rs2 )
-				{
-					echo $ng_db->ErrorMsg()."\n<br>\n";
-				}
-				$rs->MoveNext();
-			}
-			
-			$sql = "SELECT * FROM {$ng_prefix}artist";
-			$rs = $ng_db->Execute( $sql );
-			while( !$rs->EOF )
-			{
-				$sql2 = "UPDATE `{$ng_prefix}meta` SET name1id = ".$ng_db->qstr($rs->fields['id']).
-						", name1sounds = ".$ng_db->qstr($rs->fields['sounds']).
-						" WHERE name1 = ".$ng_db->qstr($rs->fields['name']);
-
-				echo $sql2."\n<br>\n";
-				$rs2 = $ng_db->Execute($sql2);
-				if( !$rs2 )
-				{
-					echo $ng_db->ErrorMsg()."\n<br>\n";
-				}
-				
-				$sql2 = "UPDATE `{$ng_prefix}meta` SET name2id = ".$ng_db->qstr($rs->fields['id']).
-						", name2sounds = ".$ng_db->qstr($rs->fields['sounds']).
-						" WHERE name2 = ".$ng_db->qstr($rs->fields['name']);
-
-				echo $sql2."\n<br>\n";
-				$rs2 = $ng_db->Execute($sql2);
-				if( !$rs2 )
-				{
-					echo $ng_db->ErrorMsg()."\n<br>\n";
-				}
-				
-				$rs->MoveNext();
-			}
-			
-			$sql = "SELECT DISTINCT name2 FROM {$ng_prefix}meta WHERE"
-					." collectionid = ".$ng_db->qstr($_REQUEST['ng_collection'])
-					." AND name2 != ''";
-			$rs = $ng_db->Execute( $sql );
-			while( !$rs->EOF )
-			{
-				$name = $ng_db->qstr(stripslashes($rs->fields['name2']));
-				$artistnames = explode(',',$name);
-
-				if (isset($artistnames[0])){
-
-					if (strlen($artistnames[0]))
-					{
-						$art_name = trim(stripslashes(($artistnames[0])));
-					}
-
-				}
-				else
-				{
-					$art_name = '';
-				}
-
-				if (isset($artistnames[1])){
-					if (strlen($artistnames[1]))
-					{
-						$art_surname = trim(stripslashes($artistnames[1]));
-					}
-				}
-				else
-				{
-						$art_surname = '';
-				}
-
-				$soundslike = '';
-
-				if (strlen($art_surname) > 0){
-
-					$soundslike .= '.'.soundex2($art_surname).'.';
-
-				}
-
-				if (strlen($art_name) > 0){
-
-					$soundslike .= soundex2($art_name).'.';
-
-				}
-
-				$soundslike = $ng_db->qstr($soundslike);
-
-				$sql = "REPLACE INTO `{$ng_prefix}artist` (src,name,sounds) VALUES('dilps',$name,".$soundslike.")";
-				echo $sql."\n<br>\n";
-				$rs2 = $ng_db->Execute($sql);
-				if( !$rs2 )
-				{
-					echo $ng_db->ErrorMsg()."\n<br>\n";
-				}
-				$rs->MoveNext();
-			}
-
-			$sql = "SELECT * FROM {$ng_prefix}artist";
-			$rs = $ng_db->Execute( $sql );
-			while( !$rs->EOF )
-			{
-				$sql2 = "UPDATE `{$ng_prefix}meta` SET name1id = ".$ng_db->qstr($rs->fields['id']).
-						", name1sounds = ".$ng_db->qstr($rs->fields['sounds']).
-						" WHERE name1 = ".$ng_db->qstr($rs->fields['name']);
-
-				echo $sql2."\n<br>\n";
-				$rs2 = $ng_db->Execute($sql2);
-				if( !$rs2 )
-				{
-					echo $ng_db->ErrorMsg()."\n<br>\n";
-				}
-				
-				$sql2 = "UPDATE `{$ng_prefix}meta` SET name2id = ".$ng_db->qstr($rs->fields['id']).
-						", name2sounds = ".$ng_db->qstr($rs->fields['sounds']).
-						" WHERE name2 = ".$ng_db->qstr($rs->fields['name']);
-
-				echo $sql2."\n<br>\n";
-				$rs2 = $ng_db->Execute($sql2);
-				if( !$rs2 )
-				{
-					echo $ng_db->ErrorMsg()."\n<br>\n";
-				}
-				
-				$rs->MoveNext();
-			}
-			
-			$sql = "SELECT DISTINCT location, locationsounds FROM {$ng_prefix}meta WHERE"
-					." collectionid = ".$ng_db->qstr($_REQUEST['ng_collection'])
-					." AND location != ''";
-			$rs = $ng_db->Execute( $sql );
-			while( !$rs->EOF )
-			{
-				$location = trim(stripslashes($rs->fields['location']));
-				$locationsounds = trim(stripslashes(soundex2($location)));
-				$sql2 = "REPLACE INTO `{$ng_prefix}location` (src, source_id, location, sounds) "
-						."VALUES ('dilps','dilps_v1',".$ng_db->qstr($location).", ".$ng_db->qstr($locationsounds).")";
-				echo $sql2."\n<br>\n";
-				$rs2 = $ng_db->Execute($sql2);
-				if( !$rs2 )
-				{
-					echo $ng_db->ErrorMsg()."\n<br>\n";
-				}
-				$rs->MoveNext();
-			}
-
-			$sql = "SELECT * FROM {$ng_prefix}location";
-			$rs = $ng_db->Execute( $sql );
-
-			while( !$rs->EOF )
-			{
-				$sql2 = "UPDATE `{$ng_prefix}meta` SET locationid = ".$ng_db->qstr($rs->fields['id']).
-						", locationsounds = ".$ng_db->qstr($rs->fields['sounds']).
-						" WHERE location = ".$ng_db->qstr($rs->fields['location']);
-
-				echo $sql2."\n<br>\n";
-				$rs2 = $ng_db->Execute($sql2);
-				if( !$rs2 )
-				{
-					echo $ng_db->ErrorMsg()."\n<br>\n";
-				}
-				$rs->MoveNext();
-			}
-			
-			*/
 			
 			// database updates done, copy files
 			

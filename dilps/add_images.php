@@ -294,75 +294,123 @@ if ($process == 2) {
 								
 								// carry out conversion steps
 								
-								echo ("\n<br>\nGenerating image versions for all resolutions:\n<br><br>\n");
-								
 								// generate image in all necessary resolutions
 								// you can skip resolutions by changing the array at this point
-								
+										
 								$resolutions = $resolutions_available;
 								
-								foreach ($resolutions as $res)
-								{
-
-									$ret = check_dir($tmpdir.'cache'.DIRECTORY_SEPARATOR.$res,true,true, 0755);
-
-									// check if cache subdirectories exist
-									if (!$ret)
-									{
-										$errorstring = "Error creating directory for resolution ".$res."\n<br>\n";
-										$errorstring .= "or directory exists and is not writable\n<br>\n";
-										die ($errorstring);
-									}
-
-									if ($res == '120x90')
-									{
-										$is_thumbnail = true;
-									}
-									else
-									{
-										$is_thumbnail = false;
-									}
-
-									$output_filename = $tmpdir.'cache'.DIRECTORY_SEPARATOR.$res.DIRECTORY_SEPARATOR.$tmpid.'.jpg';
-
-									$ret = convert_image($filename,$output_filename,$res, $is_thumbnail);
-
-									if ($ret)
-									{
-										echo ("Writing (".$res.")\t\t\t: success\n<br>\n");
-										$convert_success = true;
-									}
-									else
-									{
-										echo ("Writing (".$res.")\t\t\t: failed\n<br>\n");
-										echo ("Aborting...\n<br>\n");
-										$convert_success = false;
-								 		break;
-									}
-								}
-
-								// convert image to JPEG with original resolution
-								if ($convert_success)
-								{
-									$output_filename = $tmpdir.'cache'.DIRECTORY_SEPARATOR.$tmpid.'.jpg';
-
-									$res = $img_data['width'].'x'.$img_data['height'];
-
-									$ret = convert_image($filename,$output_filename,$res, false);
-
-									if ($ret)
-									{
-										echo ("Writing (".$res.")\t\t\t: success\n<br>\n");
-										$convert_success = true;
-									}
-									else
-									{
-										echo ("Writing (".$res.")\t\t\t: failed\n<br>\n");
-										echo ("Aborting...\n<br>\n");
-										$convert_success = false;
-									}
-								}
+								echo ("\n<br>\nGenerating image versions for all resolutions:\n<br><br>\n");
 								
+								if ($config['imagick_mode'] == 'fast')
+								{
+									$ret = convert_image_batch($filename,$tmpdir.'cache',$tmpid,$resolutions);
+	
+									if ($ret)
+									{
+										echo ("Generating images (batch mode)\t\t\t: success\n<br>\n");
+										$convert_success = true;
+									}
+									else
+									{
+										echo ("Generating images (batch mode)\t\t\t: failed\n<br>\n");
+										echo ("Aborting...\n<br>\n");
+										$convert_success = false;
+									}	
+								}
+								else 
+								{
+								
+									// convert image to JPG at 1600x1200 as a base for the following conversion
+									
+									$baseimage_filename = $tmpdir.'cache'.DIRECTORY_SEPARATOR.$tmpid.'.jpg';
+	
+									$res = '1600x1200';
+	
+									$ret = convert_image($filename,$baseimage_filename,$res, false);
+	
+									if ($ret)
+									{
+										echo ("Generating base image\t\t\t: success\n<br>\n");
+										$convert_success = true;
+									}
+									else
+									{
+										echo ("Generating base image\t\t\t: failed\n<br>\n");
+										echo ("Aborting...\n<br>\n");
+										$convert_success = false;
+									}
+									
+									// the following lines will generate a JPG-version of your original image
+									// uncomment them, if you need it (requires additional computation time)
+									
+									/*
+									if ($convert_success)
+									{
+										$output_filename = $tmpdir.'cache'.DIRECTORY_SEPARATOR.$tmpid.'.jpg';
+	
+										$res = $img_data['width'].'x'.$img_data['height'];
+	
+										$ret = convert_image($filename,$output_filename,$res, false);
+	
+										if ($ret)
+										{
+											echo ("Writing (".$res.")\t\t\t: success\n<br>\n");
+											$convert_success = true;
+										}
+										else
+										{
+											echo ("Writing (".$res.")\t\t\t: failed\n<br>\n");
+											echo ("Aborting...\n<br>\n");
+											$convert_success = false;
+										}
+									}
+									*/								
+								
+									if ($convert_success)
+									{					
+										
+										foreach ($resolutions as $res)
+										{
+		
+											$ret = check_dir($tmpdir.'cache'.DIRECTORY_SEPARATOR.$res,true,true, 0755);
+		
+											// check if cache subdirectories exist
+											if (!$ret)
+											{
+												$errorstring = "Error creating directory for resolution ".$res."\n<br>\n";
+												$errorstring .= "or directory exists and is not writable\n<br>\n";
+												die ($errorstring);
+											}
+		
+											if ($res == '120x90')
+											{
+												$is_thumbnail = true;
+											}
+											else
+											{
+												$is_thumbnail = false;
+											}
+		
+											$output_filename = $tmpdir.'cache'.DIRECTORY_SEPARATOR.$res.DIRECTORY_SEPARATOR.$tmpid.'.jpg';
+		
+											$ret = convert_image($baseimage_filename,$output_filename,$res, $is_thumbnail);
+		
+											if ($ret)
+											{
+												echo ("Writing (".$res.")\t\t\t: success\n<br>\n");
+												$convert_success = true;
+											}
+											else
+											{
+												echo ("Writing (".$res.")\t\t\t: failed\n<br>\n");
+												echo ("Aborting...\n<br>\n");
+												$convert_success = false;
+										 		break;
+											}
+										}
+									}
+								}
+									
 								if ($convert_success)
 								{
 									// we have all necessary files now, so we get a correct id and move the files
@@ -430,6 +478,11 @@ if ($process == 2) {
 										@unlink($tmp_filename);	
 									}
 									
+									// if you decided to enable JPG-Versions in original resolution,
+									// uncomment the following lines to copy them to the target
+									// directory
+									
+									/*
 									// copy the JPEG version with original resolution
 									if ($convert_success)
 									{
@@ -438,6 +491,8 @@ if ($process == 2) {
 										$output_filename = $output_dir.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.$query['collectionid'].'-'.$newid.'.jpg';
 		
 										$ret = @copy($tmp_filename,$output_filename);
+										
+										$res = $img_data['width'].'x'.$img_data['height'];
 	
 										if ($ret)
 										{
@@ -453,8 +508,16 @@ if ($process == 2) {
 										
 										// if unlink fails, we just loose some disk space
 										@unlink($tmp_filename);	
-										
-									}								
+									}			
+									*/
+									
+									if ($config['imagick_mode'] != 'fast')
+									{
+									
+										// try to delete temprorary base image
+										// if unlink fails, we just loose some disk space
+										@unlink($baseimage_filename);	
+									}
 		
 									if ($convert_success)
 									{
@@ -707,29 +770,30 @@ if ($process == 2) {
 				}
 				else
 				{
-					echo ("Type:\t\t".$img_data["type"]."\n<br>\n");
-					echo ("Width:\t\t".$img_data["width"]."\n<br>\n");
-					echo ("Height:\t\t".$img_data["height"]."\n<br>\n");
+			 		echo ("Type:\t\t".$img_data["type"]."\n<br>\n");
+			 		echo ("Width:\t\t".$img_data["width"]."\n<br>\n");
+			 		echo ("Height:\t\t".$img_data["height"]."\n<br>\n");
 
 					// get output directory
 					$baseid 		= 	$query['baseid'];
 					$sql 			= 	"SELECT base FROM ".$db_prefix."img_base WHERE img_baseid="
-												.$db->qstr($baseid);
+										.$db->qstr($baseid);
 					$output_dir 	= 	$db->GetOne($sql);
 
 					if (empty($output_dir))
 					{
 						$errorstring = "Error reading output directory! \n<br>\n";
 						$errorstring .= "BaseID: ".$baseid."\n<br>\n";
+						$errorstring .= "Directory: ".$output_dir."\n<br>\n";
 						die ($errorstring);
-					}
+					}								
 
 					// use a temporary directory, where we can store the converted files until we have
 					// completed the task for all resolutions. 
 					// we will move files from there into the correct directory later
 					
 					$tmpdir		= $config['imageTmp'];
-	
+
 					if (!is_dir($tmpdir))
 					{
 						$errorstring = "Could not find temporary directory! \n<br>\n";
@@ -738,9 +802,9 @@ if ($process == 2) {
 					}
 					
 					// check if we already have a cache directory structure, otherwise create
-	
+
 					$ret = check_dir($tmpdir.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR,true,true,0755);
-	
+
 					if (!$ret)
 					{
 						$errorstring = "Temporary directory cache does not exist or is not writable! \n<br>\n";
@@ -750,81 +814,131 @@ if ($process == 2) {
 					// assign temporary id - randomized from 0 to 2**20
 					
 					srand((double)microtime()*1000000);
-					$tmpid 		= rand(0,1048576);
+					$tmpid 		= rand(0,1048576);							
+					
 					
 					// carry out conversion steps
 					
-					echo ("\n<br>\nGenerating image versions for all resolutions:\n<br><br>\n");
-					
 					// generate image in all necessary resolutions
 					// you can skip resolutions by changing the array at this point
-					
+							
 					$resolutions = $resolutions_available;
 					
-					foreach ($resolutions as $res)
-					{
-	
-						$ret = check_dir($tmpdir.'cache'.DIRECTORY_SEPARATOR.$res,true,true, 0755);
-	
-						// check if cache subdirectories exist
-						if (!$ret)
-						{
-							$errorstring = "Error creating directory for resolution ".$res."\n<br>\n";
-							$errorstring .= "or directory exists and is not writable\n<br>\n";
-							die ($errorstring);
-						}
-	
-						if ($res == '120x90')
-						{
-							$is_thumbnail = true;
-						}
-						else
-						{
-							$is_thumbnail = false;
-						}
-	
-						$output_filename = $tmpdir.'cache'.DIRECTORY_SEPARATOR.$res.DIRECTORY_SEPARATOR.$tmpid.'.jpg';
-	
-						$ret = convert_image($filename,$output_filename,$res, $is_thumbnail);
-	
-						if ($ret)
-						{
-							echo ("Writing (".$res.")\t\t\t: success\n<br>\n");
-							$convert_success = true;
-						}
-						else
-						{
-							echo ("Writing (".$res.")\t\t\t: failed\n<br>\n");
-							echo ("Aborting...\n<br>\n");
-							$convert_success = false;
-					 		break;
-						}
-					}
-	
-					// convert image to JPEG with original resolution
-					if ($convert_success)
-					{
-						$output_filename = $tmpdir.'cache'.DIRECTORY_SEPARATOR.$tmpid.'.jpg';
-	
-						$res = $img_data['width'].'x'.$img_data['height'];
-	
-						$ret = convert_image($filename,$output_filename,$res, false);
-	
-						if ($ret)
-						{
-							echo ("Writing (".$res.")\t\t\t: success\n<br>\n");
-							$convert_success = true;
-						}
-						else
-						{
-							echo ("Writing (".$res.")\t\t\t: failed\n<br>\n");
-							echo ("Aborting...\n<br>\n");
-							$convert_success = false;
-						}
-					}
+					echo ("\n<br>\nGenerating image versions for all resolutions:\n<br><br>\n");
 					
+					if ($config['imagick_mode'] == 'fast')
+					{
+						$ret = convert_image_batch($filename,$tmpdir.'cache',$tmpid,$resolutions);
+
+						if ($ret)
+						{
+							echo ("Generating images (batch mode)\t\t\t: success\n<br>\n");
+							$convert_success = true;
+						}
+						else
+						{
+							echo ("Generating images (batch mode)\t\t\t: failed\n<br>\n");
+							echo ("Aborting...\n<br>\n");
+							$convert_success = false;
+						}	
+					}
+					else 
+					{
+					
+						// convert image to JPG at 1600x1200 as a base for the following conversion
+						
+						$baseimage_filename = $tmpdir.'cache'.DIRECTORY_SEPARATOR.$tmpid.'.jpg';
+
+						$res = '1600x1200';
+
+						$ret = convert_image($filename,$baseimage_filename,$res, false);
+
+						if ($ret)
+						{
+							echo ("Generating base image\t\t\t: success\n<br>\n");
+							$convert_success = true;
+						}
+						else
+						{
+							echo ("Generating base image\t\t\t: failed\n<br>\n");
+							echo ("Aborting...\n<br>\n");
+							$convert_success = false;
+						}
+						
+						// the following lines will generate a JPG-version of your original image
+						// uncomment them, if you need it (requires additional computation time)
+						
+						/*
+						if ($convert_success)
+						{
+							$output_filename = $tmpdir.'cache'.DIRECTORY_SEPARATOR.$tmpid.'.jpg';
+
+							$res = $img_data['width'].'x'.$img_data['height'];
+
+							$ret = convert_image($filename,$output_filename,$res, false);
+
+							if ($ret)
+							{
+								echo ("Writing (".$res.")\t\t\t: success\n<br>\n");
+								$convert_success = true;
+							}
+							else
+							{
+								echo ("Writing (".$res.")\t\t\t: failed\n<br>\n");
+								echo ("Aborting...\n<br>\n");
+								$convert_success = false;
+							}
+						}
+						*/								
+					
+						if ($convert_success)
+						{					
+							
+							foreach ($resolutions as $res)
+							{
+
+								$ret = check_dir($tmpdir.'cache'.DIRECTORY_SEPARATOR.$res,true,true, 0755);
+
+								// check if cache subdirectories exist
+								if (!$ret)
+								{
+									$errorstring = "Error creating directory for resolution ".$res."\n<br>\n";
+									$errorstring .= "or directory exists and is not writable\n<br>\n";
+									die ($errorstring);
+								}
+
+								if ($res == '120x90')
+								{
+									$is_thumbnail = true;
+								}
+								else
+								{
+									$is_thumbnail = false;
+								}
+
+								$output_filename = $tmpdir.'cache'.DIRECTORY_SEPARATOR.$res.DIRECTORY_SEPARATOR.$tmpid.'.jpg';
+
+								$ret = convert_image($baseimage_filename,$output_filename,$res, $is_thumbnail);
+
+								if ($ret)
+								{
+									echo ("Writing (".$res.")\t\t\t: success\n<br>\n");
+									$convert_success = true;
+								}
+								else
+								{
+									echo ("Writing (".$res.")\t\t\t: failed\n<br>\n");
+									echo ("Aborting...\n<br>\n");
+									$convert_success = false;
+							 		break;
+								}
+							}
+						}
+					}
+						
 					if ($convert_success)
 					{
+						
 						// we have all necessary files now, so we get a correct id and move the files
 						//
 						// in unlikely cases this section will cause trouble, i.e. when someone gets
@@ -833,9 +947,9 @@ if ($process == 2) {
 						echo ("\n<br>\nCopying generated image versions to their correct locations: \n<br><br>\n");
 						
 						// check if we already have a cache directory structure, otherwise create
-	
+
 						$ret = check_dir($output_dir.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR,true,true,0755);
-	
+
 						if (!$ret)
 						{
 							$errorstring = "Output directory cache does not exist or is not writable! \n<br>\n";
@@ -843,10 +957,10 @@ if ($process == 2) {
 						}
 						
 						// get new id for filename
-	
+
 						$sql 		=	"SELECT max(imageid)+1 FROM ".$db_prefix."img";
 						$newid 		= $db->GetOne($sql);
-	
+
 						if (!$newid)
 						{
 							$newid 	= 1;
@@ -858,7 +972,7 @@ if ($process == 2) {
 						foreach ($resolutions as $res)
 						{	
 							$ret = check_dir($output_dir.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.$res,true,true, 0755);
-	
+
 							// check if cache subdirectories exist
 							if (!$ret)
 							{
@@ -870,7 +984,7 @@ if ($process == 2) {
 							$tmp_filename = $tmpdir.'cache'.DIRECTORY_SEPARATOR.$res.DIRECTORY_SEPARATOR.$tmpid.'.jpg';
 								
 							$output_filename = $output_dir.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.$res.DIRECTORY_SEPARATOR.$query['collectionid'].'-'.$newid.'.jpg';
-	
+
 							$ret = @copy($tmp_filename,$output_filename);
 							
 							if ($ret)
@@ -890,15 +1004,22 @@ if ($process == 2) {
 							@unlink($tmp_filename);	
 						}
 						
+						// if you decided to enable JPG-Versions in original resolution,
+						// uncomment the following lines to copy them to the target
+						// directory
+						
+						/*
 						// copy the JPEG version with original resolution
 						if ($convert_success)
 						{
 							$tmp_filename = $tmpdir.'cache'.DIRECTORY_SEPARATOR.$tmpid.'.jpg';
 																	
 							$output_filename = $output_dir.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.$query['collectionid'].'-'.$newid.'.jpg';
-	
+
 							$ret = @copy($tmp_filename,$output_filename);
-	
+							
+							$res = $img_data['width'].'x'.$img_data['height'];
+
 							if ($ret)
 							{
 								echo ("Writing (".$res.")\t\t\t: success\n<br>\n");
@@ -913,8 +1034,17 @@ if ($process == 2) {
 							
 							// if unlink fails, we just loose some disk space
 							@unlink($tmp_filename);	
-						}								
-	
+						}			
+						*/
+						
+						if ($config['imagick_mode'] != 'fast')
+						{
+						
+							// try to delete temprorary base image
+							// if unlink fails, we just loose some disk space
+							@unlink($baseimage_filename);	
+						}
+
 						if ($convert_success)
 						{
 							
@@ -1027,8 +1157,8 @@ if ($process == 2) {
 								}
 							}
 						}									
-					}	
-				}
+					}
+			 	}
 			}
 		}
 	}

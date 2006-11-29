@@ -27,10 +27,13 @@ ini_set( 'zend.ze1_compatibility_mode', 'On' );
 
 // header( "Content-type: text/plain" );
 
+include( $config['includepath'].'thesauri/soundex_fr.php' );
+
 function migrate_insert_img( $collectionid, $baseid, $imageid, &$db, $db_prefix, &$db2 )
 {
 	$sql = "SELECT * FROM bild WHERE bildid=$imageid";
 	$bild = $db2->GetRow( $sql );
+	
 	if( $bild )
 	{
 		$sql = "REPLACE INTO `{$db_prefix}img` (`collectionid`".
@@ -65,18 +68,38 @@ function migrate_insert_img( $collectionid, $baseid, $imageid, &$db, $db_prefix,
 function migrate_insert_meta( $collectionid, $baseid, $fields, &$db, $db_prefix, &$db2 )
 {
 	$name = preg_replace( "/([kK]\\.[[:space:]]*[aA])\\.?/", "", trim(stripslashes($fields['name'])));
+	
+	// print_r($fields);
 
 	if (strlen($name) > 0 and strlen($fields['vorname']) > 0) {
-
 		$artistname = $name.", ".trim(stripslashes($fields['vorname']));
-
-	} else {
-
-		$artistname = '';
-
 	}
+	else {
+		$artistname = '';
+	}
+	
+	$artistid = false;	
+	
+	if ($artistname != '')	
+	{
+		$artistid 	= migrate_get_or_set_artistid($artistname, $db, $db_prefix);
+	}
+	
+	// echo ("Name: $artistname, ID: $artistid \n<br>\n");
+	
+	$locationid 	= false;
+	$locationname 	= trim(stripslashes($fields['stadt']));
+	
+	if ($locationname != '')
+	{
+		$locationid = migrate_get_or_set_locationid($locationname, $collectionid.':'.$fields['bildid'], $db, $db_prefix);
+	}
+	
+	// echo ("Ort: $locationname, ID: $locationid \n<br>\n");
+	
 
-	$sql = 	"REPLACE INTO `{$db_prefix}meta` (`collectionid`".
+	$sql = 	"REPLACE INTO `{$db_prefix}meta` ".
+			"(`collectionid`".
 			", `imageid`".
 			", `type`".
 			", `status`".
@@ -96,7 +119,6 @@ function migrate_insert_meta( $collectionid, $baseid, $fields, &$db, $db_prefix,
 			", `insert_date`".
 			", `modify_date`".
 			", `name1id`".
-			", `name2id`".
 			", `locationid`".
 			", `exp_prometheus`".
 			", `exp_sid`".
@@ -105,7 +127,9 @@ function migrate_insert_meta( $collectionid, $baseid, $fields, &$db, $db_prefix,
 			", `name1`".
 			", `location`".
 			", `locationsounds`".
-			" ) VALUES (".$db->qstr(trim(stripslashes($collectionid))).
+			", `name1sounds`".
+			" ) VALUES (".
+			intval($collectionid).
 			", ".$fields['bildid'].
 			", 'image'".
 			", 'new'".
@@ -125,9 +149,13 @@ function migrate_insert_meta( $collectionid, $baseid, $fields, &$db, $db_prefix,
 			", ".$db->qstr(trim(stripslashes($fields['insert_date']))).
 			", ".$db->qstr(trim(stripslashes($fields['modify_date']))).
 
-			/* Name1ID, Name2ID, LocationID */
+			/* Name1ID - from get_or_set_artistid - Name2ID is always empty when importing*/
 
-			", 1, 0, 1".
+			", ".(($artistid !== false) ? intval($artistid) : 0).
+			
+			/* LocationID - erhalten aus get_or_set_locationid */
+			
+			", ".(($locationid !== false) ? intval($locationid) : 0).
 
 			/* Export alle auf 0 */
 
@@ -138,10 +166,13 @@ function migrate_insert_meta( $collectionid, $baseid, $fields, &$db, $db_prefix,
 			", 'dilps-import'".
 
 			", ".$db->qstr($artistname).
-			", ".$db->qstr(trim(stripslashes($fields['stadt']))).
+			", ".$db->qstr($locationname).
 
 			/* Locationsounds */
-			", ".$db->qstr('.'.soundex2($db->qstr(trim(stripslashes($fields['stadt'])))).'.').
+			", ".(($locationname != '') ? $db->qstr(migrate_get_sounds_string($locationname)) : '').
+			
+			/* Name1sounds */
+			", ".(($artistname != '') ? $db->qstr(migrate_get_sounds_string($artistname)) : '').
 
 			");";
 
@@ -153,7 +184,7 @@ function migrate_insert_meta( $collectionid, $baseid, $fields, &$db, $db_prefix,
 	{
 	   foreach( $datelist as $date )
 	   {
-	   		$sql = "INSERT INTO {$db_prefix}dating(collectionid,imageid,`from`,`to`) VALUES(4,{$fields['bildid']},{$date['from']},{$date['to']})";
+	   		$sql = "REPLACE INTO {$db_prefix}dating(collectionid,imageid,`from`,`to`) VALUES({$collectionid},{$fields['bildid']},{$date['from']},{$date['to']})";
 	   		echo "$sql\n";
 	   		$db->Execute( $sql );
 	   }
@@ -195,6 +226,136 @@ function migrate_insert_into_group( $groupid, $collectionid, $imageid, &$db, $db
 				
 		echo "$sql\n<br>\n";
 		$db->Execute( $sql );
+}
+
+ function migrate_get_sounds_string($string) {
+ 	
+ 	$sounds 	= array();
+    $pattern 	= "[[:space:],]+";
+	
+    $string = strtoupper($string);
+    $sounds_string = '.';
+    
+    $words = split($pattern, $string);
+	if (!empty($words)) {
+    	foreach ($words as $word) {
+        	$sound = trim(soundex2($word));
+        	if ($sound != '') {
+            	$sounds_string .= $sound .'.';
+			}
+		}
+	}
+            
+	return $sounds_string;
+}
+
+/**
+ *	get or set location id for the specified location name
+ *
+ *	this functions searches the database for an entry with the specified name,
+ *  if there is any, its 'locationid' is returned, otherwise a new entry is
+ *  created and its 'locationid' returned alike.
+ *  if this fails, 'false' is returned
+ *
+ *	@access		public
+ *	@param 		string	$location_name
+ *	@param 		object	$db
+ *	@param 		string	$db_prefix
+ *	@return		int
+ *
+ */
+
+function migrate_get_or_set_locationid($location_name, $sourceid,  $db, $db_prefix)
+{
+    $sql = "SELECT id FROM ".$db_prefix."location WHERE location=".$db->qstr($location_name);
+    echo ($sql."\n<br>\n");
+	$location_id  = $db->GetOne( $sql );
+	
+	if(!$location_id)
+	{
+		$sql = "INSERT INTO ".$db_prefix."location (`src`, `source_id`, `location`, `sounds`) VALUES ("
+				.$db->qstr('dilps').","
+				.$db->qstr($sourceid).","
+				.$db->qstr($location_name).","
+				.$db->qstr(migrate_get_sounds_string($location_name)).")";
+		echo ($sql."\n<br>\n");
+		
+		$rs = $db->Execute($sql);
+		
+		if (!$rs)
+		{
+			return false;
+		}
+		else 
+		{
+			$sql = "SELECT id FROM ".$db_prefix."location WHERE location=".$db->qstr($location_name);
+			echo ($sql."\n<br>\n");
+			
+			$location_id  = $db->GetOne( $sql );
+			
+			if (!$location_id)
+			{
+				return false;
+			}
+		}
+	}
+	
+	return $location_id;
+}
+
+
+/**
+ *	get or set artist id for the specified artist name
+ *
+ *	this functions searches the database for an entry with the specified name,
+ *  if there is any, its 'artistid' is returned, otherwise a new entry is
+ *  created and its 'artistid' returned alike.
+ *  if this fails, 'false' is returned
+ *
+ *	@access		public
+ *	@param 		string	$artist_name
+ *	@param 		object	$db
+ *	@param 		string	$db_prefix
+ *	@return		int
+ *
+ */
+
+function migrate_get_or_set_artistid($artist_name, $db, $db_prefix)
+{
+    $sql = "SELECT id FROM ".$db_prefix."artist WHERE name=".$db->qstr($artist_name);
+    echo ($sql."\n<br>\n");
+    
+	$artist_id  = $db->GetOne( $sql );
+	
+	if(!$artist_id)
+	{
+		$sql = "INSERT INTO ".$db_prefix."artist (`src`, `name`, `preferred_name_id`, `sounds`) VALUES ("
+				.$db->qstr('dilps').","
+				.$db->qstr($artist_name).","
+				.$db->qstr(0).","
+				.$db->qstr(migrate_get_sounds_string($artist_name)).")";
+				
+		echo ($sql."\n<br>\n");		
+		$rs = $db->Execute($sql);
+		
+		if (!$rs)
+		{
+			return false;
+		}
+		else 
+		{
+			$sql = "SELECT id FROM ".$db_prefix."artist WHERE name=".$db->qstr($artist_name);
+			echo ($sql."\n<br>\n");
+			$artist_id  = $db->GetOne( $sql );
+			
+			if (!$artist_id)
+			{
+				return false;
+			}
+		}
+	}
+	
+	return $artist_id;
 }
 
 

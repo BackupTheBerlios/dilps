@@ -399,6 +399,8 @@
     
     $f_utf8				= $config['utf8'];
     
+    $f_imagick_mode		= $config['imagick_mode'];
+    
     
     $f_imagick_convert 	= $config['imagick_convert'];
     
@@ -855,6 +857,26 @@
 
 	<td>
 
+		ImageMagick operation mode ('fast' requires at least ImageMagick version 6.0.0)
+
+	</td>
+
+	<td>
+	
+		<select name="imagick_mode">
+			<option value="compatible" <?php if ( $f_imagick_mode == 'compatible' ) echo ("selected='selected' "); ?> >		compatible	</option>
+			<option value="fast" <?php if ( $f_imagick_mode == 'fast' ) echo ("selected='selected' "); ?> >		fast	</option>
+		</select>
+	
+	</td>
+
+</tr>
+
+
+<tr>
+
+	<td>
+
 		Enable UTF-8 support
 
 	</td>
@@ -977,6 +999,8 @@
     
     $f_utf8					= getPost('utf8');
     
+    $f_imagick_mode			= getPost('imagick_mode');
+    
     
     $f_imagick_convert 		= getPost('imagick_convert');
     
@@ -1060,6 +1084,8 @@
     $g_config_db_entry['soundexthreshold']	= $f_soundexthreshold;
     
     $g_config_db_entry['utf8']				= $f_utf8;
+    
+    $g_config_db_entry['imagick_mode']		= $f_imagick_mode;
     
     
     $g_config_db_entry['imagick_convert']	= $f_imagick_convert;
