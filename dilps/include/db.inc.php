@@ -33,7 +33,7 @@
  */
 
 
-require_once( $config['includepath'].'adodb/adodb.inc.php' );
+require( $config['includepath'].'adodb/adodb.inc.php' );
 
 $db = NewADOConnection( "mysql" );
 $res = $db->PConnect( $db_host, $db_user, $db_pwd, $db_db );

@@ -120,7 +120,7 @@ if ($process == 2) {
 	echo ('<body class="main">');
 	echo ("<table class='header' width='100%'>\n");
 	echo ("<tr>\n<td class='result_list'>\n");
-	echo ("Adding Images - Started\n<br>\n");
+	echo ("<b>Adding Images - Started</b>\n<br>\n");
 
 	if ($completedir) {
 
@@ -139,7 +139,7 @@ if ($process == 2) {
 			echo "Dir: ".$dir."\n<br\n";
 		}
 
-		echo ("Reading directory structure:\n<br>\n<br>\n");
+		echo ("<em>Reading directory structure:</em>\n<br>\n<br>\n");
 
 		$files = array();
 		$remove = array();
@@ -190,7 +190,7 @@ if ($process == 2) {
 
 			foreach ($files as $file)
 			{
-				echo ("Reading file: ".$file."\n<br>\n");
+				echo ("<em>Reading file: ".$file."</em>\n<br>\n");
 
 				if (!empty($dir)){
 					$filename = $dir.addslashes(DIRECTORY_SEPARATOR.$file);
@@ -286,6 +286,22 @@ if ($process == 2) {
 									die ($errorstring);
 								}
 								
+								
+								// generate image in all necessary resolutions
+								// you can skip resolutions by changing the array at this point
+										
+								$resolutions = $resolutions_available;
+								
+								foreach ($resolutions as $res)
+								{
+									$ret = check_dir($tmpdir.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.$res,true,true,0755);
+									if (!$ret)
+									{
+										$errorstring = "Error creating temporary directory cache for resolution: {$res}! \n<br>\n";
+										die ($errorstring);
+									}
+								}
+								
 								// assign temporary id - randomized from 0 to 2**20
 								
 								srand((double)microtime()*1000000);
@@ -294,12 +310,8 @@ if ($process == 2) {
 								
 								// carry out conversion steps
 								
-								// generate image in all necessary resolutions
-								// you can skip resolutions by changing the array at this point
-										
-								$resolutions = $resolutions_available;
 								
-								echo ("\n<br>\nGenerating image versions for all resolutions:\n<br><br>\n");
+								echo ("\n<br>\n<em>Generating image versions for all resolutions:</em>\n<br><br>\n");
 								
 								if ($config['imagick_mode'] == 'fast')
 								{
@@ -418,7 +430,7 @@ if ($process == 2) {
 									// in unlikely cases this section will cause trouble, i.e. when someone gets
 									// a new id while we are copying and before we insert into the database
 									
-									echo ("\n<br>\nCopying generated image versions to their correct locations: \n<br><br>\n");
+									echo ("\n<br>\n<em>Copying generated image versions to their correct locations:</em> \n<br><br>\n");
 									
 									// check if we already have a cache directory structure, otherwise create
 
@@ -650,7 +662,7 @@ if ($process == 2) {
 
 				// Image is processed completely
 
-				echo ($file." done\n<br><br>\n");
+				echo ("<em>".$file." done</em>\n<br><br>\n");
 				flush();
 			}
 		}
@@ -811,6 +823,22 @@ if ($process == 2) {
 						die ($errorstring);
 					}
 					
+					// generate image in all necessary resolutions
+					// you can skip resolutions by changing the array at this point
+							
+					$resolutions = $resolutions_available;
+					
+					foreach ($resolutions as $res)
+					{
+						$ret = check_dir($tmpdir.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.$res,true,true,0755);
+						if (!$ret)
+						{
+							$errorstring = "Error creating temporary directory cache for resolution: {$res}! \n<br>\n";
+							die ($errorstring);
+						}
+					}
+					
+					
 					// assign temporary id - randomized from 0 to 2**20
 					
 					srand((double)microtime()*1000000);
@@ -819,12 +847,7 @@ if ($process == 2) {
 					
 					// carry out conversion steps
 					
-					// generate image in all necessary resolutions
-					// you can skip resolutions by changing the array at this point
-							
-					$resolutions = $resolutions_available;
-					
-					echo ("\n<br>\nGenerating image versions for all resolutions:\n<br><br>\n");
+					echo ("\n<br>\n<em>Generating image versions for all resolutions:</em>\n<br><br>\n");
 					
 					if ($config['imagick_mode'] == 'fast')
 					{
@@ -944,7 +967,7 @@ if ($process == 2) {
 						// in unlikely cases this section will cause trouble, i.e. when someone gets
 						// a new id while we are copying and before we insert into the database
 						
-						echo ("\n<br>\nCopying generated image versions to their correct locations: \n<br><br>\n");
+						echo ("\n<br>\n<em>Copying generated image versions to their correct locations:</em> \n<br><br>\n");
 						
 						// check if we already have a cache directory structure, otherwise create
 
@@ -1163,7 +1186,7 @@ if ($process == 2) {
 		}
 	}
 
-	echo ("\n<br>\nAdding images - done\n");
+	echo ("\n<br>\n<em>Adding images - done</em>\n");
 	echo ("<br>\n<br>\n");
 	echo ('<a href="javascript:opener.document.forms[0].submit();window.close();" class="navlink">Close window</a>');
 

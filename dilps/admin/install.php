@@ -78,7 +78,7 @@
 
 	# --------------------------------------------------------
 
-	# $Id: install.php,v 1.7 2006/11/30 17:15:48 sdoeweling Exp $
+	# $Id: install.php,v 1.8 2006/11/30 20:29:15 sdoeweling Exp $
 
 	# --------------------------------------------------------
 
@@ -2491,74 +2491,93 @@ if ( 3 == $t_install_state ) {
 	</td>
 
 <?php
-			// $g_db->debug = true;
+		// $g_db->debug = true;
+		
+		// schema part
+	
+	    $sql = file_get_contents('schema.sql');
+	
+	    $sqlarray = explode(';', $sql);
+	
+	    $ret = TRUE;
+	
+	    foreach ($sqlarray as $sqlstatement ) {
+		
+			if (get_magic_quotes_runtime()) {
+				$sqlstatement = stripslashes($sqlstatement);
+			}
+			$sqlstatement = trim($sqlstatement);
+	
+			if (!empty($sqlstatement)) {
+	
+			  $sqlstatement = str_replace('!prefix_!', $f_db_prefix, $sqlstatement);
+	
+			  $sret = $g_db->Execute($sqlstatement);
+	
+			  $ret = $ret && $sret;
+	
+			}
+	
+	    }
+	    
+	    if ( $ret != FALSE ) {
+	
+			print_test_result( GOOD );
+	
+		} else {
+	
+			print_test_result( BAD, true);
+	
+		}
+	
+?>
+
+<tr>
+
+	<td bgcolor="#ffffff">
+
+		Insert system and sample data
+
+	</td>
+
+<?php
+
+		// data part
+	    
+	    $handle = @fopen('data.sql', 'r');
+	    
+		if ($handle) {
 			
-			// schema part
-
-            $sql = file_get_contents('schema.sql');
-
-            $sqlarray = explode(';', $sql);
-
-            $ret = TRUE;
-
-            foreach ($sqlarray as $sqlstatement ) {
-			
-				if (get_magic_quotes_runtime()) {
+		   while (!feof($handle)) {
+		   	
+		   		$sqlstatement = fgets($handle);
+	
+		   		if (get_magic_quotes_runtime()) {
 					$sqlstatement = stripslashes($sqlstatement);
 				}
+				
 				$sqlstatement = trim($sqlstatement);
-
-				if (!empty($sqlstatement)) {
 	
+				if (!empty($sqlstatement)) {
 				  $sqlstatement = str_replace('!prefix_!', $f_db_prefix, $sqlstatement);
 	
 				  $sret = $g_db->Execute($sqlstatement);
-	
 				  $ret = $ret && $sret;
 	
 				}
-
-            }
-            
-            // data part
-            
-            $handle = @fopen('data.sql', 'r');
-            
-			if ($handle) {
-				
-			   while (!feof($handle)) {
-			   	
-			   		$sqlstatement = fgets($handle);
-
-			   		if (get_magic_quotes_runtime()) {
-						$sqlstatement = stripslashes($sqlstatement);
-					}
-					
-					$sqlstatement = trim($sqlstatement);
+		   }
+		   fclose($handle);
+		}
+	            
+		if ( $ret != FALSE ) {
 	
-					if (!empty($sqlstatement)) {
-					  $sqlstatement = str_replace('!prefix_!', $f_db_prefix, $sqlstatement);
-		
-					  $sret = $g_db->Execute($sqlstatement);
-					  $ret = $ret && $sret;
-		
-					}
-			   }
-			   fclose($handle);
-			}
-            
-
-			if ( $ret != FALSE ) {
-
-				print_test_result( GOOD );
-
-			} else {
-
-				print_test_result( BAD, true);
-
-			}
-
-			echo '</tr>';
+			print_test_result( GOOD );
+	
+		} else {
+	
+			print_test_result( BAD, true);
+	
+		}
 
 	}
 

@@ -43,6 +43,8 @@ define( "LOG_LOGIN", 1 );
 define( "LOG_LOGOUT", 2 );
 define( "LOG_GENERIC", 4 );
 
+// print_r($GLOBALS);
+
 function sess_open( $save_path, $session_name )
 {		
 	// session handling globals
@@ -69,7 +71,7 @@ function sess_read( $id )
 
 	// configuration data
 	global $db, $db_prefix;
-
+	
 	// read from database
 
 	$sql = 	"SELECT session_data, end-NOW() as lifetime, active FROM ".$db_prefix."session"
@@ -112,15 +114,14 @@ function sess_write( $id, $sess_data )
 
 	// configuration data
 	global $db, $db_prefix;
-
+	
 	if( $sess_invalid )
 	{
 		return false;
 	}
-
+	
 	$sql =  "UPDATE ".$db_prefix."session SET counter=counter+1,lastaccess=NOW(),session_data="
 			.$db->qstr($sess_data)." WHERE sessionid=".$db->qstr($id);
-
 	$rs = $db->Execute ($sql);
 
 	// error executing database query
