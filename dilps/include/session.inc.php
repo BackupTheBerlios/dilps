@@ -32,7 +32,6 @@
  * -------------------------------------------------------------
  */
 
-require_once($config['includepath'].'adodb/adodb.inc.php');
 include( $config['includepath'].'db.inc.php' );
 
 ini_set( 'session.use_cookies' , 0 );

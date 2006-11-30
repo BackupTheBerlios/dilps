@@ -685,9 +685,11 @@
 					."ORDER BY {$old_table}_bild.bildid";
 			$rs2 = $old_db->Execute( $sql2 );
 			
+			$num_results = $rs2->MaxRecordCount();
+			
 			echo ("Loading old database entries: ");
 			if ($rs2){
-				echo ("OK\n<br>\n");
+				echo ("OK ({$num_results} entries)\n<br>\n");
 			} 
 			else {
 				echo ("<b>Failed</b>\n<br>\n");
@@ -737,6 +739,7 @@
 			echo ("\n<br>\n<em>Database conversion complete.</em>\n<br>\n");
 
 			echo ("\n<br>\n<em>Your old files will now be copied (this can take very long, depending on the number of files that are copied).</em>\n<br>\n");
+			echo ("\n<br>\n<em>(messages about files that have already been copied in earlier import sessions, will be suppressed)</em>\n<br>\n");
 			echo ("\n<br>\n");
 			
 			echo ("Source directory: ".$old_img_dir.DIRECTORY_SEPARATOR."\n<br>\n");
@@ -751,67 +754,58 @@
 				"5"	=>	"1600x1200"
 			);
 
-			$ng_sql = 	"SELECT * FROM ".$ng_prefix."img "
-						."WHERE collectionid = ".$ng_db->qstr($_REQUEST['ng_collection'])." "
-						."ORDER BY imageid";
-			$ng_rs = $ng_db->Execute($ng_sql);
+			// reuse the results from above and copy all corresponding files
 			
-			// for every database entry, lookup the old filename and see whether
-			// it has been copied before or not
+			$rs2->MoveFirst();
 
-			while (!$ng_rs->EOF) {
+			while (!$rs2->EOF) {
 
-				$collectionid = $ng_rs->fields['collectionid'];
-				$imageid = $ng_rs->fields['imageid'];
+				$collectionid = $_REQUEST['ng_collection'];
+				$imageid = $rs2->fields['bildid'];
 
-				$old_sql = "SELECT * FROM bild WHERE bildid=".$ng_db->qstr($imageid);
-				$old_rs = $old_db->GetRow( $old_sql );
+				echo ("\n<br>\n<em>Copying image for entry (".$collectionid.":".$imageid.").</em>\n<br>\n");
+				
+				$source = 'cache'.DIRECTORY_SEPARATOR.'<em>resolution</em>'.DIRECTORY_SEPARATOR.$imageid.'.jpg';
+				$target = $new_img_dir.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.'<em>resolution</em>'.DIRECTORY_SEPARATOR.$collectionid.'-'.$imageid.'.jpg';
+				
+				foreach ($resolutions as $res) {
 
-				if( $old_rs )
-				{
-					echo ("\n<br>\n<em>Copying image for entry (".$collectionid.":".$imageid."):</em>\n<br>\n");
+					$old_file = $old_img_dir.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.$res.DIRECTORY_SEPARATOR.$imageid.'.jpg';
+					$new_file = $new_img_dir.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.$res.DIRECTORY_SEPARATOR.$collectionid.'-'.$imageid.'.jpg';
+
+					/*
+					echo ("Res:".$res."\n<br>\n");
+					echo ("Old: ".$old_file."\n<br>\n");
+					echo ("New: ".$new_file."\n<br>\n");
+					*/
 					
-					$source = 'cache'.DIRECTORY_SEPARATOR.'<em>resolution</em>'.DIRECTORY_SEPARATOR.$imageid.'.jpg';
-					$target = $new_img_dir.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.'<em>resolution</em>'.DIRECTORY_SEPARATOR.$collectionid.'-'.$imageid.'.jpg';
-					
-					foreach ($resolutions as $res) {
+					echo ($res.": ");
 
-						$old_file = $old_img_dir.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.$res.DIRECTORY_SEPARATOR.$imageid.'.jpg';
-						$new_file = $new_img_dir.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.$res.DIRECTORY_SEPARATOR.$collectionid.'-'.$imageid.'.jpg';
-
-						/*
-						echo ("Res:".$res."\n<br>\n");
-						echo ("Old: ".$old_file."\n<br>\n");
-						echo ("New: ".$new_file."\n<br>\n");
-						*/
+					if (file_exists($old_file)) {
 						
-						echo ($res.": ");
-
-						if (file_exists($old_file)) {
-							
-							if (file_exists($new_file))
-							{
-								echo ("Target exists");
-							}
-							else 
-							{
-								$ret = @copy($old_file,$new_file);
-	
-								if (!$ret) {
-									echo ("<b>Copying failed!</b>");
-								} else {
-									echo ("Copying succesful");
-								}
-							}
+						if (file_exists($new_file))
+						{
+							// echo ("Target exists");
 						}
 						else 
 						{
-							echo ("<b>Failed!</b> (Source not found)");
+							$ret = @copy($old_file,$new_file);
+
+							if (!$ret) {
+								echo ("<b>Copying failed!</b>");
+							} else {
+								echo ("Copying succesful");
+							}
 						}
-						echo ("\n<br>\n");
 					}
+					else 
+					{
+						echo ("<b>Failed!</b> (Source not found)");
+					}
+					echo ("\n<br>\n");
 				}
-				$ng_rs->MoveNext();
+					
+				$rs2->MoveNext();
 			}
 
 			$old_db->Close();

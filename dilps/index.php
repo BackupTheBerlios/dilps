@@ -33,14 +33,13 @@
 ini_set( 'zend.ze1_compatibility_mode', 'On' );
 ini_set( 'session.use_cookies' , 0 );
 
-// ini_set('display_errors',1);
+ini_set('display_errors',1);
+// ini_set('display_errors',0);
 
-ini_set('display_errors',0);
 ini_set('magic_quotes_runtime',0);
-error_reporting (E_ALL ^ E_NOTICE);
 
-
-// error_reporting (E_ALL);
+// error_reporting (E_ALL ^ E_NOTICE);
+error_reporting (E_ALL);
 
 if (!file_exists('config.inc.php'))
 {
