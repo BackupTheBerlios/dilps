@@ -96,5 +96,4 @@ $smarty->assign('lastL2', $lastL2);
 
 $smarty->display( $config['skin'].'/'.'group_select.tpl' );
 
-//phpinfo();
 ?>
