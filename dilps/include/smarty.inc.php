@@ -79,9 +79,9 @@ $editor = $logins->isInGroup( $config['authdomain'], $config['editorgroup'] );
 
 $admin 			=	(isset($permissions['admin']) ? $permissions['admin'] : 0);
 $editor 		= 	(isset($permissions['editor']) ? $permissions['editor'] : 0);
-$usemygroup		=	(isset($permissions['usegroups']) ? $permissions['usegroups'] : 0);
-$usemyfolder	= 	(isset($permissions['usefolders']) ? $permissions['usefolders'] : 0);
-$insertimage	=	(isset($permissions['addimages']) ? $permissions['addimages'] : 0);;
+$usegroups		=	(isset($permissions['usegroups']) ? $permissions['usegroups'] : 0);
+$editgroups		= 	(isset($permissions['editgroups']) ? $permissions['editgroups'] : 0);
+$insertimages	=	(isset($permissions['addimages']) ? $permissions['addimages'] : 0);;
 
 if( $admin ) 
 {
@@ -92,10 +92,9 @@ $user = array(
 			'login'			=>	$logins->getUID( $config['authdomain'] ),
 			'editor'		=>	($editor ? 1 : 0 ),
 			'admin'			=>	($admin ? 1 : 0 ),
-			'usemygroup' 	=>	(($admin || $usemygroup) ? 1 : 0),
-			'usemyfolder' 	=>	(($admin || $usemyfolder) ? 1 : 0),
-			'editgroup' 	=>	($admin ? 1 : 0),
-			'insertimage' 	=>	(($admin || $insertimage) ? 1 : 0)	
+			'usegroups' 	=>	(($admin || $usegroups) ? 1 : 0),
+			'editgroups' 	=>	(($admin || $editgroups) ? 1 : 0),
+			'insertimages' 	=>	(($admin || $insertimages) ? 1 : 0)
 		);
 	
 $smarty->assign( 'user', $user );

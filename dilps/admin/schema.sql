@@ -395,9 +395,9 @@ CREATE TABLE `!prefix_!user_auth` (
   
   `addimages` tinyint(4) NOT NULL default '0',
   
-  `usegroups` tinyint(4) NOT NULL default '1',
+  `editgroups` tinyint(4) NOT NULL default '1',
   
-  `usefolders` tinyint(4) NOT NULL default '1',
+  `usegroups` tinyint(4) NOT NULL default '1',  
   
   `active` tinyint(4) NOT NULL default '0',
   

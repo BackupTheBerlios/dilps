@@ -54,19 +54,19 @@ BEGIN add_images.tpl
 function cleargroup1() {
 	document.forms["Main"].elements["query[group1]"].value = '';
 	document.forms["Main"].elements["query[group1id]"].value = '';
-	document.forms["Main"].elements["query[group1level]"].value = '';
+	document.forms["Main"].elements["query[group1owner]"].value = '';
 }
 
 function cleargroup2() {
 	document.forms["Main"].elements["query[group2]"].value = '';
 	document.forms["Main"].elements["query[group2id]"].value = '';
-	document.forms["Main"].elements["query[group2level]"].value = '';
+	document.forms["Main"].elements["query[group2owner]"].value = '';
 }
 
 function cleargroup3() {
 	document.forms["Main"].elements["query[group3]"].value = '';
 	document.forms["Main"].elements["query[group3id]"].value = '';
-	document.forms["Main"].elements["query[group3level]"].value = '';
+	document.forms["Main"].elements["query[group3owner]"].value = '';
 }
 {/literal}
 </script>
@@ -99,12 +99,12 @@ function cleargroup3() {
 			</td>
 			<td class="queryinputfield">
 				{if $query.group1 neq ""}
-					<input class="queryinputfield" type="text" name="query[group1]" size="40" readonly="readonly" value="{$query.group1|escape:html}" onclick="javascript:window.open('group_select.php?target=img_group','groupselection1','width=1000,height=300,left=10,top=250,dependent=yes');">
+					<input class="queryinputfield" type="text" name="query[group1]" size="40" readonly="readonly" value="{$query.group1|escape:html}" onclick="javascript:window.open('group_select.php?target=img_group_1','groupselection1','width=1000,height=300,left=10,top=250,dependent=yes');">
 				{else}
-					<input class="queryinputfield" type="text" name="query[group1]" size="40" readonly="readonly" value=" ( {#selecthere#} )" onclick="javascript:window.open('group_select.php?PHPSESSID={$sessionid}&target=img_group','groupselection1','width=1000,height=300,left=10,top=250,dependent=yes');">
+					<input class="queryinputfield" type="text" name="query[group1]" size="40" readonly="readonly" value=" ( {#selecthere#} )" onclick="javascript:window.open('group_select.php?PHPSESSID={$sessionid}&target=img_group_1','groupselection1','width=1000,height=300,left=10,top=250,dependent=yes');">
 				{/if}
 				<input class="queryinputfield" type="hidden" name="query[group1id]" value="{$query.group1id|escape:html}">
-				<input class="queryinputfield" type="hidden" name="query[group1level]" value="{$query.group1level|escape:html}">
+				<input class="queryinputfield" type="hidden" name="query[group1owner]" value="{$query.group1owner|escape:html}">
 				<input type="button" onClick="cleargroup1();" name="nogroup1" value="{#nogroup#|escape:html}">
 			</td>
 		</tr>
@@ -114,12 +114,12 @@ function cleargroup3() {
 			</td>
 			<td class="queryinputfield">
 				{if $query.group2 neq ""}
-					<input class="queryinputfield" type="text" name="query[group2]" size="40" readonly="readonly" value="{$query.group2|escape:html}" onclick="javascript:window.open('group_select.php?PHPSESSID={$sessionid}&target=img_group','groupselection2','width=800,height=300,left=10,top=250,dependent=yes');">
+					<input class="queryinputfield" type="text" name="query[group2]" size="40" readonly="readonly" value="{$query.group2|escape:html}" onclick="javascript:window.open('group_select.php?PHPSESSID={$sessionid}&target=img_group_2','groupselection2','width=800,height=300,left=10,top=250,dependent=yes');">
 				{else}
-					<input class="queryinputfield" type="text" name="query[group2]" size="40" readonly="readonly" value=" ( {#selecthere#} )" onclick="javascript:window.open('group_select.php?PHPSESSID={$sessionid}&target=img_group','groupselection2','width=800,height=300,left=10,top=250,dependent=yes');">
+					<input class="queryinputfield" type="text" name="query[group2]" size="40" readonly="readonly" value=" ( {#selecthere#} )" onclick="javascript:window.open('group_select.php?PHPSESSID={$sessionid}&target=img_group_2','groupselection2','width=800,height=300,left=10,top=250,dependent=yes');">
 				{/if}
 				<input class="queryinputfield" type="hidden" name="query[group2id]" value="{$query.group1id|escape:html}">
-				<input class="queryinputfield" type="hidden" name="query[group2level]" value="{$query.group1level|escape:html}">
+				<input class="queryinputfield" type="hidden" name="query[group2owner]" value="{$query.group1owner|escape:html}">
 				<input type="button" onClick="cleargroup2();" name="nogroup2" value="{#nogroup#|escape:html}">
 			</td>
 		</tr>
@@ -129,13 +129,13 @@ function cleargroup3() {
 			</td>
 			<td class="queryinputfield">
 				{if $query.group3 neq ""}
-					<input class="queryinputfield" type="text" name="query[group3]" size="40" readonly="readonly" value="{$query.group3|escape:html}" onclick="javascript:window.open('group_select.php?PHPSESSID={$sessionid}&target=img_group','groupselection3','width=800,height=300,left=10,top=250,dependent=yes');">
+					<input class="queryinputfield" type="text" name="query[group3]" size="40" readonly="readonly" value="{$query.group3|escape:html}" onclick="javascript:window.open('group_select.php?PHPSESSID={$sessionid}&target=img_group_3','groupselection3','width=800,height=300,left=10,top=250,dependent=yes');">
 				{else}
-					<input class="queryinputfield" type="text" name="query[group3]" size="40" readonly="readonly" value=" ( {#selecthere#} )" onclick="javascript:window.open('group_select.php?PHPSESSID={$sessionid}&target=img_group','width=800,height=300,left=10,top=250,dependent=yes');">
+					<input class="queryinputfield" type="text" name="query[group3]" size="40" readonly="readonly" value=" ( {#selecthere#} )" onclick="javascript:window.open('group_select.php?PHPSESSID={$sessionid}&target=img_group_3','width=800,height=300,left=10,top=250,dependent=yes');">
 				{/if}
 
 				<input class="queryinputfield" type="hidden" name="query[group3id]" value="{$query.group1id|escape:html}">
-				<input class="queryinputfield" type="hidden" name="query[group3level]" value="{$query.group1level|escape:html}">
+				<input class="queryinputfield" type="hidden" name="query[group3owner]" value="{$query.group1owner|escape:html}">
 				<input type="button" onClick="cleargroup3();" name="nogroup3" value="{#nogroup#|escape:html}">
 			</td>
 		</tr>
@@ -219,11 +219,11 @@ function cleargroup3() {
 			<td>
 				<input type="hidden" name="query[collectionid]" value="{$query.collectionid}">
 				<input type="hidden" name="query[group1id]" value="{$query.group1id}">
-				<input type="hidden" name="query[group1level]" value="{$query.group1level}">
+				<input type="hidden" name="query[group1owner]" value="{$query.group1owner}">
 				<input type="hidden" name="query[group2id]" value="{$query.group2id}">
-				<input type="hidden" name="query[group2level]" value="{$query.group2level}">
+				<input type="hidden" name="query[group2owner]" value="{$query.group2owner}">
 				<input type="hidden" name="query[group3id]" value="{$query.group3id}">
-				<input type="hidden" name="query[group3level]" value="{$query.group3level}">
+				<input type="hidden" name="query[group3owner]" value="{$query.group3owner}">
 				<input type="hidden" name="query[process]" value="2">
 				{if $no_subdirs neq "1"}
 					<input type="submit" name="query[new]" value="{#insertimages#|escape:html}">

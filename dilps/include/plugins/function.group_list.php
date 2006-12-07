@@ -89,26 +89,16 @@ function smarty_function_group_list($params, &$smarty)
     }
     
      if (empty($params['show'])) {
-
-        $smarty->trigger_error("assign: missing 'show' parameter");
-        return;
-
+		$show = $params['show'];
+    }
+    else {
+    	$show = 0;
     }
     
     if (!empty($params['user'])) 
     {
     	$userid = $params['user'];
     }
-    
-   	if ($params['show'] == 'all')
-   	{
-   		$show = 1;
-   	}
-   	else 
-   	{
-   		$show = 0;
-   	}
-
     
     // we always start on the top of the group hierarchy
    	$parentid = '0';
@@ -150,10 +140,10 @@ function smarty_function_group_list($params, &$smarty)
     $sql = 	"SELECT id, name, owner FROM ".$db_prefix."group WHERE"
 	 			." parentid = ".$db->qstr($parentid)
 	 			." AND ("
-	 			.($show ? " 1" : " owner = 'public'")
+	 			.($show ? " 0" : " owner = 'public'")
 	 			.($userid ? " OR owner=".$db->qstr($userid) : '')
 	 			.")"
-				." ORDER BY name"; 	
+				." ORDER BY owner = 'public', owner, name"; 	
 
  	$rs  = $db->Execute($sql);
 	
@@ -165,10 +155,10 @@ function smarty_function_group_list($params, &$smarty)
 		$sql2 = "SELECT id, name, owner FROM ".$db_prefix."group WHERE"
 					." parentid = ".$db->qstr($rs->fields['id'])
 					." AND ("
-		 			.($show ? " 1" : " owner = 'public'")
+		 			.($show ? " 0" : " owner = 'public'")
 		 			.($userid ? " OR owner=".$db->qstr($userid) : '')
 		 			.")"
-					." ORDER BY name"; 	
+					." ORDER BY owner = 'public', owner, name"; 	
 
 		$rs2 = $db->Execute($sql2);
 		
@@ -179,12 +169,11 @@ function smarty_function_group_list($params, &$smarty)
 			$sql3 = "SELECT id, name, owner FROM ".$db_prefix."group WHERE"
 					." parentid = ".$db->qstr($rs2->fields['id'])
 					." AND ("
-		 			.($show ? " 1" : " owner = 'public'")
+		 			.($show ? " 0" : " owner = 'public'")
 		 			.($userid ? " OR owner=".$db->qstr($userid) : '')
 		 			.")"
-					." ORDER BY name"; 	
+					." ORDER BY owner = 'public', owner, name"; 	
 
-		
 
 			$rs3 = $db->Execute($sql3);
 			
@@ -192,27 +181,27 @@ function smarty_function_group_list($params, &$smarty)
 			
 			while(!$rs3->EOF)
 			{
-				$l3groups[$rs3->fields['id']] = array(	'id'		=> $rs3->fields['id'],
-																			'name' 	=> $rs3->fields['name'],
-																			'owner' => $rs3->fields['owner'] );
+				$l3groups[$rs3->fields['id']] = array(	'id'	=> $rs3->fields['id'],
+														'name' 	=> $rs3->fields['name'],
+														'owner' => $rs3->fields['owner'] );
 																			
 				$rs3->MoveNext();
 			}
 			
-			$l2groups[$rs2->fields['id']] = array(	'id'				=> $rs2->fields['id'],
-																		'name' 			=> $rs2->fields['name'],
-																		'owner' 		=> $rs2->fields['owner'],
-																		'subgroups' 	=> $l3groups );
+			$l2groups[$rs2->fields['id']] = array(	'id'			=> $rs2->fields['id'],
+													'name' 			=> $rs2->fields['name'],
+													'owner' 		=> $rs2->fields['owner'],
+													'subgroups' 	=> $l3groups );
 																		
 			unset($l3groups);
 			
 			$rs2->MoveNext();
 		}				
 		
-		$groups[$rs->fields['id']] = array(	'id'				=> $rs->fields['id'],
-																'name' 			=> $rs->fields['name'],
-																'owner'		 	=> $rs->fields['owner'],
-																'subgroups' 	=> $l2groups );
+		$groups[$rs->fields['id']] = array(	'id'			=> $rs->fields['id'],
+											'name' 			=> $rs->fields['name'],
+											'owner'		 	=> $rs->fields['owner'],
+											'subgroups' 	=> $l2groups );
 																
 		unset($l2groups);
 		
@@ -221,26 +210,18 @@ function smarty_function_group_list($params, &$smarty)
 
 	/*
 	echo ("\n<br><br><br><br>\n");
-	
+
 	print_r($groups); 	
 	*/
  	
 
-		 	
-
     $smarty->assign($params['var'], $groups);
 
-    
 
     if( !empty($params['sql'])) {
-
 		     $smarty->assign($params['sql'], $sql);
-
 	 }
 
-	 
-
 }
-
 ?>
 

@@ -151,7 +151,7 @@
 			Use Groups?
 		</th>
 		<th>
-			Use Folders?
+			Edit Groups?
 		</th>
 		<th>
 			Active?

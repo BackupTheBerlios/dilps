@@ -1,7 +1,6 @@
 <td width="30%" valign="top">
 	<!-- right side of query -->
 	<table class="query" cellspacing="1" cellpadding="0" >
-		{if $user.usemygroup}
 		<tr>
 			<td class="field_name"><strong>{#mygroup#|escape:htmlall}</strong></td>
 		</tr>
@@ -14,20 +13,16 @@
 				{/if}
 				<button type="button" class="actionbutton2" onclick="javascript:clearmygroup();" title="{#nogroup#|escape:htmall}"><img src="clear.png" style="width: 12px; height: 12px;" /></button>
 				<button type="button" class="actionbutton2" onclick="javascript:updatemygroup();" title="{#applychanges#|escape:htmlall}"><img src="apply.png" style="width: 12px; height: 12px;" /></button>
+				
 				<input class="queryinputfield" type="hidden" name="query[mygroupid]" value="{$query.mygroupid|escape:html}">
-				<input class="queryinputfield" type="hidden" name="query[mygrouplevel]" value="{$query.mygrouplevel|escape:html}">
+				<input class="queryinputfield" type="hidden" name="query[mygroupowner]" value="{$query.mygroupowner|escape:html}">
+				
 			</td>
 		</tr>
 		<tr>
 			<td>
 				<!-- we insert the nodes for changes in group membership here -->
 				<div id="mygroupchanges" style="visibility: hidden;"></div>
-			</td>
-		</tr>
-		{else}
-		<tr>
-			<td class="field_name">
-				&nbsp;
 			</td>
 		</tr>
 		<tr>
@@ -40,12 +35,11 @@
 				&nbsp;
 			</td>
 		</tr>
-		{/if}
 		{if $query.mygroupid neq ""}
 		<tr>
 			<td class="field_name">
 				<!--<a class="navsymbol" href="javascript:;" onclick="javascript:window.open('export_group.php?PHPSESSID={$sessionid}&collectionid={$query.querypiece.0.val.0}&groupid={$query.mygroupid}&groupname={$query.mygroup}','groupexport','width=800,height=420,dependent=yes,scrollbars=yes');">{#exportgroup#}</a>-->
-				<a class="navsymbol" href="javascript:;" onclick="javascript:window.open('export_group.php?PHPSESSID={$sessionid}&collectionid={$query.collectionid}&groupid={$query.mygroupid}&groupname={$query.mygroup}','groupexport','width=800,height=420,dependent=yes,scrollbars=yes');">{#exportgroup#}</a>
+				<a class="navsymbol" href="javascript:;" onclick="javascript:window.open('export_group.php?PHPSESSID={$sessionid}&collectionid={$query.collectionid}&groupid={$query.mygroupid}&groupname={$query.mygroup}','groupexport','width=800,height=420,scrollbars=yes,resizable=yes');">{#exportgroup#}</a>
 			</td>
 		</tr>
 		{/if}
@@ -56,15 +50,19 @@
 		</tr>
 		<tr>
 			<td class="field_name">
-				{if $user.editgroup}
-					<a class="navsymbol" href="javascript:;" onclick="javascript:window.open('group_edit.php?PHPSESSID={$sessionid}','groupedit','width=800,height=420,dependent=yes,scrollbars=yes');">{#editgroups#|escape:htmlall}</a>
+				{if $user.editgroups}
+					<a class="navsymbol" href="javascript:;" onclick="javascript:window.open('group_edit.php?PHPSESSID={$sessionid}','groupedit','width=800,height=420,scrollbars=yes,resizable=yes');">{#editgroups#|escape:htmlall}</a>
+				{else}
+					&nbsp;
 				{/if}
 			</td>
 		</tr>
 		<tr>
 			<td>
-				{if $user.insertimage}
-					<a class="navsymbol" href="javascript:;" onclick="javascript:window.open('add_images.php?PHPSESSID={$sessionid}','imageadd','width=900,height=420,dependent=yes,scrollbars=yes');">{#insertimages#|escape:htmlall}</a>
+				{if $user.insertimages}
+					<a class="navsymbol" href="javascript:;" onclick="javascript:window.open('add_images.php?PHPSESSID={$sessionid}','imageadd','width=900,height=420,scrollbars=yes,resizable=yes');">{#insertimages#|escape:htmlall}</a>
+				{else}
+					&nbsp;
 				{/if}
 			</td>
 		</tr>

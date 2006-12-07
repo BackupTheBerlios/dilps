@@ -251,14 +251,14 @@ var column_operators;
 function cleargroup() {
 	document.forms["Main"].elements["query[group]"].value = '';
 	document.forms["Main"].elements["query[groupid]"].value = '';
-	document.forms["Main"].elements["query[grouplevel]"].value = '';
+	document.forms["Main"].elements["query[groupowner]"].value = '';
 	document.forms["Main"].submit();
 }
 
 function clearmygroup() {
 	document.forms["Main"].elements["query[mygroup]"].value = '';
 	document.forms["Main"].elements["query[mygroupid]"].value = '';
-	document.forms["Main"].elements["query[mygrouplevel]"].value = '';
+	document.forms["Main"].elements["query[mygroupowner]"].value = '';
 	document.forms["Main"].submit();
 }
 
@@ -285,4 +285,249 @@ function updatemygroup()
 function performlogout() {
 	document.forms["Main"].elements["logout"].value = 1;
 	document.forms["Main"].submit();
+}
+
+
+function makeVisible(divid) {
+	// alert('Vis: '+divid);
+
+	if (document.getElementById(divid) != null)
+	{
+		document.getElementById(divid).style.visibility = "visible";
+		return true;
+	}
+	return false;
+}
+
+function makeInvisible(divid) {
+	// alert('Invis: '+divid);
+	if (document.getElementById(divid) != null)
+	{
+		document.getElementById(divid).style.visibility = "hidden";
+		return true;
+	}
+	return false;
+}
+
+function showGroups(Indexes) {
+	
+	if (Indexes[0] != -1)
+	{
+		// set first selection and get the corresponding data
+		document.forms[0].elements["gid-0-groups"].selectedIndex = Indexes[0];
+		
+		var sElem1 		= document.forms[0].elements["gid-0-groups"].options[Indexes[0]].value;
+		var sElem1Parts = extractData(sElem1);
+		var sElem1ID 	= sElem1Parts[0];
+		
+		if ( sElem1ID != null)
+		{
+			// show the second level select box
+			sElem1Div = "gid-"+sElem1ID;
+			sElem1Select = "gid-"+sElem1ID+"-groups";
+			makeVisible(sElem1Div);
+			
+			if (Indexes[1] != -1)
+			{
+				// set second selection and get the corresponding data
+				document.forms[0].elements[sElem1Select].selectedIndex = Indexes[1];
+				
+				var sElem2 = document.forms[0].elements[sElem1Select].options[Indexes[1]].value;
+				var sElem2Parts = extractData(sElem2);
+				var sElem2ID = sElem2Parts[0];
+				
+				if ( sElem2ID != null)
+				{
+					// show the third level select box
+					sElem2Div = "gid-"+sElem2ID;
+					sElem2Select = "gid-"+sElem2ID+"-groups";
+					makeVisible(sElem2Div);
+					
+					if (Indexes[2]) 
+					{
+						// if given, select the corresponding element
+						if (Indexes[2] != -1) {
+							document.forms[0].elements[sElem2Select].selectedIndex = Indexes[2];
+						}							
+					}
+				}
+			}
+		}
+	}
+	return;
+}
+
+function hideGroups(Indexes) {
+	if (Indexes[0] != -1)
+	{
+		// get old first element
+		var sElem1 		= document.forms[0].elements["gid-0-groups"].options[Indexes[0]].value;
+		var sElem1Parts = extractData(sElem1);
+		var sElem1ID 	= sElem1Parts[0];
+		
+		if ( sElem1ID != null)
+		{
+			// hide the second level select box
+			sElem1Div = "gid-"+sElem1ID;
+			sElem1Select = "gid-"+sElem1ID+"-groups";
+			
+			// alert('div: '+sElem1Div);
+			
+			makeInvisible(sElem1Div);
+			
+			if (Indexes[1] != -1)
+			{
+				// get old second element
+				var sElem2 		= document.forms[0].elements[sElem1Select].options[Indexes[1]].value;
+				var sElem2Parts = extractData(sElem2);
+				var sElem2ID 	= sElem2Parts[0];
+				
+				if ( sElem2ID != null)
+				{
+					// hide the third level select box
+					sElem2Div = "gid-"+sElem2ID;
+					sElem2Select = "gid-"+sElem2ID+"-groups";
+					
+					// alert('div: '+sElem1Div);
+					
+					makeInvisible(sElem2Div);
+				}
+			}
+		}
+	}
+	return;
+}
+
+function loadPath() {
+	// load group path
+	
+	if (document.forms[0].elements['lastpath'] != null)
+	{
+		var lastpath = document.forms[0].elements['lastpath'].value;
+		
+		if (lastpath != '')	{		
+			var Indexes = new Array();
+			Indexes = lastpath.split(":");
+		}
+		else {
+			var Indexes = new Array(-1,-1,-1);
+		}
+		
+		// alert('lastpath - load: '+lastpath);
+		
+		return Indexes;
+	}
+	
+	var Indexes = new Array(-1,-1,-1);
+	return Indexes;	
+}
+
+function savePath(Indexes) {
+	// save group path
+	
+	// alert('length: '+Indexes.length);
+	
+	if (document.forms[0].elements['lastpath'] != null)
+	{
+		var path = Indexes.join(':');
+		document.forms[0].elements['lastpath'].value = path;
+		
+		// alert('lastpath - save: '+path);
+		
+		return true;
+	}
+	return false;
+}
+
+
+function extractData(datastring) {
+	if (datastring != '')
+	{
+		var Data = datastring.split(":");
+		return Data;
+	}
+	return false;
+}
+
+function copyData(groupData)
+{
+	if (groupData.length == 3) {
+		document.forms[0].elements["currentid"].value = groupData[0];
+		document.forms[0].elements["currentname"].value = groupData[1];
+		document.forms[0].elements["currentowner"].value = groupData[2];
+		return true;
+	}
+	return false;
+}
+
+function checkParameter()
+{
+	// check whether we need an input box for a parameter
+	var currentAction = document.forms[0].elements["action"].value;
+	
+	if (currentAction == 'rename' || currentAction == 'addgroup' || currentAction == 'addsubgroup') {
+		document.getElementById('parameter').style.visibility = 'visible';
+	}
+	else {
+		document.getElementById('parameter').style.visibility = 'hidden';
+	}
+	
+	if (currentAction != 'nothing') {
+		document.getElementById('commit').style.visibility = 'visible';
+	}
+	
+	return;
+}
+
+function switchToAndSelect(currentlevel, currentid) 
+{
+	// alert ('currentlevel: '+currentlevel+', currentid: '+currentid);
+	// alert (document.forms[0].elements["gid-0-groups"].options[0].value);
+	
+	var curElemSelect = "gid-"+currentid+"-groups";
+	var curElem = document.forms[0].elements[curElemSelect];
+	
+	// check for hint element - if present, delete it
+	if (curElem.options[curElem.length - 1].value == -1)
+	{
+		curElem.options[curElem.length - 1] = null;
+	}
+	
+	var Indexes = loadPath();
+	
+	/*
+	for (i in Indexes) {
+		alert ('Indexes['+i+'] = '+Indexes[i]);
+	}
+	*/
+	
+	// if there are any old selection boxes, hide them
+	hideGroups(Indexes);
+	
+	// update path - everything right of current element is marked with -1
+	
+	Indexes[currentlevel] = document.forms[0].elements[curElemSelect].selectedIndex;
+	
+	for (i = currentlevel + 1; i < 3; i++) {
+		Indexes[i] = -1;
+	}
+	
+	/*
+	for (i in Indexes) {
+		alert ('Indexes['+i+'] = '+Indexes[i]);
+	}
+	*/
+			
+	// show new selection boxes
+	showGroups(Indexes);
+	
+	// copy the data to the operation fields
+	var groupData = extractData(document.forms[0].elements[curElemSelect].value);
+	
+	copyData(groupData);
+	
+	// store path
+	savePath(Indexes);
+	
+	return;
 }

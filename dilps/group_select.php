@@ -54,12 +54,6 @@ else
 	$sessionid = '';
 }
 
-if (!empty($_REQUEST['action'])){
-	$action = $_REQUEST['action'];
-} else {
-	$action = array();
-}
-
 if (!empty($_REQUEST['target'])){
 	$target = trim($_REQUEST['target']);
 } else {
@@ -67,16 +61,40 @@ if (!empty($_REQUEST['target'])){
 	exit;	
 }
 
-if (!empty($_REQUEST['lastL1'])){
-	$lastL1 = trim($_REQUEST['lastL1']);
+if (!empty($_REQUEST['lastpath'])){
+	$lastpath = trim($_REQUEST['lastpath']);
 } else {
-	$lastL1 = '';
+	$lastpath = '';
 }
 
-if (!empty($_REQUEST['lastL2'])){
-	$lastL2 = trim($_REQUEST['lastL2']);
+if (!empty($_REQUEST['action'])){
+	$action = $_REQUEST['action'];
 } else {
-	$lastL2 = '';
+	$action = '';
+}
+
+if (!empty($_REQUEST['currentid'])){
+	$currentid = $_REQUEST['currentid'];
+} else {
+	$currentid = '';
+}
+
+if (!empty($_REQUEST['currentname'])){
+	$currentname = $_REQUEST['currentname'];
+} else {
+	$currentname = '';
+}
+
+if (!empty($_REQUEST['currentowner'])){
+	$currentowner = $_REQUEST['currentowner'];
+} else {
+	$currentowner = '';
+}
+
+if (!empty($_REQUEST['parameter'])){
+	$parameter = $_REQUEST['parameter'];
+} else {
+	$parameter = '';
 }
 
 /*
@@ -89,10 +107,14 @@ echo ("\n<br>\n");
 */
 
 $smarty->assign('sessionid',$sessionid);
-$smarty->assign('action',$action); 
 $smarty->assign('target', $target);
-$smarty->assign('lastL1', $lastL1);
-$smarty->assign('lastL2', $lastL2);
+$smarty->assign('lastpath', $lastpath);
+$smarty->assign('action',$action); 
+$smarty->assign('currentid',$currentid); 
+$smarty->assign('currentname',$currentname); 
+$smarty->assign('currentowner',$currentowner);
+$smarty->assign('parameter',$parameter);
+
 
 $smarty->display( $config['skin'].'/'.'group_select.tpl' );
 
