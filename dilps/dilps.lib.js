@@ -526,6 +526,9 @@ function switchToAndSelect(currentlevel, currentid)
 	
 	copyData(groupData);
 	
+	// we need the level when we delete something
+	document.forms[0].elements["currentlevel"].value = currentlevel;
+	
 	// store path
 	savePath(Indexes);
 	

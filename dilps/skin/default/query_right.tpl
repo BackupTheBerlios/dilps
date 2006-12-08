@@ -7,9 +7,9 @@
 		<tr>
 			<td class="queryinputfield">
 				{if $query.mygroup eq ""}
-					<input class="queryinputfield" type="text" name="query[mygroup]" size="40" readonly="readonly" value=" ({#selecthere#|escape:htmlall}) " onclick="javascript:window.open('group_select.php?PHPSESSID={$sessionid}&target=mygroup','groupselection2','width=800,height=300,left=10,top=250,dependent=yes');">
+					<input class="queryinputfield" type="text" name="query[mygroup]" size="40" readonly="readonly" value=" ({#selecthere#|escape:htmlall}) " onclick="javascript:window.open('group_select.php?PHPSESSID={$sessionid}&target=mygroup','groupselection2','width=800,height=300,left=10,top=250,resizable=yes,dependent=yes');">
 				{else}
-					<input class="queryinputfield" type="text" name="query[mygroup]" size="40" readonly="readonly" value="{$query.mygroup|escape:html}" onclick="javascript:window.open('group_select.php?PHPSESSID={$sessionid}&target=mygroup','groupselection2','width=800,height=300,left=10,top=250,dependent=yes');">
+					<input class="queryinputfield" type="text" name="query[mygroup]" size="40" readonly="readonly" value="{$query.mygroup|escape:html}" onclick="javascript:window.open('group_select.php?PHPSESSID={$sessionid}&target=mygroup','groupselection2','width=800,height=300,left=10,top=250,resizable=yes,dependent=yes');">
 				{/if}
 				<button type="button" class="actionbutton2" onclick="javascript:clearmygroup();" title="{#nogroup#|escape:htmall}"><img src="clear.png" style="width: 12px; height: 12px;" /></button>
 				<button type="button" class="actionbutton2" onclick="javascript:updatemygroup();" title="{#applychanges#|escape:htmlall}"><img src="apply.png" style="width: 12px; height: 12px;" /></button>
@@ -39,7 +39,7 @@
 		<tr>
 			<td class="field_name">
 				<!--<a class="navsymbol" href="javascript:;" onclick="javascript:window.open('export_group.php?PHPSESSID={$sessionid}&collectionid={$query.querypiece.0.val.0}&groupid={$query.mygroupid}&groupname={$query.mygroup}','groupexport','width=800,height=420,dependent=yes,scrollbars=yes');">{#exportgroup#}</a>-->
-				<a class="navsymbol" href="javascript:;" onclick="javascript:window.open('export_group.php?PHPSESSID={$sessionid}&collectionid={$query.collectionid}&groupid={$query.mygroupid}&groupname={$query.mygroup}','groupexport','width=800,height=420,scrollbars=yes,resizable=yes');">{#exportgroup#}</a>
+				<a class="navsymbol" href="javascript:;" onclick="javascript:window.open('export_group.php?PHPSESSID={$sessionid}&collectionid={$query.collectionid}&groupid={$query.mygroupid}&groupname={$query.mygroup}','groupexport','width=800,height=420,resizable=yes,scrollbars=yes,resizable=yes');">{#exportgroup#}</a>
 			</td>
 		</tr>
 		{/if}

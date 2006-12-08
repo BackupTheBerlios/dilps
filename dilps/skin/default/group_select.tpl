@@ -110,10 +110,18 @@
 			parameter = '';
 		}
 		
+		var currentlevel;
+		if (document.forms[0].elements["currentlevel"] != null) {
+			currentlevel = document.forms[0].elements["currentlevel"].value;
+		}
+		else {
+			currentlevel = '';
+		}
+		
 		
 		// abort, if important values mysteriously disappeared
 		if (action == '' || currentid == '') {
-			return;
+			return false;
 		}
 		
 		if (action == 'selectandclose' || action == 'doselect')
@@ -137,19 +145,16 @@
 			{
 				window.close();
 			}
-			return;
+			return true;
 		}
 		
-		if (action == 'addsubgroup' || ation == 'addgroup' || action == 'rename')
+		if (action == 'addsubgroup' || action == 'addgroup' || action == 'rename')
 		{
 			if (action == 'addgroup')
 			{
-				document.forms[0].elements["action"].value = 'add';
 				document.forms[0].elements["currentid"].value = 0;
-			}
-			else if (action == 'addsubgroup')
-			{
-				document.forms[0].elements["action"].value = 'add';
+				// pseudo-name, is not used
+				document.forms[0].elements["currentname"].value = 'root';
 			}
 			
 			if (parameter != '')
@@ -162,9 +167,11 @@
 					var confirmstring = "{#invalidname#}";
 					alert(confirmstring);
 					{literal}
+					return false;
 				}
 				else {
 					document.forms[0].submit();
+					return true;
 				}
 			}
 			else
@@ -173,7 +180,7 @@
 				var confirmstring = "{#pleaseentergroupname#}";
 				alert(confirmstring);
 				{literal}
-				return;
+				return false;
 			}
 		}
 		
@@ -190,18 +197,34 @@
 					var confirmstring = "{#cleargroup#}";
 				{literal}
 			}
-			var agree = confirm(confirmstring + ": " + groupname + "?");
+			var agree = confirm(confirmstring + ": " + currentname + "?");
 	
 			if(agree) {
+				
+				if (action == 'del')
+				{
+					// update path - the element and every element right of it is marked with -1
+					// this is necessary, because we don't know whether there's a subelement left
+					var Indexes = loadPath();
+					
+					
+					
+					for (i = currentlevel; i < 3; i++) {
+						Indexes[i] = -1;
+					}
+					
+					savePath(Indexes);
+				}
+				
 				document.forms[0].submit();
-				return;
+				return true;
 			}
 			else {
-				return;
+				return false;
 			}	
 		}
 		
-		return;		
+		return false;		
 	}
 	
 	function getActions(userid,iseditor)
@@ -222,7 +245,7 @@
 		
 		rename	 		= new Option('{#rename#}', 'rename', false, false);
 		clear	 		= new Option('{#clear#}', 'clear', false, false);
-		del				= new Option('{#delete#}', 'delete', false, false);
+		del				= new Option('{#delete#}', 'del', false, false);
 		addsubgroup		= new Option('{#addsubgroup#}', 'addsubgroup', false, false);
 		addgroup		= new Option('{#addgroup#}', 'addgroup', false, false);
 		
@@ -244,7 +267,7 @@
 		
 		checkParameter();
 		
-		return;
+		return true;
 	}
 	
 	{/literal}
@@ -253,7 +276,7 @@
 
 <body class="main" style="width: 100%; height: 100%;">
 
-<form action="{$SCRIPT_NAME}" method="post" style="width: 100%; height: 100%;">
+<form action="{$SCRIPT_NAME}" method="post" onsubmit="return checkAndSubmit();" style="width: 100%; height: 100%;">
 	<input type="hidden" name="PHPSESSID" value="{$sessionid}" />
 	<input type="hidden" name="target" value="{$target}" />
 	
@@ -269,36 +292,43 @@
 			</td>
 		</tr>
 		<tr>
-			<td colspan="2" style="text-align: left;">
-				{if $action neq ""}
+			<td>
+				{if $action ne ""}
+					<!--
 					Funktion: {$action} <br />
 					ID: {$currentid} <br />
 					Name: {$currentname} <br />
 					Owner: {$currentowner} <br />
 					Parameter: {$parameter} <br />
-				
-					<!--
-					{group_change action=$function gid=$currentid gname=$currentname gowner=$currentowner parameter=$parameter result=$action_result sql=sql}
 					-->
+					
+					{group_change action=$action id=$currentid name=$currentname owner=$currentowner parameter=$parameter result=result sql=sql}
+					
 					<!-- display localized information on action success -->
-					{if $action_result eq "E_ADD_FAILED"}
+					&nbsp;
+					{if $result eq "E_ADD_FAILED"}
 						{#E_ADD_FAILED#}
-					{elseif $action_result eq "R_ADD_SUCCESS"}
+					{elseif $result eq "R_ADD_SUCCESS"}
 						{#R_ADD_SUCCESS#}
-					{elseif $action_result eq "E_EDIT_FAILED"}
+					{elseif $result eq "E_EDIT_FAILED"}
 						{#E_EDIT_FAILED#}
-					{elseif $action_result eq "R_EDIT_SUCCESS"}
+					{elseif $result eq "R_EDIT_SUCCESS"}
 						{#R_EDIT_SUCCESS#}
-					{elseif $action_result eq "E_DELETE_FAILED"}
+					{elseif $result eq "E_CLEAR_FAILED"}
+						{#E_CLEAR_FAILED#}
+					{elseif $result eq "R_CLEAR_SUCCESS"}
+						{#R_CLEAR_SUCCESS#}
+					{elseif $result eq "E_DELETE_FAILED"}
 						{#E_DELETE_FAILED#}
-					{elseif $action_result eq "R_DELETE_SUCCESS"}
+					{elseif $result eq "R_DELETE_SUCCESS"}
 						{#R_DELETE_SUCCESS#}
-					{elseif $action_result eq "E_NOT_UNIQUE"}
-						{#E_NOT_UNIQUE#}
-					{else}
-						&nbsp;
+					{elseif $result eq "E_NO_RIGHTS"}
+						{#E_NO_RIGHTS#}
 					{/if}
-					<!-- $sql -->
+					<br />
+					<br />
+					
+					<!-- {$sql} -->
 				{else}
 					&nbsp;
 				{/if}
@@ -378,6 +408,7 @@
 								<td class="queryinputfield">
 									<input class="queryinputfieldinactive" type="text"  name="currentname" style="width: 200px;" readonly="readonly"/>
 									<input class="queryinputfield" type="hidden"  name="currentid" />
+									<input class="queryinputfield" type="hidden"  name="currentlevel" />
 									<input class="queryinputfield" type="hidden"  name="currentowner" />
 								</td>
 							</tr>					
@@ -417,7 +448,7 @@
 					</div>	
 					
 					<div id="commit" style="width: 250px; position: absolute; left: 0px; top: 130px; visibility: hidden;">
-						<button name="commit" value="{#commitaction#}" onclick="javascript:checkAndSubmit();">{#commitaction#}</button>
+						<input type="submit" name="commit" value="{#commitaction#}" />
 					</div>
 				</div>
 			</td>
