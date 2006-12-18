@@ -252,6 +252,7 @@ function cleargroup() {
 	document.forms["Main"].elements["query[group]"].value = '';
 	document.forms["Main"].elements["query[groupid]"].value = '';
 	document.forms["Main"].elements["query[groupowner]"].value = '';
+	document.forms["Main"].elements["query[grouplastpath]"].value = '';
 	document.forms["Main"].submit();
 }
 
@@ -259,6 +260,7 @@ function clearmygroup() {
 	document.forms["Main"].elements["query[mygroup]"].value = '';
 	document.forms["Main"].elements["query[mygroupid]"].value = '';
 	document.forms["Main"].elements["query[mygroupowner]"].value = '';
+	document.forms["Main"].elements["query[mygrouplastpath]"].value = '';
 	document.forms["Main"].submit();
 }
 
@@ -343,13 +345,10 @@ function showGroups(Indexes) {
 					sElem2Select = "gid-"+sElem2ID+"-groups";
 					makeVisible(sElem2Div);
 					
-					if (Indexes[2]) 
-					{
-						// if given, select the corresponding element
-						if (Indexes[2] != -1) {
-							document.forms[0].elements[sElem2Select].selectedIndex = Indexes[2];
-						}							
-					}
+					if (Indexes[2] != -1) {
+						// set third selection
+						document.forms[0].elements[sElem2Select].selectedIndex = Indexes[2];
+					}							
 				}
 			}
 		}
@@ -357,11 +356,17 @@ function showGroups(Indexes) {
 	return;
 }
 
-function hideGroups(Indexes) {
+function hideGroups(Indexes) 
+{
+	var curElem;
+	var nextElem;
+	
 	if (Indexes[0] != -1)
 	{
+		curElem = document.forms[0].elements["gid-0-groups"];
+		
 		// get old first element
-		var sElem1 		= document.forms[0].elements["gid-0-groups"].options[Indexes[0]].value;
+		var sElem1 		= curElem.options[Indexes[0]].value;
 		var sElem1Parts = extractData(sElem1);
 		var sElem1ID 	= sElem1Parts[0];
 		
@@ -377,8 +382,10 @@ function hideGroups(Indexes) {
 			
 			if (Indexes[1] != -1)
 			{
+				curElem = document.forms[0].elements[sElem1Select];
+				
 				// get old second element
-				var sElem2 		= document.forms[0].elements[sElem1Select].options[Indexes[1]].value;
+				var sElem2 		= curElem.options[Indexes[1]].value;
 				var sElem2Parts = extractData(sElem2);
 				var sElem2ID 	= sElem2Parts[0];
 				
@@ -533,4 +540,111 @@ function switchToAndSelect(currentlevel, currentid)
 	savePath(Indexes);
 	
 	return;
+}
+
+function restoreSelection(groupid, lastpath, userid, iseditor) 
+{
+	// alert ('currentlevel: '+currentlevel+', currentid: '+currentid);
+	// alert (document.forms[0].elements["gid-0-groups"].options[0].value);
+	
+	if (lastpath != '')
+	{
+		var grouplevel = '';
+		var curElem;
+		
+		// extract selections
+		var Indexes = extractData(lastpath);
+		
+		if (Indexes[0] != -1)
+		{
+			curElem = document.forms[0].elements["gid-0-groups"];
+			
+			// set first selection and get the corresponding data
+			curElem.selectedIndex = Indexes[0];
+			
+			// check for hint element - if present, delete it
+			if (curElem.options[curElem.length - 1].value == -1)
+			{
+				curElem.options[curElem.length - 1] = null;
+			}
+			
+			var sElem1 		= curElem.options[Indexes[0]].value;
+			var sElem1Parts = extractData(sElem1);
+			var sElem1ID 	= sElem1Parts[0];
+			
+			// set grouplevel and copy groupdata
+			grouplevel = 0;
+			copyData(sElem1Parts);
+			
+			if ( sElem1ID != null)
+			{
+				// show the second level select box
+				sElem1Div = "gid-"+sElem1ID;
+				sElem1Select = "gid-"+sElem1ID+"-groups";
+				makeVisible(sElem1Div);
+				
+				if (Indexes[1] != -1)
+				{
+					curElem = document.forms[0].elements[sElem1Select];
+					
+					// set second selection and get the corresponding data
+					curElem.selectedIndex = Indexes[1];
+					
+					// check for hint element - if present, delete it
+					if (curElem.options[curElem.length - 1].value == -1)
+					{
+						curElem.options[curElem.length - 1] = null;
+					}
+					
+					var sElem2 = curElem.options[Indexes[1]].value;
+					var sElem2Parts = extractData(sElem2);
+					var sElem2ID = sElem2Parts[0];
+					
+					// set grouplevel and copy groupdata
+					grouplevel = 1;
+					copyData(sElem2Parts);
+					
+					if ( sElem2ID != null)
+					{
+						// show the third level select box
+						sElem2Div = "gid-"+sElem2ID;
+						sElem2Select = "gid-"+sElem2ID+"-groups";
+						makeVisible(sElem2Div);
+						
+						if (Indexes[2] != -1) 
+						{
+							
+							curElem = document.forms[0].elements[sElem2Select];
+					
+							// set third selection and get the corresponding data
+							curElem.selectedIndex = Indexes[2];
+							
+							// check for hint element - if present, delete it
+							if (curElem.options[curElem.length - 1].value == -1)
+							{
+								curElem.options[curElem.length - 1] = null;
+							}
+							
+							var sElem3 = curElem.options[Indexes[2]].value;
+							var sElem3Parts = extractData(sElem3);
+							
+							// set grouplevel and copy groupdata
+							grouplevel = 2;
+							copyData(sElem3Parts);
+						}							
+					}
+				}
+			}
+		}
+		
+		// store level information for the future
+		document.forms[0].elements["currentlevel"].value = grouplevel;
+
+		// re-get possible actions
+		getActions(userid,iseditor)
+			
+		return true;
+	}
+	
+	return false;
 }

@@ -70,6 +70,61 @@
 	<script type="text/javascript">
 	{literal}
 	
+	function restoreHint(currentlevel, currentid)
+	{
+		var curElemSelect;
+		var curElem;
+		var curValue;
+		var curValueParts;
+		
+		var nextElemID;
+		var nextElemSelect;
+		var nextElem;
+		
+		var hintElemLev2;
+		var hintElemLev3;
+		{/literal}
+		
+		hintElemLev2	= new Option('--{#level2#}--', '-1', false, true);
+		hintElemLev3	= new Option('--{#level3#}--', '-1', false, true);
+		
+		{literal}
+		
+		curElemSelect = "gid-"+currentid+"-groups";
+		curElem = document.forms[0].elements[curElemSelect];
+		
+		curValue 		= curElem.options[curElem.selectedIndex].value;
+		curValueParts  	= extractData(curValue);
+		nextElemID 		= curValueParts[0];
+		
+		if (nextElemID != null)
+		{
+			nextElemSelect = "gid-"+nextElemID+"-groups";
+			nextElem = document.forms[0].elements[nextElemSelect];
+			
+			if (nextElem != null)
+			{
+				// check for hint element - if not present, (re-)insert it
+				if (nextElem.options[nextElem.length - 1].value != -1)
+				{
+					if (currentlevel == '0')
+					{
+						nextElem.options[nextElem.length] = hintElemLev2;
+					}
+					else
+					{
+						nextElem.options[nextElem.length] = hintElemLev3;
+					}
+				}
+				
+				return true;
+				
+			}
+		}
+		
+		return false;
+	}
+	
 	function checkAndSubmit()
 	{
 		// check user input and trigger confirm dialog for delete and clear
@@ -118,6 +173,16 @@
 			currentlevel = '';
 		}
 		
+		var currentlastpath;
+
+		if (document.forms[0].elements['lastpath'] != null) {
+			currentlastpath = document.forms[0].elements['lastpath'].value;
+		}
+		else {
+			currentlastpath = '';
+		}
+		
+		
 		
 		// abort, if important values mysteriously disappeared
 		if (action == '' || currentid == '') {
@@ -137,7 +202,7 @@
 				copy3(currentid, currentname, currentowner);
 			    break;
 			  default:
-				copy(currentid, currentname, currentowner);
+				copy(currentid, currentname, currentowner, currentlastpath);
 			    break;
 			}
 			
@@ -274,7 +339,7 @@
 	</script>
 </head>
 
-<body class="main" style="width: 100%; height: 100%;">
+<body class="main" style="width: 100%; height: 100%;" {if $lastpath neq ''}onload="javascript:restoreSelection('{$currentid}','{$lastpath}','{$user.login}','{$user.editgroups}');"{/if}>
 
 <form action="{$SCRIPT_NAME}" method="post" onsubmit="return checkAndSubmit();" style="width: 100%; height: 100%;">
 	<input type="hidden" name="PHPSESSID" value="{$sessionid}" />
@@ -341,10 +406,10 @@
 					<!-- {$sql} -->
 					
 					<div id="gid-0" style="width: 250px; position: absolute; left: 0px; top: 0px;">
-						<select name="gid-0-groups" class="queryselectfield" onchange="javascript:switchToAndSelect(0,0);getActions('{$user.userid}','{$user.editgroups}');"  style="width: 200px; text-align: center;">
+						<select name="gid-0-groups" class="queryselectfield" style="width: 200px; text-align: center;">
 						{if count($groups) neq 0}
 							{foreach from=$groups item=l1}
-								<option value="{$l1.id}:{$l1.name}:{$l1.owner}" style="text-align: center;">
+								<option value="{$l1.id}:{$l1.name}:{$l1.owner}" style="text-align: center;" onclick="javascript:switchToAndSelect(0,0);getActions('{$user.login}','{$user.editgroups}');restoreHint(0,0);">
 									{$l1.name|truncate:50|wordwrap:30:"<br/>\n":true}
 								</option>
 							{/foreach}
@@ -359,9 +424,9 @@
 						{foreach from=$groups item=l1}
 							{if count($l1.subgroups) neq 0}
 								<div id="gid-{$l1.id}" style="width: 250px; position: absolute; left: 250px; top: 0px; visibility: hidden;">
-									<select name="gid-{$l1.id}-groups" class="queryselectfield" onchange="javascript:switchToAndSelect(1,{$l1.id});getActions('{$user.userid}','{$user.editgroups}');"  style="width: 200px; text-align: center;">
+									<select name="gid-{$l1.id}-groups" class="queryselectfield" style="width: 200px; text-align: center;">
 										{foreach from=$l1.subgroups item=l2}
-											<option value="{$l2.id}:{$l2.name}:{$l2.owner}"  style="text-align: center;">
+											<option value="{$l2.id}:{$l2.name}:{$l2.owner}"  style="text-align: center;" onclick="javascript:switchToAndSelect(1,{$l1.id});getActions('{$user.login}','{$user.editgroups}');restoreHint(1,{$l1.id});">
 												{$l2.name|truncate:50|wordwrap:30:"<br/>\n":true}
 											</option>
 										{/foreach}
@@ -380,9 +445,9 @@
 								{foreach from=$l1.subgroups item=l2}
 									{if count($l2.subgroups) neq 0}
 										<div id="gid-{$l2.id}" style="width: 250px; position: absolute; left: 500px; top: 0px; visibility: hidden;">
-											<select name="gid-{$l2.id}-groups" class="queryselectfield" onchange="javascript:switchToAndSelect(2,{$l2.id});getActions('{$user.userid}','{$user.editgroups}');"  style="width: 200px; text-align: center;">
+											<select name="gid-{$l2.id}-groups" class="queryselectfield" style="width: 200px; text-align: center;">
 												{foreach from=$l2.subgroups item=l3}
-													<option value="{$l3.id}:{$l3.name}:{$l3.owner}"  style="text-align: center;">
+													<option value="{$l3.id}:{$l3.name}:{$l3.owner}"  style="text-align: center;" onclick="javascript:switchToAndSelect(2,{$l2.id});getActions('{$user.login}','{$user.editgroups}');restoreHint(2,{$l2.id});">
 														{$l3.name|truncate:50|wordwrap:30:"<br/>\n":true}
 													</option>
 												{/foreach}
@@ -458,18 +523,6 @@
 		</tr>
 	</table>
 </form>
-
-{if $lastL1 neq ""}
-	<script type="text/javascript">
-		switchTo('{$lastL1}','','{$l1Offset}');
-	</script>
-{/if}
-
-{if $lastL2 neq ""}
-	<script type="text/javascript">
-		switchTo('{$lastL1}','{$lastL2}','{$l2Offset}');
-	</script>
-{/if}
 
 </body>
 </html>
