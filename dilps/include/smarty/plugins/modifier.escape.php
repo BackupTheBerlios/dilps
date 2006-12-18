@@ -14,43 +14,26 @@
  * Purpose:  Escape the string according to escapement type
  * @link http://smarty.php.net/manual/en/language.modifier.escape.php
  *          escape (Smarty online manual)
+ * @author   Monte Ohrt <monte at ohrt dot com>
  * @param string
  * @param html|htmlall|url|quotes|hex|hexentity|javascript
  * @return string
  */
-
-function smarty_modifier_escape($string, $esc_type = 'html')
+function smarty_modifier_escape($string, $esc_type = 'html', $char_set = 'ISO-8859-1')
 {
-	global $config;
-	/*
-	$path_fix = dirname(__FILE__);
-	require($path_fix.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'locals.inc.php');
-	*/
-	
-    switch ($esc_type) {		
+    switch ($esc_type) {
         case 'html':
-			if ($config['utf8'])
-			{				
-				return htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
-			}
-			else
-			{				
-				return htmlspecialchars($string, ENT_QUOTES);
-			}
-			
+            return htmlspecialchars($string, ENT_QUOTES, $char_set);
+
         case 'htmlall':
-			if ($config['utf8'])
-			{
-				return htmlentities($string, ENT_QUOTES, 'UTF-8');
-			}
-			else
-			{
-				return htmlentities($string, ENT_QUOTES);
-			}
-			
+            return htmlentities($string, ENT_QUOTES, $char_set);
+
         case 'url':
             return rawurlencode($string);
 
+        case 'urlpathinfo':
+            return str_replace('%2F','/',rawurlencode($string));
+            
         case 'quotes':
             // escape unescaped single quotes
             return preg_replace("%(?<!\\\\)'%", "\\'", $string);
@@ -89,13 +72,13 @@ function smarty_modifier_escape($string, $esc_type = 'html')
            // escape non-standard chars, such as ms document quotes
            $_res = '';
            for($_i = 0, $_len = strlen($string); $_i < $_len; $_i++) {
-               $_ord = ord($string{$_i});
+               $_ord = ord(substr($string, $_i, 1));
                // non-standard char, escape it
                if($_ord >= 126){
                    $_res .= '&#' . $_ord . ';';
                }
                else {
-                   $_res .= $string{$_i};
+                   $_res .= substr($string, $_i, 1);
                }
            }
            return $_res;

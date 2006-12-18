@@ -77,6 +77,8 @@ $admin = $logins->isInGroup( $config['authdomain'], $config['admingroup'] );
 $editor = $logins->isInGroup( $config['authdomain'], $config['editorgroup'] );
 */
 
+// print_r($permissions);
+
 $admin 			=	(isset($permissions['admin']) ? $permissions['admin'] : 0);
 $editor 		= 	(isset($permissions['editor']) ? $permissions['editor'] : 0);
 $usegroups		=	(isset($permissions['usegroups']) ? $permissions['usegroups'] : 0);

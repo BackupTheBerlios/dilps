@@ -129,11 +129,19 @@ BEGIN default_grid.tpl
 				<td class="result_list_data_data" style="width: 50%">					
 					{if $query.mygroupid neq ""}
 						{#group#}
-						{mygroup_isin var=ingroup sql=sql cid=$row.collectionid groupid=$query.mygroupid imageid=$row.imageid}
+						{mygroup_isin ingroup=ingroup changeable=changeable sql=sql cid=$row.collectionid groupid=$query.mygroupid imageid=$row.imageid}
 						{if $ingroup eq 'no'}
-							<input type="button" name="but-{$row.collectionid}-{$row.imageid}" id="but-{$row.collectionid}-{$row.imageid}" class="actionbutton" onclick="javascript:changemygroup('but-{$row.collectionid}-{$row.imageid}','{$row.collectionid}:{$row.imageid}');" value="+" style="height: 22px; width: 22px;" title="{#addtomygroup#}"/>
+							{if $changeable eq 'yes'}
+								<input type="button" name="but-{$row.collectionid}-{$row.imageid}" id="but-{$row.collectionid}-{$row.imageid}" class="actionbutton" onclick="javascript:changemygroup('but-{$row.collectionid}-{$row.imageid}','{$row.collectionid}:{$row.imageid}');" value="+" style="height: 22px; width: 22px;" title="{#addtomygroup#}"/>
+							{else}
+								<input type="button" name="but-{$row.collectionid}-{$row.imageid}" id="but-{$row.collectionid}-{$row.imageid}" class="actionbutton" onclick="javascript:showError('{#nopermission#}');" value="+" style="height: 22px; width: 22px; color: #aaaaaa; " title="{#nopermission#}"/>
+							{/if}
 						{else}	
-							<input type="button" name="but-{$row.collectionid}-{$row.imageid}" id="but-{$row.collectionid}-{$row.imageid}" class="actionbutton" onclick="javascript:changemygroup('but-{$row.collectionid}-{$row.imageid}','{$row.collectionid}:{$row.imageid}');" value="-" style="height: 22px; width: 22px;" title="{#delfrommygroup#}"/>
+							{if $changeable eq 'yes'}
+								<input type="button" name="but-{$row.collectionid}-{$row.imageid}" id="but-{$row.collectionid}-{$row.imageid}" class="actionbutton" onclick="javascript:changemygroup('but-{$row.collectionid}-{$row.imageid}','{$row.collectionid}:{$row.imageid}');" value="-" style="height: 22px; width: 22px;" title="{#delfrommygroup#}"/>
+							{else}
+								<input type="button" name="but-{$row.collectionid}-{$row.imageid}" id="but-{$row.collectionid}-{$row.imageid}" class="actionbutton" onclick="javascript:showError('{#nopermission#}');" value="-" style="height: 22px; width: 22px; color: #aaaaaa; " title="{#nopermission#}"/>
+							{/if}
 						{/if}
 						<!-- {$sql} -->
 					{else}

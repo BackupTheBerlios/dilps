@@ -115,7 +115,7 @@ if (!empty($auth['uid']))
 		$permissions['editor'] = $rs->fields['editor'];
 		$permissions['addimages'] = $rs->fields['addimages'];
 		$permissions['usegroups'] = $rs->fields['usegroups'];
-		$permissions['usefolders'] = $rs->fields['usefolders'];
+		$permissions['editgroups'] = $rs->fields['editgroups'];
 	}
 	else 
 	{	
@@ -148,7 +148,7 @@ if (!empty($auth['uid']))
 			$permissions['editor'] = $rs->fields['editor'];
 			$permissions['addimages'] = $rs->fields['addimages'];
 			$permissions['usegroups'] = $rs->fields['usegroups'];
-			$permissions['usefolders'] = $rs->fields['usefolders'];
+			$permissions['editgroups'] = $rs->fields['editgroups'];
 		}	
 		
 	}	

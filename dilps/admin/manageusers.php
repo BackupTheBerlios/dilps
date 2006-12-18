@@ -181,7 +181,7 @@
 					$editor 	= ($_REQUEST['editor'] == 'on' ? 1 : 0);
 					$addimages 	= ($_REQUEST['addimages'] == 'on' ? 1 : 0);
 					$usegroups	= ($_REQUEST['usegroups'] == 'on' ? 1 : 0);
-					$usefolders	= ($_REQUEST['userfolders'] == 'on' ? 1 : 0);
+					$editgroups	= ($_REQUEST['editgroups'] == 'on' ? 1 : 0);
 					$active		= ($_REQUEST['active'] == 'on' ? 1 : 0);
 					
 					$sql = "UPDATE ".$db_prefix."user_auth SET "
@@ -190,7 +190,7 @@
 					."editor=".$db->qstr($editor).","
 					."addimages=".$db->qstr($addimages).","
 					."usegroups=".$db->qstr($usegroups).","
-					."usefolders=".$db->qstr($usefolders).","
+					."editgroups=".$db->qstr($editgroups).","
 					."active=".$db->qstr($active)
 					." WHERE userid=".$db->qstr($userid);
 					
@@ -261,7 +261,7 @@
 					$editor 	= ($_REQUEST['editor'] == 'on' ? 1 : 0);
 					$addimages 	= ($_REQUEST['addimages'] == 'on' ? 1 : 0);
 					$usegroups	= ($_REQUEST['usegroups'] == 'on' ? 1 : 0);
-					$usefolders	= ($_REQUEST['userfolders'] == 'on' ? 1 : 0);
+					$editgroups	= ($_REQUEST['editgroups'] == 'on' ? 1 : 0);
 					$active		= ($_REQUEST['active'] == 'on' ? 1 : 0);
 					
 					$sql = 	"SELECT * FROM ".$db_prefix."user_auth WHERE userid="
@@ -294,7 +294,7 @@
 									.$db->qstr($editor).","
 									.$db->qstr($addimages).","
 									.$db->qstr($usegroups).","
-									.$db->qstr($usefolders).","
+									.$db->qstr($editgroups).","
 									.$db->qstr($active).")";
 							
 								$rs = $db->Execute($sql);
@@ -463,9 +463,9 @@
 							
 				echo("></td>");
 				
-				echo ("<td><input type='checkbox' name='userfolders' ");
+				echo ("<td><input type='checkbox' name='editgroups' ");
 				
-				if ($rs->fields["usefolders"] > 0)
+				if ($rs->fields["editgroups"] > 0)
 				{
 					echo ("checked='checked'");				
 				}			
@@ -543,7 +543,7 @@
 				
 				echo ("<td><input type='checkbox' ");
 				
-				if ($rs->fields["usefolders"] > 0)
+				if ($rs->fields["editgroups"] > 0)
 				{
 					echo ("checked='checked'");				
 				}			

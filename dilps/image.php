@@ -46,6 +46,8 @@ include_once( 'config.inc.php');
 include_once( $config['includepath'].'../includes.inc.php' );
 //include_once( $config['includepath'].'tools.inc.php' );
 
+// error_reporting('E_ALL');
+
 function extractID( $id, &$sammlung, &$imageid )
 {
 	$p = strpos( $id, ':' );

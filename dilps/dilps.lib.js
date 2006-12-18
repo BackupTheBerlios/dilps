@@ -648,3 +648,9 @@ function restoreSelection(groupid, lastpath, userid, iseditor)
 	
 	return false;
 }
+
+function showError(errormsg)
+{
+	alert(errormsg+"!");
+	return false;
+}

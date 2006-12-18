@@ -71,26 +71,20 @@ global $config;
 include_once($config['includepath'].'tools.inc.php');
 
 function smarty_function_mygroup_isin($params, &$smarty)
-
 {
-
-    if (empty($params['var'])) {
-
-        $smarty->trigger_error("assign: missing 'var' parameter");
-
+    if (empty($params['ingroup'])) {
+        $smarty->trigger_error("assign: missing 'ingroup' parameter");
         return;
-
     }
-
     
+    if (empty($params['changeable'])) {
+        $smarty->trigger_error("assign: missing 'changeable' parameter");
+        return;
+    }
 
     //print_r($params);
 
-    
-
-    global $db, $db_prefix;
-
-    
+    global $db, $db_prefix, $user;
 
     // $db->debug = true;
 
@@ -99,27 +93,20 @@ function smarty_function_mygroup_isin($params, &$smarty)
     if (empty($params['cid'])) {
 
     	$smarty->trigger_error("assign: missing 'cid' parameter");
-
         return;
-
-    } else {
-
+    }
+    else {
     	$collectionid = $params['cid'];
-
     }
 
     
 
     if (empty($params['groupid'])) {
-
     	$smarty->trigger_error("assign: missing 'groupid' parameter");
-
         return;
-
-    } else {
-
+    }
+    else {
     	$groupid = $params['groupid'];
-
     }
 
     
@@ -144,10 +131,8 @@ function smarty_function_mygroup_isin($params, &$smarty)
  			.get_groupid_where($groupid,$db,$db_prefix,true); 	
 
  	$rs  = $db->Execute ($sql);
-
- 	//print_r($rs);
-
  	
+ 	// print_r($rs->fields);
 
  	if ($rs->RecordCount() > 0) {
  		$ingroup = 'yes';
@@ -155,7 +140,31 @@ function smarty_function_mygroup_isin($params, &$smarty)
  		$ingroup = 'no';
  	}
 
-    $smarty->assign($params['var'], $ingroup);
+ 	$changeable = 'no';
+ 	
+ 	$sql2 = "SELECT * FROM ".$db_prefix."group WHERE "
+ 			."id = ".$db->qstr($groupid);
+
+ 	$rs2  = $db->Execute($sql2);
+
+ 	/*
+ 	print_r($user);
+ 	
+ 	print_r($rs2->fields);
+ 	*/
+ 	
+ 	if ($rs2)
+ 	{
+ 		if (($user["login"] == $rs2->fields["owner"]) || ($user["editgroups"])) {
+ 			$changeable = 'yes';
+ 		}
+ 	}
+ 	
+ 	// echo ("ingroup: {$ingroup}, changeable: {$changeable}");
+
+    $smarty->assign($params['ingroup'], $ingroup);
+    
+    $smarty->assign($params['changeable'], $changeable);
 
     if( !empty($params['sql'])) {
 		     $smarty->assign($params['sql'], $sql);
