@@ -26,7 +26,7 @@
 /*
  * image processor
  * --------------------------------------------------------------------
- * File:     			add_images.php
+ * File:     			image_add.php
  * Purpose:  	process and store images that are either
  *						uploaded via FTP or browser-file-transfer,
  *						add the corresponding database entries
@@ -1198,7 +1198,7 @@ if ($process == 2) {
 
 
 	$smarty->assign('sessionid',$sessionid);
-	$smarty->display( $config['skin'].DIRECTORY_SEPARATOR.'add_images.tpl' );
+	$smarty->display( $config['skin'].DIRECTORY_SEPARATOR.'image_add.tpl' );
 
 }
 

@@ -22,7 +22,7 @@
    +----------------------------------------------------------------------+
 *}
 <!-- =================================================
-BEGIN add_images.tpl
+BEGIN image_add.tpl
 ================================================= -->
 {if $config.utf8 eq "true"}
 	{config_load file="`$config.skinBase``$config.skin`/`$config.language`/easy_query.conf.utf8"}
@@ -245,5 +245,5 @@ function cleargroup3() {
 </body>
 </html>
 <!-- --------------------------------------------
-END add_images.tpl
+END image_add.tpl
 --------------------------------------------- -->

@@ -26,7 +26,7 @@
 /*
  * exports a group to the DILPS viewer
  * -------------------------------------------------------------
- * File:     	export_group.php
+ * File:     	group_export.php
  * Purpose:  	gathers information and inmages from a group
  *				and writes the necessary XML and image files
  *				to use the export with the DILPS viewer
@@ -149,7 +149,7 @@ $smarty->assign('sessionid',$sessionid);
 $smarty->assign('groupid', $groupid);
 $smarty->assign('groupname', $groupname);
 $smarty->assign('export',$export);
-$smarty->display( $config['skin'].DIRECTORY_SEPARATOR.'export_group.tpl' );
+$smarty->display( $config['skin'].DIRECTORY_SEPARATOR.'group_export.tpl' );
 
 
 //phpinfo();
