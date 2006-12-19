@@ -104,7 +104,7 @@
 						</td>
 						<td style="width: 45%; text-align: right;">
 							{if $user.insertimages}
-								<button type="button" class="actionbutton" onclick="javascript:window.open('images_add.php?PHPSESSID={$sessionid}','imageadd','width=900,height=420,scrollbars=yes,resizable=yes');" title="{#insertimages#|escape:htmlall}">{#insertimages#|escape:htmlall}</button>
+								<button type="button" class="actionbutton" onclick="javascript:window.open('image_add.php?PHPSESSID={$sessionid}','imageadd','width=900,height=420,scrollbars=yes,resizable=yes');" title="{#insertimages#|escape:htmlall}">{#insertimages#|escape:htmlall}</button>
 							{else}
 								&nbsp;
 							{/if}

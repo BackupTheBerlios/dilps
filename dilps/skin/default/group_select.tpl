@@ -235,6 +235,22 @@
 					return false;
 				}
 				else {
+					
+					switch (target) {
+					  case "img_group_1":
+						conditionalcopy1(currentid, parameter, currentowner);
+					    break;
+					  case "img_group_2":
+						conditionalcopy2(currentid, parameter, currentowner);
+					    break;
+					  case "img_group_3":
+						conditionalcopy3(currentid, parameter, currentowner);
+					    break;
+					  default:
+						conditionalcopy(currentid, parameter, currentowner, currentlastpath);
+					    break;
+					}
+					
 					document.forms[0].submit();
 					return true;
 				}
@@ -281,6 +297,21 @@
 					savePath(Indexes);
 				}
 				
+				switch (target) {
+				  case "img_group_1":
+					conditionalclearopener1();
+				    break;
+				  case "img_group_2":
+					conditionalclearopener2();
+				    break;
+				  case "img_group_3":
+					conditionalclearopener3();
+				    break;
+				  default:
+					conditionalclearopener();
+				    break;
+				}
+				
 				document.forms[0].submit();
 				return true;
 			}
@@ -295,8 +326,9 @@
 	function getActions(userid,iseditor)
 	{
 		// populate the action list with additional actions (depending on user's rights)
-		var actionListElement = document.forms[0].elements["action"];
-		var currentGroupOwner = document.forms[0].elements["currentowner"].value;
+		var actionListElement 	= document.forms[0].elements["action"];
+		var currentGroupOwner 	= document.forms[0].elements["currentowner"].value;
+		var target 				= document.forms[0].elements["target"].value;
 
 		// clear list from old entries
 		while (actionListElement.length > 0) {
@@ -321,7 +353,7 @@
 		actionListElement.options[actionListElement.length] = doselect;
 		
 		
-		if (userid == currentGroupOwner || iseditor)
+		if ((userid == currentGroupOwner || iseditor) && (target != 'group'))
 		{
 			actionListElement.options[actionListElement.length] = clear;
 			actionListElement.options[actionListElement.length] = rename;			

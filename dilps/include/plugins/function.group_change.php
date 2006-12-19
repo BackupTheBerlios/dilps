@@ -161,6 +161,17 @@ function smarty_function_group_change($params, &$smarty)
 		
 		if ($p_owner == $user['login'] || $user['editgroups'])
 		{
+			if ($p_owner != 'public') {
+				// personal groups are identified by squared brackets
+				if ($parameter{0} != '[') {
+					$parameter = '['.$parameter;
+				}
+				
+				if ($parameter{strlen($parameter)-1} != ']') {
+					$parameter = $parameter.']';
+				}
+			}
+			
 			$sql = 	"UPDATE ".$db_prefix."group SET"
 					." name=".$db->qstr($parameter)
 					." WHERE id= ".$db->qstr($id);
