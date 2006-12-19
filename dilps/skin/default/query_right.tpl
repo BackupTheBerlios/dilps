@@ -2,6 +2,35 @@
 	<!-- right side of query -->
 	<table class="query" cellspacing="1" cellpadding="0" >
 		<tr>
+			<td>
+				<strong>{#user#|escape:htmlall}</strong>
+			</td>
+		</tr>
+		<tr>
+			<td style="padding-top: 1px;">
+				<table class="query" cellpadding="0" cellspacing="0" style="width: 100%;">
+					<tr>
+						<td style="width: 55%; text-align: left;">							
+							{if $user.login neq ""}
+								<em>{$user.login|escape:htmlall}</em>
+							{else}
+								&nbsp;
+							{/if}
+						</td>
+						<td style="width: 45%; text-align: right;">
+							<button type="button" class="actionbutton" onclick="javascript:performlogout();" title="{#logout#|escape:html}">{#logout#|escape:html}</button>
+							<input class="queryinputfield" type="hidden" name="logout" value="0">
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td style="height: 48px;">
+				&nbsp;
+			</td>
+		</tr>
+		<tr>
 			<td class="field_name"><strong>{#mygroup#|escape:htmlall}</strong></td>
 		</tr>
 		<tr>
@@ -11,13 +40,32 @@
 				{else}
 					<input class="queryinputfield" type="text" name="query[mygroup]" size="40" readonly="readonly" value="{$query.mygroup|escape:html}" onclick="javascript:window.open('group_select.php?PHPSESSID={$sessionid}&target=mygroup&lastpath={$query.mygrouplastpath}&currentid={$query.mygroupid}','groupselection2','width=800,height=300,left=10,top=250,resizable=yes,dependent=yes');">
 				{/if}
-				<button type="button" class="actionbutton2" onclick="javascript:clearmygroup();" title="{#nogroup#|escape:htmall}"><img src="clear.png" style="width: 12px; height: 12px;" /></button>
-				<button type="button" class="actionbutton2" onclick="javascript:updatemygroup();" title="{#applychanges#|escape:htmlall}"><img src="apply.png" style="width: 12px; height: 12px;" /></button>
-				
+
 				<input class="queryinputfield" type="hidden" name="query[mygroupid]" value="{$query.mygroupid|escape:html}">
 				<input class="queryinputfield" type="hidden" name="query[mygroupowner]" value="{$query.mygroupowner|escape:html}">
 				<input class="queryinputfield" type="hidden" name="query[mygrouplastpath]" value="{$query.mygrouplastpath|escape:html}">
-				
+			</td>
+		</tr>
+		<tr>
+			<td style="padding-top: 2px;">
+				{if $query.mygroupid neq ""}
+					<table class="query" cellpadding="0" cellspacing="0" style="width: 100%;">
+						<tr>
+							<td style="width: 55%; text-align: left;">
+								<button type="button" class="actionbutton" onclick="javascript:updatemygroup();" title="{#applychanges#|escape:htmlall}">{#applychanges#|escape:htmall}</button>							
+							</td>
+							<td style="width: 35%; text-align: right;">
+								<button type="button" class="actionbutton" onclick="javascript:window.open('group_export.php?PHPSESSID={$sessionid}&collectionid={$query.collectionid}&groupid={$query.mygroupid}&groupname={$query.mygroup}','groupexport','width=800,height=420,resizable=yes,scrollbars=yes,resizable=yes');" title="{#exportgroup#}">{#exportgroup#}</button>							
+							</td>
+							<td style="width: 10%; text-align: right;">
+								<button type="button" class="actionbutton2" onclick="javascript:clearmygroup();" title="{#nogroup#|escape:htmall}"><img src="clear.png" style="width: 12px; height: 12px;" /></button>
+							</td>
+						</tr>
+					</table>
+				{else}
+					&nbsp;
+				{/if}
+
 			</td>
 		</tr>
 		<tr>
@@ -27,46 +75,45 @@
 			</td>
 		</tr>
 		<tr>
-			<td class="queryinputfield">
-				&nbsp;
-			</td>
-		</tr>
-		<tr>
 			<td>
 				&nbsp;
 			</td>
 		</tr>
-		{if $query.mygroupid neq ""}
 		<tr>
-			<td class="field_name">
-				<!--<a class="navsymbol" href="javascript:;" onclick="javascript:window.open('export_group.php?PHPSESSID={$sessionid}&collectionid={$query.querypiece.0.val.0}&groupid={$query.mygroupid}&groupname={$query.mygroup}','groupexport','width=800,height=420,dependent=yes,scrollbars=yes');">{#exportgroup#}</a>-->
-				<a class="navsymbol" href="javascript:;" onclick="javascript:window.open('export_group.php?PHPSESSID={$sessionid}&collectionid={$query.collectionid}&groupid={$query.mygroupid}&groupname={$query.mygroup}','groupexport','width=800,height=420,resizable=yes,scrollbars=yes,resizable=yes');">{#exportgroup#}</a>
-			</td>
-		</tr>
-		{/if}
-		<tr>
-			<td>
-			  <br /><br />
-			</td>
+			{if $user.insertimages or $user.editgroups}
+				<td class="field_name">
+					<strong>{#administration#|escape:htmlall}</strong>
+				</td>
+			{else}
+				&nbsp;
+			{/if}
 		</tr>
 		<tr>
-			<td class="field_name">
-				{if $user.editgroups}
-					<a class="navsymbol" href="javascript:;" onclick="javascript:window.open('group_edit.php?PHPSESSID={$sessionid}','groupedit','width=800,height=420,scrollbars=yes,resizable=yes');">{#editgroups#|escape:htmlall}</a>
-				{else}
-					&nbsp;
-				{/if}
+			<td style="padding-top: 1px;">
+				<table class="query" cellpadding="0" cellspacing="0" style="width: 100%;">
+					<tr>
+						<td style="width: 55%; text-align: left;">
+							{if $user.editgroups}
+								<!--
+								<button type="button" class="actionbutton" onclick="javascript:window.open('group_edit.php?PHPSESSID={$sessionid}','groupedit','width=800,height=420,scrollbars=yes,resizable=yes');" title="{#editgroups#|escape:htmlall}">{#editgroups#|escape:htmlall}</button>
+								-->
+								<button type="button" class="actionbutton" onclick="showError('{#notimplemented#}');" title="{#editgroups#|escape:htmlall}" style="color: #aaaaaa; ">{#editgroups#|escape:htmlall}</button>
+							{else}
+								&nbsp;
+							{/if}
+						</td>
+						<td style="width: 45%; text-align: right;">
+							{if $user.insertimages}
+								<button type="button" class="actionbutton" onclick="javascript:window.open('images_add.php?PHPSESSID={$sessionid}','imageadd','width=900,height=420,scrollbars=yes,resizable=yes');" title="{#insertimages#|escape:htmlall}">{#insertimages#|escape:htmlall}</button>
+							{else}
+								&nbsp;
+							{/if}
+						</td>
+					</tr>
+				</table>
 			</td>
 		</tr>
-		<tr>
-			<td>
-				{if $user.insertimages}
-					<a class="navsymbol" href="javascript:;" onclick="javascript:window.open('add_images.php?PHPSESSID={$sessionid}','imageadd','width=900,height=420,scrollbars=yes,resizable=yes');">{#insertimages#|escape:htmlall}</a>
-				{else}
-					&nbsp;
-				{/if}
-			</td>
-		</tr>
+		
 		<!-- perform actions -->
 		<tr>
 			<td>
@@ -87,30 +134,6 @@
 				<!-- {$result} -->
 				<!-- {$sql} -->
 
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<br />
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<br />
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<br />
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<input class="queryinputfield" type="hidden" name="logout" value="0">
-				<a href="javascript:performlogout();"
-					class="navsymbol">
-					<em>{#logout#|escape:html}</em>
-				</a>
 			</td>
 		</tr>
 	</table>
