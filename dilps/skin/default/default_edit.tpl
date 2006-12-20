@@ -125,7 +125,7 @@ BEGIN default_edit.tpl
 		</tr>
 		<tr>
 		   <td class="result_detail_data_head">{#commentary#|escape:htmlall}</td>
-		   <td colspan="2" class="result_detail_data_data"><textarea name="edit[commentary]" cols="50" rows="5">{$row.commentary|escape:html}</textarea></td>
+		   <td colspan="2" class="result_detail_data_data"><textarea name="edit[commentary]" cols="45" rows="5">{$row.commentary|escape:html}</textarea></td>
 		</tr>
 		<tr>
 		   <td class="result_detail_data_head"><input type="hidden" name="edit[currentuser]" value="{$user.login|escape:html}"></td>

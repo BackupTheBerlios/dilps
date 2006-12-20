@@ -49,6 +49,9 @@ function smarty_function_save_image($params, &$smarty)
     }
 
     $edit = $_REQUEST['edit'];
+    
+    echo('function.save_image.php: '.$edit['type'].' - Einsprungpunkt realisieren'."\n<br>\n");
+    
  	if( $edit['loadtype'] != 'save')
  	   return;
 

@@ -50,8 +50,12 @@ BEGIN edit_detail.tpl
 <input type="hidden" name="edit[locationid]"  value="{$rs.locationid}">
 <table class="result_detail" width="100%">
 <tr>
-   <td class="result_detail_head">
-	   <b>{$result.rs.title|escape:htmlall}</b>
+	<td class="result_detail_head">
+	{if $result.rs.title neq ""}
+		<b>{$result.rs.title|escape:htmlall}</b>
+	{else}
+		&nbsp;
+	{/if}
 	</td>
 </tr>
 <tr>

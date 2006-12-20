@@ -107,6 +107,10 @@ function smarty_block_query_image($params, $content, &$smarty, &$repeat)
     		$result['rs'] = $row;
     		$result['local'] = true;
     		
+    		echo('block.query_image.php: '.$row['type'].' - Einsprungpunkt realisieren'."\n<br>\n");
+    		
+    		// print_r($row);
+    		
     		if( !empty($params['sql'])) {
     			  $smarty->assign($params['sql'], $sqls);
     		}

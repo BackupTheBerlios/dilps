@@ -32,6 +32,8 @@ BEGIN default_detail.tpl
 
     {if $user.editor && $result.local}
     [<a class="result_detail_image_list" href="javascript:editDetail('{$id}');">{#edit#}</a>]
+    {else}
+    	&nbsp;
     {/if}
     </td>
   </tr>

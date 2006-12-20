@@ -84,7 +84,7 @@ BEGIN grid_detail.tpl
 </table>
 
 {if $newlogin neq '1'}
-	<table class="maincontent" border="0" cellpadding="0" cellspacing="0">
+	<table class="maincontent" border="0" cellpadding="0" cellspacing="0" width="100%">
 	<tr>
 		{include file="`$config.skinBase``$config.skin`/result_grid.tpl" viewFunc="showDetail"}
 		</td>
