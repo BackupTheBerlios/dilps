@@ -9,7 +9,7 @@ year = Datierung
 advancedsearch = Erweiterte Suche
 simplesearch = Einfache Suche
 closewindow = Fenster schliessen
-newwindow = (Öffnet sich in ein neues Fenster)
+newwindow = (Öffnet sich in einem neuen Fenster)
 type = Typ
 addition = Zusatz
 material = Material
@@ -76,3 +76,19 @@ administration = Verwaltung
 user = Benutzer
 
 notimplemented = Funktion noch nicht implementiert
+
+comment = Kommentar
+optional = optional
+nocomment = kein Kommentar
+
+exportdate = Exportdatum
+delete = Löschen
+download = Abrufen
+
+E_WRITE_XML = Fehler beim Schreiben der Metadaten
+E_COPY_IMAGE = Fehler beim Kopieren der Bilder
+E_ACCESS_DB = Fehler beim Zugriff auf die Datenbank
+E_CREATE_DIRECTORY = Fehler beim Anlegen der nötigen Verzeichnisse
+E_CREATE_ZIP = Fehler beim Anlegen der Archiv-Datei
+E_COPY_VIEWER = Fehler beim Kopieren von DILPS-Leuchtpult und -Projektor
+R_EXPORT_SUCCESSFUL = Export erfolgreich durchgeführt

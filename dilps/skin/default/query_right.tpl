@@ -55,7 +55,7 @@
 								<button type="button" class="actionbutton" onclick="javascript:updatemygroup();" title="{#applychanges#|escape:htmlall}">{#applychanges#|escape:htmall}</button>							
 							</td>
 							<td style="width: 35%; text-align: right;">
-								<button type="button" class="actionbutton" onclick="javascript:window.open('group_export.php?PHPSESSID={$sessionid}&collectionid={$query.collectionid}&groupid={$query.mygroupid}&groupname={$query.mygroup}','groupexport','width=800,height=420,resizable=yes,scrollbars=yes,resizable=yes');" title="{#exportgroup#}">{#exportgroup#}</button>							
+								<button type="button" class="actionbutton" onclick="javascript:window.open('group_export.php?PHPSESSID={$sessionid}&groupid={$query.mygroupid}&groupname={$query.mygroup}','groupexport','width=800,height=420,resizable=yes,scrollbars=yes,resizable=yes');" title="{#exportgroup#}">{#exportgroup#}</button>							
 							</td>
 							<td style="width: 10%; text-align: right;">
 								<button type="button" class="actionbutton2" onclick="javascript:clearmygroup();" title="{#nogroup#|escape:htmall}"><img src="clear.png" style="width: 12px; height: 12px;" /></button>

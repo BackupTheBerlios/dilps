@@ -29,6 +29,20 @@ body.main {
 {/literal}
 
 {literal}
+body.headerstyle {
+	font-family: Courier New, Courier, mono;
+	font-weight: normal;
+	font-size: 12pt;
+	text-align: left;
+	color: #000000;
+	background-color: #778898;
+	padding: 0px 0px 0px 0px;
+	margin: 0px 0px 0px 0px;
+	border-style:  none;
+}
+{/literal}
+
+{literal}
 .outer {
   border-left: 1px solid #FFFFFF;
   border-top:  1px solid #FFFFFF;
@@ -494,6 +508,20 @@ input.queryinputfield {
   border-right-style: solid;
   border-bottom-style: none;
   border-left-style: none;
+}
+{/literal}
+
+{literal}
+textarea.queryinputfield {
+  background-color: #DCDCDC;
+  border-top-color: #FFFFFF;
+  border-right-color: #FFFFFF;
+  border-top-style: solid;
+  border-right-style: solid;
+  border-bottom-style: none;
+  border-left-style: none;
+  vertical-align: top;
+  text-align: left;
 }
 {/literal}
 

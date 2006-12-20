@@ -302,15 +302,10 @@ if ($process == 2) {
 									}
 								}
 								
-								// assign temporary id - randomized from 0 to 2**20
-								
-								srand((double)microtime()*1000000);
-								$tmpid 		= rand(0,1048576);							
-								
+								// generate temporary id string
+								$tmpid 	= generate_random_string();
 								
 								// carry out conversion steps
-								
-								
 								echo ("\n<br>\n<em>Generating image versions for all resolutions:</em>\n<br><br>\n");
 								
 								if ($config['imagick_mode'] == 'fast')

@@ -415,3 +415,24 @@ CREATE TABLE `!prefix_!user_passwd` (
   PRIMARY KEY  (`userid`)
   
 );
+
+
+CREATE TABLE `!prefix_!export` (
+
+  `id` int(11) NOT NULL auto_increment,
+  
+  `userid` varchar(100) NOT NULL,
+  
+  `groupname` text,
+  
+  `filename` varchar(300) NOT NULL,
+  
+  `comment` text,
+  
+  `creationtime` datetime NOT NULL,
+  
+  PRIMARY KEY  (`id`),
+  
+  KEY `userid` (`userid`)
+  
+);

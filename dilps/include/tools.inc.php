@@ -38,10 +38,12 @@
 	error_reporting(E_ALL);
 	*/
 	
-	global $config;
 	//include_once($config['dilpsdir'].'includes.inc.php');
-	include_once($config['includepath'].'mime'.DIRECTORY_SEPARATOR.'Type.php');
 	//include_once($config['includepath'].'dating.inc.php');
+	
+	global $config;
+	include_once($config['includepath'].'mime'.DIRECTORY_SEPARATOR.'Type.php');
+	
 
 	/**
 	 *	execute stripslashes on a string
@@ -273,7 +275,7 @@
 		}
 		else
 		{
-			echo ("delete_recursive error: directory cannot be opened\n<br>\n");
+			echo ("delete_recursive error: directory ({$dir}) cannot be opened\n<br>\n");
 			return false;
 		}
 	
@@ -281,17 +283,22 @@
 		{
 			if($file != "." && $file != "..")
 			{
-				if(!is_dir($dir.'/'.$file))
+				if(!is_dir($dir.DIRECTORY_SEPARATOR.$file))
 				{
-					unlink($dir.'/'.$file);
+					unlink($dir.DIRECTORY_SEPARATOR.$file);
 				}
 				else
 				{
-					delete_recursive($dir.'/'.$file);
+					delete_recursive($dir.DIRECTORY_SEPARATOR.$file);
 				}
 			}
 		}
+		
 		closedir($dir_handle);
+		if (is_dir($dir))
+		{
+			@rmdir($dir);
+		}
 		return true;
 	}
 	
@@ -894,10 +901,9 @@
 	 *	insert the image into the specified img_group
 	 *
 	 *	@access		public
+	 *	@param 		int		$groupid
 	 *	@param 		int		$collectionid
-	 *	@param 		int		$imageid
-	 *	@param 		string	$time
-	 *	@param 		string	$creator
+	 *	@param 		string	$imageid
 	 *	@return		bool
 	 *
 	 */
@@ -956,7 +962,7 @@
 			$rs  = $db->Execute($sql);
 			if (!$rs || !$subgroups)
 			{
-				// we have no subgroups, just query one id
+				// we have no subgroups (or we do not use them), just query one id
 				$where .= " AND {$db_prefix}img_group.groupid = ".$db->qstr($groupid);
 			}
 			else
@@ -989,5 +995,73 @@
 		}
 	    return $where;
 	}
+	
+	/**
+	 *	generates a random alpha-numeric string of given length
+	 *
+	 *	generates a random alpha-numeric string of given length,
+	 *  by default the length is 64 characters,
+	 *  only ascii-charaters are used
+	 *
+	 *	@access		public
+	 *	@param 		int		$length
+	 *	@return		string
+	 *
+	 */
+	
+	function generate_random_string($length = 64)
+	{
+		$characters = "abcedfghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRTSUVWXYZ0123456789";
+	    $random_string = '';
+
+	    // initialize seed
+	    srand ((double) microtime() * 1000000);
+	    
+		for ($i = 0; $i < $length; $i++ ) {
+			$random_string .= $characters{rand (0, strlen($characters))};
+		}
+		
+		return $random_string;
+	}
+	
+	/**
+	 *	insert an export into the database
+	 *
+	 *	the export of a group is stored in the database with the given
+	 *  userid, filename, comment and the current time
+	 *
+	 *	@access		public
+	 *	@param 		string	$userid
+	 *	@param 		string	$groupname
+	 *	@param 		int		$filename
+	 *	@param 		string	$comment
+	 *	@return		bool
+	 *
+	 */
+	
+	function insert_export($userid, $groupname, $filename, $comment = '')
+	{
+		global $db, $db_prefix;		
+
+		$sql = "INSERT INTO ".$db_prefix."export "
+				."(userid, groupname, filename, comment, creationtime) "
+				."VALUES ("
+				.$db->qstr($userid)." ,"
+				.$db->qstr($groupname)." ,"
+				.$db->qstr($filename)." ,"
+				.$db->qstr($comment)." ,"
+				."NOW() )";
+
+		$rs  = @$db->Execute ($sql);		
+		
+		if (!$rs)
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}	
 	
 ?>

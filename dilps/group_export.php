@@ -33,64 +33,12 @@
  * -------------------------------------------------------------
  */
 
+global $config;
+
 // import standard libraries and configuraiton values
 require('includes.inc.php');
 
-// import helper functions
-include($config['includepath'].'tools.inc.php');
-
-// from block.query.php
-
-function get_groupid_where_clause($groupid, &$db, $db_prefix, $subgroups = true) {
-    
-    $where = '';
-    
-	if (!empty($groupid))
-	{
-		// our result
-		$groups = array();
-		// first id is the give one
-		$groups[] = $groupid;
-		$db->SetFetchMode(ADODB_FETCH_ASSOC);
-		$sql = "SELECT id FROM ".$db_prefix."group WHERE "
-					."parentid = ".$db->qstr($groupid)
-					." ORDER BY id"; 	
-		$rs  = $db->Execute($sql);
-		if (!$rs || !$subgroups)
-		{
-			// we have no subgroups, just query one id
-			$where .= " AND {$db_prefix}img_group.groupid = ".$db->qstr($groupid);
-		}
-		else
-		{
-			// get next sublevel		
-			while (!$rs->EOF)
-			{
-				// add group to result array
-				$groups[] = $rs->fields['id'];
-				// get next but one sublevel, if available
-				$sql2 = "SELECT id FROM ".$db_prefix."group WHERE "
-							."parentid = ".$db->qstr($rs->fields['id'])
-							." ORDER BY id"; 	
-				$rs2 = $db->Execute($sql2);
-				
-				while(!$rs2->EOF)
-				{
-					$groups[] = $rs2->fields['id'];				
-					$rs2->MoveNext();
-				}			
-				$rs->MoveNext();
-			}
-			$where .= " AND (0 ";
-			foreach ($groups as $gid)
-			{
-				$where .= " OR {$db_prefix}img_group.groupid = ".$db->qstr($gid);
-			}
-			$where .= ") ";
-		}
-	}
-    return $where;
-}
+// error_reporting('E_ALL');
 
 // read sessiond id from get/post
 if (isset($_REQUEST['PHPSESSID']))
@@ -120,37 +68,80 @@ global $db, $db_prefix, $dilpsdir, $exportdir, $exportdirlong, $exporturl, $user
 
 // $db->debug = true;
 
-if (!empty($_REQUEST['export']))
-{
+if (!empty($_REQUEST['export'])) {
 	$export = $_REQUEST['export'];
 }
-else
-{
+else {
 	$export = 0;
+}
+
+if (!empty($_REQUEST['show'])) {
+	$show = $_REQUEST['show'];
+}
+else {
+	$show = 0;
+}
+
+if (!empty($_REQUEST['deleteid'])) {
+	$deleteid = $_REQUEST['deleteid'];
+}
+else {
+	$deleteid = '';
 }
 
 if (!empty($_REQUEST['groupid'])){
 		$groupid = $_REQUEST['groupid'];
 } else {
 	$groupid = '';
-	die ("Error - no group ID\n<br>\n");	
 }
 
 if (!empty($_REQUEST['groupname'])){
-		$groupname = $_REQUEST['groupname'];
+	$groupname = $_REQUEST['groupname'];
 } else {
 	$groupname = '';
-	echo ("Error - no group name\n<br>\n");
-	flush();
-	exit;
+}
+
+if (!empty($_REQUEST['comment'])){
+	$comment = trim(htmlentities($_REQUEST['comment']));
+} else {
+	$comment = '';
+}
+
+if (!empty($_REQUEST['withviewer'])){
+	$withviewer = trim($_REQUEST['withviewer']);
+} else {
+	$withviewer = 'no';
+}
+
+// with or without subgroup content
+if (!empty($_REQUEST['subgroups'])){
+	if ($_REQUEST['subgroups'] != '1') {
+		$subgroups = $_REQUEST['subgroups'];
+	}
+} else {
+	$subgroups = 'no';
+}
+
+// which version of the viewer do we use?
+if (!empty($_REQUEST['targetsystem'])){
+	$targetsystem = trim($_REQUEST['targetsystem']);
+} else {
+	$targetsystem = 'win';
 }
 
 $smarty->assign('sessionid',$sessionid);
 $smarty->assign('groupid', $groupid);
 $smarty->assign('groupname', $groupname);
+$smarty->assign('comment', $comment);
+$smarty->assign('subgroups', $subgroups);
+$smarty->assign('withviewer', $withviewer);
+$smarty->assign('targetsystem', $targetsystem);
 $smarty->assign('export',$export);
+$smarty->assign('show',$show);
+$smarty->assign('deleteid',$deleteid);
+
 $smarty->display( $config['skin'].DIRECTORY_SEPARATOR.'group_export.tpl' );
 
 
-//phpinfo();
+// phpinfo();
 ?>
