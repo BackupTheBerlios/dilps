@@ -14,12 +14,12 @@ include_once( 'session.inc.php' );
 #name_container li.yui-ac-highlight {background:#ff0;}
 </style>
 <script type='text/javascript' src='dilpsserver.php?<?php echo strip_tags(SID); ?>&client=all&stub=dilpsacquisitionajax'></script>
-<script type="text/javascript" src="yahoo.js"></script> 
-<script type="text/javascript" src="dom.js"></script> 
-<script type="text/javascript" src="event.js"></script> </head>
-<script type="text/javascript" src="animation.js"></script> 
-<script type="text/javascript" src="autocomplete.js"></script> 
-<script type="text/javascript" src="utilities.js"></script> 
+<script type="text/javascript" src="yui/build/yahoo/yahoo.js"></script> 
+<script type="text/javascript" src="yui/build/dom/dom.js"></script> 
+<script type="text/javascript" src="yui/build/event/event.js"></script> </head>
+<script type="text/javascript" src="yui/build/animation/animation.js"></script> 
+<script type="text/javascript" src="yui/build/autocomplete/autocomplete.js"></script> 
+<script type="text/javascript" src="yui/build/utilities/utilities.js"></script> 
 <script type="text/javascript">
 
 var remoteHW = new DilpsAcquisitionAJAX();
