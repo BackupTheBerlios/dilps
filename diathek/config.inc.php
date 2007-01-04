@@ -1,8 +1,8 @@
 <?php
 $db_prefix='acqu_';
-$config['includepath']='/data2/www/vhosts/demo.dilps.net/dilps/include/';
+// $config['includepath']='/data2/www/vhosts/demo.dilps.net/dilps/include/';
 $db_host='localhost';
-$db_user='ddemo';
-$db_pwd='ddemo372';
-$db_db='ddemo';
+$db_user='root';
+$db_pwd='db1138';
+$db_db='test';
 ?>

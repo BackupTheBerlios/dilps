@@ -1,5 +1,6 @@
 <?php
-include_once( 'session.inc.php' );
+// include_once( 'session.inc.php' );
+include( 'db.inc.php' );
 
 ?><html>
 <head>

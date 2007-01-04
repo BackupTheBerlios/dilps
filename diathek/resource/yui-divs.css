@@ -1,0 +1,163 @@
+#title_mod {
+	text-align:	left;
+}
+
+#title_input {
+	width:		47em;
+	height:		1.4em;
+}
+
+#title_container {
+	position:absolute;
+	z-index:9050;
+}
+
+#title_container .yui-ac-content {
+	position:absolute;
+	left:0px;
+	top:0px;
+	
+	width:37.5em;
+	border:1px solid #404040;
+	
+	background:#fff;	
+	overflow:hidden;
+	
+	text-align:left;
+	z-index:9050;
+}
+
+#title_container .yui-ac-shadow {
+	position:absolute;
+	left:0px;
+	top:0px;
+	
+	margin:.3em;
+	background:#dcdcdc;
+	z-index:9049;
+}
+
+#title_container ul {
+	padding:3px 0px;
+	width:100%;
+}
+
+#title_container li {
+	padding:0px 5px;
+	cursor:default;
+	white-space:nowrap;
+}
+
+#title_container li.yui-ac-highlight {
+	background:#dcdcdc;
+}
+
+
+#location_mod {
+	text-align:	left;
+}
+
+#location_input {
+	width:		47em;
+	height:		1.4em;
+}
+
+#location_container {
+	position:absolute;
+	z-index:9050;
+}
+
+#location_container .yui-ac-content {
+	position:absolute;
+	left:0px;
+	top:0px;
+	
+	width:37.5em;
+	border:1px solid #404040;
+	
+	background:#fff;	
+	overflow:hidden;
+	
+	text-align:left;
+	z-index:9050;
+}
+
+#location_container .yui-ac-shadow {
+	position:absolute;
+	left:0px;
+	top:0px;
+	
+	margin:.3em;
+	background:#dcdcdc;
+	z-index:9049;
+}
+
+#location_container ul {
+	padding:3px 0px;
+	width:100%;
+}
+
+#location_container li {
+	padding:0px 5px;
+	cursor:default;
+	white-space:nowrap;
+}
+
+#location_container li.yui-ac-highlight {
+	background:#dcdcdc;
+}
+
+
+#location_mod {
+	text-align:	left;
+}
+
+#location_input {
+	width:		47em;
+	height:		1.4em;
+}
+
+#location_container {
+	position:absolute;
+	z-index:9050;
+}
+
+#location_container .yui-ac-content {
+	position:absolute;
+	left:0px;
+	top:0px;
+	
+	width:37.5em;
+	border:1px solid #404040;
+	
+	background:#fff;	
+	overflow:hidden;
+	
+	text-align:left;
+	z-index:9050;
+}
+
+#location_container .yui-ac-shadow {
+	position:absolute;
+	left:0px;
+	top:0px;
+	
+	margin:.3em;
+	background:#dcdcdc;
+	z-index:9049;
+}
+
+#location_container ul {
+	padding:3px 0px;
+	width:100%;
+}
+
+#location_container li {
+	padding:0px 5px;
+	cursor:default;
+	white-space:nowrap;
+}
+
+#location_container li.yui-ac-highlight {
+	background:#dcdcdc;
+}
