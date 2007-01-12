@@ -16,6 +16,7 @@ INSERT INTO `!prefix_!user_auth` VALUES ('editor', 'static', 0, 1, 0, 1, 1, 1);
 INSERT INTO `!prefix_!user_auth` VALUES ('student', 'static', 0, 0, 0, 1, 1, 1);
 
 
+INSERT INTO `!prefix_!type` VALUES ('archaeology', 'Archaeologie', 'archaeology_detail.tpl', 'archaeology_edit.tpl', 'default_list.tpl', 'default_list_short.tpl', 'default_grid.tpl');
 
 INSERT INTO `!prefix_!type` VALUES ('image', 'Bild', 'default_detail.tpl', 'default_edit.tpl', 'default_list.tpl',  'default_list_short.tpl', 'default_grid.tpl');
 

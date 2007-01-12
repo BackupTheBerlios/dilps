@@ -24,6 +24,37 @@ CREATE TABLE `!prefix_!logfile` (
 
 );
 
+CREATE TABLE `ng_archaeology` (
+
+  `collectionid` bigint(20) NOT NULL,
+  
+  `imageid` bigint(20) NOT NULL,
+  
+  `category_fn` text NOT NULL,
+  
+  `category` text NOT NULL,
+  
+  `object_fn` text NOT NULL,
+  
+  `object` text NOT NULL,
+  
+  `iconography_fn` text NOT NULL,
+  
+  `iconography` text NOT NULL,
+  
+  `dating_ext_fn` text NOT NULL,
+  
+  `dating_ext` text NOT NULL,
+  
+  `material_ext_fn` text NOT NULL,
+  
+  `material_ext` text NOT NULL,
+  
+  PRIMARY KEY  (`collectionid`,`imageid`)
+  
+);
+
+
 CREATE TABLE `!prefix_!artist` (
 
   `id` int(10) unsigned NOT NULL auto_increment,
