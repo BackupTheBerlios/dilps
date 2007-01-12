@@ -142,9 +142,13 @@ changed = [false, false];
 <!-- {$sql} -->
 
 <script language="javascript">
-{foreach from=$result item=row}
-names["{$row.id}"] = "{$row.name}";
-{/foreach}
+{if $result ne ""}
+	{foreach from=$result item=row}
+	names["{$row.id}"] = "{$row.name}";
+	{/foreach}
+{else}
+	names[0] = "";
+{/if}
 </script>
 
 <table border="0">
@@ -178,11 +182,11 @@ names["{$row.id}"] = "{$row.name}";
 	</td>
 	<td>
 	    <a href="javascript: setName('name1')" tabindex="4">{#name#|escape:htmlall} {#set#|escape:htmlall}</a> <br />
-		<input type="text" name="query[name1text]" value="{$query.name1text|escape:html}" onchange="changed[0] = true;" size="50" tabindex="5"><p>
-		<input type="hidden" name="query[name1id]" value="{$query.name1id|escape:html}">
+		<input type="text" name="query[name1text]" value="{$query.name1text|escape:htmlall}" onchange="changed[0] = true;" size="50" tabindex="5"><p>
+		<input type="hidden" name="query[name1id]" value="{$query.name1id|escape:htmlall}">
 	    <a href="javascript: setName('name2')" tabindex="6">{#name2#|escape:htmlall} {#set#|escape:htmlall}</a><br />
-		<input type="text" name="query[name2text]" value="{$query.name2text|escape:html}" onchange="changed[1] = true;" size="50" tabindex="7">
-		<input type="hidden" name="query[name2id]" value="{$query.name2id|escape:html}">
+		<input type="text" name="query[name2text]" value="{$query.name2text|escape:htmlall}" onchange="changed[1] = true;" size="50" tabindex="7">
+		<input type="hidden" name="query[name2id]" value="{$query.name2id|escape:htmlall}">
 		</p>
 		<p>
 	    <input type="button" name="setit" value="{#setit#|escape:html}" onClick="setNameInParent();" tabindex="8">

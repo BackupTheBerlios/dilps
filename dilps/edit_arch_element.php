@@ -25,11 +25,11 @@
 */
 
 /*
- * determine the correct template for editing
+ * determine the correct template for editing archaeology fields
  * -------------------------------------------------------------
- * File:     	edit_element.php
- * Purpose:  	determines the correct template for the result
- *				of a query
+ * File:     	edit_arch_element.php
+ * Purpose:  	determines the correct template for editing a
+ *				multiple choice archaeology field
  * -------------------------------------------------------------
  */
 
@@ -54,14 +54,8 @@ if( is_array( $_REQUEST['query'] ))
 
 switch( $query['element'] )
 {
-	case 'name':
-	   $tpl = 'edit_element_name.tpl';
-		break;
-	case 'loc':
-	   $tpl = 'edit_element_loc.tpl';
-		break;
-	case 'src':
-	   $tpl = 'edit_element_src.tpl';
+	case 'iconography':
+	   $tpl = 'ac_edit_iconography.tpl';
 		break;
 	default:
 	   $tpl = 'edit_element_none.tpl';

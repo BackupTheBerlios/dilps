@@ -50,7 +50,7 @@ function smarty_function_save_image($params, &$smarty)
 
     $edit = $_REQUEST['edit'];
     
-    echo('function.save_image.php: '.$edit['type'].' - Einsprungpunkt realisieren'."\n<br>\n");
+    // echo('function.save_image.php: '.$edit['type'].' - Einsprungpunkt realisieren'."\n<br>\n");
     
  	if( $edit['loadtype'] != 'save')
  	   return;
@@ -76,7 +76,12 @@ function smarty_function_save_image($params, &$smarty)
 	   $status = $edit['status'] == 'reviewed' ? 'edited' : $edit['status'];
 
 	}
-
+	
+	/*
+	print_r($edit);
+	
+	$db->debug = true;
+	*/
 
     // If the name1id, name2id or locationid is "new", check to see whether it does actually already exist.
     // if not, insert the new name into the DB and set the id
@@ -85,13 +90,13 @@ function smarty_function_save_image($params, &$smarty)
    	   $smarty->assign( $params['error'], $name1['error_msg'] );
    	   return;
     }
-
+    
     $name2 = get_or_set_values($db, $db_prefix, $edit['id'], 'name', $edit['name2text'], $edit['name2id']);
     if (isset($name2['is_error'])) {
    	   $smarty->assign( $params['error'], $name2['error_msg'] );
    	   return;
     }
-
+    
     $location = get_or_set_values($db, $db_prefix, $edit['id'], 'location', $edit['city'], $edit['locationid']);
     if (isset($location['is_error'])) {
    	   $smarty->assign( $params['error'], $location['error_msg'] );
@@ -179,12 +184,51 @@ WHERE
 	   }
 
    }
+   
+	// save additional fields for archaeology
+	if ($edit['type'] == 'archaeology')
+	{
+		$sql = "DELETE FROM {$db_prefix}archaeology WHERE collectionid=$collectionid AND imageid=$imageid;";
+		$sqls .= "\n".$sql;
+		if( !$db->Execute( $sql ))
+		{
+			   $error .= "\n".$db->ErrorMsg()."[$sql]";
+		}
+		else
+		{
+			$sql =	"INSERT INTO {$db_prefix}archaeology (".
+					"  `collectionid`, `imageid`".
+					" ,`category_fn`, `catergory`".
+					" ,`object_fn`, `object`".
+					" ,`iconography_fn`, `iconography` ".
+					" ,`dating_ext_fn`, `dating_ext` ".
+					" ,`material_ext_fn`, `material_ext` ".
+					" ) VALUES (".
+					$collectionid.",".$imageid.",".
+					$db->qstr(trim($edit['category_fn'])).",".
+					$db->qstr(trim($edit['category'])).",".
+					$db->qstr(trim($edit['object_fn'])).",".
+					$db->qstr(trim($edit['object'])).",".
+					$db->qstr(trim($edit['iconography_fn'])).",".
+					$db->qstr(trim($edit['iconography'])).",".
+					$db->qstr(trim($edit['dating_ext_fn'])).",".
+					$db->qstr(trim($edit['dating_ext'])).",".
+					$db->qstr(trim($edit['material_ext_fn'])).",".
+					$db->qstr(trim($edit['material_ext'])).")";
+	
+			$sqls .= "\n".$sql;
+			if( !$db->Execute( $sql ))
+			{
+				   $error = $db->ErrorMsg()."[$sql]";
+			}
+		}
+	}
 
-   $smarty->assign( $params['error'], $error );
-   if( isset( $params['sql'] ))
-   {
-   	  $smarty->assign( $params['sql'], $sqls );
-   }
+	$smarty->assign( $params['error'], $error );
+	if( isset( $params['sql'] ))
+	{
+		  $smarty->assign( $params['sql'], $sqls );
+	}
 }
 
 

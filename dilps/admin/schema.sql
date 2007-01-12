@@ -325,8 +325,6 @@ CREATE TABLE `!prefix_!meta` (
 
   KEY `institution` (`institution`),
 
-  KEY `stadt_inst` (`institution`),
-
   KEY `status` (`status`)
 
 );

@@ -7,14 +7,27 @@ function viewDetail( sessionid, imageid, remoteCollectionId) {
 
 function editElement( sessionid, imageid, element, val ) {
    props = 'toolbar=no,location=no,directories=no,status=yes,scrollbars=yes,resizable=yes,menubar=no,copyhistory=no';
-   win = window.open( 'edit_element.php?PHPSESSID='+sessionid+'&query[id]='+imageid+'&query[element]='+element+'&query[value]='+val+'&query[remoteCollection]=0', 'elementView', props + ',width=900,height=500' );
+   win = window.open( 'edit_element.php?PHPSESSID='+sessionid+'&query[id]='+imageid+'&query[element]='+element+'&query[value]='+escape(val)+'&query[remoteCollection]=0', 'elementView', props + ',width=900,height=500' );
    win.focus();
 }
 
 
 function editNameElement( sessionid, imageid, element, docelements ) {
    props = 'toolbar=no,location=no,directories=no,status=yes,scrollbars=yes,resizable=yes,menubar=no,copyhistory=no';
-   win = window.open( 'edit_element.php?PHPSESSID='+sessionid+'&query[id]='+imageid+'&query[element]='+element+'&query[name1id]='+docelements["edit[name1id]"].value+'&query[name1text]='+docelements["edit[name1text]"].value+'&query[name2id]='+docelements["edit[name2id]"].value+'&query[name2text]='+docelements["edit[name2text]"].value, 'elementView', props + ',width=700,height=720' );
+   win = window.open( 'edit_element.php?PHPSESSID='+sessionid+'&query[id]='+imageid+'&query[element]='+element+'&query[name1id]='+docelements["edit[name1id]"].value+'&query[name1text]='+escape(docelements["edit[name1text]"].value)+'&query[name2id]='+docelements["edit[name2id]"].value+'&query[name2text]='+escape(docelements["edit[name2text]"].value), 'elementView', props + ',width=700,height=720' );
+   win.focus();
+}
+
+function editArchElement( sessionid, imageid, element, docelements ) {
+   var props = 'toolbar=no,location=no,directories=no,status=yes,scrollbars=yes,resizable=yes,menubar=no,copyhistory=no';
+   
+   var fn_index = "edit["+element+"_fn]";
+   var val_index = "edit["+element+"]";
+   
+   var fn_val = docelements[fn_index].value;
+   var val_val = docelements[val_index].value;
+   
+   win = window.open( 'edit_arch_element.php?PHPSESSID='+sessionid+'&query[id]='+imageid+'&query[element]='+element+'&fieldnames'+escape(fn_val)+'&values'+escape(val_val), 'archaelogyEdit', props + ',width=900,height=720' );
    win.focus();
 }
 

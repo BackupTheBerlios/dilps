@@ -107,9 +107,36 @@ function smarty_block_query_image($params, $content, &$smarty, &$repeat)
     		$result['rs'] = $row;
     		$result['local'] = true;
     		
-    		echo('block.query_image.php: '.$row['type'].' - Einsprungpunkt realisieren'."\n<br>\n");
+    		// print_r($result);
     		
-    		// print_r($row);
+    		// load additional fields for archaeology
+    		if ($result['rs']['type'] == 'archaeology')
+    		{
+				$sql = 	"SELECT `category_fn`, `catergory`, `object_fn`, `object`, `iconography_fn`, `iconography`, "
+						."`dating_ext_fn`, `dating_ext`, `material_ext_fn`, `material_ext` "
+						."FROM {$db_prefix}archaeology ".
+						"WHERE".
+			    		" collectionid=".$collectionid.
+			    		" AND imageid=".$imageid;
+    			
+			    $sqls = $sql;
+	    		$row = $db->GetRow( $sql );
+	    		
+	    		if( $row ) {
+	    			array_walk( $row, "__stripslashes" );
+	    			
+	    			foreach ($row as $name => $val)
+	    			{
+	    				$result['rs'][$name] = $val;
+	    			}
+	    		}
+    		}
+    		
+    		// print_r($result);
+    		
+    		// echo('block.query_image.php: '.$row['type'].' - Einsprungpunkt realisieren'."\n<br>\n");
+    		
+    		
     		
     		if( !empty($params['sql'])) {
     			  $smarty->assign($params['sql'], $sqls);
