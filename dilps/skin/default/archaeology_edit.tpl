@@ -36,7 +36,8 @@ BEGIN archaeology_edit.tpl
 			<td class="result_detail_data_head">{#category#|escape:htmlall}</td>
 			<td colspan="2" class="result_detail_data_data">
 				<input type="hidden" name="edit[category_fn]" size="60" value="{$row.category_fn|escape:html}">
-		   		<input type="text" name="edit[category]" size="60" value="{$row.category|escape:html}">
+		   		<input type="text" name="edit[category]" size="60" value="{$row.category|escape:html}" readonly="readonly">
+		   		[<a onClick="editArchElement( '{$sessionid}', '{$id}', 'category', document.Main.elements );">e</a>]
 		   	</td>
 		</tr>
 		<tr>
@@ -84,14 +85,16 @@ BEGIN archaeology_edit.tpl
 			<td class="result_detail_data_head">{#dating_descr#|escape:htmlall}</td>
 			<td colspan="2" class="result_detail_data_data">
 				<input type="hidden" name="edit[dating_ext_fn]" size="60" value="{$row.dating_ext_fn|escape:html}">
-		   		<input type="text" name="edit[dating_ext]" size="60" value="{$row.dating_ext|escape:html}">
+		   		<input type="text" name="edit[dating_ext]" size="60" value="{$row.dating_ext|escape:html}" readonly="readonly">
+		   		[<a onClick="editArchElement( '{$sessionid}', '{$id}', 'dating_ext', document.Main.elements );">e</a>]
 		   	</td>
 		</tr>
 		<tr>
 			<td class="result_detail_data_head">{#material#|escape:htmlall}</td>
 			<td colspan="2" class="result_detail_data_data">
 				<input type="hidden" name="edit[material_ext_fn]" size="60" value="{$row.material_ext_fn|escape:html}">
-				<input type="text" name="edit[material_ext]" size="60" value="{$row.material_ext|escape:html}">
+				<input type="text" name="edit[material_ext]" size="60" value="{$row.material_ext|escape:html}" readonly="readonly">
+				[<a onClick="editArchElement( '{$sessionid}', '{$id}', 'material_ext', document.Main.elements );">e</a>]
 			</td>
 		</tr>
 		<tr>

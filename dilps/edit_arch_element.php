@@ -54,8 +54,17 @@ if( is_array( $_REQUEST['query'] ))
 
 switch( $query['element'] )
 {
+	case 'category':
+	   $tpl = 'ac_edit_category.tpl';
+		break;
+	case 'dating_ext':
+	   $tpl = 'ac_edit_dating_ext.tpl';
+		break;
 	case 'iconography':
 	   $tpl = 'ac_edit_iconography.tpl';
+		break;
+	case 'material_ext':
+	   $tpl = 'ac_edit_material_ext.tpl';
 		break;
 	default:
 	   $tpl = 'edit_element_none.tpl';

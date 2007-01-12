@@ -198,7 +198,7 @@ WHERE
 		{
 			$sql =	"INSERT INTO {$db_prefix}archaeology (".
 					"  `collectionid`, `imageid`".
-					" ,`category_fn`, `catergory`".
+					" ,`category_fn`, `category`".
 					" ,`object_fn`, `object`".
 					" ,`iconography_fn`, `iconography` ".
 					" ,`dating_ext_fn`, `dating_ext` ".

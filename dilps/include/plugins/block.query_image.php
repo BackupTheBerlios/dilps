@@ -112,7 +112,7 @@ function smarty_block_query_image($params, $content, &$smarty, &$repeat)
     		// load additional fields for archaeology
     		if ($result['rs']['type'] == 'archaeology')
     		{
-				$sql = 	"SELECT `category_fn`, `catergory`, `object_fn`, `object`, `iconography_fn`, `iconography`, "
+				$sql = 	"SELECT `category_fn`, `category`, `object_fn`, `object`, `iconography_fn`, `iconography`, "
 						."`dating_ext_fn`, `dating_ext`, `material_ext_fn`, `material_ext` "
 						."FROM {$db_prefix}archaeology ".
 						"WHERE".
