@@ -45,7 +45,7 @@ if (!file_exists('config.inc.php'))
 {
 	echo (	"It seems, your installation has not been configured or your ".
 			"configuration file has been deleted.\n<br>\n");
-	echo (	"Please go to <a href='admin/index.php'>the administration".
+	echo (	"Please go to <a href='admin/index.php'>the administration ".
 			"area</a> to setup your installation\n<br>\n");
 	exit();
 }

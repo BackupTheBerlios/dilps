@@ -78,7 +78,7 @@
 
 	# --------------------------------------------------------
 
-	# $Id: install.php,v 1.8 2006/11/30 20:29:15 sdoeweling Exp $
+	# $Id: install.php,v 1.9 2007/01/14 21:39:07 sdoeweling Exp $
 
 	# --------------------------------------------------------
 
@@ -619,15 +619,13 @@
     $f_ldapserver = gpc_get_string('ldapserver',"ldap.".$f_authdomain);
     
     
-    $domain_name 		= substr($f_authdomain,strrpos($f_authdomain,'.'));
-    
-    $domain_name_dc		= (!empty($domain_name) ? ("dc=".$domain_name) : ('localhost'));
-    
-    $domain_ending 		= substr($f_authdomain,0,strrpos($f_authdomain,'.'));
+    $domain_ending 		= substr($f_authdomain,strrpos($f_authdomain,'.')+1);
     
     $domain_ending_dc	= (!empty($domain_ending) ? ("dc=".$domain_ending.", ") : (''));
     
-    $f_basedn = gpc_get_string('basedn',$domain_ending_dc.$domain_name_dc);
+    $domain_name 		= substr($f_authdomain,0,strrpos($f_authdomain,'.'));
+    
+    $domain_name_dc		= (!empty($domain_name) ? ("dc=".$domain_name) : ('localhost'));
     
     
     $f_mailserver = gpc_get_string('mailserver',"mail.".$f_authdomain);

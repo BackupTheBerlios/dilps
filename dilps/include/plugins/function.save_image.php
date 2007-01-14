@@ -286,6 +286,9 @@ function get_or_set_values($db, $db_prefix, $dilpsid, $field, $fieldtext, $recor
 
         } else if (empty($rs)) {
 
+        	// sometimes 'new' is not set correctly, workaround this
+        	
+        	/*
             if ($recordid != 'new') {
 
                 $result['is_error'] = true;
@@ -294,6 +297,9 @@ function get_or_set_values($db, $db_prefix, $dilpsid, $field, $fieldtext, $recor
             } else {
                 $result = false;
             }
+            */
+        	
+        	$result = false;
 
         } else {
             $result = $rs;

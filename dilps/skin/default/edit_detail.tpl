@@ -111,8 +111,9 @@ BEGIN edit_detail.tpl
 	          <!-- {$sql} -->
 		   </td>
 		</tr>
-  {assign var="tpl" value=$template[$result.rs.type]}
-  {include file="`$config.skinBase``$config.skin`/`$tpl.edit`" row=$rs}		
+		
+		{assign var="tpl" value=$template[$rs.type]}
+		{include file="`$config.skinBase``$config.skin`/`$tpl.edit`" row=$rs}		
 	   <table>
 	</td>
 </tr>
