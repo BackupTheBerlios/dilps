@@ -73,7 +73,7 @@ BEGIN edit_detail.tpl
 			</table>
   		   </td>
 		   <td colspan="2" class="result_detail_data_data">
-  		       [{$rs.width|escape:htmlall}x{$rs.height|escape:htmlall}]
+  		       [{$result.rs.width|escape:htmlall}x{$result.rs.height|escape:htmlall}]
 			   [<a href="image.php?PHPSESSID={$sessionid}&id={$result.id}&resolution=1024x768&remoteCollection={$query.remoteCollection}" target="_blank">1024x768</a>]
 			   [<a href="image.php?PHPSESSID={$sessionid}&id={$result.id}&resolution=1280x1024&remoteCollection={$query.remoteCollection}" target="_blank">1280x1024</a>]
 			   [<a href="image.php?PHPSESSID={$sessionid}&id={$result.id}&resolution=1600x1200&remoteCollection={$query.remoteCollection}" target="_blank">1600x1200</a>]
@@ -84,13 +84,13 @@ BEGIN edit_detail.tpl
 			   <td colspan="1" class="result_detail_data_data">
 			   {if $user.admin}
 			   <input type="hidden" name="edit[status]"  value="{$rs.status}">
-			   <input type="button" value="{#status_new#|escape:html}" onClick="setStatus( 'new' )"{if $rs.status == 'new'} disabled{/if}>
-			   <input type="button" value="{#status_edited#|escape:html}" onClick="setStatus( 'edited' )"{if $rs.status == 'edited'} disabled{/if}>
-			   <input type="button" value="{#status_reviewed#|escape:html}" onClick="setStatus( 'reviewed' )"{if $rs.status == 'reviewed'} disabled{/if}>
+			   <input type="button" class="button" value="{#status_new#|escape:html}" onClick="setStatus( 'new' )"{if $rs.status == 'new'} disabled{/if}>
+			   <input type="button" class="button" value="{#status_edited#|escape:html}" onClick="setStatus( 'edited' )"{if $rs.status == 'edited'} disabled{/if}>
+			   <input type="button" class="button" value="{#status_reviewed#|escape:html}" onClick="setStatus( 'reviewed' )"{if $rs.status == 'reviewed'} disabled{/if}>
 			   {elseif $user.editor}
 			   <input type="hidden" name="edit[status]"  value="{$rs.status}">
-			   <input type="button" value="{#status_editing#|escape:html}" onClick="setStatus( 'new' )"{if $rs.status == 'new'} disabled{/if}>
-			   <input type="button" value="{#status_completed#|escape:html}" onClick="setStatus( 'edited' )"{if $rs.status == 'edited'} disabled{/if}>
+			   <input type="button" class="button" value="{#status_editing#|escape:html}" onClick="setStatus( 'new' )"{if $rs.status == 'new'} disabled{/if}>
+			   <input type="button" class="button" value="{#status_completed#|escape:html}" onClick="setStatus( 'edited' )"{if $rs.status == 'edited'} disabled{/if}>
 			   &nbsp;({if $rs.status == 'reviewed'}{#status_reviewed#}{else}{#status_pending_review#}{/if})
 			   {/if}&nbsp;
 		       </td>

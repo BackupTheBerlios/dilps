@@ -15,6 +15,23 @@ td.heading {
 {/literal}
 
 {literal}
+textarea, input, select {
+	overflow: auto;
+	font-family: serif;
+	font-weight: normal;
+	font-size: 11pt;
+	font-variant: normal;
+	text-align: left;
+}
+{/literal}
+
+{literal}
+input.button{
+	text-align: center;
+}
+{/literal}
+
+{literal}
 body.main {
 	font-family: Courier New, Courier, mono;
 	font-weight: normal;
@@ -69,7 +86,7 @@ table.maincontent {
    padding: 0px;     
    width: 100%;
    table-layout: fixed;
-  }
+}
 {/literal}
 
 {literal}
@@ -374,7 +391,7 @@ td.result_detail_data_data {
 	padding-left: 20px;
 	border-bottom: 1px solid #778898;
 	border-left: 1px solid #778898;
-        border-top: 1px solid #FFFFFF;
+	border-top: 1px solid #FFFFFF;
 }
 {/literal}
 
@@ -387,8 +404,8 @@ td.result_detail_data_head {
 	color: #363636;
 	vertical-align: top;
 	border-bottom: 1px solid #778898;
-        border-top: 1px solid #FFFFFF;
-        border-left: 1px solid #FFFFFF;
+	border-top: 1px solid #FFFFFF;
+    border-left: 1px solid #FFFFFF;
 	padding-right: 10px;
 }
 {/literal}
@@ -522,12 +539,13 @@ textarea.queryinputfield {
   border-left-style: none;
   vertical-align: top;
   text-align: left;
+  overflow: auto;
 }
 {/literal}
 
 {literal}
-input.queryinputfieldinactive {
-  background-color: #BCBCBC;
+input.queryinputinactive {
+  background-color: #DCDCDC;
   border-top-color: #FFFFFF;
   border-right-color: #FFFFFF;
   border-top-style: solid;
@@ -536,6 +554,21 @@ input.queryinputfieldinactive {
   border-left-style: none;
 }
 {/literal}
+
+{literal}
+input.inactive {
+  background-color: #DCDCDC;
+}
+{/literal}
+
+{literal}
+textarea.inactive {
+  background-color: #DCDCDC;
+  overflow: auto;
+}
+{/literal}
+
+
 
 {literal}
 select.queryselectfield {

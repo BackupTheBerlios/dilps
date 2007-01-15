@@ -140,13 +140,13 @@ column_operators["{$column}"] = "{$op.operators}";
 								</td>
 								<td class="queryinputfield" align="right">
 								{if $query.group eq ""}
-									<input class="queryinputfield" type="text" name="query[group]" size="40" readonly="readonly" value=" ({#selecthere#|escape:htmlall}) " onclick="javascript:window.open('group_select.php?PHPSESSID={$sessionid}&target=group','groupselection1','width=800,height=300,left=10,top=250,dependent=yes');">					
+									<input class="queryinputfield" type="text" name="query[group]" size="40" readonly="readonly" value=" ({#selecthere#|escape:htmlall}) " onclick="window.open('group_select.php?PHPSESSID={$sessionid}&target=group','groupselection1','width=800,height=300,left=10,top=250,dependent=yes');">					
 								{else}
-									<input class="queryinputfield" type="text" name="query[group]" size="40" readonly="readonly" value="{$query.group|escape:html}" onclick="javascript:window.open('group_select.php?PHPSESSID={$sessionid}&target=group','groupselection1','width=800,height=300,left=10,top=250,dependent=yes');">
+									<input class="queryinputfield" type="text" name="query[group]" size="40" readonly="readonly" value="{$query.group|escape:html}" onclick="window.open('group_select.php?PHPSESSID={$sessionid}&target=group','groupselection1','width=800,height=300,left=10,top=250,dependent=yes');">
 								{/if}
 								<input class="queryinputfield" type="hidden" name="query[groupid]" value="{$query.groupid|escape:html}">
 								<input class="queryinputfield" type="hidden" name="query[groupowner]" value="{$query.groupowner|escape:html}">
-								<button type="button" class="actionbutton2" onclick="javascript:cleargroup();" title="{#nogroup#|escape:htmall}"><img src="clear.png" style="width: 12px; height: 12px;" /></button>
+								<button type="button" class="actionbutton2" onclick="cleargroup();" title="{#nogroup#|escape:htmall}"><img src="clear.png" style="width: 12px; height: 12px;" /></button>
             					<input type="hidden" name="query[groupconnector]" value="and" checked="checked"/>
 							</td>
 						</tr>

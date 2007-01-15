@@ -57,6 +57,9 @@ switch( $query['element'] )
 	case 'name':
 	   $tpl = 'edit_element_name.tpl';
 		break;
+	case 'name_single':
+	   $tpl = 'edit_element_name_single.tpl';
+		break;
 	case 'loc':
 	   $tpl = 'edit_element_loc.tpl';
 		break;

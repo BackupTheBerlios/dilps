@@ -87,4 +87,18 @@ function saveSelection(elementName)
 	// alert("sel_names_string: "+sel_names_string);
 	// alert("sel_values_string: "+sel_values_string);
 	
+	return true;
+}
+
+function saveAdditionalData(elementName,targetElementName)
+{
+	var element = document.forms["Main"].elements[elementName];
+	var targetElement = opener.document.forms["Main"].elements[targetElementName];
+	
+	if (element != null && targetElement != null)
+	{
+		targetElement.value = element.value;
+	}
+	
+	return true;
 }

@@ -371,7 +371,7 @@
 	</script>
 </head>
 
-<body class="main" style="width: 100%; height: 100%;" {if $lastpath neq ''}onload="javascript:restoreSelection('{$currentid}','{$lastpath}','{$user.login}','{$user.editgroups}');"{/if}>
+<body class="main" style="width: 100%; height: 100%;" {if $lastpath neq ''}onload="restoreSelection('{$currentid}','{$lastpath}','{$user.login}','{$user.editgroups}');"{/if}>
 
 <form action="{$SCRIPT_NAME}" method="post" onsubmit="return checkAndSubmit();" style="width: 100%; height: 100%;">
 	<input type="hidden" name="PHPSESSID" value="{$sessionid}" />
@@ -384,7 +384,7 @@
 			<td class="heading" colspan="2" style="text-align: left;">
 				<a class="navsymbol" href="{$SCRIPT_NAME}?PHPSESSID={$sessionid}&target={$target}">{#groupselection#}</a>
 				<span style="font-size: 12pt;">
-				&nbsp; ( <a class="navsymbol" href="javascript:window.close();">{#closewindow#}</a> )
+				&nbsp; ( <a class="navsymbol" href="window.close();">{#closewindow#}</a> )
 				</span>
 			</td>
 		</tr>
@@ -441,7 +441,7 @@
 						<select name="gid-0-groups" class="queryselectfield" style="width: 200px; text-align: center;">
 						{if count($groups) neq 0}
 							{foreach from=$groups item=l1}
-								<option value="{$l1.id}:{$l1.name}:{$l1.owner}" style="text-align: center;" onclick="javascript:switchToAndSelect(0,0);getActions('{$user.login}','{$user.editgroups}');restoreHint(0,0);">
+								<option value="{$l1.id}:{$l1.name}:{$l1.owner}" style="text-align: center;" onclick="switchToAndSelect(0,0);getActions('{$user.login}','{$user.editgroups}');restoreHint(0,0);">
 									{$l1.name|truncate:50|wordwrap:30:"<br/>\n":true}
 								</option>
 							{/foreach}
@@ -458,7 +458,7 @@
 								<div id="gid-{$l1.id}" style="width: 250px; position: absolute; left: 250px; top: 0px; visibility: hidden;">
 									<select name="gid-{$l1.id}-groups" class="queryselectfield" style="width: 200px; text-align: center;">
 										{foreach from=$l1.subgroups item=l2}
-											<option value="{$l2.id}:{$l2.name}:{$l2.owner}"  style="text-align: center;" onclick="javascript:switchToAndSelect(1,{$l1.id});getActions('{$user.login}','{$user.editgroups}');restoreHint(1,{$l1.id});">
+											<option value="{$l2.id}:{$l2.name}:{$l2.owner}"  style="text-align: center;" onclick="switchToAndSelect(1,{$l1.id});getActions('{$user.login}','{$user.editgroups}');restoreHint(1,{$l1.id});">
 												{$l2.name|truncate:50|wordwrap:30:"<br/>\n":true}
 											</option>
 										{/foreach}
@@ -479,7 +479,7 @@
 										<div id="gid-{$l2.id}" style="width: 250px; position: absolute; left: 500px; top: 0px; visibility: hidden;">
 											<select name="gid-{$l2.id}-groups" class="queryselectfield" style="width: 200px; text-align: center;">
 												{foreach from=$l2.subgroups item=l3}
-													<option value="{$l3.id}:{$l3.name}:{$l3.owner}"  style="text-align: center;" onclick="javascript:switchToAndSelect(2,{$l2.id});getActions('{$user.login}','{$user.editgroups}');restoreHint(2,{$l2.id});">
+													<option value="{$l3.id}:{$l3.name}:{$l3.owner}"  style="text-align: center;" onclick="switchToAndSelect(2,{$l2.id});getActions('{$user.login}','{$user.editgroups}');restoreHint(2,{$l2.id});">
 														{$l3.name|truncate:50|wordwrap:30:"<br/>\n":true}
 													</option>
 												{/foreach}
@@ -503,7 +503,7 @@
 							</tr>
 							<tr>
 								<td class="queryinputfield">
-									<input class="queryinputfieldinactive" type="text"  name="currentname" style="width: 200px;" readonly="readonly"/>
+									<input class="queryinputinactive" type="text"  name="currentname" style="width: 200px;" readonly="readonly"/>
 									<input class="queryinputfield" type="hidden"  name="currentid" />
 									<input class="queryinputfield" type="hidden"  name="currentlevel" />
 									<input class="queryinputfield" type="hidden"  name="currentowner" />
@@ -520,7 +520,7 @@
 							</tr>
 							<tr>
 								<td class="queryselectfield">
-									<select name="action" class="queryselectfield" onchange="javascript:checkParameter();" style="width: 200px; text-align: center;">
+									<select name="action" class="queryselectfield" onchange="checkParameter();" style="width: 200px; text-align: center;">
 										<option value="nothing" style="text-align: center;">
 											{#selectgroup#}
 										</option>

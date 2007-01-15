@@ -22,7 +22,7 @@
    +----------------------------------------------------------------------+
 *}
 <!-- --------------------------------------------
-BEGIN edit_element_name.tpl
+BEGIN edit_element_name_single.tpl
 --------------------------------------------- -->
 {if $config.utf8 eq "true"}
 	{config_load file="`$config.skinBase``$config.skin`/`$config.language`/result.conf.utf8"}
@@ -59,10 +59,7 @@ function setNameInParent()
     setNameIds();
 
     window.opener.document.forms["Main"].elements["edit[name1text]"].value = document.Main.elements["query[name1text]"].value;
-    window.opener.document.forms["Main"].elements["edit[name2text]"].value = document.Main.elements["query[name2text]"].value;
-
     window.opener.document.forms["Main"].elements["edit[name1id]"].value = document.Main.elements["query[name1id]"].value;
-    window.opener.document.forms["Main"].elements["edit[name2id]"].value = document.Main.elements["query[name2id]"].value;
 
     close();
 }
@@ -70,11 +67,9 @@ function setNameInParent()
 function setNameIds()
 {
     name1id = document.Main.elements["query[name1id]"].value;
-    name2id = document.Main.elements["query[name2id]"].value;
     name1text = document.Main.elements["query[name1text]"].value;
-    name2text = document.Main.elements["query[name2text]"].value;
 
-    if (changed[0]) {
+    if (changed) {
         if (names[name1id] != name1text) {
             if (names[name1id] == "") {
                 value = "0";
@@ -82,16 +77,6 @@ function setNameIds()
                 value = "new";
             }
             document.Main.elements["query[name1id]"].value = value;
-        }
-    }
-    if (changed[1]) {
-        if (names[name2id] != name2text) {
-            if (names[name2id] == "") {
-                value = "0";
-            } else {
-                value = "new";
-            }
-            document.Main.elements["query[name2id]"].value = value;
         }
     }
 }
@@ -126,31 +111,30 @@ function searchName(prefix) {
 }
 
 names = new Array();
-oldValues = new Array();
-changed = [false, false];
+changed = false;
+
 {/literal}
-oldValues[0] = "{$query.name1text}";
-oldValues[1] = "{$query.name2text}";
+oldValue = "{$query.name1text}";
 {literal}
 
-function memoriseValue(element,position)
+function memoriseValue(element)
 {
 	var docelem = document.Main.elements[element];
 	
 	if (docelem != null) {
 		// alert('gefunden - '+docelem.value+'!');
-		oldValues[position] = docelem.value;
+		oldValue = docelem.value;
 	}
 }
 
-function compareValue(element,position)
+function compareValue(element)
 {
 	var docelem = document.Main.elements[element];
 	
 	if (docelem != null) 
 	{
-		if (oldValues[position] != docelem.value) {
-			// alert('gefunden - alt: '+oldValues[position]+', neu:'+docelem.value+'!');
+		if (oldValue != docelem.value) {
+			// alert('gefunden - alt: '+oldValue+', neu:'+docelem.value+'!');
 			return true;
 		}
 		else {
@@ -158,7 +142,6 @@ function compareValue(element,position)
 		}
 	}
 }
-
 {/literal}
 
 </script>
@@ -243,13 +226,9 @@ function compareValue(element,position)
 </tr>
 <tr>
 	<td>
-		<input type="text" name="query[name1text]" value="{$query.name1text|escape:htmlall}" onfocus="memoriseValue('query[name1text]',0);" onblur="changed[0] = compareValue('query[name1text]',0);" onchange="changed[0] = true;" size="50" tabindex="5" style="width: 400px;">
+		<input type="text" name="query[name1text]" value="{$query.name1text|escape:htmlall}" onfocus="memoriseValue('query[name1text]');" onblur="changed = compareValue('query[name1text]');" onchange="changed = true;" size="50" tabindex="5" style="width: 400px;">
 		<input type="hidden" name="query[name1id]" value="{$query.name1id|escape:htmlall}">
-		<button type="button" class="actionbutton" onclick="setName('name1')" title="{#name#|escape:htmlall} {#set#|escape:htmlall}" tabindex="4">{#name#|escape:htmlall} {#set#|escape:htmlall}</button>
-		
-		<input type="text" name="query[name2text]" value="{$query.name2text|escape:htmlall}" onfocus="memoriseValue('query[name2text]',0);" onblur="changed[1] = compareValue('query[name2text]',1);" onchange="changed[1] = true;" size="50" tabindex="5" style="width: 400px;">
-		<input type="hidden" name="query[name2id]" value="{$query.name2id|escape:htmlall}">
-		<button type="button" class="actionbutton" onclick="setName('name2')" title="{#name2#|escape:htmlall} {#set#|escape:htmlall}" tabindex="6">{#name2#|escape:htmlall} {#set#|escape:htmlall}</button>
+		<button type="button" class="actionbutton" onclick=" setName('name1')" title="{#name#|escape:htmlall} {#set#|escape:htmlall}" tabindex="4">{#name#|escape:htmlall} {#set#|escape:htmlall}</button>
 	</td>
 </tr>
 <tr>
@@ -263,6 +242,7 @@ function compareValue(element,position)
 	    <input type="button" class="button" name="cancel" value="{#cancel#|escape:html}" onClick="window.close(); " tabindex="9">
 	</td>
 </tr>
+
 <!--<tr>
 	<td colspan="2">
 	   <img src="/icons/blank.gif" width="1" height="3">
@@ -277,5 +257,5 @@ function compareValue(element,position)
 </body>
 </html>
 <!-- --------------------------------------------
-END edit_element_name.tpl
+END edit_element_name_single.tpl
 --------------------------------------------- -->

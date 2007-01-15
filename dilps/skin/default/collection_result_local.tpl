@@ -26,7 +26,7 @@
 BEGIN result_grid_collections.tpl
 ============================================ -->
 <tr>
-    <td class="result_list_collection"><a class="collection_navsymbol" href="javascript:showCollection('{$sessionid}', '{$row.collectionid}', '{$query.queryid}')" >{$row.name}</a></td>
+    <td class="result_list_collection"><a class="collection_navsymbol" href="showCollection('{$sessionid}', '{$row.collectionid}', '{$query.queryid}')" >{$row.name}</a></td>
     <td class="result_list_collection">{$row.count}</td>
 </tr>
 <!-- ============================================

@@ -71,15 +71,15 @@ BEGIN default_grid.tpl
 						{mygroup_isin ingroup=ingroup changeable=changeable sql=sql cid=$row.collectionid groupid=$query.mygroupid imageid=$row.imageid}
 						{if $ingroup eq 'no'}
 							{if $changeable eq 'yes'}
-								<input type="button" name="but-{$row.collectionid}-{$row.imageid}" id="but-{$row.collectionid}-{$row.imageid}" class="actionbutton" onclick="javascript:changemygroup('but-{$row.collectionid}-{$row.imageid}','{$row.collectionid}:{$row.imageid}');" value="+" style="height: 22px; width: 22px;" title="{#addtomygroup#}"/>
+								<input type="button" name="but-{$row.collectionid}-{$row.imageid}" id="but-{$row.collectionid}-{$row.imageid}" class="actionbutton" onclick="changemygroup('but-{$row.collectionid}-{$row.imageid}','{$row.collectionid}:{$row.imageid}');" value="+" style="height: 22px; width: 22px;" title="{#addtomygroup#}"/>
 							{else}
-								<input type="button" name="but-{$row.collectionid}-{$row.imageid}" id="but-{$row.collectionid}-{$row.imageid}" class="actionbutton" onclick="javascript:showError('{#nopermission#}');" value="+" style="height: 22px; width: 22px; color: #aaaaaa; " title="{#nopermission#}"/>
+								<input type="button" name="but-{$row.collectionid}-{$row.imageid}" id="but-{$row.collectionid}-{$row.imageid}" class="actionbutton" onclick="showError('{#nopermission#}');" value="+" style="height: 22px; width: 22px; color: #aaaaaa; " title="{#nopermission#}"/>
 							{/if}
 						{else}	
 							{if $changeable eq 'yes'}
-								<input type="button" name="but-{$row.collectionid}-{$row.imageid}" id="but-{$row.collectionid}-{$row.imageid}" class="actionbutton" onclick="javascript:changemygroup('but-{$row.collectionid}-{$row.imageid}','{$row.collectionid}:{$row.imageid}');" value="-" style="height: 22px; width: 22px;" title="{#delfrommygroup#}"/>
+								<input type="button" name="but-{$row.collectionid}-{$row.imageid}" id="but-{$row.collectionid}-{$row.imageid}" class="actionbutton" onclick="changemygroup('but-{$row.collectionid}-{$row.imageid}','{$row.collectionid}:{$row.imageid}');" value="-" style="height: 22px; width: 22px;" title="{#delfrommygroup#}"/>
 							{else}
-								<input type="button" name="but-{$row.collectionid}-{$row.imageid}" id="but-{$row.collectionid}-{$row.imageid}" class="actionbutton" onclick="javascript:showError('{#nopermission#}');" value="-" style="height: 22px; width: 22px; color: #aaaaaa; " title="{#nopermission#}"/>
+								<input type="button" name="but-{$row.collectionid}-{$row.imageid}" id="but-{$row.collectionid}-{$row.imageid}" class="actionbutton" onclick="showError('{#nopermission#}');" value="-" style="height: 22px; width: 22px; color: #aaaaaa; " title="{#nopermission#}"/>
 							{/if}
 						{/if}
 						<!-- {$sql} -->
@@ -94,10 +94,10 @@ BEGIN default_grid.tpl
 						&nbsp;
 					{/if}
 					{if $user.editor}
-						<button type="button" name="rot-{$row.collectionid}-{$row.imageid}" class="actionbutton" onclick="javascript:rotateimage('{$row.collectionid}','{$row.imageid}');" style="padding: 1px;" title="{#rotate#|escape:htmlall}"><img src="rotate-90.png" style="width: 12px; height: 12px" /></button>
+						<button type="button" name="rot-{$row.collectionid}-{$row.imageid}" class="actionbutton" onclick="rotateimage('{$row.collectionid}','{$row.imageid}');" style="padding: 1px;" title="{#rotate#|escape:htmlall}"><img src="rotate-90.png" style="width: 12px; height: 12px" /></button>
 					{/if}
 					{if $user.admin}
-						<button type="button" name="del-{$row.collectionid}-{$row.imageid}" class="actionbutton" onclick="javascript:deleteimage('{$row.collectionid}','{$row.imageid}');" style="padding: 1px;" title="{#delete#|escape:htmlall}"><img src="delete.png" style="width: 12px; height: 12px" /></button>
+						<button type="button" name="del-{$row.collectionid}-{$row.imageid}" class="actionbutton" onclick="deleteimage('{$row.collectionid}','{$row.imageid}');" style="padding: 1px;" title="{#delete#|escape:htmlall}"><img src="delete.png" style="width: 12px; height: 12px" /></button>
 					{/if}
 				</td>
 			</tr>
