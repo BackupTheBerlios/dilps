@@ -23,7 +23,7 @@
 *}
 
 <!-- =================================================
-BEGIN ac_edit_iconography.tpl
+BEGIN ac_edit_obj_arch_military.tpl
 ================================================= -->
 
 {if $config.utf8 eq "true"}
@@ -63,7 +63,7 @@ BEGIN ac_edit_iconography.tpl
 
 	{if $query.id ne ""}
 	
-	{query_ext_element type="archaeology" element="category" fieldnames="fieldnames" values="values" sql="sql" query=$query}
+	{query_ext_element type="archaeology" element="obj_arch_military" fieldnames="fieldnames" values="values" sql="sql" query=$query}
 	
 	<!-- {$sql} -->
 	
@@ -77,7 +77,7 @@ BEGIN ac_edit_iconography.tpl
 
 	<table class="header" style="width: 90%; margin: auto;"/>
 		<tr>
-			<td class="heading">Bildkategorie</td>
+			<td class="heading">Wehrarchitektur</td>
 		</tr>
 		<tr>
 			<td style="height: 20px;">
@@ -86,32 +86,66 @@ BEGIN ac_edit_iconography.tpl
 		</tr>
 		<tr>
 			<td>
-				<input type="checkbox" name="MSAnsicht" value="Ansicht">Ansicht
-			<table width="0*" border="0" cellspacing="10" cellpadding="0">
-			<tr>
-				<td><input type="checkbox" name="MS Gesamtansicht" value="Gesamtansicht">Gesamtansicht</td>
-				<td><input type="checkbox" name="MSDetailansicht" value="Detailansicht">Detailansicht</td>
-			</tr>
-			</table>  	
+					<b>Wehrarchitektur/Milit&auml;rarchitektur</b><p>
 				
-				<input type="checkbox" name="MS Luftaufnahme" value="Luftaufnahme, Luftbild">Luftaufnahme<p>
-				<input type="checkbox" name="MSZeichnung" value="Zeichnung">Zeichnung<p>
-			
-				<input type="checkbox" name="MS Rekonstruktion" value="Rekonstruktion">Rekonstruktion<p>
-				<input type="checkbox" name="MSModell" value="Modell">Modell<p>
-				<input type="checkbox" name="MSSammelaufnahme" value="Sammelaufnahme">Sammelaufnahme<p>
-				<input type="checkbox" name="MSLandkarte" value="Landkarte">Landkarte<p>
-			
-				<input type="checkbox" name="MSPlan" value="Plan">Plan
-			<table width="0*" border="0" cellspacing="10" cellpadding="0">
-			<tr>
-			
-				<td><input type="checkbox" name="MSGrundri&szlig;" value="Grundri&szlig;">Grundri&szlig;</td>
-				<td><input type="checkbox" name="MSSchnitt" value="Schnitt">Schnitt</td>
-			</tr>
-			</table>  	
-			<input type="checkbox" name="MSSchema" value="Schema">Schema
-			<p>
+					<input type="checkbox" name="MSBefestigung" value="Befestigung">Befestigung<br>
+					<input type="checkbox" name="MSFestung" value="Festung">Festung (in sich geschlossene Anlage)<br>
+					<input type="checkbox" name="MSMauer" value="Mauer">Mauer
+					
+				<table width="0*" border="0" cellspacing="10" cellpadding="0">
+				<tr>
+					<td><input type="checkbox" name="MSStadtmauer" value="Stadtmauer">Stadtmauer</td>
+				
+					<td><input type="checkbox" name="MSProteichisma" value="Proteichisma">Proteichisma (Vormauer)</td>
+				</tr>
+				</table>  
+					<input type="checkbox" name="MSTor" value="Tor">Tor
+				
+				<table width="0*" border="0" cellspacing="10" cellpadding="0">
+				<tr>
+					<td><input type="checkbox" name="MSStadttor" value="Stadttor">Stadttor</td>
+				</tr>
+				</table>  
+				
+					<input type="checkbox" name="MSTurm" value="V">Turm<br>
+				
+					<input type="checkbox" name="MSWallanlage" value="Wallanlage">Wallanlage<br>
+				
+				<table width="0*" border="0" cellspacing="10" cellpadding="0">
+				<tr>
+					<td><input type="checkbox" name="MSWall" value="Wall">Wall</td>
+					<td><input type="checkbox" name="MSGraben" value="Graben">Graben</td>
+					<td><input type="checkbox" name="MSSpitzgraben" value="Spitzgraben">Spitzgraben</td>
+					<td><input type="checkbox" name="MSPalisade" value="Palisade">Palisade</td>
+				</tr>
+				</table>
+				
+				<br>
+					<input type="checkbox" name="MSLager" value="Lager, Kastell, Milit&auml;rlager">Lager/Kastell/Milit&auml;rlager<p>
+					<u>Lagerbauten:</u>
+					
+				<table width="0*" border="0" cellspacing="10" cellpadding="0">
+				<tr>
+					<td><input type="checkbox" name="MSPrincipia" value="Principia">Principia</td>
+					<td><input type="checkbox" name="MSPraetorium" value="Praetorium">Praetorium</td>
+				
+					<td><input type="checkbox" name="MSValetudinarium" value="Valetudinarium, Lazarett">Valetudinarium/Lazarett</td>
+					<td><input type="checkbox" name="MSCanabae" value="Canabae">Canabae</td>
+				</tr>
+				</table>  
+				
+					<input type="checkbox" name="" value="">Grenzbefestigung/Limes
+				
+				<table width="0*" border="0" cellspacing="10" cellpadding="0">
+				<tr>
+					<td><input type="checkbox" name="" value="">Wachturm</td>
+				</tr>
+				</table>  
+				
+					<input type="checkbox" name="" value="">Belagerungsrampe<p>
+				
+					<b>andere Bezeichnung:</b><br>
+					<textarea name="MSWehrarchitekturText" rows="3" cols="40">Wehrarchitektur, Milit&auml;rarchitektur, </textarea>
 			</td>
 		</tr>
 		<tr>
@@ -123,7 +157,7 @@ BEGIN ac_edit_iconography.tpl
 			<td>
 				<table width="0*" border="0" cellspacing="10" cellpadding="0">
 					<tr>
-						<td><input type="button" value="eingeben" onclick="saveSelection('category');window.close();"></td>
+						<td><input type="button" value="eingeben" onclick="saveSelection('obj_arch_military');history.back();"></td>
 						<td><input type="button" value="zur&uuml;cksetzen" onclick="restoreState(js_fn, js_val);"></td>
 						<td><input type="reset" value="alle l&ouml;schen"></td>
 					</tr>
@@ -145,5 +179,5 @@ BEGIN ac_edit_iconography.tpl
 </html>
 
 <!-- =================================================
-END ac_edit_iconography.tpl
+END ac_edit_obj_arch_military.tpl
 ================================================= -->

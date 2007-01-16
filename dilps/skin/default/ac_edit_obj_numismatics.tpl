@@ -23,7 +23,7 @@
 *}
 
 <!-- =================================================
-BEGIN ac_edit_iconography.tpl
+BEGIN ac_edit_obj_numismatics.tpl
 ================================================= -->
 
 {if $config.utf8 eq "true"}
@@ -63,7 +63,7 @@ BEGIN ac_edit_iconography.tpl
 
 	{if $query.id ne ""}
 	
-	{query_ext_element type="archaeology" element="category" fieldnames="fieldnames" values="values" sql="sql" query=$query}
+	{query_ext_element type="archaeology" element="obj_numismatics" fieldnames="fieldnames" values="values" sql="sql" query=$query}
 	
 	<!-- {$sql} -->
 	
@@ -77,7 +77,7 @@ BEGIN ac_edit_iconography.tpl
 
 	<table class="header" style="width: 90%; margin: auto;"/>
 		<tr>
-			<td class="heading">Bildkategorie</td>
+			<td class="heading">Numismatik</td>
 		</tr>
 		<tr>
 			<td style="height: 20px;">
@@ -86,32 +86,81 @@ BEGIN ac_edit_iconography.tpl
 		</tr>
 		<tr>
 			<td>
-				<input type="checkbox" name="MSAnsicht" value="Ansicht">Ansicht
-			<table width="0*" border="0" cellspacing="10" cellpadding="0">
-			<tr>
-				<td><input type="checkbox" name="MS Gesamtansicht" value="Gesamtansicht">Gesamtansicht</td>
-				<td><input type="checkbox" name="MSDetailansicht" value="Detailansicht">Detailansicht</td>
-			</tr>
-			</table>  	
+					<i>M&ouml;glichst vollst&auml;ndige Beschreibung!<br>
+					Aufschriften in Gro&szlig;buchstaben:</i><p>
+					<b>Vorderseite/Avers</b><br>
+					<textarea name="MSAversText" rows="3" cols="40"></textarea>
+				<p>
 				
-				<input type="checkbox" name="MS Luftaufnahme" value="Luftaufnahme, Luftbild">Luftaufnahme<p>
-				<input type="checkbox" name="MSZeichnung" value="Zeichnung">Zeichnung<p>
-			
-				<input type="checkbox" name="MS Rekonstruktion" value="Rekonstruktion">Rekonstruktion<p>
-				<input type="checkbox" name="MSModell" value="Modell">Modell<p>
-				<input type="checkbox" name="MSSammelaufnahme" value="Sammelaufnahme">Sammelaufnahme<p>
-				<input type="checkbox" name="MSLandkarte" value="Landkarte">Landkarte<p>
-			
-				<input type="checkbox" name="MSPlan" value="Plan">Plan
-			<table width="0*" border="0" cellspacing="10" cellpadding="0">
-			<tr>
-			
-				<td><input type="checkbox" name="MSGrundri&szlig;" value="Grundri&szlig;">Grundri&szlig;</td>
-				<td><input type="checkbox" name="MSSchnitt" value="Schnitt">Schnitt</td>
-			</tr>
-			</table>  	
-			<input type="checkbox" name="MSSchema" value="Schema">Schema
-			<p>
+					<b>R&uuml;ckseite/Revers</b><br>
+					<textarea name="MSReversText" rows="3" cols="40"></textarea>
+				<p>
+				<hr>
+				<b>Nominal</b><p>
+				
+					<u>griechisch:</u><br>
+				<table width="0*" border="0" cellspacing="10" cellpadding="0">
+				<tr>
+				
+					<td><input type="checkbox" name="MSHemiobol" value="Hemiobole">Hemiobole</td>
+					<td><input type="checkbox" name="MSHemidrachme" value="Hemidrachme">Hemidrachme</td>
+					
+				</tr>
+				<tr>
+					<td><input type="checkbox" name="MSObol" value="Obol, Obole">Obole</td>
+					<td><input type="checkbox" name="MSDrachme" value="Drachme">Drachme</td>
+					<td><input type="checkbox" name="MSStater" value="Stater">Stater</td>
+				
+				</tr>
+				<tr>
+					<td><input type="checkbox" name="MSDiobole" value="Diobole">Diobole</td>
+					<td><input type="checkbox" name="MSDidrachme" value="Didrachme">Didrachme</td>
+				</tr>
+				<tr>
+					<td><input type="checkbox" name="MSTriobole" value="Triobole">Triobole</td>
+					<td><input type="checkbox" name="MSTetradrachme" value="Tetradrachme, Tetradrachmon">Tetradrachme</td>
+					<td>
+				
+					</td>
+				</tr>
+				<tr>
+					<td><input type="checkbox" name="MSTetrobole" value="Tetrobole">Tetrobole</td>
+					<td><input type="checkbox" name="MSDekadrachme" value="Dekadrachme, Dekadrachmon">Dekadrachme</td>
+					<td>
+					</td>
+				</tr>
+				</table>
+					<u>r&ouml;misch:</u><br>
+				
+				<table width="0*" border="0" cellspacing="10" cellpadding="0">
+				<tr>
+					<td><input type="checkbox" name="MSAesgrave" value="Aes grave">Aes grave</td>
+					<td><input type="checkbox" name="MSDupondius" value="Dupondius">Dupondius</td>
+					<td><input type="checkbox" name="MSAureus" value="Aureus">Aureus</td>
+				</tr>
+				<tr>
+					<td><input type="checkbox" name="MSSesterz" value="Sesterz, Sesterze">Sesterz</td>
+					<td><input type="checkbox" name="MSSemis" value="Semis">Semis</td>
+				
+				</tr>
+				<tr>
+					<td><input type="checkbox" name="MSAs" value="As">As</td>
+					<td><input type="checkbox" name="MSQuinar" value="Quinar">Quinar</td>
+				</tr>
+				<tr>
+					<td><input type="checkbox" name="MSFollis" value="Follis">Follis</td>
+					<td><input type="checkbox" name="MSDenar" value="Denar">Denar</td>
+				</tr>
+				
+				<tr>
+					<td></td>
+					<td><input type="checkbox" name="MSAntoninian" value="Antoninian">Antoninian</td>
+				</tr>
+				</table>
+				
+					<b>weitere Nominale und andere Angaben:</b><br>
+					<textarea name="MSNominalText" rows="2" cols="40">Numismatik, M&uuml;nze, </textarea>
+					<i>Weitere Angaben sind im Feld Material zu machen!</i>
 			</td>
 		</tr>
 		<tr>
@@ -123,7 +172,7 @@ BEGIN ac_edit_iconography.tpl
 			<td>
 				<table width="0*" border="0" cellspacing="10" cellpadding="0">
 					<tr>
-						<td><input type="button" value="eingeben" onclick="saveSelection('category');window.close();"></td>
+						<td><input type="button" value="eingeben" onclick="saveSelection('obj_numismatics');history.back();"></td>
 						<td><input type="button" value="zur&uuml;cksetzen" onclick="restoreState(js_fn, js_val);"></td>
 						<td><input type="reset" value="alle l&ouml;schen"></td>
 					</tr>
@@ -145,5 +194,5 @@ BEGIN ac_edit_iconography.tpl
 </html>
 
 <!-- =================================================
-END ac_edit_iconography.tpl
+END ac_edit_obj_numismatics.tpl
 ================================================= -->

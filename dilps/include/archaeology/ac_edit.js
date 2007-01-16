@@ -41,6 +41,8 @@ function saveSelection(elementName)
 	
 	var elnum = elements.length;
 	
+	var sessionid = elements['PHPSESSID'].value;
+	
 	// alert(elnum);
 	
 	var sel_names = new Array();
@@ -79,10 +81,20 @@ function saveSelection(elementName)
 	*/
 	
 	var fn_index = "edit["+elementName+"_fn]";
-		var val_index = "edit["+elementName+"]";
+	var val_index = "edit["+elementName+"]";
 	
-	opener.document.forms["Main"].elements[fn_index].value = sel_names_string;
-	opener.document.forms["Main"].elements[val_index].value = sel_values_string;
+	/*
+	alert("Window: "+self.name);
+	alert("Opener: "+opener.name);
+	
+	alert("FN: "+fn_index);
+	alert("val: "+val_index);
+	*/
+		
+	storeInSession(sessionid, elementName+"_fn",sel_names_string, elementName,sel_values_string);
+	
+	copyEditValue(fn_index,sel_names_string);
+	copyEditValue(val_index,sel_values_string);
 	
 	// alert("sel_names_string: "+sel_names_string);
 	// alert("sel_values_string: "+sel_values_string);

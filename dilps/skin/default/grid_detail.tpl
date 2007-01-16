@@ -25,6 +25,7 @@
 <!-- ============================================
 BEGIN grid_detail.tpl
 ============================================ -->
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   "http://www.w3.org/TR/html4/strict.dtd">
 
@@ -61,6 +62,10 @@ BEGIN grid_detail.tpl
       {/if}
   {/if}
   <link rel="stylesheet" type="text/css" href="css.php">
+  <script type="text/javascript">
+  	self.name = 'mainwindow';
+  	// alert(window.name);
+  </script>
 </head>
 <body class="main" {if $config.soapresults }onload="updateRemoteCollectionFields('{$sessionid}','{$query.queryid}')"{/if}>
 <table width="100%" cellspacing="0" cellpadding="0">

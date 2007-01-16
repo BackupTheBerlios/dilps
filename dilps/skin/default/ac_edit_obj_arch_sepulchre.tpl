@@ -23,7 +23,7 @@
 *}
 
 <!-- =================================================
-BEGIN ac_edit_iconography.tpl
+BEGIN ac_edit_obj_arch_sepulchre.tpl
 ================================================= -->
 
 {if $config.utf8 eq "true"}
@@ -63,7 +63,7 @@ BEGIN ac_edit_iconography.tpl
 
 	{if $query.id ne ""}
 	
-	{query_ext_element type="archaeology" element="category" fieldnames="fieldnames" values="values" sql="sql" query=$query}
+	{query_ext_element type="archaeology" element="obj_arch_sepulchre" fieldnames="fieldnames" values="values" sql="sql" query=$query}
 	
 	<!-- {$sql} -->
 	
@@ -77,7 +77,7 @@ BEGIN ac_edit_iconography.tpl
 
 	<table class="header" style="width: 90%; margin: auto;"/>
 		<tr>
-			<td class="heading">Bildkategorie</td>
+			<td class="heading">Ehrenmonumente und Grabarchitektur</td>
 		</tr>
 		<tr>
 			<td style="height: 20px;">
@@ -86,32 +86,82 @@ BEGIN ac_edit_iconography.tpl
 		</tr>
 		<tr>
 			<td>
-				<input type="checkbox" name="MSAnsicht" value="Ansicht">Ansicht
-			<table width="0*" border="0" cellspacing="10" cellpadding="0">
-			<tr>
-				<td><input type="checkbox" name="MS Gesamtansicht" value="Gesamtansicht">Gesamtansicht</td>
-				<td><input type="checkbox" name="MSDetailansicht" value="Detailansicht">Detailansicht</td>
-			</tr>
-			</table>  	
+				<table width="0*" border="0" cellspacing="10" cellpadding="0">
+				<tr>
+					<td><input type="checkbox" name="MSBogen" value="Bogen, B&ouml;gen">Bogen</td>
+					<td><input type="checkbox" name="S&auml;ulenmonument" value="S&auml;ulenmonument, Ehrens&auml;ulen">S&auml;ulenmonument</td>
+					<td><input type="checkbox" name="MSChoregischesWeihgeschenk" value="Choregisches Denkmal/Choregisches Weihgeschenk">Choregisches Weihgeschenk</td>
+				</tr>
+				<tr>
+					<td><input type="checkbox" name="MSEhrenbogen" value="Ehrenbogen, Ehrenb&ouml;gen">Ehrenbogen</td>
 				
-				<input type="checkbox" name="MS Luftaufnahme" value="Luftaufnahme, Luftbild">Luftaufnahme<p>
-				<input type="checkbox" name="MSZeichnung" value="Zeichnung">Zeichnung<p>
-			
-				<input type="checkbox" name="MS Rekonstruktion" value="Rekonstruktion">Rekonstruktion<p>
-				<input type="checkbox" name="MSModell" value="Modell">Modell<p>
-				<input type="checkbox" name="MSSammelaufnahme" value="Sammelaufnahme">Sammelaufnahme<p>
-				<input type="checkbox" name="MSLandkarte" value="Landkarte">Landkarte<p>
-			
-				<input type="checkbox" name="MSPlan" value="Plan">Plan
-			<table width="0*" border="0" cellspacing="10" cellpadding="0">
-			<tr>
-			
-				<td><input type="checkbox" name="MSGrundri&szlig;" value="Grundri&szlig;">Grundri&szlig;</td>
-				<td><input type="checkbox" name="MSSchnitt" value="Schnitt">Schnitt</td>
-			</tr>
-			</table>  	
-			<input type="checkbox" name="MSSchema" value="Schema">Schema
-			<p>
+					<td><input type="checkbox" name="MSExedra" value="Exedra, Exedren">Exedra</td>
+					<td><input type="checkbox" name="MSObelisk" value="Obelisk">Obelisk</td>
+				</tr>
+				<tr>
+					<td><input type="checkbox" name="MSTriumphbogen" value="Triumphbogen, Triumphb&ouml;gen">Triumphbogen</td>
+				</tr>
+				<tr>
+					<td><input type="checkbox" name="MSQuadrifrons" value="Quadrifrons">Quadrifrons</td>
+				</tr>
+				
+				</table>
+				<hr>
+				<br>
+					<b>Grabarchitektur</b><p>
+				
+					<input type="checkbox" name="MSGrabh&uuml;gel" value="Grabh&uuml;gel, Tumulus">Grabh&uuml;gel<p>
+					<input type="checkbox" name="MSGrabbau" value="Grabbau">Grabbau<p>
+						
+					<input type="checkbox" name="MSKammergrab" value="Kammergrab">Kammergrab
+				
+				<table width="0*" border="0" cellspacing="10" cellpadding="0">
+				
+				<tr>
+					<td><input type="checkbox" name="MSGrabkammer" value="Grabkammer">Grabkammer</td>
+					<td><input type="checkbox" name="MSDromos" value="Dromos">Dromos</td>
+				</tr>
+				</table>  
+					
+					<input type="checkbox" name="MSGrabpfeiler" value="Grabpfeiler">Grabpfeiler<br>
+					<input type="checkbox" name="MSPfeilergrab" value="Pfeilergrab">Pfeilergrab<br>
+					<input type="checkbox" name="MSFelsgrab" value="Felsgrab">Felsgrab
+				
+				<table width="0*" border="0" cellspacing="10" cellpadding="0">
+				
+				<tr>
+					<td><input type="checkbox" name="MSGrabfassade" value="Grabfassade">Grabfassade</td>
+				</tr>
+				</table>  
+				<br>
+				
+				<table width="0*" border="0" cellspacing="10" cellpadding="0">
+				<tr>
+					<td><input type="checkbox" name="MSHeroon" value="Heroon">Heroon</td>
+					<td><input type="checkbox" name="MSMausoleum" value="Mausoleum">Mausoleum</td>
+				</tr>
+				
+				</table>  
+				<br>
+				
+				<table width="0*" border="0" cellspacing="10" cellpadding="0">
+				<tr>
+					<td><input type="checkbox" name="MSKatakombe" value="Katakombe">Katakombe</td>
+					<td><input type="checkbox" name="MSLoculus" value="Loculus">Loculus</td>
+					<td><input type="checkbox" name="MSArkosolgrab" value="Arkosolgrab, Arkosolium">Arkosolgrab</td>
+				</tr>
+				<tr>
+					<td><input type="checkbox" name="MSHypog&auml;um" value="Hypog&auml;um">Hypog&auml;um</td>
+				
+					<td><input type="checkbox" name="MSColumbarium" value="Columbarium">Columbarium</td>
+					<td><input type="checkbox" name="MSCoemeterium" value="Coemeterium">Coemeterium</td>
+				</tr>
+				</table>  
+				
+				
+				<p>
+					<b>andere Bezeichnung:</b><br>
+					<textarea name="MSGrabText" rows="2" cols="40"></textarea>
 			</td>
 		</tr>
 		<tr>
@@ -123,7 +173,7 @@ BEGIN ac_edit_iconography.tpl
 			<td>
 				<table width="0*" border="0" cellspacing="10" cellpadding="0">
 					<tr>
-						<td><input type="button" value="eingeben" onclick="saveSelection('category');window.close();"></td>
+						<td><input type="button" value="eingeben" onclick="saveSelection('obj_arch_sepulchre');history.back();"></td>
 						<td><input type="button" value="zur&uuml;cksetzen" onclick="restoreState(js_fn, js_val);"></td>
 						<td><input type="reset" value="alle l&ouml;schen"></td>
 					</tr>
@@ -145,5 +195,5 @@ BEGIN ac_edit_iconography.tpl
 </html>
 
 <!-- =================================================
-END ac_edit_iconography.tpl
+END ac_edit_obj_arch_sepulchre.tpl
 ================================================= -->

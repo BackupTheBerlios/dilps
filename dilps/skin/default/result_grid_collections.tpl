@@ -33,8 +33,9 @@ BEGIN result_grid_collections.tpl
     <tr>
         <td class="result_list_collection_header">{#collection#|escape:html}</td>
         <td class="result_list_collection_header">{#matchingresults#|escape:html}</td>
-    <tr></tr>
-    {foreach key=key item=row from=$result.rs}
+    </tr>
+    <tr>
+	{foreach key=key item=row from=$result.rs}
         {if $row.local}
             {include file="`$config.skinBase``$config.skin`/collection_result_local.tpl" row=$row}
         {else}

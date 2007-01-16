@@ -64,7 +64,7 @@ BEGIN ac_edit_iconography.tpl
 
 	{if $query.id ne ""}
 	
-	{archaeology_element element="iconography" fieldnames="fieldnames" values="values" sql="sql" query=$query}
+	{query_ext_element type="archaeology" element="iconography" fieldnames="fieldnames" values="values" sql="sql" query=$query}
 	
 	<!-- {$sql} -->
 	

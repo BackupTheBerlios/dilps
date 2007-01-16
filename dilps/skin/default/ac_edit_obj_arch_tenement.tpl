@@ -23,7 +23,7 @@
 *}
 
 <!-- =================================================
-BEGIN ac_edit_iconography.tpl
+BEGIN ac_edit_obj_arch_tenement.tpl
 ================================================= -->
 
 {if $config.utf8 eq "true"}
@@ -63,7 +63,7 @@ BEGIN ac_edit_iconography.tpl
 
 	{if $query.id ne ""}
 	
-	{query_ext_element type="archaeology" element="category" fieldnames="fieldnames" values="values" sql="sql" query=$query}
+	{query_ext_element type="archaeology" element="obj_arch_tenement" fieldnames="fieldnames" values="values" sql="sql" query=$query}
 	
 	<!-- {$sql} -->
 	
@@ -77,7 +77,7 @@ BEGIN ac_edit_iconography.tpl
 
 	<table class="header" style="width: 90%; margin: auto;"/>
 		<tr>
-			<td class="heading">Bildkategorie</td>
+			<td class="heading">Wohnhaus</td>
 		</tr>
 		<tr>
 			<td style="height: 20px;">
@@ -86,32 +86,82 @@ BEGIN ac_edit_iconography.tpl
 		</tr>
 		<tr>
 			<td>
-				<input type="checkbox" name="MSAnsicht" value="Ansicht">Ansicht
-			<table width="0*" border="0" cellspacing="10" cellpadding="0">
-			<tr>
-				<td><input type="checkbox" name="MS Gesamtansicht" value="Gesamtansicht">Gesamtansicht</td>
-				<td><input type="checkbox" name="MSDetailansicht" value="Detailansicht">Detailansicht</td>
-			</tr>
-			</table>  	
+					<u>allgemein:</u><br>
 				
-				<input type="checkbox" name="MS Luftaufnahme" value="Luftaufnahme, Luftbild">Luftaufnahme<p>
-				<input type="checkbox" name="MSZeichnung" value="Zeichnung">Zeichnung<p>
-			
-				<input type="checkbox" name="MS Rekonstruktion" value="Rekonstruktion">Rekonstruktion<p>
-				<input type="checkbox" name="MSModell" value="Modell">Modell<p>
-				<input type="checkbox" name="MSSammelaufnahme" value="Sammelaufnahme">Sammelaufnahme<p>
-				<input type="checkbox" name="MSLandkarte" value="Landkarte">Landkarte<p>
-			
-				<input type="checkbox" name="MSPlan" value="Plan">Plan
-			<table width="0*" border="0" cellspacing="10" cellpadding="0">
-			<tr>
-			
-				<td><input type="checkbox" name="MSGrundri&szlig;" value="Grundri&szlig;">Grundri&szlig;</td>
-				<td><input type="checkbox" name="MSSchnitt" value="Schnitt">Schnitt</td>
-			</tr>
-			</table>  	
-			<input type="checkbox" name="MSSchema" value="Schema">Schema
-			<p>
+				<table width="0*" border="0" cellspacing="10" cellpadding="0">
+				<tr>
+					<td><input type="checkbox" name="MSWohnhaus" value="Wohnhaus">Wohnhaus</td>
+					<td><input type="checkbox" name="MSPalast" value="Palast">Palast</td>
+				</tr>
+				<tr>
+					<td><input type="checkbox" name="MSGeh&ouml;ft" value="Geh&ouml;ft, Bauernhof">Geh&ouml;ft/Bauernhof</td>
+				
+					<td><input type="checkbox" name="MSTurmgeh&ouml;ft" value="Turmgeh&ouml;ft">Turmgeh&ouml;ft</td>	
+				</tr>
+				</table>  
+				<hr>
+				
+					<u>griechisch:</u><br>
+				
+				<table width="0*" border="0" cellspacing="10" cellpadding="0">
+				<tr>
+					<td><input type="checkbox" name="MSHerdhaus" value="Herdhaus, Herd-Haus">Herdhaus</td>
+				
+					<td><input type="checkbox" name="MSMegaron" value="Megaron">Megaron</td>
+					<td><input type="checkbox" name="MSApsidenhaus" value="Apsidenhaus, Apsiden-Haus">Apsidenhaus</td>
+					<td><input type="checkbox" name="MSPastas-Haus" value="Pastashaus, Pastas-Haus">Pastas-Haus</td>
+					<td><input type="checkbox" name="MSProstas-Haus" value="Prostashaus, Prostas-Haus">Prostas-Haus</td>
+					<td><input type="checkbox" name="MSPeristyl-Haus" value="Peristylhaus, Peristyl-Haus">Peristyl-Haus</td>
+				</tr>
+				</table>  
+				
+					Teile:<br>
+				
+				<table width="0*" border="0" cellspacing="10" cellpadding="0">
+				<tr>
+					<td><input type="checkbox" name="MSAndron" value="Andron, Speiseraum, Symposionsraum">Andron</td>
+					<td><input type="checkbox" name="MSOikos" value="Oikos">Oikos</td>
+					<td><input type="checkbox" name="MSPeristyl" value="Peristyl">Peristyl</td>
+					<td><input type="checkbox" name="MSGynaikonitis" value="Gynaikonitis, Frauengemach">Gynaikonitis</td>
+				</tr>
+				</table>  
+				
+				<hr>
+				
+					<u>r&ouml;misch:</u><br>
+				<table width="0*" border="0" cellspacing="10" cellpadding="0">
+				<tr>
+					<td><input type="checkbox" name="MSAtriumhaus" value="Atriumhaus, Atrium-Haus">Atriumhaus</td>
+					<td><input type="checkbox" name="MSVilla" value="Villa">Villa</td>
+					<td><input type="checkbox" name="MSVillaRustica" value="Villa Rustica">Villa Rustica</td>
+				
+					<td><input type="checkbox" name="MSDomus" value="Domus">Domus</td>
+				</tr>
+				</table>  
+						
+					Teile:<br>
+				
+				<table width="0*" border="0" cellspacing="10" cellpadding="0">
+				<tr>
+					<td><input type="checkbox" name="MSAla" value="Ala">Ala</td>
+					<td><input type="checkbox" name="MSCompluvium" value="Compluvium">Compluvium</td>
+					<td><input type="checkbox" name="MSFauces" value="Fauces">Fauces</td>
+				
+					<td><input type="checkbox" name="MSTaberna" value="Taberna, Laden">Taberna</td>
+					<td><input type="checkbox" name="MSTriclinium" value="Triclinium, Speiseraum">Triclinium</td>
+				</tr>
+				<tr>
+					<td><input type="checkbox" name="MSAtrium" value="Atrium">Atrium</td>
+					<td><input type="checkbox" name="MSCubiculum" value="Cubiculum">Cubiculum</td>
+					<td><input type="checkbox" name="MSLararium" value="Lararium, Larenheiligtum, Hausaltar">Lararium</td>
+				
+					<td><input type="checkbox" name="MSTablinum" value="Tablinum">Tablinum</td>
+					<td><input type="checkbox" name="MSVestibulum1" value="Vestibulum, Vestib&uuml;l">Vestibulum</td>
+				</tr>
+				</table>
+				<p>
+					<b>Anderer Geb&auml;ude- oder Raumtyp:</b><br>
+					<textarea name="MSWohnhausText" rows="2" cols="40"></textarea><br>
 			</td>
 		</tr>
 		<tr>
@@ -123,7 +173,7 @@ BEGIN ac_edit_iconography.tpl
 			<td>
 				<table width="0*" border="0" cellspacing="10" cellpadding="0">
 					<tr>
-						<td><input type="button" value="eingeben" onclick="saveSelection('category');window.close();"></td>
+						<td><input type="button" value="eingeben" onclick="saveSelection('obj_arch_tenement');history.back();"></td>
 						<td><input type="button" value="zur&uuml;cksetzen" onclick="restoreState(js_fn, js_val);"></td>
 						<td><input type="reset" value="alle l&ouml;schen"></td>
 					</tr>
@@ -145,5 +195,5 @@ BEGIN ac_edit_iconography.tpl
 </html>
 
 <!-- =================================================
-END ac_edit_iconography.tpl
+END ac_edit_obj_arch_tenement.tpl
 ================================================= -->

@@ -76,7 +76,9 @@
 		</tr>
 		<tr>
 			<td>
-				&nbsp;
+				<iframe src="session_control.php?PHPSESSID={$sessionid}" id="sessioncontrol" name="sessioncontrol" width="350px" height="0px" marginheight="0" marginwidth="0" border="0" align="left" scrolling="No" style="visibility: hidden;">
+  					<p>Error loading session control</p>
+				</iframe>
 			</td>
 		</tr>
 		<tr>

@@ -23,7 +23,7 @@
 *}
 
 <!-- =================================================
-BEGIN ac_edit_iconography.tpl
+BEGIN ac_edit_obj_arch_economy.tpl
 ================================================= -->
 
 {if $config.utf8 eq "true"}
@@ -63,7 +63,7 @@ BEGIN ac_edit_iconography.tpl
 
 	{if $query.id ne ""}
 	
-	{query_ext_element type="archaeology" element="category" fieldnames="fieldnames" values="values" sql="sql" query=$query}
+	{query_ext_element type="archaeology" element="obj_arch_economy" fieldnames="fieldnames" values="values" sql="sql" query=$query}
 	
 	<!-- {$sql} -->
 	
@@ -77,7 +77,7 @@ BEGIN ac_edit_iconography.tpl
 
 	<table class="header" style="width: 90%; margin: auto;"/>
 		<tr>
-			<td class="heading">Bildkategorie</td>
+			<td class="heading">Wirtschaft, Transport und Verkehr</td>
 		</tr>
 		<tr>
 			<td style="height: 20px;">
@@ -86,32 +86,71 @@ BEGIN ac_edit_iconography.tpl
 		</tr>
 		<tr>
 			<td>
-				<input type="checkbox" name="MSAnsicht" value="Ansicht">Ansicht
-			<table width="0*" border="0" cellspacing="10" cellpadding="0">
-			<tr>
-				<td><input type="checkbox" name="MS Gesamtansicht" value="Gesamtansicht">Gesamtansicht</td>
-				<td><input type="checkbox" name="MSDetailansicht" value="Detailansicht">Detailansicht</td>
-			</tr>
-			</table>  	
+				<input type="checkbox" name="MSWirtschaft" value="Wirtschaft">Wirtschaft
 				
-				<input type="checkbox" name="MS Luftaufnahme" value="Luftaufnahme, Luftbild">Luftaufnahme<p>
-				<input type="checkbox" name="MSZeichnung" value="Zeichnung">Zeichnung<p>
-			
-				<input type="checkbox" name="MS Rekonstruktion" value="Rekonstruktion">Rekonstruktion<p>
-				<input type="checkbox" name="MSModell" value="Modell">Modell<p>
-				<input type="checkbox" name="MSSammelaufnahme" value="Sammelaufnahme">Sammelaufnahme<p>
-				<input type="checkbox" name="MSLandkarte" value="Landkarte">Landkarte<p>
-			
-				<input type="checkbox" name="MSPlan" value="Plan">Plan
-			<table width="0*" border="0" cellspacing="10" cellpadding="0">
-			<tr>
-			
-				<td><input type="checkbox" name="MSGrundri&szlig;" value="Grundri&szlig;">Grundri&szlig;</td>
-				<td><input type="checkbox" name="MSSchnitt" value="Schnitt">Schnitt</td>
-			</tr>
-			</table>  	
-			<input type="checkbox" name="MSSchema" value="Schema">Schema
-			<p>
+				<table width="0*" border="0" cellspacing="10" cellpadding="0">
+				<tr>
+					<td><input type="checkbox" name="MSMarkt" value="Markt">Markt</td>
+					<td><input type="checkbox" name="MSMacellum" value="Macellum">Macellum</td>
+					<td><input type="checkbox" name="MSHorreum" value="Lagerhaus, Horreum, Speicher">Lagerhaus/Horreum/Speicher</td>
+				
+				</tr>
+				</table><br>
+				
+					<input type="checkbox" name="MSTransport" value="Transport, Verkehr">Transport und Verkehr
+				
+				<table width="0*" border="0" cellspacing="10" cellpadding="0">
+				<tr>
+					<td><input type="checkbox" name="MSBr&uuml;cke" value="Br&uuml;cke">Br&uuml;cke</td>
+					<td><input type="checkbox" name="MSPlatz" value="PLatz, Platzanlage">Platz</td>
+					<td><input type="checkbox" name="MSHafen" value="Hafen, Hafenanlage">Hafenanlage</td>
+				
+				</tr>
+				<tr>
+					<td><input type="checkbox" name="MSLandstra&szlig;e" value="Landstra&szlig;e">Landstra&szlig;e</td>
+					<td><input type="checkbox" name="MSAgora" value="Agora">Agora</td>
+					<td><input type="checkbox" name="MSKanal" value="Kanal">Kanal</td>
+				</tr>
+				<tr>
+					<td><input type="checkbox" name="MSStra&szlig;e" value="Stra&szlig;e (st&auml;dtisch)">Stra&szlig;e (st&auml;dtisch)</td>
+				
+					<td><input type="checkbox" name="MSForum" value="Forum, Forumsanlage">Forum</td>
+					<td><input type="checkbox" name="MSSchiffshaus" value="Schiffshaus">Schiffshaus</td>
+				</tr>
+				<tr>
+					<td><input type="checkbox" name="MSGasse" value="Gasse">Gasse</td>
+					<td></td>
+					<td><input type="checkbox" name="MSWerft" value="Werftanlage">Werftanlage</td>
+				</tr>
+				
+				<tr>
+					<td><input type="checkbox" name="MSS&auml;ulenstra&szlig;e" value="S&auml;ulenstra&szlig;e">S&auml;ulenstra&szlig;e</td>
+				</tr>
+				<tr>
+					<td><input type="checkbox" name="MSStra&szlig;enkreuzung" value="Stra&szlig;enkreuzung">Stra&szlig;enkreuzung</td>
+				</tr>
+				</table>
+				<br>
+				
+					<input type="checkbox" name="MSVersorgung" value="Verorgung, Entsorgung">Versorgung/Entsorgung
+				
+				
+				<table width="0*" border="0" cellspacing="10" cellpadding="0">
+				<tr>
+					<td><input type="checkbox" name="MSAquaedukt" value="Aquaedukt, Wasserleitung">Aquaedukt/Wasserleitung</td>
+					<td><input type="checkbox" name="MSBrunnen" value="Brunnen">Brunnen</td>
+					<td><input type="checkbox" name="MSLatrine" value="Latrine, Latrina">Latrine</td>
+				</tr>
+				<tr>
+					<td><input type="checkbox" name="MSZisterne" value="Zisterne, Cistene">Zisterne</td>
+					<td><input type="checkbox" name="MSBrunnenhaus" value="Brunnenhaus">Brunnenhaus</td>
+				
+					<td><input type="checkbox" name="MSAbwasser" value="Abwasserkanal, Kloake, Cloaca, Kanalisation">Kanalisation</td>
+				</tr>
+				</table>
+				<br>
+					<b>Andere Geb&auml;udetypen und Geb&auml;udeteile:</b><br>
+					<textarea name="MSArchitekturWirtschaftText" rows="1" cols="40"></textarea>
 			</td>
 		</tr>
 		<tr>
@@ -123,7 +162,7 @@ BEGIN ac_edit_iconography.tpl
 			<td>
 				<table width="0*" border="0" cellspacing="10" cellpadding="0">
 					<tr>
-						<td><input type="button" value="eingeben" onclick="saveSelection('category');window.close();"></td>
+						<td><input type="button" value="eingeben" onclick="saveSelection('obj_arch_economy');history.back();"></td>
 						<td><input type="button" value="zur&uuml;cksetzen" onclick="restoreState(js_fn, js_val);"></td>
 						<td><input type="reset" value="alle l&ouml;schen"></td>
 					</tr>
@@ -145,5 +184,5 @@ BEGIN ac_edit_iconography.tpl
 </html>
 
 <!-- =================================================
-END ac_edit_iconography.tpl
+END ac_edit_obj_arch_economy.tpl
 ================================================= -->

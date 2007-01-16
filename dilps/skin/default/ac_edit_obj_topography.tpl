@@ -23,7 +23,7 @@
 *}
 
 <!-- =================================================
-BEGIN ac_edit_iconography.tpl
+BEGIN ac_edit_obj_topography.tpl
 ================================================= -->
 
 {if $config.utf8 eq "true"}
@@ -63,7 +63,7 @@ BEGIN ac_edit_iconography.tpl
 
 	{if $query.id ne ""}
 	
-	{query_ext_element type="archaeology" element="material_ext" fieldnames="fieldnames" values="values" sql="sql" query=$query}
+	{query_ext_element type="archaeology" element="obj_topography" fieldnames="fieldnames" values="values" sql="sql" query=$query}
 	
 	<!-- {$sql} -->
 	
@@ -77,7 +77,7 @@ BEGIN ac_edit_iconography.tpl
 
 	<table class="header" style="width: 90%; margin: auto;"/>
 		<tr>
-			<td class="heading">Material</td>
+			<td class="heading">Bildkategorie</td>
 		</tr>
 		<tr>
 			<td style="height: 20px;">
@@ -86,90 +86,96 @@ BEGIN ac_edit_iconography.tpl
 		</tr>
 		<tr>
 			<td>
-				<input type="checkbox" name="MSStein" value="Stein"><b>Stein</b>
-				
-				<table width="0*" border="0" cellspacing="10" cellpadding="0">
-				<tr>
-					<td><input type="checkbox" name="MSMarmor" value="Marmor">Marmor</td>
-					<td><input type="checkbox" name="MSKalkstein" value="Kalkstein">Kalkstein</td>
-					<td><input type="checkbox" name="MSAlabaster" value="Alabaster">Alabaster</td>
-					<td><input type="checkbox" name="MSBasalt" value="Basalt">Basalt</td>
-					<td><input type="checkbox" name="MSSandstein" value="Sandstein">Sandstein</td>
-				
-					<td><input type="checkbox" name="MSTravertin" value="Travertin">Travertin</td>
-					<td><input type="checkbox" name="MSTuff" value="Tuff">Tuff</td>
-					<td><input type="checkbox" name="MSPorphyr" value="Porphyr">Porphyr</td>
-				</tr>
-				</table>  
-				
-				<i>Exakte Bezeichnungen z.B. f&uuml;r Halbedelsteine bitte unten eintragen.</i>
+				<input type="checkbox" name="MSTopographie" value="Topographie"><b>Topographie</b>
 				<p>
-				<input type="checkbox" name="MSMetall" value="Metall"><b>Metall</b>
+				<i>nat&uuml;rliches Gel&auml;nde</i>
 				
 				<table width="0*" border="0" cellspacing="10" cellpadding="0">
 				<tr>
-					<td><input type="checkbox" name="MSBronze" value="Bronze">Bronze</td>
-					<td><input type="checkbox" name="MSSilber" value="Silber">Silber</td>
-					<td><input type="checkbox" name="MSGold" value="Gold">Gold</td>
-					<td><input type="checkbox" name="MSElektron" value="Elektron">Elektron</td>
-					<td><input type="checkbox" name="MSEisen" value="Eisen">Eisen</td>
+					<td><input type="checkbox" name="MSFestland" value="Festland">Festland</td>
+					<td><input type="checkbox" name="MSInsel" value="Insel">Insel</td>
+					<td><input type="checkbox" name="MSEbene" value="Ebene">Ebene</td>
+					<td><input type="checkbox" name="MSBerg" value="Berg">Berg</td>
+					<td><input type="checkbox" name="MSBach" value="Bach">Bach</td>
 				
-					<td><input type="checkbox" name="MSKupfer" value="Kupfer">Kupfer</td>
-					<td><input type="checkbox" name="MSBlei" value="Blei">Blei</td>
+					<td><input type="checkbox" name="MSSee" value="See">See</td>
 				</tr>
-				</table>  
+				<tr>
+					<td><input type="checkbox" name="MSK&uuml;ste" value="K&uuml;ste">K&uuml;ste</td>
+					<td><input type="checkbox" name="MSHalbinsel" value="Halbinsel">Halbinsel</td>
+					<td><input type="checkbox" name="MSTal" value="Tal">Tal</td>
+					<td><input type="checkbox" name="MSH&uuml;gel" value="H&uuml;gel">H&uuml;gel</td>
 				
-				<input type="checkbox" name="MSTon" value="Ton"><b>Ton</b>
+					<td><input type="checkbox" name="MSFlu&szlig;" value="Flu&szlig;">Flu&szlig;</td>
+					<td><input type="checkbox" name="MSMeer" value="Meer">Meer</td>
+				</tr>
+				</table>	
+				<p>
+				
+				<i>menschliche Ver&auml;nderungen</i>
 				
 				<table width="0*" border="0" cellspacing="10" cellpadding="0">
 				<tr>
-					<td><input type="checkbox" name="MSZiegel2" value="Ziegel">Ziegel</td>
-					<td><input type="checkbox" name="MSTerracotta" value="Terracotta, Terrakotta">Terracotta</td>
+					<td><input type="checkbox" name="Grenze" value="Grenze">Grenze</td>
 				
-					<td><input type="checkbox" name="MSKeramik" value="Keramik">Keramik</td>
-				</tr>
-				</table>  
-				
-				<b>andere anorganische Materialien</b><br>
-				
-				<table width="0*" border="0" cellspacing="10" cellpadding="0">
-				<tr>
-					<td><input type="checkbox" name="MSGlas" value="Glas">Glas</td>
-					<td><input type="checkbox" name="MSFayence" value="Fayence">Fayence</td>
-					<td><input type="checkbox" name="MSFritte" value="Fritte">Fritte</td>
-				
+					<td><input type="checkbox" name="Stra&szlig;e2" value="Landstra&szlig;e, Fernstra&szlig;e">Landstra&szlig;e/Fernstra&szlig;e</td>
+					<td><input type="checkbox" name="Steinbruch" value="Steinbruch">Steinbruch</td>
 				</tr>
 				<tr>
-					<td><input type="checkbox" name="MSStuck" value="Stuck, Putz">Stuck/Putz</td>
-					<td><input type="checkbox" name="MSEmail" value="Email, Emaille">Email</td>
-				</tr>	
-				<tr>
-					<td><input type="checkbox" name="MSPerlmutt" value="Perlmutt">Perlmutt</td>
-					<td><input type="checkbox" name="MSMuschelschale" value="Muschelschale">Muschelschale</td>
-					<td><input type="checkbox" name="MSSchneckenhaus" value="Schneckenhaus">Schneckenhaus</td>
+					<td><input type="checkbox" name="Grenzstein" value="Grenzstein">Grenzstein</td>
+					<td><input type="checkbox" name="Meilenstein" value="Meilenstein">Meilenstein</td>
+					<td><input type="checkbox" name="Bergwerk" value="Bergwerk">Bergwerk</td>
 				
 				</tr>
 				</table>  
 				
-				<input type="checkbox" name="MSorganisch" value="organisches Material"><b>organische Materialien</b>
+				<hr>
+				<input type="checkbox" name="MSUrbanistik" value="Urbanistik"><b>Urbanistik</b><p>
+				
+					<input type="checkbox" name="Stadt" value="Stadt">Stadt
+					
+				<table width="0*" border="0" cellspacing="10" cellpadding="0">
+				<tr>
+					<td><input type="checkbox" name="MSAkropolis" value="Akropolis">Akropolis</td>
+					<td><input type="checkbox" name="MSStra&szlig;e1" value="Stra&szlig;e">Stra&szlig;e     </td>
+				
+					<td><input type="checkbox" name="MSWohnviertel1" value="Wohnviertel, Wohnquartier">Wohnviertel</td>
+					<td><input type="checkbox" name="MSHaus" value="Wohnhaus, Haus">Haus</td>
+				</tr>
+				<tr>
+					<td><input type="checkbox" name="MSBefestigung" value="Befestigung">Befestigung</td>
+					<td><input type="checkbox" name="MSPlatz" value="Platz">Platz</td>
+					<td><input type="checkbox" name="MSHandwerkerviertel" value="Handwerkerviertel">Handwerkerviertel</td>
+				
+					<td><input type="checkbox" name="MSInsula" value="Insula">Insula</td>	
+				</tr>
+				</table>
+				<br>
+				
+					<input type="checkbox" name="MSl&auml;ndliche Umgebung" value="l&auml;ndliche Umgebung">l&auml;ndliche Umgebung
 				
 				<table width="0*" border="0" cellspacing="10" cellpadding="0">
 				<tr>
-					<td><input type="checkbox" name="MSHolz" value="Holz">Holz</td>
-					<td><input type="checkbox" name="MSKnochen" value="Knochen, Bein">Knochen/Bein</td>
-					<td><input type="checkbox" name="MSElfenbein" value="Elfenbein">Elfenbein</td>
-					<td><input type="checkbox" name="MSBernstein" value="Bernstein">Bernstein</td>
+					<td><input type="checkbox" name="MSGarten" value="Garten">Garten</td>
+					<td><input type="checkbox" name="MSHain" value="Hain">Hain</td>
 				
-					<td><input type="checkbox" name="MSAsphalt" value="Asphalt, Bitumen">Asphalt/Bitumen</td>
+					<td><input type="checkbox" name="MSPark" value="Park">Park</td>
 				</tr>
 				<tr>
-					<td><input type="checkbox" name="MSTextil" value="Textil, Textilien">Textil</td>
-					<td><input type="checkbox" name="MSSeide" value="Seide, Seidenstoff">Seide</td>
+					<td><input type="checkbox" name="MSGeh&ouml;ft" value="Geh&ouml;ft">Geh&ouml;ft</td>
+					<td><input type="checkbox" name="MSLandgut" value="Landgut">Landgut</td>
+					<td><input type="checkbox" name="MSVilla" value="Villa">Villa</td>
 				</tr>
 				</table>  
-				<b>anderes Material oder genauere Benennung:</b><br>
 				
-				<textarea name="MSMaterialVerschText" rows="2" cols="40"></textarea>
+				<br>
+					
+				<input type="checkbox" name="MSHafenanlage1" value="Hafen, Hafenanlage">Hafenanlage<p>
+				<input type="checkbox" name="MSHeiligtum1" value="Heiligtum">Heiligtum<p>
+				<input type="checkbox" name="MSNekropole1" value="Nekropole, Friedhof">Nekropole<p>
+			
+				<b>anderer Zusammenhang oder genauere Bezeichnung:</b><br>
+				<textarea name="MSTopographieText" rows="2" cols="40"></textarea>
 			</td>
 		</tr>
 		<tr>
@@ -181,7 +187,7 @@ BEGIN ac_edit_iconography.tpl
 			<td>
 				<table width="0*" border="0" cellspacing="10" cellpadding="0">
 					<tr>
-						<td><input type="button" value="eingeben" onclick="saveSelection('material_ext');window.close();"></td>
+						<td><input type="button" value="eingeben" onclick="saveSelection('obj_topography');history.back();"></td>
 						<td><input type="button" value="zur&uuml;cksetzen" onclick="restoreState(js_fn, js_val);"></td>
 						<td><input type="reset" value="alle l&ouml;schen"></td>
 					</tr>
@@ -203,5 +209,5 @@ BEGIN ac_edit_iconography.tpl
 </html>
 
 <!-- =================================================
-END ac_edit_iconography.tpl
+END ac_edit_obj_topography.tpl
 ================================================= -->

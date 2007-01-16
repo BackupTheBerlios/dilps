@@ -40,7 +40,7 @@ require_once( $config['includepath'].'dilpsQuery.class.php' );
 function smarty_block_query($params, $content, &$smarty, &$repeat)
 {
     global $db, $db_prefix, $query, $view;
-
+    
     if (isset($content)) {
 	    echo $content;
 	    return;
@@ -63,7 +63,11 @@ function smarty_block_query($params, $content, &$smarty, &$repeat)
 	    // search all collections, showing only a count of matching records
 	    $options['count'] = 1;
 	    $localCollections = query_local_collection_overview($dbquery, $options, $db, $db_prefix);
-	    $remoteCollections = get_remote_collections_links($db, $db_prefix);
+	    
+	    // uncomment, if you want to use remote collections
+	    // $remoteCollections = get_remote_collections_links($db, $db_prefix);
+	    $remoteCollections = array();
+	    
 	    $result = array('result_type'=>'collections');
 	    $result['rs'] = array_merge($localCollections, $remoteCollections);
 	    
@@ -98,9 +102,10 @@ function smarty_block_query($params, $content, &$smarty, &$repeat)
 //debug($result);	    
 //error_reporting(E_ALL);
 	}
-    if (!empty($result['error'])) {
-	  $smarty->trigger_error($result['error']);
-	  return;
+    if (!empty($result['rs']['error'])) {
+		$smarty->trigger_error($result['rs']['error']);
+		unset($result['rs']['error']);
+	  	return;
     }
 //debug($result, false);    
 	$smarty->assign($params['var'], $result);

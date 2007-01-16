@@ -199,22 +199,100 @@ WHERE
 			$sql =	"INSERT INTO {$db_prefix}archaeology (".
 					"  `collectionid`, `imageid`".
 					" ,`category_fn`, `category`".
-					" ,`object_fn`, `object`".
 					" ,`iconography_fn`, `iconography` ".
 					" ,`dating_ext_fn`, `dating_ext` ".
 					" ,`material_ext_fn`, `material_ext` ".
+					" ,`obj_culture_fn`, `obj_culture` ".
+					" ,`obj_culthistory_fn`, `obj_culthistory` ".
+					" ,`obj_topography_fn`, `obj_topography` ".
+					" ,`obj_arch_structelems_fn`, `obj_arch_structelems` ".
+					" ,`obj_arch_tenement_fn`, `obj_arch_tenement` ".
+					" ,`obj_arch_funcbuild_fn`, `obj_arch_funcbuild` ".
+					" ,`obj_arch_amusement_fn`, `obj_arch_amusement` ".
+					" ,`obj_arch_economy_fn`, `obj_arch_economy` ".
+					" ,`obj_arch_sacral_fn`, `obj_arch_sacral` ".
+					" ,`obj_arch_sepulchre_fn`, `obj_arch_sepulchre` ".
+					" ,`obj_arch_military_fn`, `obj_arch_military` ".
+					" ,`obj_mosaic_fn`, `obj_mosaic` ".
+					" ,`obj_painting_fn`, `obj_painting` ".
+					" ,`obj_sculpture_fn`, `obj_sculpture` ".
+					" ,`obj_portrait_fn`, `obj_portrait` ".
+					" ,`obj_ceramic_vascularforms_fn`, `obj_ceramic_vascularforms` ".
+					" ,`obj_ceramic_groups_fn`, `obj_ceramic_groups` ".
+					" ,`obj_toreutics_fn`, `obj_toreutics` ".
+					" ,`obj_jewellery_fn`, `obj_jewellery` ".
+					" ,`obj_glass_fn`, `obj_glass` ".
+					" ,`obj_glyptics_fn`, `obj_glyptics` ".
+					" ,`obj_numismatics_fn`, `obj_numismatics` ".
+					" ,`obj_textiles_fn`, `obj_textiles` ".
+					" ,`obj_misc_fn`, `obj_misc` ".
+					" ,`obj_epigraphy_fn`, `obj_epigraphy` ".
+					" ,`obj_methods_fn`, `obj_methods` ".
+					" ,`obj_reception_fn`, `obj_reception` ".
 					" ) VALUES (".
 					$collectionid.",".$imageid.",".
 					$db->qstr(trim($edit['category_fn'])).",".
 					$db->qstr(trim($edit['category'])).",".
-					$db->qstr(trim($edit['object_fn'])).",".
-					$db->qstr(trim($edit['object'])).",".
 					$db->qstr(trim($edit['iconography_fn'])).",".
 					$db->qstr(trim($edit['iconography'])).",".
 					$db->qstr(trim($edit['dating_ext_fn'])).",".
 					$db->qstr(trim($edit['dating_ext'])).",".
 					$db->qstr(trim($edit['material_ext_fn'])).",".
-					$db->qstr(trim($edit['material_ext'])).")";
+					$db->qstr(trim($edit['material_ext'])).",".
+					$db->qstr(trim($edit['obj_culture_fn'])).",".
+					$db->qstr(trim($edit['obj_culture'])).",".
+					$db->qstr(trim($edit['obj_culthistory_fn'])).",".
+					$db->qstr(trim($edit['obj_culthistory'])).",".
+					$db->qstr(trim($edit['obj_topography_fn'])).",".
+					$db->qstr(trim($edit['obj_topography'])).",".
+					$db->qstr(trim($edit['obj_arch_structelems_fn'])).",".
+					$db->qstr(trim($edit['obj_arch_structelems'])).",".
+					$db->qstr(trim($edit['obj_arch_tenement_fn'])).",".
+					$db->qstr(trim($edit['obj_arch_tenement'])).",".
+					$db->qstr(trim($edit['obj_arch_funcbuild_fn'])).",".
+					$db->qstr(trim($edit['obj_arch_funcbuild'])).",".
+					$db->qstr(trim($edit['obj_arch_amusement_fn'])).",".
+					$db->qstr(trim($edit['obj_arch_amusement'])).",".
+					$db->qstr(trim($edit['obj_arch_economy_fn'])).",".
+					$db->qstr(trim($edit['obj_arch_economy'])).",".
+					$db->qstr(trim($edit['obj_arch_sacral_fn'])).",".
+					$db->qstr(trim($edit['obj_arch_sacral'])).",".
+					$db->qstr(trim($edit['obj_arch_sepulchre_fn'])).",".
+					$db->qstr(trim($edit['obj_arch_sepulchre'])).",".
+					$db->qstr(trim($edit['obj_arch_military_fn'])).",".
+					$db->qstr(trim($edit['obj_arch_military'])).",".
+					$db->qstr(trim($edit['obj_mosaic_fn'])).",".
+					$db->qstr(trim($edit['obj_mosaic'])).",".
+					$db->qstr(trim($edit['obj_painting_fn'])).",".
+					$db->qstr(trim($edit['obj_painting'])).",".
+					$db->qstr(trim($edit['obj_sculpture_fn'])).",".
+					$db->qstr(trim($edit['obj_sculpture'])).",".
+					$db->qstr(trim($edit['obj_portrait_fn'])).",".
+					$db->qstr(trim($edit['obj_portrait'])).",".
+					$db->qstr(trim($edit['obj_ceramic_vascularforms_fn'])).",".
+					$db->qstr(trim($edit['obj_ceramic_vascularforms'])).",".
+					$db->qstr(trim($edit['obj_ceramic_groups_fn'])).",".
+					$db->qstr(trim($edit['obj_ceramic_groups'])).",".
+					$db->qstr(trim($edit['obj_toreutics_fn'])).",".
+					$db->qstr(trim($edit['obj_toreutics'])).",".
+					$db->qstr(trim($edit['obj_jewellery_fn'])).",".
+					$db->qstr(trim($edit['obj_jewellery'])).",".
+					$db->qstr(trim($edit['obj_glass_fn'])).",".
+					$db->qstr(trim($edit['obj_glass'])).",".
+					$db->qstr(trim($edit['obj_glyptics_fn'])).",".
+					$db->qstr(trim($edit['obj_glyptics'])).",".
+					$db->qstr(trim($edit['obj_numismatics_fn'])).",".
+					$db->qstr(trim($edit['obj_numismatics'])).",".
+					$db->qstr(trim($edit['obj_textiles_fn'])).",".
+					$db->qstr(trim($edit['obj_textiles'])).",".
+					$db->qstr(trim($edit['obj_misc_fn'])).",".
+					$db->qstr(trim($edit['obj_misc'])).",".
+					$db->qstr(trim($edit['obj_epigraphy_fn'])).",".
+					$db->qstr(trim($edit['obj_epigraphy'])).",".
+					$db->qstr(trim($edit['obj_methods_fn'])).",".
+					$db->qstr(trim($edit['obj_methods'])).",".
+					$db->qstr(trim($edit['obj_reception_fn'])).",".
+					$db->qstr(trim($edit['obj_reception'])).")";
 	
 			$sqls .= "\n".$sql;
 			if( !$db->Execute( $sql ))

@@ -23,7 +23,7 @@
 *}
 
 <!-- =================================================
-BEGIN ac_edit_iconography.tpl
+BEGIN ac_edit_obj_painting.tpl
 ================================================= -->
 
 {if $config.utf8 eq "true"}
@@ -63,7 +63,7 @@ BEGIN ac_edit_iconography.tpl
 
 	{if $query.id ne ""}
 	
-	{query_ext_element type="archaeology" element="category" fieldnames="fieldnames" values="values" sql="sql" query=$query}
+	{query_ext_element type="archaeology" element="obj_painting" fieldnames="fieldnames" values="values" sql="sql" query=$query}
 	
 	<!-- {$sql} -->
 	
@@ -77,7 +77,7 @@ BEGIN ac_edit_iconography.tpl
 
 	<table class="header" style="width: 90%; margin: auto;"/>
 		<tr>
-			<td class="heading">Bildkategorie</td>
+			<td class="heading">Malerei</td>
 		</tr>
 		<tr>
 			<td style="height: 20px;">
@@ -86,32 +86,28 @@ BEGIN ac_edit_iconography.tpl
 		</tr>
 		<tr>
 			<td>
-				<input type="checkbox" name="MSAnsicht" value="Ansicht">Ansicht
-			<table width="0*" border="0" cellspacing="10" cellpadding="0">
-			<tr>
-				<td><input type="checkbox" name="MS Gesamtansicht" value="Gesamtansicht">Gesamtansicht</td>
-				<td><input type="checkbox" name="MSDetailansicht" value="Detailansicht">Detailansicht</td>
-			</tr>
-			</table>  	
+				<input type="checkbox" name="MSTafelmalerei" value="Tafelmalerei">Tafelmalerei
+				<ul><input type="checkbox" name="MSPinax" value="Pinax, Pinakes">Pinax</ul>
 				
-				<input type="checkbox" name="MS Luftaufnahme" value="Luftaufnahme, Luftbild">Luftaufnahme<p>
-				<input type="checkbox" name="MSZeichnung" value="Zeichnung">Zeichnung<p>
-			
-				<input type="checkbox" name="MS Rekonstruktion" value="Rekonstruktion">Rekonstruktion<p>
-				<input type="checkbox" name="MSModell" value="Modell">Modell<p>
-				<input type="checkbox" name="MSSammelaufnahme" value="Sammelaufnahme">Sammelaufnahme<p>
-				<input type="checkbox" name="MSLandkarte" value="Landkarte">Landkarte<p>
-			
-				<input type="checkbox" name="MSPlan" value="Plan">Plan
-			<table width="0*" border="0" cellspacing="10" cellpadding="0">
-			<tr>
-			
-				<td><input type="checkbox" name="MSGrundri&szlig;" value="Grundri&szlig;">Grundri&szlig;</td>
-				<td><input type="checkbox" name="MSSchnitt" value="Schnitt">Schnitt</td>
-			</tr>
-			</table>  	
-			<input type="checkbox" name="MSSchema" value="Schema">Schema
-			<p>
+				<input type="checkbox" name="MSMumienportr&auml;t" value="Mumienportrait, Mumienportr&auml;t">Mumienportr&auml;t<br>
+				<hr>
+				<input type="checkbox" name="MSWandmalerei" value="Wandmalerei"><u>Wandmalerei</u>
+				<ul><u>Anbringung:</u><br>
+				
+				<input type="checkbox" name="MSWand2" value="Wand">Wand<br>
+				<input type="checkbox" name="MSDecke2" value="Decke">Decke<br>
+				<input type="checkbox" name="MSApsis3" value="Apsis">Apsis<br>
+				<input type="checkbox" name="MSDurchgang" value="Durchgang">Durchgang</ul>
+				<i>Bitte entsprechende Angaben im Bereich <b>Architektur</b> nicht vergessen!</i><br>
+				
+				<ul><u>Technik:</u><br>
+				<input type="checkbox" name="MSSeccomalerei" value="Seccomalerei, al-secco">Seccomalerei<br>
+				<input type="checkbox" name="MSFrescomalerei" value="Frescomalerei, al-fresco">Frescomalerei<br>
+				<input type="checkbox" name="MSEnkaustik" value="Enkaustik, enkaustische Malerei">Enkaustik<br></ul>		
+				<p>
+				<b>weitere Angaben zu Anbringung und Technik:</b><br>
+				
+				<textarea name="MSMalereiText" rows="2" cols="40"></textarea>
 			</td>
 		</tr>
 		<tr>
@@ -123,7 +119,7 @@ BEGIN ac_edit_iconography.tpl
 			<td>
 				<table width="0*" border="0" cellspacing="10" cellpadding="0">
 					<tr>
-						<td><input type="button" value="eingeben" onclick="saveSelection('category');window.close();"></td>
+						<td><input type="button" value="eingeben" onclick="saveSelection('obj_painting');history.back();"></td>
 						<td><input type="button" value="zur&uuml;cksetzen" onclick="restoreState(js_fn, js_val);"></td>
 						<td><input type="reset" value="alle l&ouml;schen"></td>
 					</tr>
@@ -145,5 +141,5 @@ BEGIN ac_edit_iconography.tpl
 </html>
 
 <!-- =================================================
-END ac_edit_iconography.tpl
+END ac_edit_obj_painting.tpl
 ================================================= -->

@@ -23,12 +23,14 @@
    :this file is included from result_grid_collections.tpl:
 *}
 <!-- ============================================
-BEGIN result_grid_collections.tpl
+BEGIN collection_result_local.tpl
 ============================================ -->
 <tr>
-    <td class="result_list_collection"><a class="collection_navsymbol" href="showCollection('{$sessionid}', '{$row.collectionid}', '{$query.queryid}')" >{$row.name}</a></td>
-    <td class="result_list_collection">{$row.count}</td>
+    <td class="result_list_collection"><a class="collection_navsymbol" href="javascript:showCollection('{$sessionid}', '{$row.collectionid}', '{$query.queryid}')" >{$row.name}</a></td>
+    <td class="result_list_collection">
+    	{$row.count}
+    </td>
 </tr>
 <!-- ============================================
-END result_grid_collections.tpl
+END collection_result_local.tpl
 ============================================ -->

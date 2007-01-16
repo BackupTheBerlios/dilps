@@ -23,7 +23,7 @@
 *}
 
 <!-- =================================================
-BEGIN ac_edit_iconography.tpl
+BEGIN ac_edit_obj_jewellery.tpl
 ================================================= -->
 
 {if $config.utf8 eq "true"}
@@ -63,7 +63,7 @@ BEGIN ac_edit_iconography.tpl
 
 	{if $query.id ne ""}
 	
-	{query_ext_element type="archaeology" element="material_ext" fieldnames="fieldnames" values="values" sql="sql" query=$query}
+	{query_ext_element type="archaeology" element="obj_jewellery" fieldnames="fieldnames" values="values" sql="sql" query=$query}
 	
 	<!-- {$sql} -->
 	
@@ -77,7 +77,7 @@ BEGIN ac_edit_iconography.tpl
 
 	<table class="header" style="width: 90%; margin: auto;"/>
 		<tr>
-			<td class="heading">Material</td>
+			<td class="heading">Schmuck</td>
 		</tr>
 		<tr>
 			<td style="height: 20px;">
@@ -86,90 +86,112 @@ BEGIN ac_edit_iconography.tpl
 		</tr>
 		<tr>
 			<td>
-				<input type="checkbox" name="MSStein" value="Stein"><b>Stein</b>
+				<i>Darstellungen von Schmuck geh&ouml;ren in die <b>Ikonographie</b>!<br>
+				&Uuml;berschneidungen mit anderen Bereichen wie z.B. der Toreutik sind m&ouml;glich!</i><p>
+				
+				<b>Gewand- und Kleiderschmuck</b>
 				
 				<table width="0*" border="0" cellspacing="10" cellpadding="0">
 				<tr>
-					<td><input type="checkbox" name="MSMarmor" value="Marmor">Marmor</td>
-					<td><input type="checkbox" name="MSKalkstein" value="Kalkstein">Kalkstein</td>
-					<td><input type="checkbox" name="MSAlabaster" value="Alabaster">Alabaster</td>
-					<td><input type="checkbox" name="MSBasalt" value="Basalt">Basalt</td>
-					<td><input type="checkbox" name="MSSandstein" value="Sandstein">Sandstein</td>
+					<td><input type="checkbox" name="MSFibel" value="Fibeln">Fibel</td>
+					<td><input type="checkbox" name="MSSchmuckblech" value="Schmuckbleche">Schmuckblech</td>
+					<td><input type="checkbox" name="MSZierknopf" value="Zierknopf">Zierknopf</td>
+					<td><input type="checkbox" name="MSGewandnadel" value="Gewandnadeln">Gewandnadel</td>
+					<td><input type="checkbox" name="MSG&uuml;rtelbeschlag" value="G&uuml;rtelbeschlag">G&uuml;rtelbeschlag</td>
 				
-					<td><input type="checkbox" name="MSTravertin" value="Travertin">Travertin</td>
-					<td><input type="checkbox" name="MSTuff" value="Tuff">Tuff</td>
-					<td><input type="checkbox" name="MSPorphyr" value="Porphyr">Porphyr</td>
 				</tr>
 				</table>  
-				
-				<i>Exakte Bezeichnungen z.B. f&uuml;r Halbedelsteine bitte unten eintragen.</i>
 				<p>
-				<input type="checkbox" name="MSMetall" value="Metall"><b>Metall</b>
+					<b>K&ouml;rperschmuck</b><p>
+					<input type="checkbox" name="MSHaarschmuck" value="Haarschmuck"><u>Haarschmuck</u>
+				<table width="0*" border="0" cellspacing="10" cellpadding="0">
+				<tr>
+					<td><input type="checkbox" name="MSDiadem" value="Diademe">Diadem</td>
+					<td><input type="checkbox" name="MSKranz" value="Kranz, Kr&auml;nze">Kranz</td>
+				
+					<td><input type="checkbox" name="MSHaarnadel" value="Haarnadeln">Haarnadel</td>
+					<td><input type="checkbox" name="MSHaarspirale" value="Haarspiralen">Haarspirale</td>
+					<td><input type="checkbox" name="MSSchl&auml;fenring" value="Schl&auml;fenringe">Schl&auml;fenring</td>
+					<td><input type="checkbox" name="MSHaarnetz" value="Haarnetze">Haarnetz</td>
+				</tr>
+				</table>  
+				<p>
+					<input type="checkbox" name="MSOhrschmuck" value="Ohrschmuck"><u>Ohrschmuck</u>
 				
 				<table width="0*" border="0" cellspacing="10" cellpadding="0">
 				<tr>
-					<td><input type="checkbox" name="MSBronze" value="Bronze">Bronze</td>
-					<td><input type="checkbox" name="MSSilber" value="Silber">Silber</td>
-					<td><input type="checkbox" name="MSGold" value="Gold">Gold</td>
-					<td><input type="checkbox" name="MSElektron" value="Elektron">Elektron</td>
-					<td><input type="checkbox" name="MSEisen" value="Eisen">Eisen</td>
+					<td><input type="checkbox" name="MSOhrscheibe" value="Ohrscheibe">Ohrscheibe</td>
+					<td><input type="checkbox" name="MSOhrreifen" value="Ohrreifen">Ohrreifen</td>
+					<td><input type="checkbox" name="MSOhrspirale" value="Ohrspiralen">Ohrspirale</td>
+					<td><input type="checkbox" name="MSkahnf&ouml;rmiger Ohrring" value="kahnf&ouml;rmiger Ohrring">kahnf&ouml;rmiger Ohrring</td>
+					<td><input type="checkbox" name="MSkegelf&ouml;rmiger Ohrring" value="kegelf&ouml;rmiger Ohrring">kegelf&ouml;rmiger Ohrring</td>
 				
-					<td><input type="checkbox" name="MSKupfer" value="Kupfer">Kupfer</td>
-					<td><input type="checkbox" name="MSBlei" value="Blei">Blei</td>
 				</tr>
 				</table>  
+				<p>
 				
-				<input type="checkbox" name="MSTon" value="Ton"><b>Ton</b>
+					<input type="checkbox" name="MSHalsschmuck" value="Halsschmuck"><u>Halsschmuck</u>
+				<table width="0*" border="0" cellspacing="10" cellpadding="0">
+				<tr>
+					<td><input type="checkbox" name="MSHalsband" value="Halsband, Halsb&auml;nder">Halsband</td>
+					<td><input type="checkbox" name="MSHalskette" value="Halsketten">Halskette</td>
+					<td><input type="checkbox" name="MSHalsreif" value="Halsreif">Halsreif</td>
+				
+					<td><input type="checkbox" name="MSTorques" value="Torques">Torques</td>
+					<td><input type="checkbox" name="MSPektorale" value="Pektorale, Pectorale">Pektorale</td>
+				</tr>
+				</table>  
+				<p>
+				
+					<input type="checkbox" name="MSArmschmuck" value="Armschmuck"><u>Armschmuck</u>
+				<table width="0*" border="0" cellspacing="10" cellpadding="0">
+				<tr>
+					<td><input type="checkbox" name="MSArmband" value="Armband, Armb&auml;nder">Armband (aus beweglichen Gliedern)</td>
+				
+					<td><input type="checkbox" name="MSArmreif" value="Armreif, Armreife">Armreif (feste Grundstruktur)</td>
+					<td><input type="checkbox" name="MSSchlangenarmreif" value="Schlangenarmreif, Schlangenarmreife">Schlangenarmreif</td>
+				</tr>
+				</table>  
+				<p>
+				
+					<input type="checkbox" name="MSFingerring" value="Fingerring, Fingerringe"><u>Fingerring</u>
+				<table width="0*" border="0" cellspacing="10" cellpadding="0">
+				<tr>
+					<td><input type="checkbox" name="MSSiegelring" value="Siegelring">Siegelring</td>
+				
+				</tr>
+				</table>  
+				<p>
+				
+					<u>Anh&auml;nger und Perlen</u>
 				
 				<table width="0*" border="0" cellspacing="10" cellpadding="0">
 				<tr>
-					<td><input type="checkbox" name="MSZiegel2" value="Ziegel">Ziegel</td>
-					<td><input type="checkbox" name="MSTerracotta" value="Terracotta, Terrakotta">Terracotta</td>
+					<td><input type="checkbox" name="MSAnh&auml;nger" value="Anh&auml;nger">Anh&auml;nger</td>
+					<td><input type="checkbox" name="MSPerle" value="Perle, Perlen">Perle</td>
 				
-					<td><input type="checkbox" name="MSKeramik" value="Keramik">Keramik</td>
+					<td><input type="checkbox" name="MSSchmuckmedaillon" value="Schmuckmedaillon">Schmuckmedaillon</td>
+					<td><input type="checkbox" name="MSAmulett" value="Amulett, Amulette">Amulett</td>
+					<td><input type="checkbox" name="MSLunula" value="Lunula, Lunulae">Lunula</td>
 				</tr>
 				</table>  
+				<p>
 				
-				<b>andere anorganische Materialien</b><br>
-				
+					<b>Technik</b>
 				<table width="0*" border="0" cellspacing="10" cellpadding="0">
-				<tr>
-					<td><input type="checkbox" name="MSGlas" value="Glas">Glas</td>
-					<td><input type="checkbox" name="MSFayence" value="Fayence">Fayence</td>
-					<td><input type="checkbox" name="MSFritte" value="Fritte">Fritte</td>
 				
-				</tr>
 				<tr>
-					<td><input type="checkbox" name="MSStuck" value="Stuck, Putz">Stuck/Putz</td>
-					<td><input type="checkbox" name="MSEmail" value="Email, Emaille">Email</td>
-				</tr>	
-				<tr>
-					<td><input type="checkbox" name="MSPerlmutt" value="Perlmutt">Perlmutt</td>
-					<td><input type="checkbox" name="MSMuschelschale" value="Muschelschale">Muschelschale</td>
-					<td><input type="checkbox" name="MSSchneckenhaus" value="Schneckenhaus">Schneckenhaus</td>
-				
+					<td><input type="checkbox" name="MSDraht" value="Draht">Draht</td>
+					<td><input type="checkbox" name="MSGranulation" value="Granulation">Granulation</td>
+					<td><input type="checkbox" name="MSEinlagen" value="Einlagen">Einlagen</td>
 				</tr>
 				</table>  
 				
-				<input type="checkbox" name="MSorganisch" value="organisches Material"><b>organische Materialien</b>
+				<p>
 				
-				<table width="0*" border="0" cellspacing="10" cellpadding="0">
-				<tr>
-					<td><input type="checkbox" name="MSHolz" value="Holz">Holz</td>
-					<td><input type="checkbox" name="MSKnochen" value="Knochen, Bein">Knochen/Bein</td>
-					<td><input type="checkbox" name="MSElfenbein" value="Elfenbein">Elfenbein</td>
-					<td><input type="checkbox" name="MSBernstein" value="Bernstein">Bernstein</td>
+					<b>Weitere Angaben:</b><br>
 				
-					<td><input type="checkbox" name="MSAsphalt" value="Asphalt, Bitumen">Asphalt/Bitumen</td>
-				</tr>
-				<tr>
-					<td><input type="checkbox" name="MSTextil" value="Textil, Textilien">Textil</td>
-					<td><input type="checkbox" name="MSSeide" value="Seide, Seidenstoff">Seide</td>
-				</tr>
-				</table>  
-				<b>anderes Material oder genauere Benennung:</b><br>
-				
-				<textarea name="MSMaterialVerschText" rows="2" cols="40"></textarea>
+					<textarea name="MSSchmuckText" rows="2" cols="40">Schmuck, </textarea><p>
 			</td>
 		</tr>
 		<tr>
@@ -181,7 +203,7 @@ BEGIN ac_edit_iconography.tpl
 			<td>
 				<table width="0*" border="0" cellspacing="10" cellpadding="0">
 					<tr>
-						<td><input type="button" value="eingeben" onclick="saveSelection('material_ext');window.close();"></td>
+						<td><input type="button" value="eingeben" onclick="saveSelection('obj_jewellery');history.back();"></td>
 						<td><input type="button" value="zur&uuml;cksetzen" onclick="restoreState(js_fn, js_val);"></td>
 						<td><input type="reset" value="alle l&ouml;schen"></td>
 					</tr>
@@ -203,5 +225,5 @@ BEGIN ac_edit_iconography.tpl
 </html>
 
 <!-- =================================================
-END ac_edit_iconography.tpl
+END ac_edit_obj_jewellery.tpl
 ================================================= -->

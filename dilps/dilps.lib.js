@@ -21,13 +21,12 @@ function editNameElement( sessionid, imageid, element, docelements ) {
 function editArchElement( sessionid, imageid, element, docelements ) {
    var props = 'toolbar=no,location=no,directories=no,status=yes,scrollbars=yes,resizable=yes,menubar=no,copyhistory=no';
    
-   var fn_index = "edit["+element+"_fn]";
-   var val_index = "edit["+element+"]";
+   //	var fn_index = "edit["+element+"_fn]";
+   //	var val_index = "edit["+element+"]";
+   // 	var fn_val = docelements[fn_index].value;
+   //	var val_val = docelements[val_index].value;
    
-   var fn_val = docelements[fn_index].value;
-   var val_val = docelements[val_index].value;
-   
-   win = window.open( 'edit_arch_element.php?PHPSESSID='+sessionid+'&query[id]='+imageid+'&query[element]='+element+'&fieldnames'+escape(fn_val)+'&values'+escape(val_val), 'archaelogyEdit', props + ',width=900,height=720' );
+   win = window.open( 'edit_arch_element.php?PHPSESSID='+sessionid+'&query[id]='+imageid+'&query[element]='+element, 'archaelogyEdit', props + ',width=900,height=720' );
    win.focus();
 }
 
@@ -666,4 +665,19 @@ function showError(errormsg)
 {
 	alert(errormsg+"!");
 	return false;
+}
+
+function copyEditValue(elementName,newValue)
+{
+	if (opener.document.forms["Main"].elements[elementName] != null) {
+		opener.document.forms["Main"].elements[elementName].value = newValue;
+	}
+}
+
+function storeInSession(sessionid, key1, value1, key2, value2)
+{
+	if (opener.frames['sessioncontrol'] != null) {
+		var url = 'session_control.php?PHPSESSID='+sessionid+'&key1='+escape(key1)+'&value1='+escape(value1)+'&key2='+escape(key2)+'&value2='+escape(value2);
+		opener.frames['sessioncontrol'].location.href = url;
+	}
 }

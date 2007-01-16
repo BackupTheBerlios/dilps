@@ -23,7 +23,7 @@
 *}
 
 <!-- =================================================
-BEGIN ac_edit_iconography.tpl
+BEGIN ac_edit_obj_arch.tpl
 ================================================= -->
 
 {if $config.utf8 eq "true"}
@@ -55,95 +55,65 @@ BEGIN ac_edit_iconography.tpl
 <link rel="stylesheet" type="text/css" href="css.php">
 <script src="dilps.lib.js" type="text/javascript"></script>
 <script src="include/archaeology/ac_edit.js" type="text/javascript"></script>
+<script type="text/javascript">
+  	self.name = 'objwindow';
+  	// alert(window.name);
+  </script>
 </head>
 
 <body class="headerstyle" style="width: 100%; height: 100%; vertical-align: top;">
-	<form name="Main" action="{$SCRIPT_NAME}" method="POST" enctype="multipart/form-data">
-	<input type="hidden" name="PHPSESSID" value="{$sessionid}">
-
 	{if $query.id ne ""}
-	
-	{query_ext_element type="archaeology" element="category" fieldnames="fieldnames" values="values" sql="sql" query=$query}
-	
-	<!-- {$sql} -->
-	
-	<script language="javascript">
-		var rs_fn 	= "{$fieldnames}";
-		var rs_val 	= "{$values}";
-		
-		js_fn 	= rs_fn.split('; ');
-		js_val	= rs_val.split('; ');
-	</script>
-
-	<table class="header" style="width: 90%; margin: auto;"/>
-		<tr>
-			<td class="heading">Bildkategorie</td>
-		</tr>
-		<tr>
-			<td style="height: 20px;">
-				&nbsp;
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<input type="checkbox" name="MSAnsicht" value="Ansicht">Ansicht
-			<table width="0*" border="0" cellspacing="10" cellpadding="0">
+		<table class="header" style="width: 90%; margin: auto;"/>
 			<tr>
-				<td><input type="checkbox" name="MS Gesamtansicht" value="Gesamtansicht">Gesamtansicht</td>
-				<td><input type="checkbox" name="MSDetailansicht" value="Detailansicht">Detailansicht</td>
+				<td class="heading">{#architecture#}</td>
 			</tr>
-			</table>  	
-				
-				<input type="checkbox" name="MS Luftaufnahme" value="Luftaufnahme, Luftbild">Luftaufnahme<p>
-				<input type="checkbox" name="MSZeichnung" value="Zeichnung">Zeichnung<p>
-			
-				<input type="checkbox" name="MS Rekonstruktion" value="Rekonstruktion">Rekonstruktion<p>
-				<input type="checkbox" name="MSModell" value="Modell">Modell<p>
-				<input type="checkbox" name="MSSammelaufnahme" value="Sammelaufnahme">Sammelaufnahme<p>
-				<input type="checkbox" name="MSLandkarte" value="Landkarte">Landkarte<p>
-			
-				<input type="checkbox" name="MSPlan" value="Plan">Plan
-			<table width="0*" border="0" cellspacing="10" cellpadding="0">
 			<tr>
-			
-				<td><input type="checkbox" name="MSGrundri&szlig;" value="Grundri&szlig;">Grundri&szlig;</td>
-				<td><input type="checkbox" name="MSSchnitt" value="Schnitt">Schnitt</td>
+				<td style="height: 20px;">
+					&nbsp;
+				</td>
 			</tr>
-			</table>  	
-			<input type="checkbox" name="MSSchema" value="Schema">Schema
-			<p>
-			</td>
-		</tr>
-		<tr>
-			<td style="height: 20px;">
-				&nbsp;
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<table width="0*" border="0" cellspacing="10" cellpadding="0">
-					<tr>
-						<td><input type="button" value="eingeben" onclick="saveSelection('category');window.close();"></td>
-						<td><input type="button" value="zur&uuml;cksetzen" onclick="restoreState(js_fn, js_val);"></td>
-						<td><input type="reset" value="alle l&ouml;schen"></td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-	</table>
-	<input type="hidden" name="step" value="1">
-</form>
-
-<script language="javascript">
-	restoreState(js_fn, js_val);
-</script>
-
-
-{/if}
+			<tr>
+				<td>
+						<a href="{$SCRIPT_NAME}?PHPSESSID={$sessionid}&query[id]={$query.id}&query[element]=obj_arch_structelems">Bauordnung / Bauglieder</a> (Fundament, Mauer, Dach)<p>
+					<hr>
+					
+						<u>Zivilarchitektur</u><br>
+					
+					<ul>	<a href="{$SCRIPT_NAME}?PHPSESSID={$sessionid}&query[id]={$query.id}&query[element]=obj_arch_tenement">Wohnhaus</a> (Haus, Villa, Palast)<p>
+						<a href="{$SCRIPT_NAME}?PHPSESSID={$sessionid}&query[id]={$query.id}&query[element]=obj_arch_funcbuild">Politische Funktionsbauten</a> (Versammlungen, Gerichte, Hallen)
+						<p>
+						<a href="{$SCRIPT_NAME}?PHPSESSID={$sessionid}&query[id]={$query.id}&query[element]=obj_arch_amusement">Sport und Unterhaltung</a> (Gymnasion, Zirkus, Theater) / Thermen</a>
+						<p>
+					
+						<a href="{$SCRIPT_NAME}?PHPSESSID={$sessionid}&query[id]={$query.id}&query[element]=obj_arch_economy">Wirtschaft, Transport und Verkehr (M&auml;rkte, Stra&szlig;en, H&auml;fen) / <br />
+							Versorgung und Entsorgung (Wasserleitungen und Kan&auml;le)</a>
+						<p>
+					</ul>
+					
+						<a href="{$SCRIPT_NAME}?PHPSESSID={$sessionid}&query[id]={$query.id}&query[element]=obj_arch_sacral">Sakralarchitektur</a> (Heiligt&uuml;mer, Tempel, Kirchen, Synagogen)<p>
+						<a href="{$SCRIPT_NAME}?PHPSESSID={$sessionid}&query[id]={$query.id}&query[element]=obj_arch_sepulchre">Ehrenmonumente (B&ouml;gen, S&auml;ulenmonumente) / <br />
+							Grabarchitektur (Kammergr&auml;ber, Grabh&uuml;gel, Katakomben) </a>
+						<p>
+						<a href="{$SCRIPT_NAME}?PHPSESSID={$sessionid}&query[id]={$query.id}&query[element]=obj_arch_military">Wehrarchitektur/Milit&auml;rarchitektur</a> (Befestigungen, Milit&auml;rlager, Wacht&uuml;rme)<p>
+				</td>
+			</tr>
+			<tr>
+				<td style="height: 20px;">
+					&nbsp;
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="button" value="schlie&szlig;en" onclick="window.close();">
+					<input type="button" value="zur&uuml;ck" onclick="history.back();">
+				</td>
+			</tr>
+		</table>
+	{/if}
 
 </body>
 </html>
 
 <!-- =================================================
-END ac_edit_iconography.tpl
+END ac_edit_obj_arch.tpl
 ================================================= -->

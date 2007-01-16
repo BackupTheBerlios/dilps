@@ -23,7 +23,7 @@
    :this file is included from result_grid_collections.tpl:
 *}
 <!-- ============================================
-BEGIN result_grid_collections.tpl
+BEGIN collection_result_remote.tpl
 ============================================ -->
 <tr>
     <td class="result_list_collection"><a class="collection_navsymbol" href="javascript:showCollection('{$sessionid}', '{$row.collection.collectionid}', '{$query.queryid}')" >{$row.collection.name}</a></td>
@@ -31,5 +31,5 @@ BEGIN result_grid_collections.tpl
 </tr>
 
 <!-- ============================================
-END result_grid_collections.tpl
+END collection_result_remote.tpl
 ============================================ -->

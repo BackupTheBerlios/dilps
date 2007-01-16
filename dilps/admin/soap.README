@@ -23,4 +23,4 @@ If the local dilps server ip address is 68.142.197.68, the remote dilps server w
 insert into ng_interdilps_hosts(ip, access, description) values ('68.142.197.68', 1, 'free-text description of the other dilps system');
 The access column should be 1 to allow image access.  Setting it to 0 will disable image access.
 
-
+4) uncomment line 68 in include/plugins/block.query.php and delete/comment line 69

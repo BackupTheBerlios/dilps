@@ -66,12 +66,16 @@ switch( $query['element'] )
 	case 'material_ext':
 	   $tpl = 'ac_edit_material_ext.tpl';
 		break;
+	case 'obj':
+	   $tpl = 'ac_edit_obj.tpl';
+		break;
 	default:
-	   $tpl = 'edit_element_none.tpl';
+	   $tpl = 'ac_edit_'.$query['element'].'.tpl';
 }
 
 $smarty->assign('sessionid',$sessionid);
 $smarty->assign( 'query', $query );
+
 
 $smarty->display( $config['skin'].DIRECTORY_SEPARATOR.$tpl );
 

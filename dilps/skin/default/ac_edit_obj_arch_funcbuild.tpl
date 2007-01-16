@@ -23,7 +23,7 @@
 *}
 
 <!-- =================================================
-BEGIN ac_edit_iconography.tpl
+BEGIN ac_edit_obj_arch_funcbuild.tpl
 ================================================= -->
 
 {if $config.utf8 eq "true"}
@@ -63,7 +63,7 @@ BEGIN ac_edit_iconography.tpl
 
 	{if $query.id ne ""}
 	
-	{query_ext_element type="archaeology" element="category" fieldnames="fieldnames" values="values" sql="sql" query=$query}
+	{query_ext_element type="archaeology" element="obj_arch_funcbuild" fieldnames="fieldnames" values="values" sql="sql" query=$query}
 	
 	<!-- {$sql} -->
 	
@@ -77,7 +77,7 @@ BEGIN ac_edit_iconography.tpl
 
 	<table class="header" style="width: 90%; margin: auto;"/>
 		<tr>
-			<td class="heading">Bildkategorie</td>
+			<td class="heading">Politische Funktionsbauten</td>
 		</tr>
 		<tr>
 			<td style="height: 20px;">
@@ -86,32 +86,35 @@ BEGIN ac_edit_iconography.tpl
 		</tr>
 		<tr>
 			<td>
-				<input type="checkbox" name="MSAnsicht" value="Ansicht">Ansicht
-			<table width="0*" border="0" cellspacing="10" cellpadding="0">
-			<tr>
-				<td><input type="checkbox" name="MS Gesamtansicht" value="Gesamtansicht">Gesamtansicht</td>
-				<td><input type="checkbox" name="MSDetailansicht" value="Detailansicht">Detailansicht</td>
-			</tr>
-			</table>  	
+				<b>Politische Funktionsbauten/Versammlungsbauten/Gerichtsgeb&auml;ude</b><p>
 				
-				<input type="checkbox" name="MS Luftaufnahme" value="Luftaufnahme, Luftbild">Luftaufnahme<p>
-				<input type="checkbox" name="MSZeichnung" value="Zeichnung">Zeichnung<p>
-			
-				<input type="checkbox" name="MS Rekonstruktion" value="Rekonstruktion">Rekonstruktion<p>
-				<input type="checkbox" name="MSModell" value="Modell">Modell<p>
-				<input type="checkbox" name="MSSammelaufnahme" value="Sammelaufnahme">Sammelaufnahme<p>
-				<input type="checkbox" name="MSLandkarte" value="Landkarte">Landkarte<p>
-			
-				<input type="checkbox" name="MSPlan" value="Plan">Plan
-			<table width="0*" border="0" cellspacing="10" cellpadding="0">
-			<tr>
-			
-				<td><input type="checkbox" name="MSGrundri&szlig;" value="Grundri&szlig;">Grundri&szlig;</td>
-				<td><input type="checkbox" name="MSSchnitt" value="Schnitt">Schnitt</td>
-			</tr>
-			</table>  	
-			<input type="checkbox" name="MSSchema" value="Schema">Schema
-			<p>
+					<input type="checkbox" name="MSBouleuterion" value="Bouleuterion, Buleuterion, Ratsgeb&auml;ude">Bouleuterion/Ratsgeb&auml;ude<br>
+					<input type="checkbox" name="MSComitium" value="Comitium">Comitium<br>
+					<input type="checkbox" name="MSCuria" value="Curia, Kurie">Curia<br>
+					<input type="checkbox" name="MSPrytaneion" value="Prytaneion">Prytaneion<p>
+					<input type="checkbox" name="MSGerichtsgeb&auml;ude" value="Gerichtsgeb&auml;ude">Gerichtsgeb&auml;ude<br>
+				
+					<input type="checkbox" name="MSVereinsgeb&auml;ude" value="Vereinsgeb&auml;ude">Vereinsgeb&auml;ude<p>
+				
+					<input type="checkbox" name="MSHalle" value="Halle">Halle<br>
+				
+				<table width="0*" border="0" cellspacing="10" cellpadding="0">
+				<tr>
+					<td><input type="checkbox" name="MSStoa" value="Stoa">Stoa</td>
+					<td><input type="checkbox" name="MSPortikus" value="Portikus, Porticus">Portikus</td>
+				
+					<td><input type="checkbox" name="MSBasilika" value="Basilika">Basilika</td>
+				</tr>
+				</table>  
+				
+					Teile:<br>
+					<input type="checkbox" name="MSTribunal" value="Tribunal">Tribunal<br>
+					<input type="checkbox" name="MSBema" value="Bema, Rednertrib&uuml;ne, Rednerb&uuml;hne">Bema (griechisch)/Rednertrib&uuml;ne<br>
+					<input type="checkbox" name="MSRostra" value="Rostra, Rednertrib&uuml;ne, Rednerb&uuml;ne">Rostra (r&ouml;misch)/ Rednertrib&uuml;ne<br>
+				
+				<p>
+					<b>Andere Geb&auml;udetypen:</b><br>
+					<textarea name="MSFunktionsbautenText" rows="2" cols="40"></textarea>
 			</td>
 		</tr>
 		<tr>
@@ -123,7 +126,7 @@ BEGIN ac_edit_iconography.tpl
 			<td>
 				<table width="0*" border="0" cellspacing="10" cellpadding="0">
 					<tr>
-						<td><input type="button" value="eingeben" onclick="saveSelection('category');window.close();"></td>
+						<td><input type="button" value="eingeben" onclick="saveSelection('obj_arch_funcbuild');history.back();"></td>
 						<td><input type="button" value="zur&uuml;cksetzen" onclick="restoreState(js_fn, js_val);"></td>
 						<td><input type="reset" value="alle l&ouml;schen"></td>
 					</tr>
@@ -145,5 +148,5 @@ BEGIN ac_edit_iconography.tpl
 </html>
 
 <!-- =================================================
-END ac_edit_iconography.tpl
+END ac_edit_obj_arch_funcbuild.tpl
 ================================================= -->

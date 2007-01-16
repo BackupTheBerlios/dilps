@@ -23,7 +23,7 @@
 *}
 
 <!-- =================================================
-BEGIN ac_edit_iconography.tpl
+BEGIN ac_edit_obj_arch_amusement.tpl
 ================================================= -->
 
 {if $config.utf8 eq "true"}
@@ -63,7 +63,7 @@ BEGIN ac_edit_iconography.tpl
 
 	{if $query.id ne ""}
 	
-	{query_ext_element type="archaeology" element="material_ext" fieldnames="fieldnames" values="values" sql="sql" query=$query}
+	{query_ext_element type="archaeology" element="obj_arch_amusement" fieldnames="fieldnames" values="values" sql="sql" query=$query}
 	
 	<!-- {$sql} -->
 	
@@ -77,7 +77,7 @@ BEGIN ac_edit_iconography.tpl
 
 	<table class="header" style="width: 90%; margin: auto;"/>
 		<tr>
-			<td class="heading">Material</td>
+			<td class="heading">Unterhaltung/Sport/Thermen</td>
 		</tr>
 		<tr>
 			<td style="height: 20px;">
@@ -86,90 +86,90 @@ BEGIN ac_edit_iconography.tpl
 		</tr>
 		<tr>
 			<td>
-				<input type="checkbox" name="MSStein" value="Stein"><b>Stein</b>
-				
 				<table width="0*" border="0" cellspacing="10" cellpadding="0">
 				<tr>
-					<td><input type="checkbox" name="MSMarmor" value="Marmor">Marmor</td>
-					<td><input type="checkbox" name="MSKalkstein" value="Kalkstein">Kalkstein</td>
-					<td><input type="checkbox" name="MSAlabaster" value="Alabaster">Alabaster</td>
-					<td><input type="checkbox" name="MSBasalt" value="Basalt">Basalt</td>
-					<td><input type="checkbox" name="MSSandstein" value="Sandstein">Sandstein</td>
+					<td><input type="checkbox" name="MSAmphitheater" value="Amphitheater">Amphitheater</td>
+					<td><input type="checkbox" name="MSArena" value="Arena">Arena</td>
+					<td><input type="checkbox" name="MSZirkus" value="Cirkus, Zirkus">Circus</td>
 				
-					<td><input type="checkbox" name="MSTravertin" value="Travertin">Travertin</td>
-					<td><input type="checkbox" name="MSTuff" value="Tuff">Tuff</td>
-					<td><input type="checkbox" name="MSPorphyr" value="Porphyr">Porphyr</td>
+				</tr>
+				<tr>
+					<td><input type="checkbox" name="MSPal&auml;stra" value="Pal&auml;stra, Palaistra">Pal&auml;stra</td>
+					<td><input type="checkbox" name="MSGymnasion" value="Gymnasion, Gymnasium">Gymnasion</td>
+					<td><input type="checkbox" name="MSStadion" value="Stadion">Stadion</td>
+					<td><input type="checkbox" name="MSHippodrom" value="Hippodrom, Rennbahn, Pferderennbahn">Hippodrom</td>
+				</tr>
+				<tr>
+				
+					<td><input type="checkbox" name="MSBibliothek" value="Bibliothek">Bibliothek</td>
+					<td><input type="checkbox" name="MSOdeion" value="Odeion">Odeion</td>
 				</tr>
 				</table>  
 				
-				<i>Exakte Bezeichnungen z.B. f&uuml;r Halbedelsteine bitte unten eintragen.</i>
-				<p>
-				<input type="checkbox" name="MSMetall" value="Metall"><b>Metall</b>
+				<hr>
+				
+					<input type="checkbox" name="MSTheater" value="Theater"><b>Theater</b><p>
+					<input type="checkbox" name="MSgriechischesTheater" value="griechisches Theater"><u>Griechisches Theater</u><br>
+					Teile:<br>
 				
 				<table width="0*" border="0" cellspacing="10" cellpadding="0">
 				<tr>
-					<td><input type="checkbox" name="MSBronze" value="Bronze">Bronze</td>
-					<td><input type="checkbox" name="MSSilber" value="Silber">Silber</td>
-					<td><input type="checkbox" name="MSGold" value="Gold">Gold</td>
-					<td><input type="checkbox" name="MSElektron" value="Elektron">Elektron</td>
-					<td><input type="checkbox" name="MSEisen" value="Eisen">Eisen</td>
+					<td><input type="checkbox" name="MSKoilon" value="Koilon, Zuschauerraum">Koilon/Zuschauerraum</td>
+					<td><input type="checkbox" name="MSOrchestra1" value="Orchestra">Orchestra</td>
+					<td><input type="checkbox" name="MSParodos" value="Parodos">Parodos</td>
+				</tr>
+				<tr>
+					<td><input type="checkbox" name="MSDiazoma" value="Diazoma, Umgang">Diazoma/Umgang</td>
 				
-					<td><input type="checkbox" name="MSKupfer" value="Kupfer">Kupfer</td>
-					<td><input type="checkbox" name="MSBlei" value="Blei">Blei</td>
+					<td><input type="checkbox" name="MSProskenion" value="Proskenion, B&uuml;hne">Proskenion/B&uuml;hne</td>
+					<td><input type="checkbox" name="MSSkene" value="Skene, B&uuml;hnengeb&auml;ude">Skene/B&uuml;hnengeb&auml;ude</td>
 				</tr>
 				</table>  
+				<br>
+					<input type="checkbox" name="MSR&ouml;mischesTheater" value="r&ouml;misches Theater"><u>R&ouml;misches Theater</u><br>
+					Teile:<br>
 				
-				<input type="checkbox" name="MSTon" value="Ton"><b>Ton</b>
+				<table width="0*" border="0" cellspacing="10" cellpadding="0">
+				
+				<tr>
+					<td><input type="checkbox" name="MSCavea" value="Cavea, Zuschauerraum">Cavea/Zuschauerraum</td>
+					<td><input type="checkbox" name="MSPraecinctio" value="Praecinctio, Umgang">Praecinctio/Umgang</td>
+					<td><input type="checkbox" name="MSProscaenium" value="Proscaenium, B&uuml;hne">Proscaenium/B&uuml;hne</td>
+					<td><input type="checkbox" name="MSScenaefrons" value="Scenae frons, B&uuml;hnenfassade">Scenae frons/B&uuml;hnenfassade</td>
+				
+				</tr>
+				<tr>
+					<td><input type="checkbox" name="MSCuneus" value="Cuneus, Sitzreihenkeil">Cuneus/Sitzreihenkeil</td>
+					<td><input type="checkbox" name="MSOrchestra2" value="Orchestra">Orchestra</td>
+					<td><input type="checkbox" name="MSScenae" value="Scenae, Skene">Scenae</td>
+				</tr>
+				</table>  
+				<br>
+				<hr>
+				
+					<input type="checkbox" name="MSTherme" value="Therme, Thermenanlage"><b>Therme/Thermenanlage</b><br>
+				
+					
+					Teile:<br>
 				
 				<table width="0*" border="0" cellspacing="10" cellpadding="0">
 				<tr>
-					<td><input type="checkbox" name="MSZiegel2" value="Ziegel">Ziegel</td>
-					<td><input type="checkbox" name="MSTerracotta" value="Terracotta, Terrakotta">Terracotta</td>
+					<td><input type="checkbox" name="MSVestibulum2" value="Vestibulum, Vestib&uuml;l">Vestibulum/Vestib&uuml;l (Vorraum)</td>
+					<td><input type="checkbox" name="MSFrigidarium" value="Frigidarium, Kaltwasserraum, Kaltbaderaum">Frigidarium (Kaltwasserraum)</td>
+					<td><input type="checkbox" name="MSCaldarium" value="Caldarium, Warmwasserraum, Warmbaderaum">Caldarium (Hei&szlig;wasserraum)</td>
 				
-					<td><input type="checkbox" name="MSKeramik" value="Keramik">Keramik</td>
-				</tr>
-				</table>  
-				
-				<b>andere anorganische Materialien</b><br>
-				
-				<table width="0*" border="0" cellspacing="10" cellpadding="0">
-				<tr>
-					<td><input type="checkbox" name="MSGlas" value="Glas">Glas</td>
-					<td><input type="checkbox" name="MSFayence" value="Fayence">Fayence</td>
-					<td><input type="checkbox" name="MSFritte" value="Fritte">Fritte</td>
-				
+					<td><input type="checkbox" name="MSNatatio" value="Natatio, Schwimmbad">Natatio (Schwimmbad)</td>
 				</tr>
 				<tr>
-					<td><input type="checkbox" name="MSStuck" value="Stuck, Putz">Stuck/Putz</td>
-					<td><input type="checkbox" name="MSEmail" value="Email, Emaille">Email</td>
-				</tr>	
-				<tr>
-					<td><input type="checkbox" name="MSPerlmutt" value="Perlmutt">Perlmutt</td>
-					<td><input type="checkbox" name="MSMuschelschale" value="Muschelschale">Muschelschale</td>
-					<td><input type="checkbox" name="MSSchneckenhaus" value="Schneckenhaus">Schneckenhaus</td>
-				
+					<td><input type="checkbox" name="MSApodyterium" value="Apodyterium, Umkleideraum">Apodyterium (Umkleideraum)</td>
+					<td><input type="checkbox" name="MSTepidarium" value="Tepidarium">Tepidarium (lauwarmer Raum)</td>
+					<td><input type="checkbox" name="MSSudatorium" value="Sudatorium, Schwitzraum">Sudatorium (Schwitzraum)</td>
 				</tr>
-				</table>  
+				</table>  	
+				<br>
 				
-				<input type="checkbox" name="MSorganisch" value="organisches Material"><b>organische Materialien</b>
-				
-				<table width="0*" border="0" cellspacing="10" cellpadding="0">
-				<tr>
-					<td><input type="checkbox" name="MSHolz" value="Holz">Holz</td>
-					<td><input type="checkbox" name="MSKnochen" value="Knochen, Bein">Knochen/Bein</td>
-					<td><input type="checkbox" name="MSElfenbein" value="Elfenbein">Elfenbein</td>
-					<td><input type="checkbox" name="MSBernstein" value="Bernstein">Bernstein</td>
-				
-					<td><input type="checkbox" name="MSAsphalt" value="Asphalt, Bitumen">Asphalt/Bitumen</td>
-				</tr>
-				<tr>
-					<td><input type="checkbox" name="MSTextil" value="Textil, Textilien">Textil</td>
-					<td><input type="checkbox" name="MSSeide" value="Seide, Seidenstoff">Seide</td>
-				</tr>
-				</table>  
-				<b>anderes Material oder genauere Benennung:</b><br>
-				
-				<textarea name="MSMaterialVerschText" rows="2" cols="40"></textarea>
+					<b>anderer Geb&auml;udetyp oder Geb&auml;udeteil:</b><br>
+					<textarea name="MSArchitekturUnterhaltungText" rows="2" cols="40"></textarea>
 			</td>
 		</tr>
 		<tr>
@@ -181,7 +181,7 @@ BEGIN ac_edit_iconography.tpl
 			<td>
 				<table width="0*" border="0" cellspacing="10" cellpadding="0">
 					<tr>
-						<td><input type="button" value="eingeben" onclick="saveSelection('material_ext');window.close();"></td>
+						<td><input type="button" value="eingeben" onclick="saveSelection('obj_arch_amusement');history.back();"></td>
 						<td><input type="button" value="zur&uuml;cksetzen" onclick="restoreState(js_fn, js_val);"></td>
 						<td><input type="reset" value="alle l&ouml;schen"></td>
 					</tr>
@@ -203,5 +203,5 @@ BEGIN ac_edit_iconography.tpl
 </html>
 
 <!-- =================================================
-END ac_edit_iconography.tpl
+END ac_edit_obj_arch_amusement.tpl
 ================================================= -->

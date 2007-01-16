@@ -85,8 +85,8 @@ BEGIN archaeology_detail.tpl
 	  </tr>
 	  {/if}
 	  <tr>
-	    <td class="result_detail_data_head">{#name#}</td>
-	    <td class="result_detail_data_data">{$row.name1text|escape:htmall}{if $row.name2text ne ""} <br /> {$row.name2text|escape:htmlall}{/if}</td>
+	    <td class="result_detail_data_head">{#artistname#}</td>
+	    <td class="result_detail_data_data">{$row.name1text|escape:htmall}</td>
 	  </tr>
 	  {if $row.iconography ne ""}
 	  <tr>
@@ -94,15 +94,9 @@ BEGIN archaeology_detail.tpl
 	    <td class="result_detail_data_data">{$row.iconography|escape:htmall}</td>
 	  </tr>
 	  {/if}
-	  {if $row.dating ne ""}
-	  <tr>
-	    <td class="result_detail_data_head">{#dating_exact#}</td>
-	    <td class="result_detail_data_data">{$row.dating|escape:htmall}</td>
-	  </tr>
-	  {/if}
 	  {if $row.dating_ext ne ""}
 	  <tr>
-	    <td class="result_detail_data_head">{#dating_descr#}</td>
+	    <td class="result_detail_data_head">{#date#}</td>
 	    <td class="result_detail_data_data">{$row.dating_ext|escape:htmall}</td>
 	  </tr>
 	  {/if}
@@ -124,12 +118,12 @@ BEGIN archaeology_detail.tpl
 	    <td class="result_detail_data_data">{$row.format|escape:htmall}</td>
 	  </tr>
 	  {/if}
-          {if $row.city ne "" or $row.institution ne ""}
+      {if $row.city ne ""}
 	  <tr>
-	    <td class="result_detail_data_head">{#location#}</td>
-	    <td class="result_detail_data_data">{$row.city|escape:htmall}{if $row.institution ne "" AND $row.city ne ""} / {/if}{$row.institution|escape:htmlall}</td>
+	    <td class="result_detail_data_head">{#position#}</td>
+	    <td class="result_detail_data_data">{$row.city|escape:htmall}</td>
 	  </tr>
-          {/if}
+      {/if}
 	  <tr>
 	    <td class="result_detail_data_head">{#src#|escape:htmlall}</td>
 	    <td class="result_detail_data_data">

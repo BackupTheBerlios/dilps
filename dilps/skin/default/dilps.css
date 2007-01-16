@@ -411,6 +411,43 @@ td.result_detail_data_head {
 {/literal}
 
 {literal}
+td.result_detail_data_head2 {
+   font-family: Times;
+	font-weight: bold;
+	font-size: 11pt;
+	text-align: left;
+	color: #363636;
+	vertical-align: top;
+	padding-top: 2px;
+	padding-bottom: 4px;
+}
+{/literal}
+
+{literal}
+td.result_detail_data_subhead {
+   font-family: Times;
+	font-weight: normal;
+	font-size: 11pt;
+	text-align: left;
+	color: #363636;
+	vertical-align: top;
+}
+{/literal}
+
+{literal}
+td.result_detail_data_sub_subhead {
+   font-family: Times;
+	font-weight: italic;
+	font-size: 10pt;
+	text-align: left;
+	color: #363636;
+	vertical-align: top;
+	padding-left: 20px;
+}
+{/literal}
+
+
+{literal}
 td.result_detail_amazonimage {
    font-family: Times;
    font-weight: bold;

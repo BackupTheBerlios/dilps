@@ -23,7 +23,7 @@
 *}
 
 <!-- =================================================
-BEGIN ac_edit_iconography.tpl
+BEGIN ac_edit_obj_arch_mosaic.tpl
 ================================================= -->
 
 {if $config.utf8 eq "true"}
@@ -63,7 +63,7 @@ BEGIN ac_edit_iconography.tpl
 
 	{if $query.id ne ""}
 	
-	{query_ext_element type="archaeology" element="category" fieldnames="fieldnames" values="values" sql="sql" query=$query}
+	{query_ext_element type="archaeology" element="obj_arch_mosaic" fieldnames="fieldnames" values="values" sql="sql" query=$query}
 	
 	<!-- {$sql} -->
 	
@@ -77,7 +77,7 @@ BEGIN ac_edit_iconography.tpl
 
 	<table class="header" style="width: 90%; margin: auto;"/>
 		<tr>
-			<td class="heading">Bildkategorie</td>
+			<td class="heading">Mosaik</td>
 		</tr>
 		<tr>
 			<td style="height: 20px;">
@@ -86,32 +86,30 @@ BEGIN ac_edit_iconography.tpl
 		</tr>
 		<tr>
 			<td>
-				<input type="checkbox" name="MSAnsicht" value="Ansicht">Ansicht
-			<table width="0*" border="0" cellspacing="10" cellpadding="0">
-			<tr>
-				<td><input type="checkbox" name="MS Gesamtansicht" value="Gesamtansicht">Gesamtansicht</td>
-				<td><input type="checkbox" name="MSDetailansicht" value="Detailansicht">Detailansicht</td>
-			</tr>
-			</table>  	
+					<b>Mosaik</b><p>
 				
-				<input type="checkbox" name="MS Luftaufnahme" value="Luftaufnahme, Luftbild">Luftaufnahme<p>
-				<input type="checkbox" name="MSZeichnung" value="Zeichnung">Zeichnung<p>
-			
-				<input type="checkbox" name="MS Rekonstruktion" value="Rekonstruktion">Rekonstruktion<p>
-				<input type="checkbox" name="MSModell" value="Modell">Modell<p>
-				<input type="checkbox" name="MSSammelaufnahme" value="Sammelaufnahme">Sammelaufnahme<p>
-				<input type="checkbox" name="MSLandkarte" value="Landkarte">Landkarte<p>
-			
-				<input type="checkbox" name="MSPlan" value="Plan">Plan
-			<table width="0*" border="0" cellspacing="10" cellpadding="0">
-			<tr>
-			
-				<td><input type="checkbox" name="MSGrundri&szlig;" value="Grundri&szlig;">Grundri&szlig;</td>
-				<td><input type="checkbox" name="MSSchnitt" value="Schnitt">Schnitt</td>
-			</tr>
-			</table>  	
-			<input type="checkbox" name="MSSchema" value="Schema">Schema
-			<p>
+					<u>Anbringung:</u><br>
+				
+					<input type="checkbox" name="MSBodenmosaik" value="Bodenmosaik, Fu&szlig;bodenmosaik">Fu&szlig;bodenmosaik<br>
+					<input type="checkbox" name="MSWandmosaik" value="Wandmosaik">Wandmosaik<br>
+					<input type="checkbox" name="MSDeckenmosaik" value="Deckenmosaik">Deckenmosaik<br>
+					<input type="checkbox" name="MSApsismosaik" value="Apsismosaik, Apsis-Mosaik, Apsidenmosaik">Apsismosaik<p>
+				
+					
+					<u>Dekorsystem:</u><br>
+					<input type="checkbox" name="MSEmblem" value="Emblema, Emblemata (Mosaik)">Emblema<p>
+				
+					<u>Technik:</u><br>
+				
+					<input type="checkbox" name="MSKieselmosaik" value="Kieselmosaik, Kiesel-Mosaik">Kieselmosaik<br>
+					<input type="checkbox" name="MSTesseramosaik" value="Tesseramosaik, Tessera-Mosaik, opus tessellatum, Tessellat-Mosaik">Opus tessellatum<br>
+				
+						<ul><input type="checkbox" name="MSOpusvermiculatum" value="Opus vermiculatum">Opus vermiculatum (besonders feines Tesseramaterial)</ul>
+					<input type="checkbox" name="MSSchwarzwei&szlig;-Mosaik" value="Schwarzwei&szlig;-Mosaik, Schwarz-Wei&szlig;-Mosaik">Schwarz-Wei&szlig;-Mosaik<br>
+					<input type="checkbox" name="MSOpussectile" value="Opus sectile">Opus sectile<br>
+				<p>
+					<b>andere Bezeichnung:</b><br>
+					<textarea name="MSMosaikText" rows="1" cols="40"></textarea>
 			</td>
 		</tr>
 		<tr>
@@ -123,7 +121,7 @@ BEGIN ac_edit_iconography.tpl
 			<td>
 				<table width="0*" border="0" cellspacing="10" cellpadding="0">
 					<tr>
-						<td><input type="button" value="eingeben" onclick="saveSelection('category');window.close();"></td>
+						<td><input type="button" value="eingeben" onclick="saveSelection('obj_arch_mosaic');history.back();"></td>
 						<td><input type="button" value="zur&uuml;cksetzen" onclick="restoreState(js_fn, js_val);"></td>
 						<td><input type="reset" value="alle l&ouml;schen"></td>
 					</tr>
@@ -145,5 +143,5 @@ BEGIN ac_edit_iconography.tpl
 </html>
 
 <!-- =================================================
-END ac_edit_iconography.tpl
+END ac_edit_obj_arch_mosaic.tpl
 ================================================= -->
