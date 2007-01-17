@@ -446,6 +446,45 @@ td.result_detail_data_sub_subhead {
 }
 {/literal}
 
+{literal}
+td.result_detail_data_sub_head2 {
+   font-family: Times;
+	font-weight: italic;
+	font-size: 10pt;
+	text-align: left;
+	color: #363636;
+	vertical-align: top;
+}
+{/literal}
+
+{literal}
+td.result_detail_data_sub_head {
+   font-family: Times;
+	font-weight: italic;
+	font-size: 10pt;
+	text-align: left;
+	color: #363636;
+	vertical-align: top;
+	padding-left: 20px;
+}
+{/literal}
+
+{literal}
+td.result_detail_data_sub_data {
+   font-family: Times;
+	font-weight: normal;
+	font-size: 10pt;
+	text-align: left;
+	color: #505050;
+	vertical-align: top;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-right: 0px;
+	margin: 0 0 0 0;
+	padding-left: 20px;
+}
+{/literal}
+
 
 {literal}
 td.result_detail_amazonimage {

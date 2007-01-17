@@ -69,7 +69,6 @@
 		$zip_binary 			= $config['gnu_zip'];	
 	}
 	
-	
 	// available resolutions and formats for dilps image generation
 	// 
 	// ATT: Only change this, if you really know what you are doing!
@@ -121,6 +120,17 @@
 	// $config['editorgroup'] = 'archiveditor';	
 	
 	// no longer needed
+	
+	
+	// fixme: move these to database later
+	// 
+	// here you can set your default collection and type if you like (optional)
+	
+	// $config['defaultcollection'] = 4;
+	$config['defaulttype'] = 'archaeology';
+	
+	// query extended information on search?
+	$config['queryextended'] = true;
 
 	
 	

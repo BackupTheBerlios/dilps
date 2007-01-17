@@ -77,7 +77,7 @@ function cleargroup3() {
 	<form name="Main" action="{$SCRIPT_NAME}" method="POST" enctype="multipart/form-data">
 	<input type="hidden" name="PHPSESSID" value="{$sessionid}">
 
-	<table class="header" style="width: 100%; height: 80%; vertical-align: top;">
+	<table class="header" style="width: 100%; height: 100%; vertical-align: top;">
 	{if $query.process eq "" or $query.process eq "0"}
 		<tr>
 		   <td class="queryinputfieldtext">
@@ -90,6 +90,20 @@ function cleargroup3() {
 					{foreach from=$collections item=row}
 						<option value="{$row.collectionid}"{if $query.collection eq "" and $config.defaultcollection eq $row.collectionid} selected{elseif $query.collection eq $row.collectionid} selected{/if}>{$row.name|escape:htmlall}</option>
 					{/foreach}
+				</select>
+		   </td>
+		</tr>
+		<tr>
+		   <td class="queryinputfieldtext">
+		      {#type#}
+		   </td>
+		   <td>
+		      <select class="queryselectfield" name="query[type]">
+					{type_list var="types" sql="sql"}
+					<!-- {$sql} -->	
+			        {foreach from=`$types` item=type}
+			            <option value="{$type.name|escape:html}"{if $config.defaulttype eq $type.name} selected{/if}>{$type.print_name|escape:htmlall}</option>
+			        {/foreach}
 				</select>
 		   </td>
 		</tr>
@@ -218,6 +232,7 @@ function cleargroup3() {
 			</td>
 			<td>
 				<input type="hidden" name="query[collectionid]" value="{$query.collectionid}">
+				<input type="hidden" name="query[type]" value="{$query.type}">
 				<input type="hidden" name="query[group1id]" value="{$query.group1id}">
 				<input type="hidden" name="query[group1owner]" value="{$query.group1owner}">
 				<input type="hidden" name="query[group2id]" value="{$query.group2id}">

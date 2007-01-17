@@ -142,8 +142,11 @@ BEGIN default_edit.tpl
 		   <td colspan="2" class="result_detail_data_data"><textarea name="edit[commentary]" cols="45" rows="5" style="width: 400px; height: 80px;" >{$row.commentary|escape:html}</textarea></td>
 		</tr>
 		<tr>
-		   <td class="result_detail_data_head"><input type="hidden" name="edit[currentuser]" value="{$user.login|escape:html}"></td>
-		   <td colspan="2" class="result_detail_data_data"><input type="button" name="edit[save]" value="{#save#|escape:htmlall}" onClick="saveImage();"></td>
+   		   <td class="result_detail_data_head"><input type="hidden" name="edit[currentuser]" value="{$user.login|escape:html}"></td>
+		   <td colspan="2" class="result_detail_data_data">
+		   	<input type="button" class="button" name="edit[save]" value="{#save#|escape:htmlall}" onClick="saveImage();">
+		   	&nbsp;
+		   	<input type="button" class="button" name="edit[cancel]" value="{#cancel#|escape:htmlall}" onClick="showDetail('{$sessionid}','{$result.id}','{$query.remoteCollection}');"></td>
 		</tr>
 
 <!-- --------------------------------------------

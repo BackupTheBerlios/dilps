@@ -185,9 +185,18 @@ WHERE
 
    }
    
+	// clear temporary values in session
+	
+	if (isset($_SESSION['tempvals']))
+	{
+		unset($_SESSION['tempvals']);
+	}
+   
 	// save additional fields for archaeology
 	if ($edit['type'] == 'archaeology')
 	{
+		// $db->debug = true;
+		
 		$sql = "DELETE FROM {$db_prefix}archaeology WHERE collectionid=$collectionid AND imageid=$imageid;";
 		$sqls .= "\n".$sql;
 		if( !$db->Execute( $sql ))
@@ -202,6 +211,7 @@ WHERE
 					" ,`iconography_fn`, `iconography` ".
 					" ,`dating_ext_fn`, `dating_ext` ".
 					" ,`material_ext_fn`, `material_ext` ".
+					" ,`location_ext_fn`, `location_ext` ".
 					" ,`obj_culture_fn`, `obj_culture` ".
 					" ,`obj_culthistory_fn`, `obj_culthistory` ".
 					" ,`obj_topography_fn`, `obj_topography` ".
@@ -239,6 +249,8 @@ WHERE
 					$db->qstr(trim($edit['dating_ext'])).",".
 					$db->qstr(trim($edit['material_ext_fn'])).",".
 					$db->qstr(trim($edit['material_ext'])).",".
+					$db->qstr(trim($edit['location_ext_fn'])).",".
+					$db->qstr(trim($edit['location_ext'])).",".
 					$db->qstr(trim($edit['obj_culture_fn'])).",".
 					$db->qstr(trim($edit['obj_culture'])).",".
 					$db->qstr(trim($edit['obj_culthistory_fn'])).",".

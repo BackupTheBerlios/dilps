@@ -7,7 +7,7 @@ function viewDetail( sessionid, imageid, remoteCollectionId) {
 
 function editElement( sessionid, imageid, element, val ) {
    props = 'toolbar=no,location=no,directories=no,status=yes,scrollbars=yes,resizable=yes,menubar=no,copyhistory=no';
-   win = window.open( 'edit_element.php?PHPSESSID='+sessionid+'&query[id]='+imageid+'&query[element]='+element+'&query[value]='+escape(val)+'&query[remoteCollection]=0', 'elementView', props + ',width=900,height=500' );
+   win = window.open( 'edit_element.php?PHPSESSID='+sessionid+'&query[id]='+imageid+'&query[element]='+element+'&query[value]='+escape(val)+'&query[remoteCollection]=0', 'elementView', props + ',width=900,height=550' );
    win.focus();
 }
 
@@ -674,10 +674,26 @@ function copyEditValue(elementName,newValue)
 	}
 }
 
-function storeInSession(sessionid, key1, value1, key2, value2)
+function storeInSession(sessionid, imageid, key1, value1, key2, value2)
 {
 	if (opener.frames['sessioncontrol'] != null) {
-		var url = 'session_control.php?PHPSESSID='+sessionid+'&key1='+escape(key1)+'&value1='+escape(value1)+'&key2='+escape(key2)+'&value2='+escape(value2);
+		var url = 'session_control.php?PHPSESSID='+sessionid+'&id='+imageid+'&key1='+escape(key1)+'&value1='+escape(value1)+'&key2='+escape(key2)+'&value2='+escape(value2);
 		opener.frames['sessioncontrol'].location.href = url;
+	}
+}
+
+function expandTextbox(elementName)
+{
+	if (opener.document.forms["Main"].elements[elementName] != null) {
+		opener.document.forms["Main"].elements[elementName].style.height = '40px';
+		opener.document.forms["Main"].elements[elementName].style.visibility = 'visible';
+	}
+}
+
+function collapseTextbox(elementName)
+{
+	if (opener.document.forms["Main"].elements[elementName] != null) {
+		opener.document.forms["Main"].elements[elementName].style.height = '0px';
+		opener.document.forms["Main"].elements[elementName].style.visibility = 'hidden';
 	}
 }

@@ -28,7 +28,7 @@ institution = Institution
 edit = Editieren
 search = Suchen
 save = Speichern
-artistname = Künstlername
+artistname = Künstler
 setit = Setzen
 type = Typ
 status = Status
@@ -73,8 +73,6 @@ iconography = Ikonographie
 enter = Eingeben
 acceptit = Eingaben übernehmen
 
-position = Standort
-
 culture 		= Kulturkreise und landschaftliche Zordnung
 culthistory		= Allgemeine Kulturgeschichte
 topography		= Topographie/Urbanistik
@@ -83,7 +81,7 @@ structelems		= Bauordnung/Bauglieder
 tenement		= Wohnhaus
 funcbuild		= Politische Funktionsbauten
 amusement		= Sport und Unterhaltung/Thermen
-economy		= Wirtschaft, Transport und Verkehr/Versorgung und Entsorgung
+economy			= Wirtschaft, Transport und Verkehr/Versorgung und Entsorgung
 sacral			= Sakralarchitektur
 sepulchre		= Ehrenmonumente/Grabarchitektur
 military		= Wehrarchitektur/Militärarchitektur
@@ -104,5 +102,7 @@ misc			= Andere Objekte
 epigraphy		= Epigraphik
 ac_methods		= Methoden der Archäologie
 reception		= Rezeption
+
+location_ext	= Standort/Fundort
 
 subcategories  	= Unterkategorien

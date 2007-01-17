@@ -39,7 +39,7 @@ require_once( $config['includepath'].'dilpsQuery.class.php' );
 
 function smarty_block_query($params, $content, &$smarty, &$repeat)
 {
-    global $db, $db_prefix, $query, $view;
+    global $db, $db_prefix, $query, $view, $config;
     
     if (isset($content)) {
 	    echo $content;
@@ -94,7 +94,14 @@ function smarty_block_query($params, $content, &$smarty, &$repeat)
     	    $result['remoteCollection'] = $collectionid;
 	    } else {
 	        // search a local collection
-	        $result = query_local_collection($dbquery, $options, $db, $db_prefix);
+	        
+	        if ($config['queryextended']) {
+	        	$result = query_local_collection_extended($dbquery, $options, $db, $db_prefix);	
+	        }
+	        else {
+	        	$result = query_local_collection($dbquery, $options, $db, $db_prefix);	
+	        }
+	        
     	    $result['local'] = 1;
     	    $result['remoteCollection'] = 0;
 	    }
@@ -171,7 +178,9 @@ function query_local_collection($query, $options, $db, $db_prefix) {
 
 	$sql = "SELECT DISTINCT $fields FROM $from WHERE $where"
 	       ." ORDER BY insert_date DESC, imageid DESC";
-	// die($sql);
+	       
+	//die($sql);
+	
     $pagesize = $options['pagesize'];
     $page = $options['page'];
 	$rs = $db->PageExecute( $sql, $pagesize, $page );
@@ -230,6 +239,118 @@ function query_local_collection_overview($query, $options, $db, $db_prefix) {
 	}
 	return $result;
 }
+
+function query_local_collection_extended($query, $options, $db, $db_prefix) {
+    
+	$querystruct = transform_query($query['querypiece']);
+	$dbQuery = new dilpsQuery($db, $db_prefix);
+	$where = $dbQuery->buildWhere($querystruct);
+	
+	$from = "{$db_prefix}meta LEFT JOIN {$db_prefix}archaeology ON {$db_prefix}archaeology.imageid = {$db_prefix}meta.imageid AND {$db_prefix}archaeology.collectionid = {$db_prefix}meta.collectionid";
+	
+	$fields = 	"{$db_prefix}meta.type as type,{$db_prefix}meta.collectionid as collectionid,"
+				."{$db_prefix}meta.imageid as imageid,ifnull({$db_prefix}meta.name1, '') as name1,ifnull({$db_prefix}meta.name2, '') as name2,"
+				."{$db_prefix}meta.addition as addition, {$db_prefix}meta.title as title, "
+				."{$db_prefix}meta.dating as dating, {$db_prefix}meta.literature as literature, "
+				."{$db_prefix}meta.location as location, "
+				."{$db_prefix}archaeology.category as category, "
+				."{$db_prefix}archaeology.iconography as iconography, "
+				."{$db_prefix}archaeology.dating_ext as dating_ext, "
+				."{$db_prefix}archaeology.material_ext as material_ext, "
+				."{$db_prefix}archaeology.location_ext as location_ext, "
+				."concat_ws(' ',{$db_prefix}archaeology.obj_culture, "
+				."{$db_prefix}archaeology.obj_culthistory, "
+				."{$db_prefix}archaeology.obj_topography, "
+				."{$db_prefix}archaeology.obj_arch_structelems, "
+				."{$db_prefix}archaeology.obj_arch_tenement, "
+				."{$db_prefix}archaeology.obj_arch_funcbuild, "
+				."{$db_prefix}archaeology.obj_arch_amusement, "
+				."{$db_prefix}archaeology.obj_arch_economy, "
+				."{$db_prefix}archaeology.obj_arch_sacral, "
+				."{$db_prefix}archaeology.obj_arch_sepulchre, "
+				."{$db_prefix}archaeology.obj_arch_military, "
+				."{$db_prefix}archaeology.obj_mosaic, "
+				."{$db_prefix}archaeology.obj_painting, "
+				."{$db_prefix}archaeology.obj_sculpture, "
+				."{$db_prefix}archaeology.obj_portrait, "
+				."{$db_prefix}archaeology.obj_ceramic_vascularforms, "
+				."{$db_prefix}archaeology.obj_ceramic_groups, "
+				."{$db_prefix}archaeology.obj_toreutics, "
+				."{$db_prefix}archaeology.obj_jewellery, "
+				."{$db_prefix}archaeology.obj_glass, "
+				."{$db_prefix}archaeology.obj_glyptics, "
+				."{$db_prefix}archaeology.obj_numismatics, "
+				."{$db_prefix}archaeology.obj_textiles, "
+				."{$db_prefix}archaeology.obj_misc, "
+				."{$db_prefix}archaeology.obj_epigraphy, "
+				."{$db_prefix}archaeology.obj_methods, "
+				."{$db_prefix}archaeology.obj_reception) as object";
+	
+	if (!empty($query['groupid'])){
+		// add grouptable to query
+		$fields .= ", {$db_prefix}img_group.groupid as groupid";
+		$from .= "LEFT JOIN {$db_prefix}img_group ON {$db_prefix}img_group.imageid = {$db_prefix}meta.imageid AND {$db_prefix}img_group.collectionid = {$db_prefix}meta.collectionid";
+		$where .= get_groupid_where_clause($query, $db, $db_prefix);
+	}
+	
+	// search architecture fields
+	if (!empty($query['object'])){
+		$where .= "object like ".$db->qstr($query['object']);
+	}
+	
+	if (!empty($query['iconography'])){
+		$where .= "iconography like ".$db->qstr($query['iconography']);
+	}
+	
+	if (!empty($query['dating_ext'])){
+		$where .= "dating_ext like ".$db->qstr($query['dating_ext']);
+	}
+	
+	if (!empty($query['material_ext'])){
+		$where .= "material_ext like ".$db->qstr($query['material_ext']);
+	}
+	
+	if (!empty($query['location_ext'])){
+		$where .= "location_ext like ".$db->qstr($query['dating_ext']);
+	}
+	
+	if (!empty($query['location'])){
+		$where .= "location like ".$db->qstr($query['location']);
+	}
+	
+	if (!empty($query['literature'])){
+		$where .= "location like ".$db->qstr($query['location']);
+	}
+
+	$sql = "SELECT DISTINCT $fields FROM $from WHERE $where"
+	       ." ORDER BY insert_date DESC, imageid DESC";
+	       
+	die($sql);
+	
+    $pagesize = $options['pagesize'];
+    $page = $options['page'];
+	$rs = $db->PageExecute( $sql, $pagesize, $page );
+	$result = array();
+	if( !$rs ) {
+	    $result['error'] = $db->ErrorMsg();
+	} else {
+    	$result['lastpage'] = $rs->LastPageNo();
+    	$result['maxrecords'] = $rs->MaxRecordCount();
+    	$result['rs'] = array();
+    	while( !$rs->EOF )
+    	{
+    		array_walk( $rs->fields, '__stripslashes' );
+    		$result['rs'][] = $rs->fields;
+    		$rs->MoveNext();
+    	}
+    	$rs->Close();
+    	if( $page > $result['lastpage'] ) $page = $result['lastpage'];
+    	$result['page'] = $page;
+    	$result['pagesize'] = $pagesize;
+	}
+	return $result;
+}
+
 
 function get_groupid_where_clause($query, $db, $db_prefix) {
     

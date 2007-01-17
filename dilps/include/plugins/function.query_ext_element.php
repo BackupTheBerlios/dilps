@@ -73,19 +73,23 @@ function smarty_function_query_ext_element($params, &$smarty)
 	//debug($query);
 	global $db, $db_prefix;
 	
-	extractID($query['id'],$collectionid,$imageid);
+	$id = $query['id'];
+	
+	extractID($id,$collectionid,$imageid);
 	
 	$fieldnames = array();
 	$values		= array();
 	
 	global $_SESSION;
 	
-	if (isset($_SESSION[$element."_fn"]) && isset($_SESSION[$element]))
+	// if (isset($_SESSION['tempvals'][$id][$element."_fn"]) && isset($_SESSION['tempvals'][$id][$element]) && ($_SESSION['tempvals'][$id][$element."_fn"] != '') && ($_SESSION['tempvals'][$id][$element] != ''))
+	
+	if (isset($_SESSION['tempvals'][$id][$element."_fn"]) && isset($_SESSION['tempvals'][$id][$element]))
 	{
-		$fieldnames = $_SESSION[$element."_fn"];
-		$values		= $_SESSION[$element];
+		$fieldnames = $_SESSION['tempvals'][$id][$element."_fn"];
+		$values		= $_SESSION['tempvals'][$id][$element];
 		
-		$sql		= "element {$element} loaded from session";
+		$sql		= "element {$element} loaded for id {$id} from session";
 	}
 	else 
 	{

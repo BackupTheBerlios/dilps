@@ -863,11 +863,12 @@
 	 *	@param 		int		$imageid
 	 *	@param 		string	$time
 	 *	@param 		string	$creator
+	 * 	@param 		string	$type
 	 *	@return		bool
 	 *
 	 */
 	
-	function insert_meta($collectionid, $imageid, $time, $creator)
+	function insert_meta($collectionid, $imageid, $time, $creator, $type = 'image')
 	{
 		global $db, $db_prefix;		
 		
@@ -876,7 +877,7 @@
 					."(`collectionid`, `imageid`, `type`, `status`, `insert_date`, `metacreator`) VALUES ("
 					.$db->qstr($collectionid).","
 					.$db->qstr($imageid).","
-					."'image',"
+					.$db->qstr($type).","
 					."'new',"
 					.$db->qstr($time).","
 					.$db->qstr($creator)

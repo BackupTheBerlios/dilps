@@ -76,32 +76,41 @@ include_once( $config['includepath'].'../includes.inc.php' );
 
 global $_SESSION;
 
-if (isset($_REQUEST['key1']))
+if (isset($_REQUEST['id']))
 {
-	$key1 = $_REQUEST['key1'];
-	if (isset($_REQUEST['value1']))
+	$id = $_REQUEST['id'];
+	
+	if (isset($_REQUEST['key1']))
 	{
-		$_SESSION[$key1] = $_REQUEST['value1'];
-		echo ("{$key1} stored - success\n<br>\n");
+		$key1 = $_REQUEST['key1'];
+		if (isset($_REQUEST['value1']))
+		{
+			$_SESSION['tempvals'][$id][$key1] = $_REQUEST['value1'];
+			echo ("{$key1} stored - success\n<br>\n");
+		}
+		else 
+		{
+			echo ("{$key1} not stored - no value\n<br>\n");
+		}
 	}
-	else 
+	
+	if (isset($_REQUEST['key2']))
 	{
-		echo ("{$key1} not stored - no value\n<br>\n");
+		$key2 = $_REQUEST['key2'];
+		if (isset($_REQUEST['value2']))
+		{
+			$_SESSION['tempvals'][$id][$key2] = $_REQUEST['value2'];
+			echo ("{$key2} stored - success\n<br>\n");
+		}
+		else 
+		{
+			echo ("{$key2} not stored - no value\n<br>\n");
+		}
 	}
 }
-
-if (isset($_REQUEST['key2']))
+else 
 {
-	$key2 = $_REQUEST['key2'];
-	if (isset($_REQUEST['value2']))
-	{
-		$_SESSION[$key2] = $_REQUEST['value2'];
-		echo ("{$key2} stored - success\n<br>\n");
-	}
-	else 
-	{
-		echo ("{$key2} not stored - no value\n<br>\n");
-	}
+	echo ("Missing imageid - nothing stored\n<br>\n");
 }
 
 ?>

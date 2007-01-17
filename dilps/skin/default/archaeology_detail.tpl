@@ -118,13 +118,370 @@ BEGIN archaeology_detail.tpl
 	    <td class="result_detail_data_data">{$row.format|escape:htmall}</td>
 	  </tr>
 	  {/if}
-      {if $row.city ne ""}
+      {if $row.location_ext ne ""}
 	  <tr>
-	    <td class="result_detail_data_head">{#position#}</td>
-	    <td class="result_detail_data_data">{$row.city|escape:htmall}</td>
+	    <td class="result_detail_data_head">{#location_ext#}</td>
+	    <td class="result_detail_data_data">{$row.location_ext|escape:htmall}</td>
 	  </tr>
       {/if}
+      {if $row.city ne "" or $row.institution ne ""}
 	  <tr>
+	    <td class="result_detail_data_head">{#location#}</td>
+	    <td class="result_detail_data_data">{$row.city|escape:htmall}{if $row.institution ne "" AND $row.city ne ""} / {/if}{$row.institution|escape:htmlall}</td>
+	  </tr>
+      {/if}
+      
+	<tr>
+	{if $row.obj_culture ne "" or $row.obj_culthistory ne "" or $row.obj_topography ne "" or $row.obj_arch_structelems ne "" or $row.obj_arch_tenement ne "" or $row.obj_arch_funcbuild ne "" or $row.obj_arch_amusement ne "" or $row.obj_arch_economy ne "" or $row.obj_arch_sacral ne "" or $row.obj_arch_sepulchre ne "" or $row.obj_arch_military ne "" or $row.obj_mosaic ne "" or $row.obj_painting ne "" or $row.obj_sculpture ne "" or $row.obj_portrait ne "" or $row.obj_ceramic_vascularforms ne "" or $row.obj_ceramic_groups ne "" or $row.obj_toreutics ne "" or $row.obj_jewellery ne "" or $row.obj_glass ne "" or $row.obj_glyptics ne "" or $row.obj_numismatics ne "" or $row.obj_textiles ne "" or $row.obj_misc ne "" or $row.obj_epigraphy ne "" or $row.obj_methods ne "" or $row.obj_reception ne ""}
+	</tr>
+		<td class="result_detail_data_head">{#object#|escape:htmlall}</td>
+	    <td class="result_detail_data_data">
+	    	<table cellpadding="0" cellspacing="0" style="margin:0px; padding: 0px; vertical-align: top;">
+				{if $row.obj_culture ne ""}
+				<tr>
+					<td class="result_detail_data_sub_head">
+						{#culture#|escape:htmall}: 
+					</td>
+				</tr>
+				<tr>
+					<td class="result_detail_data_sub_data">
+						{$row.obj_culture|escape:htmall}
+					</td>
+				</tr>
+				{/if}
+				{if $row.obj_culthistory ne ""}
+				<tr>
+					<td class="result_detail_data_sub_head">
+						{#culthistory#|escape:htmall}: 
+					</td>
+				</tr>
+				<tr>
+					<td class="result_detail_data_sub_data">
+						{$row.obj_culthistory|escape:htmall}
+					</td>
+				</tr>
+				{/if}
+				{if $row.obj_topography ne ""}
+				<tr>
+					<td class="result_detail_data_sub_head">
+				
+						{#topography#|escape:htmall}: 
+					</td>
+				</tr>
+				<tr>
+					<td class="result_detail_data_sub_data">
+						{$row.obj_topography|escape:htmall}
+					</td>
+				</tr>
+				{/if}
+				{if $row.obj_arch_structelems ne "" or $row.obj_arch_tenement ne "" or $row.obj_arch_funcbuild ne "" or $row.obj_arch_amusement ne "" or $row.obj_arch_economy ne "" or $row.obj_arch_sacral ne "" or $row.obj_arch_sepulchre ne "" or $row.obj_arch_military ne ""}
+				<tr>
+					<td class="result_detail_data_sub_head2">
+						{#architecture#|escape:htmall}: 
+					</td>
+				</tr>
+				{/if}
+				{if $row.obj_arch_structelems ne ""}
+				<tr>
+					<td class="result_detail_data_sub_head">
+						{#structelems#|escape:htmall}: 
+					</td>
+				</tr>
+				<tr>
+					<td class="result_detail_data_sub_data">
+						{$row.obj_arch_structelems|escape:htmall}
+					</td>
+				</tr>
+				{/if}
+				{if $row.obj_arch_tenement ne ""}
+				<tr>
+					<td class="result_detail_data_sub_head">
+						{#tenement#|escape:htmall}: 
+					</td>
+				</tr>
+				<tr>
+					<td class="result_detail_data_sub_data">
+						{$row.obj_arch_tenement|escape:htmall}
+					</td>
+				</tr>
+				{/if}
+				{if $row.obj_arch_funcbuild ne ""}
+				<tr>
+					<td class="result_detail_data_sub_head">
+						{#funcbuild#|escape:htmall}: 
+					</td>
+				</tr>
+				<tr>
+					<td class="result_detail_data_sub_data">
+						{$row.obj_arch_funcbuild|escape:htmall}
+					</td>
+				</tr>
+				{/if}
+				{if $row.obj_arch_amusement ne ""}
+				<tr>
+					<td class="result_detail_data_sub_head">
+						{#amusement#|escape:htmall}: 
+					</td>
+				</tr>
+				<tr>
+					<td class="result_detail_data_sub_data">
+						{$row.obj_arch_amusement|escape:htmall}
+					</td>
+				</tr>
+				{/if}
+				{if $row.obj_arch_economy ne ""}
+				<tr>
+					<td class="result_detail_data_sub_head">
+						{#economy#|escape:htmall}: 
+					</td>
+				</tr>
+				<tr>
+					<td class="result_detail_data_sub_data">
+						{$row.obj_arch_economy|escape:htmall}
+					</td>
+				</tr>
+				{/if}
+				{if $row.obj_arch_sacral ne ""}
+				<tr>
+					<td class="result_detail_data_sub_head">
+						{#sacral#|escape:htmall}: 
+					</td>
+				</tr>
+				<tr>
+					<td class="result_detail_data_sub_data">
+						{$row.obj_arch_sacral|escape:htmall}
+					</td>
+				</tr>
+				{/if}
+				{if $row.obj_arch_sepulchre ne ""}
+				<tr>
+					<td class="result_detail_data_sub_head">
+						{#sepulchre#|escape:htmall}: 
+					</td>
+				</tr>
+				<tr>
+					<td class="result_detail_data_sub_data">
+						{$row.obj_arch_sepulchre|escape:htmall}
+					</td>
+				</tr>
+				{/if}
+				{if $row.obj_arch_military ne ""}
+				<tr>
+					<td class="result_detail_data_sub_head">
+						{#military#|escape:htmall}: 
+					</td>
+				</tr>
+				<tr>
+					<td class="result_detail_data_sub_data">
+						{$row.obj_arch_military|escape:htmall}
+					</td>
+				</tr>
+				{/if}
+				{if $row.obj_mosaic ne ""}
+				<tr>
+					<td class="result_detail_data_sub_head">
+						{#mosaic#|escape:htmall}: 
+					</td>
+				</tr>
+				<tr>
+					<td class="result_detail_data_sub_data">
+						{$row.obj_mosaic|escape:htmall}
+					</td>
+				</tr>
+				{/if}
+				{if $row.obj_painting ne ""}
+				<tr>
+					<td class="result_detail_data_sub_head">
+						{#painting#|escape:htmall}: 
+					</td>
+				</tr>
+				<tr>
+					<td class="result_detail_data_sub_data">
+						{$row.obj_painting|escape:htmall}
+					</td>
+				</tr>
+				{/if}
+				{if $row.obj_sculpture ne ""}
+				<tr>
+					<td class="result_detail_data_sub_head">
+						{#sculpture#|escape:htmall}: 
+					</td>
+				</tr>
+				<tr>
+					<td class="result_detail_data_sub_data">
+						{$row.obj_sculpture|escape:htmall}
+					</td>
+				</tr>
+				{/if}
+				{if $row.obj_portrait ne ""}
+				<tr>
+					<td class="result_detail_data_sub_head">
+						{#portrait#|escape:htmall}: 
+					</td>
+				</tr>
+				<tr>
+					<td class="result_detail_data_sub_data">
+						{$row.obj_portrait|escape:htmall}
+					</td>
+				</tr>
+				{/if}
+				{if $row.obj_ceramic_vascularforms ne "" or $row.obj_ceramic_groups ne ""}
+				<tr>
+					<td class="result_detail_data_sub_head2">
+						{#ceramic#|escape:htmall}: 
+					</td>
+				</tr>
+				{/if}
+				{if $row.obj_ceramic_vascularforms ne ""}
+				<tr>
+					<td class="result_detail_data_sub_head">
+						{#vascularforms#|escape:htmall}: 
+					</td>
+				</tr>
+				<tr>
+					<td class="result_detail_data_sub_data">
+						{$row.obj_ceramic_vascularforms|escape:htmall}
+					</td>
+				</tr>
+				{/if}
+				{if $row.obj_ceramic_groups ne ""}
+				<tr>
+					<td class="result_detail_data_sub_head">
+						{#ac_groups#|escape:htmall}: 
+					</td>
+				</tr>
+				<tr>
+					<td class="result_detail_data_sub_data">
+						{$row.obj_ceramic_groups|escape:htmall}
+					</td>
+				</tr>
+				{/if}
+				{if $row.obj_toreutics ne ""}
+				<tr>
+					<td class="result_detail_data_sub_head">
+						{#toreutics#|escape:htmall}: 
+					</td>
+				</tr>
+				<tr>
+					<td class="result_detail_data_sub_data">
+						{$row.obj_toreutics|escape:htmall}
+					</td>
+				</tr>
+				{/if}
+				{if $row.obj_jewellery ne ""}
+				<tr>
+					<td class="result_detail_data_sub_head">
+						{#jewellery#|escape:htmall}: 
+					</td>
+				</tr>
+				<tr>
+					<td class="result_detail_data_sub_data">
+						{$row.obj_jewellery|escape:htmall}
+					</td>
+				</tr>
+				{/if}
+				{if $row.obj_glass ne ""}
+				<tr>
+					<td class="result_detail_data_sub_head">
+						{#glass#|escape:htmall}: 
+					</td>
+				</tr>
+				<tr>
+					<td class="result_detail_data_sub_data">
+						{$row.obj_glass|escape:htmall}
+					</td>
+				</tr>
+				{/if}
+				{if $row.obj_glyptics ne ""}
+				<tr>
+					<td class="result_detail_data_sub_head">
+						{#glyptics#|escape:htmall}: 
+					</td>
+				</tr>
+				<tr>
+					<td class="result_detail_data_sub_data">
+						{$row.obj_glyptics|escape:htmall}
+					</td>
+				</tr>
+				{/if}
+				{if $row.obj_numismatics ne ""}
+				<tr>
+					<td class="result_detail_data_sub_head">
+						{#numismatics#|escape:htmall}: 
+					</td>
+				</tr>
+				<tr>
+					<td class="result_detail_data_sub_data">
+						{$row.obj_numismatics|escape:htmall}
+					</td>
+				</tr>
+				{/if}
+				{if $row.obj_textiles ne ""}
+				
+				<tr>
+					<td class="result_detail_data_sub_head">
+						{#textiles#|escape:htmall}: 
+					</td>
+				</tr>
+				<tr>
+					<td class="result_detail_data_sub_data">
+						{$row.obj_textiles|escape:htmall}
+					</td>
+				</tr>
+				{/if}
+				{if $row.obj_misc ne ""}
+				<tr>
+					<td class="result_detail_data_sub_head">
+						{#misc#|escape:htmall}: 
+					</td>
+				</tr>
+				<tr>
+					<td class="result_detail_data_sub_data">
+						{$row.obj_misc|escape:htmall}
+					</td>
+				</tr>
+				{/if}
+				{if $row.obj_epigraphy ne ""}
+				<tr>
+					<td class="result_detail_data_sub_head">
+						{#epigraphy#|escape:htmall}: 
+					</td>
+				</tr>
+				<tr>
+					<td class="result_detail_data_sub_data">
+						{$row.obj_epigraphy|escape:htmall}
+					</td>
+				</tr>
+				{/if}
+				{if $row.obj_methods ne ""}
+				<tr>
+					<td class="result_detail_data_sub_head">
+						{#methods#|escape:htmall}: 
+					</td>
+				</tr>
+				<tr>
+					<td class="result_detail_data_sub_data">
+						{$row.obj_methods|escape:htmall}
+					</td>
+				</tr>
+				{/if}
+				{if $row.obj_reception ne ""}
+				<tr>
+					<td class="result_detail_data_sub_head">
+						{#reception#|escape:htmall}: 
+					</td>
+				</tr>
+				<tr>
+					<td class="result_detail_data_sub_data">
+						{$row.obj_reception|escape:htmall}
+					</td>
+				</tr>
+				{/if}
+			</table>
+	    </td>
+	<tr>
+	{/if}
+	
 	    <td class="result_detail_data_head">{#src#|escape:htmlall}</td>
 	    <td class="result_detail_data_data">
 	    {$row.literature|escape:htmlall}

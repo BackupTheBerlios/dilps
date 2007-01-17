@@ -54,7 +54,7 @@ BEGIN archaeology_edit.tpl
 				<table cellpadding="0" cellspacing="0" style="margin:0px; padding: 0px; vertical-align: top;">
             		<tr>
             			<td>
-            				<table cellpadding="0" cellspacing="0" style="margin:0px; padding: 0px; vertical-align: top;">
+            				<table cellpadding="0" cellspacing="0" style="margin:0px; padding: 0px; vertical-align: top; empty-cells: hide;">
             					<tr>
             						<td class="result_detail_data_head2">
             							{#subcategories#|escape:htmlall}
@@ -66,9 +66,9 @@ BEGIN archaeology_edit.tpl
 									</td>
 								</tr>
 								<tr>
-									<td>
-										<textarea class="inactive" name="edit[obj_culture]" cols="47" rows="2" style="width: 400px; height: 40px;" readonly="readonly" >{$row.culture|escape:html}</textarea>
-										<input type="hidden" name="edit[obj_culture_fn]" size="40" value="{$row.culture_fn|escape:html}">
+									<td style="line-height: 0;">
+										<textarea class="inactive" name="edit[obj_culture]" cols="47" rows="2" {if $row.obj_culture neq ""} style="width: 400px; height: 40px;" {else} style="width: 400px; height: 0px; visibility: hidden" {/if} readonly="readonly" >{$row.obj_culture|escape:html}</textarea>
+										<input type="hidden" name="edit[obj_culture_fn]" size="40" value="{$row.obj_culture_fn|escape:html}">
 									</td>
 								</tr>
 								<tr>
@@ -77,11 +77,10 @@ BEGIN archaeology_edit.tpl
 									</td>
 								</tr>
 								<tr>
-									<td>
-										<textarea class="inactive" name="edit[obj_culthistory]" cols="47" rows="2" style="width: 400px; height: 40px;" readonly="readonly" >{$row.culthistory|escape:html}</textarea>
-										<input type="hidden" name="edit[obj_culthistory_fn]" size="40" value="{$row.culthistory_fn|escape:html}">
+									<td style="line-height: 0;">
+										<textarea class="inactive" name="edit[obj_culthistory]" cols="47" rows="2" {if $row.obj_culthistory neq ""} style="width: 400px; height: 40px;" {else} style="width: 400px; height: 0px; visibility: hidden" {/if} readonly="readonly" >{$row.obj_culthistory|escape:html}</textarea>
+										<input type="hidden" name="edit[obj_culthistory_fn]" size="40" value="{$row.obj_culthistory_fn|escape:html}">
 									</td>
-								
 								</tr>
 								<tr>
 									<td class="result_detail_data_subhead">
@@ -89,9 +88,9 @@ BEGIN archaeology_edit.tpl
 									</td>
 								</tr>
 								<tr>
-									<td>
-										<textarea class="inactive" name="edit[obj_topography]" cols="47" rows="2" style="width: 400px; height: 40px;" readonly="readonly" >{$row.topography|escape:html}</textarea>
-										<input type="hidden" name="edit[obj_topography_fn]" size="40" value="{$row.topography_fn|escape:html}">
+									<td style="line-height: 0;">
+										<textarea class="inactive" name="edit[obj_topography]" cols="47" rows="2" {if $row.obj_topography neq ""} style="width: 400px; height: 40px;" {else} style="width: 400px; height: 0px; visibility: hidden" {/if} readonly="readonly" >{$row.obj_topography|escape:html}</textarea>
+										<input type="hidden" name="edit[obj_topography_fn]" size="40" value="{$row.obj_topography_fn|escape:html}">
 									</td>
 								</tr>
 								<tr>
@@ -105,11 +104,10 @@ BEGIN archaeology_edit.tpl
 										</td>
 									</tr>
 									<tr>
-										<td style="text-align: right;">
-											<textarea class="inactive" name="edit[obj_arch_structelems]" cols="47" rows="2" style="width: 380px; height: 40px;" readonly="readonly" >{$row.structelems|escape:html}</textarea>
-											<input type="hidden" name="edit[obj_arch_structelems_fn]" size="40" value="{$row.structelems_fn|escape:html}">
+										<td style="text-align: right; line-height: 0;">
+											<textarea class="inactive" name="edit[obj_arch_structelems]" cols="47" rows="2" {if $row.obj_arch_structelems neq ""} style="width: 380px; height: 40px;" {else} style="width: 380px; height: 0px; visibility: hidden" {/if} readonly="readonly" >{$row.obj_arch_structelems|escape:html}</textarea>
+											<input type="hidden" name="edit[obj_arch_structelems_fn]" size="40" value="{$row.obj_arch_structelems_fn|escape:html}">
 										</td>
-									
 									</tr>
 									<tr>
 										<td class="result_detail_data_sub_subhead">
@@ -117,9 +115,9 @@ BEGIN archaeology_edit.tpl
 										</td>
 									</tr>
 									<tr>
-										<td style="text-align: right;">
-											<textarea class="inactive" name="edit[obj_arch_tenement]" cols="47" rows="2" style="width: 380px; height: 40px;" readonly="readonly" >{$row.tenement|escape:html}</textarea>
-											<input type="hidden" name="edit[obj_arch_tenement_fn]" size="40" value="{$row.tenement_fn|escape:html}">
+										<td style="text-align: right; line-height: 0;">
+											<textarea class="inactive" name="edit[obj_arch_tenement]" cols="47" rows="2" {if $row.obj_arch_tenement neq ""} style="width: 380px; height: 40px;" {else} style="width: 380px; height: 0px; visibility: hidden" {/if} readonly="readonly" >{$row.obj_arch_tenement|escape:html}</textarea>
+											<input type="hidden" name="edit[obj_arch_tenement_fn]" size="40" value="{$row.obj_arch_tenement_fn|escape:html}">
 										</td>
 									</tr>
 									<tr>
@@ -128,9 +126,9 @@ BEGIN archaeology_edit.tpl
 										</td>
 									</tr>
 									<tr>
-										<td style="text-align: right;">
-											<textarea class="inactive" name="edit[obj_arch_funcbuild]" cols="47" rows="2" style="width: 380px; height: 40px;" readonly="readonly" >{$row.funcbuild|escape:html}</textarea>
-											<input type="hidden" name="edit[obj_arch_funcbuild_fn]" size="40" value="{$row.funcbuild_fn|escape:html}">
+										<td style="text-align: right; line-height: 0;">
+											<textarea class="inactive" name="edit[obj_arch_funcbuild]" cols="47" rows="2" {if $row.obj_arch_funcbuild neq ""} style="width: 380px; height: 40px;" {else} style="width: 380px; height: 0px; visibility: hidden" {/if} readonly="readonly" >{$row.obj_arch_funcbuild|escape:html}</textarea>
+											<input type="hidden" name="edit[obj_arch_funcbuild_fn]" size="40" value="{$row.obj_arch_funcbuild_fn|escape:html}">
 										</td>
 									</tr>
 									<tr>
@@ -139,9 +137,9 @@ BEGIN archaeology_edit.tpl
 										</td>
 									</tr>
 									<tr>
-										<td style="text-align: right;">
-											<textarea class="inactive" name="edit[obj_arch_amusement]" cols="47" rows="2" style="width: 380px; height: 40px;" readonly="readonly" >{$row.amusement|escape:html}</textarea>
-											<input type="hidden" name="edit[obj_arch_amusement_fn]" size="40" value="{$row.amusement_fn|escape:html}">
+										<td style="text-align: right; line-height: 0;">
+											<textarea class="inactive" name="edit[obj_arch_amusement]" cols="47" rows="2" {if $row.obj_arch_amusement neq ""} style="width: 380px; height: 40px;" {else} style="width: 380px; height: 0px; visibility: hidden" {/if} readonly="readonly" >{$row.obj_arch_amusement|escape:html}</textarea>
+											<input type="hidden" name="edit[obj_arch_amusement_fn]" size="40" value="{$row.obj_arch_amusement_fn|escape:html}">
 										</td>
 									</tr>
 									<tr>
@@ -150,9 +148,9 @@ BEGIN archaeology_edit.tpl
 										</td>
 									</tr>
 									<tr>
-										<td style="text-align: right;">
-											<textarea class="inactive" name="edit[obj_arch_economy]" cols="47" rows="2" style="width: 380px; height: 40px;" readonly="readonly" >{$row.economy|escape:html}</textarea>
-											<input type="hidden" name="edit[obj_arch_economy_fn]" size="40" value="{$row.economy_fn|escape:html}">
+										<td style="text-align: right; line-height: 0;">
+											<textarea class="inactive" name="edit[obj_arch_economy]" cols="47" rows="2" {if $row.obj_arch_economy neq ""} style="width: 380px; height: 40px;" {else} style="width: 380px; height: 0px; visibility: hidden" {/if} readonly="readonly" >{$row.obj_arch_economy|escape:html}</textarea>
+											<input type="hidden" name="edit[obj_arch_economy_fn]" size="40" value="{$row.obj_arch_economy_fn|escape:html}">
 										</td>
 									</tr>
 									<tr>
@@ -161,9 +159,9 @@ BEGIN archaeology_edit.tpl
 										</td>
 									</tr>
 									<tr>
-										<td style="text-align: right;">
-											<textarea class="inactive" name="edit[obj_arch_sacral]" cols="47" rows="2" style="width: 380px; height: 40px;" readonly="readonly" >{$row.sacral|escape:html}</textarea>
-											<input type="hidden" name="edit[obj_arch_sacral_fn]" size="40" value="{$row.sacral_fn|escape:html}">
+										<td style="text-align: right; line-height: 0;">
+											<textarea class="inactive" name="edit[obj_arch_sacral]" cols="47" rows="2" {if $row.obj_arch_sacral neq ""} style="width: 380px; height: 40px;" {else} style="width: 380px; height: 0px; visibility: hidden" {/if} readonly="readonly" >{$row.obj_arch_sacral|escape:html}</textarea>
+											<input type="hidden" name="edit[obj_arch_sacral_fn]" size="40" value="{$row.obj_arch_sacral_fn|escape:html}">
 										</td>
 									</tr>
 									<tr>
@@ -172,9 +170,9 @@ BEGIN archaeology_edit.tpl
 										</td>
 									</tr>
 									<tr>
-										<td style="text-align: right;">
-											<textarea class="inactive" name="edit[obj_arch_sepulchre]" cols="47" rows="2" style="width: 380px; height: 40px;" readonly="readonly" >{$row.sepulchre|escape:html}</textarea>
-											<input type="hidden" name="edit[obj_arch_sepulchre_fn]" size="40" value="{$row.sepulchre_fn|escape:html}">
+										<td style="text-align: right; line-height: 0;">
+											<textarea class="inactive" name="edit[obj_arch_sepulchre]" cols="47" rows="2" {if $row.obj_arch_sepulchre neq ""} style="width: 380px; height: 40px;" {else} style="width: 380px; height: 0px; visibility: hidden" {/if} readonly="readonly" >{$row.obj_arch_sepulchre|escape:html}</textarea>
+											<input type="hidden" name="edit[obj_arch_sepulchre_fn]" size="40" value="{$row.obj_arch_sepulchre_fn|escape:html}">
 										</td>
 									</tr>
 									<tr>
@@ -183,9 +181,9 @@ BEGIN archaeology_edit.tpl
 										</td>
 									</tr>
 									<tr>
-										<td style="text-align: right;">
-											<textarea class="inactive" name="edit[obj_arch_military]" cols="47" rows="2" style="width: 380px; height: 40px;" readonly="readonly" >{$row.military|escape:html}</textarea>
-											<input type="hidden" name="edit[obj_arch_military_fn]" size="40" value="{$row.military_fn|escape:html}">
+										<td style="text-align: right; line-height: 0;">
+											<textarea class="inactive" name="edit[obj_arch_military]" cols="47" rows="2" {if $row.obj_arch_military neq ""} style="width: 380px; height: 40px;" {else} style="width: 380px; height: 0px; visibility: hidden" {/if} readonly="readonly" >{$row.obj_arch_military|escape:html}</textarea>
+											<input type="hidden" name="edit[obj_arch_military_fn]" size="40" value="{$row.obj_arch_military_fn|escape:html}">
 										</td>
 									</tr>
 								<tr>
@@ -194,9 +192,9 @@ BEGIN archaeology_edit.tpl
 									</td>
 								</tr>
 								<tr>
-									<td>
-										<textarea class="inactive" name="edit[obj_mosaic]" cols="47" rows="2" style="width: 400px; height: 40px;" readonly="readonly" >{$row.mosaic|escape:html}</textarea>
-										<input type="hidden" name="edit[obj_mosaic_fn]" size="40" value="{$row.mosaic_fn|escape:html}">
+									<td style="line-height: 0;">
+										<textarea class="inactive" name="edit[obj_mosaic]" cols="47" rows="2" {if $row.obj_mosaic neq ""} style="width: 400px; height: 40px;" {else} style="width: 400px; height: 0px; visibility: hidden" {/if} readonly="readonly" >{$row.obj_mosaic|escape:html}</textarea>
+										<input type="hidden" name="edit[obj_mosaic_fn]" size="40" value="{$row.obj_mosaic_fn|escape:html}">
 									</td>
 								</tr>
 								<tr>
@@ -205,9 +203,9 @@ BEGIN archaeology_edit.tpl
 									</td>
 								</tr>
 								<tr>
-									<td>
-										<textarea class="inactive" name="edit[obj_painting]" cols="47" rows="2" style="width: 400px; height: 40px;" readonly="readonly" >{$row.painting|escape:html}</textarea>
-										<input type="hidden" name="edit[obj_painting_fn]" size="40" value="{$row.painting_fn|escape:html}">
+									<td style="line-height: 0;">
+										<textarea class="inactive" name="edit[obj_painting]" cols="47" rows="2" {if $row.obj_painting neq ""} style="width: 400px; height: 40px;" {else} style="width: 400px; height: 0px; visibility: hidden" {/if} readonly="readonly" >{$row.obj_painting|escape:html}</textarea>
+										<input type="hidden" name="edit[obj_painting_fn]" size="40" value="{$row.obj_painting_fn|escape:html}">
 									</td>
 								</tr>
 								<tr>
@@ -216,9 +214,9 @@ BEGIN archaeology_edit.tpl
 									</td>
 								</tr>
 								<tr>
-									<td>
-										<textarea class="inactive" name="edit[obj_sculpture]" cols="47" rows="2" style="width: 400px; height: 40px;" readonly="readonly" >{$row.sculpture|escape:html}</textarea>
-										<input type="hidden" name="edit[obj_sculpture_fn]" size="40" value="{$row.sculpture_fn|escape:html}">
+									<td style="line-height: 0;">
+										<textarea class="inactive" name="edit[obj_sculpture]" cols="47" rows="2" {if $row.obj_sculpture neq ""} style="width: 400px; height: 40px;" {else} style="width: 400px; height: 0px; visibility: hidden" {/if} readonly="readonly" >{$row.obj_sculpture|escape:html}</textarea>
+										<input type="hidden" name="edit[obj_sculpture_fn]" size="40" value="{$row.obj_sculpture_fn|escape:html}">
 									</td>
 								</tr>
 								<tr>
@@ -227,9 +225,9 @@ BEGIN archaeology_edit.tpl
 									</td>
 								</tr>
 								<tr>
-									<td>
-										<textarea class="inactive" name="edit[obj_portrait]" cols="47" rows="2" style="width: 400px; height: 40px;" readonly="readonly" >{$row.portrait|escape:html}</textarea>
-										<input type="hidden" name="edit[obj_portrait_fn]" size="40" value="{$row.portrait_fn|escape:html}">
+									<td style="line-height: 0;">
+										<textarea class="inactive" name="edit[obj_portrait]" cols="47" rows="2" {if $row.obj_portrait neq ""} style="width: 400px; height: 40px;" {else} style="width: 400px; height: 0px; visibility: hidden" {/if} readonly="readonly" >{$row.obj_portrait|escape:html}</textarea>
+										<input type="hidden" name="edit[obj_portrait_fn]" size="40" value="{$row.obj_portrait_fn|escape:html}">
 									</td>
 								</tr>
 								<tr>
@@ -243,9 +241,9 @@ BEGIN archaeology_edit.tpl
 										</td>
 									</tr>
 									<tr>
-										<td style="text-align: right;">
-											<textarea class="inactive" name="edit[obj_ceramic_vascularforms]" cols="47" rows="2" style="width: 380px; height: 40px;" readonly="readonly" >{$row.vascularforms|escape:html}</textarea>
-											<input type="hidden" name="edit[obj_ceramic_vascularforms_fn]" size="40" value="{$row.vascularforms_fn|escape:html}">
+										<td style="text-align: right; line-height: 0;">
+											<textarea class="inactive" name="edit[obj_ceramic_vascularforms]" cols="47" rows="2" {if $row.obj_ceramic_vascularforms neq ""} style="width: 380px; height: 40px;" {else} style="width: 380px; height: 0px; visibility: hidden" {/if} readonly="readonly" >{$row.obj_ceramic_vascularforms|escape:html}</textarea>
+											<input type="hidden" name="edit[obj_ceramic_vascularforms_fn]" size="40" value="{$row.obj_ceramic_vascularforms_fn|escape:html}">
 										</td>
 									</tr>
 									<tr>
@@ -254,9 +252,9 @@ BEGIN archaeology_edit.tpl
 										</td>
 									</tr>
 									<tr>
-										<td style="text-align: right;">
-											<textarea class="inactive" name="edit[obj_ceramic_groups]" cols="47" rows="2" style="width: 380px; height: 40px;" readonly="readonly" >{$row.groups|escape:html}</textarea>
-											<input type="hidden" name="edit[obj_ceramic_groups_fn]" size="40" value="{$row.groups_fn|escape:html}">
+										<td style="text-align: right; line-height: 0;">
+											<textarea class="inactive" name="edit[obj_ceramic_groups]" cols="47" rows="2" {if $row.obj_ceramic_groups neq ""} style="width: 380px; height: 40px;" {else} style="width: 380px; height: 0px; visibility: hidden" {/if} readonly="readonly" >{$row.obj_ceramic_groups|escape:html}</textarea>
+											<input type="hidden" name="edit[obj_ceramic_groups_fn]" size="40" value="{$row.obj_ceramic_groups_fn|escape:html}">
 										</td>
 									</tr>
 								<tr>
@@ -265,9 +263,9 @@ BEGIN archaeology_edit.tpl
 									</td>
 								</tr>
 								<tr>
-									<td>
-										<textarea class="inactive" name="edit[obj_toreutics]" cols="47" rows="2" style="width: 400px; height: 40px;" readonly="readonly" >{$row.toreutics|escape:html}</textarea>
-										<input type="hidden" name="edit[obj_toreutics_fn]" size="40" value="{$row.toreutics_fn|escape:html}">
+									<td style="line-height: 0;">
+										<textarea class="inactive" name="edit[obj_toreutics]" cols="47" rows="2" {if $row.obj_toreutics neq ""} style="width: 400px; height: 40px;" {else} style="width: 400px; height: 0px; visibility: hidden" {/if} readonly="readonly" >{$row.obj_toreutics|escape:html}</textarea>
+										<input type="hidden" name="edit[obj_toreutics_fn]" size="40" value="{$row.obj_toreutics_fn|escape:html}">
 									</td>
 								</tr>
 								<tr>
@@ -276,9 +274,9 @@ BEGIN archaeology_edit.tpl
 									</td>
 								</tr>
 								<tr>
-									<td>
-										<textarea class="inactive" name="edit[obj_jewellery]" cols="47" rows="2" style="width: 400px; height: 40px;" readonly="readonly" >{$row.jewellery|escape:html}</textarea>
-										<input type="hidden" name="edit[obj_jewellery_fn]" size="40" value="{$row.jewellery_fn|escape:html}">
+									<td style="line-height: 0;">
+										<textarea class="inactive" name="edit[obj_jewellery]" cols="47" rows="2" {if $row.obj_jewellery neq ""} style="width: 400px; height: 40px;" {else} style="width: 400px; height: 0px; visibility: hidden" {/if} readonly="readonly" >{$row.obj_jewellery|escape:html}</textarea>
+										<input type="hidden" name="edit[obj_jewellery_fn]" size="40" value="{$row.obj_jewellery_fn|escape:html}">
 									</td>
 								</tr>
 								<tr>
@@ -287,9 +285,9 @@ BEGIN archaeology_edit.tpl
 									</td>
 								</tr>
 								<tr>
-									<td>
-										<textarea class="inactive" name="edit[obj_glass]" cols="47" rows="2" style="width: 400px; height: 40px;" readonly="readonly" >{$row.glass|escape:html}</textarea>
-										<input type="hidden" name="edit[obj_glass_fn]" size="40" value="{$row.glass_fn|escape:html}">
+									<td style="line-height: 0;">
+										<textarea class="inactive" name="edit[obj_glass]" cols="47" rows="2" {if $row.obj_glass neq ""} style="width: 400px; height: 40px;" {else} style="width: 400px; height: 0px; visibility: hidden" {/if} readonly="readonly" >{$row.obj_glass|escape:html}</textarea>
+										<input type="hidden" name="edit[obj_glass_fn]" size="40" value="{$row.obj_glass_fn|escape:html}">
 									</td>
 								</tr>
 								<tr>
@@ -298,9 +296,9 @@ BEGIN archaeology_edit.tpl
 									</td>
 								</tr>
 								<tr>
-									<td>
-										<textarea class="inactive" name="edit[obj_glyptics]" cols="47" rows="2" style="width: 400px; height: 40px;" readonly="readonly" >{$row.glyptics|escape:html}</textarea>
-										<input type="hidden" name="edit[obj_glyptics_fn]" size="40" value="{$row.glyptics_fn|escape:html}">
+									<td style="line-height: 0;">
+										<textarea class="inactive" name="edit[obj_glyptics]" cols="47" rows="2" {if $row.obj_glyptics neq ""} style="width: 400px; height: 40px;" {else} style="width: 400px; height: 0px; visibility: hidden" {/if} readonly="readonly" >{$row.obj_glyptics|escape:html}</textarea>
+										<input type="hidden" name="edit[obj_glyptics_fn]" size="40" value="{$row.obj_glyptics_fn|escape:html}">
 									</td>
 								</tr>
 								<tr>
@@ -309,9 +307,9 @@ BEGIN archaeology_edit.tpl
 									</td>
 								</tr>
 								<tr>
-									<td>
-										<textarea class="inactive" name="edit[obj_numismatics]" cols="47" rows="2" style="width: 400px; height: 40px;" readonly="readonly" >{$row.numismatics|escape:html}</textarea>
-										<input type="hidden" name="edit[obj_numismatics_fn]" size="40" value="{$row.numismatics_fn|escape:html}">
+									<td style="line-height: 0;">
+										<textarea class="inactive" name="edit[obj_numismatics]" cols="47" rows="2" {if $row.obj_numismatics neq ""} style="width: 400px; height: 40px;" {else} style="width: 400px; height: 0px; visibility: hidden" {/if} readonly="readonly" >{$row.obj_numismatics|escape:html}</textarea>
+										<input type="hidden" name="edit[obj_numismatics_fn]" size="40" value="{$row.obj_numismatics_fn|escape:html}">
 									</td>
 								</tr>
 								<tr>
@@ -320,9 +318,9 @@ BEGIN archaeology_edit.tpl
 									</td>
 								</tr>
 								<tr>
-									<td>
-										<textarea class="inactive" name="edit[obj_textiles]" cols="47" rows="2" style="width: 400px; height: 40px;" readonly="readonly" >{$row.textiles|escape:html}</textarea>
-										<input type="hidden" name="edit[obj_textiles_fn]" size="40" value="{$row.textiles_fn|escape:html}">
+									<td style="line-height: 0;">
+										<textarea class="inactive" name="edit[obj_textiles]" cols="47" rows="2" {if $row.obj_textiles neq ""} style="width: 400px; height: 40px;" {else} style="width: 400px; height: 0px; visibility: hidden" {/if} readonly="readonly" >{$row.obj_textiles|escape:html}</textarea>
+										<input type="hidden" name="edit[obj_textiles_fn]" size="40" value="{$row.obj_textiles_fn|escape:html}">
 									</td>
 								</tr>
 								<tr>
@@ -331,9 +329,9 @@ BEGIN archaeology_edit.tpl
 									</td>
 								</tr>
 								<tr>
-									<td>
-										<textarea class="inactive" name="edit[obj_misc]" cols="47" rows="2" style="width: 400px; height: 40px;" readonly="readonly" >{$row.misc|escape:html}</textarea>
-										<input type="hidden" name="edit[obj_misc_fn]" size="40" value="{$row.misc_fn|escape:html}">
+									<td style="line-height: 0;">
+										<textarea class="inactive" name="edit[obj_misc]" cols="47" rows="2" {if $row.obj_misc neq ""} style="width: 400px; height: 40px;" {else} style="width: 400px; height: 0px; visibility: hidden" {/if} readonly="readonly" >{$row.obj_misc|escape:html}</textarea>
+										<input type="hidden" name="edit[obj_misc_fn]" size="40" value="{$row.obj_misc_fn|escape:html}">
 									</td>
 								</tr>
 								<tr>
@@ -342,9 +340,9 @@ BEGIN archaeology_edit.tpl
 									</td>
 								</tr>
 								<tr>
-									<td>
-										<textarea class="inactive" name="edit[obj_epigraphy]" cols="47" rows="2" style="width: 400px; height: 40px;" readonly="readonly" >{$row.epigraphy|escape:html}</textarea>
-										<input type="hidden" name="edit[obj_epigraphy_fn]" size="40" value="{$row.epigraphy_fn|escape:html}">
+									<td style="line-height: 0;">
+										<textarea class="inactive" name="edit[obj_epigraphy]" cols="47" rows="2" {if $row.obj_epigraphy neq ""} style="width: 400px; height: 40px;" {else} style="width: 400px; height: 0px; visibility: hidden" {/if} readonly="readonly" >{$row.obj_epigraphy|escape:html}</textarea>
+										<input type="hidden" name="edit[obj_epigraphy_fn]" size="40" value="{$row.obj_epigraphy_fn|escape:html}">
 									</td>
 								</tr>
 								<tr>
@@ -353,9 +351,9 @@ BEGIN archaeology_edit.tpl
 									</td>
 								</tr>
 								<tr>
-									<td>
-										<textarea class="inactive" name="edit[obj_methods]" cols="47" rows="2" style="width: 400px; height: 40px;" readonly="readonly" >{$row.methods|escape:html}</textarea>
-										<input type="hidden" name="edit[obj_methods_fn]" size="40" value="{$row.methods_fn|escape:html}">
+									<td style="line-height: 0;">
+										<textarea class="inactive" name="edit[obj_methods]" cols="47" rows="2" {if $row.obj_methods neq ""} style="width: 400px; height: 40px;" {else} style="width: 400px; height: 0px; visibility: hidden" {/if} readonly="readonly" >{$row.obj_methods|escape:html}</textarea>
+										<input type="hidden" name="edit[obj_methods_fn]" size="40" value="{$row.obj_methods_fn|escape:html}">
 									</td>
 								</tr>
 								<tr>
@@ -364,9 +362,9 @@ BEGIN archaeology_edit.tpl
 									</td>
 								</tr>
 								<tr>
-									<td>
-										<textarea class="inactive" name="edit[obj_reception]" cols="47" rows="2" style="width: 400px; height: 40px;" readonly="readonly" >{$row.reception|escape:html}</textarea>
-										<input type="hidden" name="edit[obj_reception_fn]" size="40" value="{$row.reception_fn|escape:html}">
+									<td style="line-height: 0;">
+										<textarea class="inactive" name="edit[obj_reception]" cols="47" rows="2" {if $row.obj_reception neq ""} style="width: 400px; height: 40px;" {else} style="width: 400px; height: 0px; visibility: hidden" {/if} readonly="readonly" >{$row.obj_reception|escape:html}</textarea>
+										<input type="hidden" name="edit[obj_reception_fn]" size="40" value="{$row.obj_reception_fn|escape:html}">
 									</td>
 								</tr>
 			            	</table>
@@ -456,6 +454,10 @@ BEGIN archaeology_edit.tpl
             	</table>
 			</td>
 		</tr>
+		<tr>
+		   <td class="result_detail_data_head">{#location_ext#|escape:htmlall}</td>
+		   <td colspan="2" class="result_detail_data_data"><input type="text" name="edit[location_ext]" size="60" style="width: 400px;" value="{$row.location_ext|escape:html}"></td>
+		</tr>
 		<!--
 		<tr>
 		    <td class="result_detail_data_head">
@@ -482,10 +484,20 @@ BEGIN archaeology_edit.tpl
 		</tr>
 		-->
 		<tr>
-		   <td class="result_detail_data_head">{#position#|escape:htmlall}</td>
+		   <td class="result_detail_data_head">
+		    	{#city#|escape:htmlall}
+		    </td>
 		   <td colspan="2" class="result_detail_data_data">
-		   		<input type="text" name="edit[city]" size="60" style="width: 400px;" value="{$row.city|escape:html}" style="width: 400px;"><br />
-		   	</td>
+   				<input type="text" name="edit[city]" size="60" value="{$row.city|escape:html}" style="width: 400px;"><br />
+		   </td>
+		</tr>
+		<tr>
+		   <td class="result_detail_data_head">
+		    	{#institution#|escape:htmlall}
+		    </td>
+		   <td colspan="2" class="result_detail_data_data">
+   				<input type="text" name="edit[institution]" size="60" value="{$row.institution|escape:html}" style="width: 400px;">
+		   </td>
 		</tr>
 		<tr>
 		   <td class="result_detail_data_head">{#src#|escape:htmlall}</td>
@@ -532,8 +544,11 @@ BEGIN archaeology_edit.tpl
 		   <td colspan="2" class="result_detail_data_data"><textarea name="edit[commentary]" cols="45" rows="5" style="width: 400px; height: 80px;" >{$row.commentary|escape:html}</textarea></td>
 		</tr>
 		<tr>
-		   <td class="result_detail_data_head"><input type="hidden" name="edit[currentuser]" value="{$user.login|escape:html}"></td>
-		   <td colspan="2" class="result_detail_data_data"><input type="button" name="edit[save]" value="{#save#|escape:htmlall}" onClick="saveImage();"></td>
+   		   <td class="result_detail_data_head"><input type="hidden" name="edit[currentuser]" value="{$user.login|escape:html}"></td>
+		   <td colspan="2" class="result_detail_data_data">
+		   	<input type="button" class="button" name="edit[save]" value="{#save#|escape:htmlall}" onClick="saveImage();">
+		   	&nbsp;
+		   	<input type="button" class="button" name="edit[cancel]" value="{#cancel#|escape:htmlall}" onClick="showDetail('{$sessionid}','{$result.id}','{$query.remoteCollection}');"></td>
 		</tr>
 
 <!-- --------------------------------------------

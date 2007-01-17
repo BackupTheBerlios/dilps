@@ -74,6 +74,8 @@ BEGIN ac_edit_obj_ceramic_groups.tpl
 		js_fn 	= rs_fn.split('; ');
 		js_val	= rs_val.split('; ');
 	</script>
+	
+	<input type="hidden" name="imageid" value="{$query.id}">
 
 	<table class="header" style="width: 90%; margin: auto;"/>
 		<tr>

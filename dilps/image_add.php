@@ -589,7 +589,7 @@ if ($process == 2) {
 											{
 												echo ("Inserting into database (image)\t\t\t: success\n<br>\n");
 	
-												$ret = insert_meta($query['collectionid'],$newid,$time,$user['login']);
+												$ret = insert_meta($query['collectionid'],$newid,$time,$user['login'],$query['type']);
 	
 												if (!$ret)
 												{
@@ -1115,7 +1115,7 @@ if ($process == 2) {
 								{
 									echo ("Inserting into database (image)\t\t\t: success\n<br>\n");
 	
-									$ret = insert_meta($query['collectionid'],$newid,$time,$user['login']);
+									$ret = insert_meta($query['collectionid'],$newid,$time,$user['login'],$query['type']);
 	
 									if (!$ret)
 									{

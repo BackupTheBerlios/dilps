@@ -41,7 +41,8 @@ function saveSelection(elementName)
 	
 	var elnum = elements.length;
 	
-	var sessionid = elements['PHPSESSID'].value;
+	var sessionid 	= elements['PHPSESSID'].value;
+	var imageid 	= elements['imageid'].value;
 	
 	// alert(elnum);
 	
@@ -91,10 +92,23 @@ function saveSelection(elementName)
 	alert("val: "+val_index);
 	*/
 		
-	storeInSession(sessionid, elementName+"_fn",sel_names_string, elementName,sel_values_string);
+	storeInSession(sessionid, imageid, elementName+"_fn", sel_names_string, elementName, sel_values_string);
+	
+	// dynamic textboxes for obj_ only
+	if (elementName.substr(0,3) == 'obj')
+	{
+		if (sel_values_string != '') {
+			expandTextbox(val_index);
+		}
+		else {
+			collapseTextbox(val_index);
+		}
+	}
 	
 	copyEditValue(fn_index,sel_names_string);
 	copyEditValue(val_index,sel_values_string);
+	
+	
 	
 	// alert("sel_names_string: "+sel_names_string);
 	// alert("sel_values_string: "+sel_values_string);

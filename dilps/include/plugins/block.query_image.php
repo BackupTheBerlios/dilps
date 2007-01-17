@@ -114,6 +114,7 @@ function smarty_block_query_image($params, $content, &$smarty, &$repeat)
     		{
 				$sql = 	"SELECT `category_fn`, `category`, `iconography_fn`, `iconography`, ".
 						"`dating_ext_fn`, `dating_ext`, `material_ext_fn`, `material_ext` ".
+						", `location_ext_fn`, `location_ext` ".
 						" ,`obj_culture_fn`, `obj_culture` ".
 						" ,`obj_culthistory_fn`, `obj_culthistory` ".
 						" ,`obj_topography_fn`, `obj_topography` ".

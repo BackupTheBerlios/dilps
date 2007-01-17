@@ -24,7 +24,7 @@ CREATE TABLE `!prefix_!logfile` (
 
 );
 
-CREATE TABLE `ng_archaeology` (
+CREATE TABLE `!prefix_!archaeology` (
 
   `collectionid` bigint(20) NOT NULL,
   
@@ -33,10 +33,6 @@ CREATE TABLE `ng_archaeology` (
   `category_fn` text NOT NULL,
   
   `category` text NOT NULL,
-  
-  `object_fn` text NOT NULL,
-  
-  `object` text NOT NULL,
   
   `iconography_fn` text NOT NULL,
   
@@ -50,8 +46,119 @@ CREATE TABLE `ng_archaeology` (
   
   `material_ext` text NOT NULL,
   
-  PRIMARY KEY  (`collectionid`,`imageid`)
+  `location_ext_fn` text NOT NULL,
   
+  `location_ext` text NOT NULL,
+  
+  `obj_culture_fn` text NOT NULL,
+  
+  `obj_culture` text NOT NULL,
+  
+  `obj_culthistory_fn` text NOT NULL,
+  
+  `obj_culthistory` text NOT NULL,
+  
+  `obj_topography_fn` text NOT NULL,
+  
+  `obj_topography` text NOT NULL,
+  
+  `obj_arch_structelems_fn` text NOT NULL,
+  
+  `obj_arch_structelems` text NOT NULL,
+  
+  `obj_arch_tenement_fn` text NOT NULL,
+  
+  `obj_arch_tenement` text NOT NULL,
+  
+  `obj_arch_funcbuild_fn` text NOT NULL,
+  
+  `obj_arch_funcbuild` text NOT NULL,
+  
+  `obj_arch_amusement_fn` text NOT NULL,
+  
+  `obj_arch_amusement` text NOT NULL,
+  
+  `obj_arch_economy_fn` text NOT NULL,
+  
+  `obj_arch_economy` text NOT NULL,
+  
+  `obj_arch_sacral_fn` text NOT NULL,
+  
+  `obj_arch_sacral` text NOT NULL,
+  
+  `obj_arch_sepulchre_fn` text NOT NULL,
+  
+  `obj_arch_sepulchre` text NOT NULL,
+  
+  `obj_arch_military_fn` text NOT NULL,
+  
+  `obj_arch_military` text NOT NULL,
+  
+  `obj_mosaic_fn` text NOT NULL,
+  
+  `obj_mosaic` text NOT NULL,
+  
+  `obj_painting_fn` text NOT NULL,
+  
+  `obj_painting` text NOT NULL,
+  
+  `obj_sculpture_fn` text NOT NULL,
+  
+  `obj_sculpture` text NOT NULL,
+  
+  `obj_portrait_fn` text NOT NULL,
+  
+  `obj_portrait` text NOT NULL,
+  
+  `obj_ceramic_vascularforms_fn` text NOT NULL,
+  
+  `obj_ceramic_vascularforms` text NOT NULL,
+  
+  `obj_ceramic_groups_fn` text NOT NULL,
+  
+  `obj_ceramic_groups` text NOT NULL,
+  
+  `obj_toreutics_fn` text NOT NULL,
+  
+  `obj_toreutics` text NOT NULL,
+  
+  `obj_jewellery_fn` text NOT NULL,
+  
+  `obj_jewellery` text NOT NULL,
+  
+  `obj_glass_fn` text NOT NULL,
+  
+  `obj_glass` text NOT NULL,
+  
+  `obj_glyptics_fn` text NOT NULL,
+  
+  `obj_glyptics` text NOT NULL,
+  
+  `obj_numismatics_fn` text NOT NULL,
+  
+  `obj_numismatics` text NOT NULL,
+  
+  `obj_textiles_fn` text NOT NULL,
+  
+  `obj_textiles` text NOT NULL,
+  
+  `obj_misc_fn` text NOT NULL,
+  
+  `obj_misc` text NOT NULL,
+  
+  `obj_epigraphy_fn` text NOT NULL,
+  
+  `obj_epigraphy` text NOT NULL,
+  
+  `obj_methods_fn` text NOT NULL,
+  
+  `obj_methods` text NOT NULL,
+  
+  `obj_reception_fn` text NOT NULL,
+  
+  `obj_reception` text NOT NULL,
+  
+  PRIMARY KEY  (`collectionid`,`imageid`)
 );
 
 
