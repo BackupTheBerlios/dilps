@@ -325,7 +325,7 @@ function query_local_collection_extended($query, $options, $db, $db_prefix) {
 	$sql = "SELECT DISTINCT $fields FROM $from WHERE $where"
 	       ." ORDER BY insert_date DESC, imageid DESC";
 	       
-	die($sql);
+	// die($sql);
 	
     $pagesize = $options['pagesize'];
     $page = $options['page'];
