@@ -78,7 +78,7 @@
 
 	# --------------------------------------------------------
 
-	# $Id: install.php,v 1.9 2007/01/14 21:39:07 sdoeweling Exp $
+	# $Id: install.php,v 1.10 2007/02/01 13:34:32 sdoeweling Exp $
 
 	# --------------------------------------------------------
 
@@ -565,7 +565,7 @@
 
     $t_ldapserver = 'not found. Please enter, if you want to use LDAP authentication.';
     
-    $t_basedn = 'not found. Please enter, if you want to use LDAP  authentication.';
+    $t_basedn = 'not found. Please enter, if you want to use LDAP authentication.';
     
     
     $t_mailserver = 'not found. Please enter, if you want to use IMAP authenication'; 
@@ -619,14 +619,20 @@
     $f_ldapserver = gpc_get_string('ldapserver',"ldap.".$f_authdomain);
     
     
-    $domain_ending 		= substr($f_authdomain,strrpos($f_authdomain,'.')+1);
+    $domain_ending 		= (strpos($f_authdomain,'.') > 0) ? substr($f_authdomain,strrpos($f_authdomain,'.')+1) : '';
     
-    $domain_ending_dc	= (!empty($domain_ending) ? ("dc=".$domain_ending.", ") : (''));
+    $domain_ending_dc	= (!empty($domain_ending) ? ("dc=".$domain_ending) : (''));
     
     $domain_name 		= substr($f_authdomain,0,strrpos($f_authdomain,'.'));
     
-    $domain_name_dc		= (!empty($domain_name) ? ("dc=".$domain_name) : ('localhost'));
+    $domain_name_dc		= (!empty($domain_name) ? ("dc=".$domain_name) : ('dc=localhost'));
     
+    $f_basedn			= $domain_name_dc;
+    
+    if ($domain_ending_dc != '')
+    {
+    	$f_basedn		.= ", ".$domain_ending_dc;
+    }    
     
     $f_mailserver = gpc_get_string('mailserver',"mail.".$f_authdomain);
     
