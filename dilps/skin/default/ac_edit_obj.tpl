@@ -107,7 +107,7 @@ BEGIN ac_edit_obj.tpl
 						<td>Rundplastik, Relief, Sarkophage, Bauplastik, Formatangaben, Polychromie</td>
 					</tr>
 					<tr>
-						<td><a href="{$SCRIPT_NAME}?PHPSESSID={$sessionid}&query[id]={$query.id}&query[element]=obj_potrait">Portrait</a></td>
+						<td><a href="{$SCRIPT_NAME}?PHPSESSID={$sessionid}&query[id]={$query.id}&query[element]=obj_portrait">Portrait</a></td>
 						<td>Benennung, Form</td>
 					</tr>
 					<tr>
