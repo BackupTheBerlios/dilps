@@ -93,4 +93,11 @@ E_CREATE_ZIP = Fehler beim Anlegen der Archiv-Datei
 E_COPY_VIEWER = Fehler beim Kopieren von DILPS-Leuchtpult und -Projektor
 R_EXPORT_SUCCESSFUL = Export erfolgreich durchgeführt
 
+location_ext	= Standort/Fundort
+denomination 	= Benennung
+category 		= Bildkategorie
+object 			= Objekt (Gattung)
+iconography 	= Ikonographie
+artistname 		= Künstler
+
 newsearch = Neue Suche
