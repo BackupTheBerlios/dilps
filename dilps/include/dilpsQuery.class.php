@@ -39,6 +39,18 @@ class dilpsQuery {
                                                 'operators'=>'equals'),
                         'imageid' =>        array('function'=>'get_meta_where_query',
                                                 'operators'=>'equals'),
+						'category' =>       array('function'=>'get_archaeology_where_query',
+												'operators'=>'like'),
+						'iconography' =>	array('function'=>'get_archaeology_where_query',
+												'operators'=>'like'),
+						'dating_ext' =>		array('function'=>'get_archaeology_where_query_combined',
+												'operators'=>'like'),
+						'material_ext' =>	array('function'=>'get_archaeology_where_query_combined',
+												'operators'=>'like'),
+						'location_ext' =>	array('function'=>'get_archaeology_where_query_combined',
+												'operators'=>'like'),
+						'object' 	=>		array('function'=>'get_archaeology_where_query_extended',
+												'operators'=>'like')
                                                 );
 
     function dilpsQuery($db = null, $db_prefix = null) {
@@ -158,6 +170,66 @@ class dilpsQuery {
 
     	return $where;
     }
+    
+    function get_archaeology_where_query($column, $value, $operator) {
+
+        if ($operator == 'like') {
+        	
+            $where = "lower({$this->db_prefix}archaeology.$column) like lower(" . $this->db->qstr("%$value%") .")";
+        }
+    	return $where;
+    }
+    
+    function get_archaeology_where_query_combined($column, $value, $operator) {
+
+        if ($operator == 'like') {
+        	
+            $where = "( "
+            		.get_archaeology_where_query($column, $value, $operator)
+            		." OR "
+            		.get_meta_where_query($column, $value, $operator)
+            		." )";
+        }
+    	return $where;
+    }
+    
+    function get_archaeology_where_query_extended($column, $value, $operator) {
+    	if ($operator == 'like') {
+    		
+        	$where = "lower(concat_ws(' ',{$this->db_prefix}archaeology.obj_culture, "
+				."{$this->db_prefix}archaeology.obj_culthistory, "
+				."{$this->db_prefix}archaeology.obj_topography, "
+				."{$this->db_prefix}archaeology.obj_arch_structelems, "
+				."{$this->db_prefix}archaeology.obj_arch_tenement, "
+				."{$this->db_prefix}archaeology.obj_arch_funcbuild, "
+				."{$this->db_prefix}archaeology.obj_arch_amusement, "
+				."{$this->db_prefix}archaeology.obj_arch_economy, "
+				."{$this->db_prefix}archaeology.obj_arch_sacral, "
+				."{$this->db_prefix}archaeology.obj_arch_sepulchre, "
+				."{$this->db_prefix}archaeology.obj_arch_military, "
+				."{$this->db_prefix}archaeology.obj_mosaic, "
+				."{$this->db_prefix}archaeology.obj_painting, "
+				."{$this->db_prefix}archaeology.obj_sculpture, "
+				."{$this->db_prefix}archaeology.obj_portrait, "
+				."{$this->db_prefix}archaeology.obj_ceramic_vascularforms, "
+				."{$this->db_prefix}archaeology.obj_ceramic_groups, "
+				."{$this->db_prefix}archaeology.obj_toreutics, "
+				."{$this->db_prefix}archaeology.obj_jewellery, "
+				."{$this->db_prefix}archaeology.obj_glass, "
+				."{$this->db_prefix}archaeology.obj_glyptics, "
+				."{$this->db_prefix}archaeology.obj_numismatics, "
+				."{$this->db_prefix}archaeology.obj_textiles, "
+				."{$this->db_prefix}archaeology.obj_misc, "
+				."{$this->db_prefix}archaeology.obj_epigraphy, "
+				."{$this->db_prefix}archaeology.obj_methods, "
+				."{$this->db_prefix}archaeology.obj_reception)) like lower("
+				. $this->db->qstr("%$value%") .")";
+        }
+        return $where;
+        
+    }
+    
+    
 
 
     /* gets the where chunk for meta table values that are displayed as dropdowns

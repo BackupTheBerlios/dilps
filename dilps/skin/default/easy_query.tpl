@@ -190,13 +190,21 @@ BEGIN easy_query.tpl
 		   </td>
 		</tr>
 		<tr>
-		   <td class="field_name">
-		      &nbsp;
-		   </td>
-		   <td>
-		      <input type="button" onClick="newQuery(); return true;" name="query[new]" value="{#search#|escape:html}">
-		      <br />
-		      <input type="button" onClick="changeQueryType('advanced')" name="changequerytype" value="{#advancedsearch#|escape:html}">
+			<td class="field_name">
+			  &nbsp;
+			</td>
+			<td>
+				<table class="query" cellpadding="0" cellspacing="0" style="width: 100%;">
+					<tr>
+						<td style="width: 55%; text-align: left;">
+							<button type="button" class="actionbutton" onClick="newQuery(); return true;" title="{#search#|escape:html}">{#search#|escape:html}</button>
+				<button type="button" class="actionbutton" onClick="clearSimpleQuery(); return true;" title="{#search#|escape:html}">{#newsearch#|escape:html}</button>
+						</td>
+						<td style="width: 45%; text-align: right;">
+							<button type="button" class="actionbutton" onClick="changeQueryType('advanced')" title="{#advancedsearch#|escape:html}">{#advancedsearch#|escape:html}</button>
+						</td>
+					</tr>
+				</table>
 		   </td>
 		</tr>
 

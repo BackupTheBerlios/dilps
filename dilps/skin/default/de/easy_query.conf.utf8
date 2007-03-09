@@ -92,3 +92,5 @@ E_CREATE_DIRECTORY = Fehler beim Anlegen der nötigen Verzeichnisse
 E_CREATE_ZIP = Fehler beim Anlegen der Archiv-Datei
 E_COPY_VIEWER = Fehler beim Kopieren von DILPS-Leuchtpult und -Projektor
 R_EXPORT_SUCCESSFUL = Export erfolgreich durchgeführt
+
+newsearch = Neue Suche

@@ -242,6 +242,26 @@ function newQuery()
 	editDetail('');
 }
 
+function clearSimpleQuery()
+{
+	var fieldnames = new Array('all','name','title','year','status','imageid');
+	var actfn = '';
+	
+	for(var i =0; i < fieldnames.length; i++)
+	{
+		actfn = 'query['+fieldnames[i]+']';
+		
+		if (document.forms["Main"].elements[actfn] != null)
+		{
+			document.forms["Main"].elements[actfn].value = '';
+		}
+	}
+	
+	cleargroup();
+	
+	return true;
+}
+
 function queryCheckbox(form, hiddenvalue, cbox) {
 	if (form.elements[cbox].checked == false) {
 	    form.elements[hiddenvalue].value = 0;

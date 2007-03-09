@@ -295,37 +295,39 @@ function query_local_collection_extended($query, $options, $db, $db_prefix) {
 	
 	// search architecture fields
 	if (!empty($query['object'])){
-		$where .= "object like ".$db->qstr($query['object']);
+		$where .= " AND lower(object) like lower(".$db->qstr('%'.$query['object'].'%').")";
 	}
 	
 	if (!empty($query['iconography'])){
-		$where .= "iconography like ".$db->qstr($query['iconography']);
+		$where .= " AND lower(iconography) like lower(".$db->qstr('%'.$query['iconography'].'%').")";
 	}
 	
 	if (!empty($query['dating_ext'])){
-		$where .= "dating_ext like ".$db->qstr($query['dating_ext']);
+		$where .= " AND lower(dating_ext) like lower(".$db->qstr('%'.$query['dating_ext'].'%').")";
 	}
 	
 	if (!empty($query['material_ext'])){
-		$where .= "material_ext like ".$db->qstr($query['material_ext']);
+		$where .= " AND lower(material_ext) like lower(".$db->qstr('%'.$query['material_ext'].'%').")";
 	}
 	
 	if (!empty($query['location_ext'])){
-		$where .= "location_ext like ".$db->qstr($query['dating_ext']);
+		$where .= " AND lower(location_ext) like lower(".$db->qstr('%'.$query['location_ext'].'%').")";
 	}
 	
 	if (!empty($query['location'])){
-		$where .= "location like ".$db->qstr($query['location']);
+		$where .= " AND lower(location) like lower(".$db->qstr('%'.$query['location'].'%').")";
 	}
 	
 	if (!empty($query['literature'])){
-		$where .= "location like ".$db->qstr($query['location']);
+		$where .= " AND lower(location) like lower(".$db->qstr('%'.$query['literature'].'%').")";
 	}
-
+	
 	$sql = "SELECT DISTINCT $fields FROM $from WHERE $where"
 	       ." ORDER BY insert_date DESC, imageid DESC";
-	       
+
 	// die($sql);
+	
+	// $db->debug = true;
 	
     $pagesize = $options['pagesize'];
     $page = $options['page'];
