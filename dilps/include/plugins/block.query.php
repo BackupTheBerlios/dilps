@@ -307,11 +307,19 @@ function query_local_collection_extended($query, $options, $db, $db_prefix) {
 	}
 	
 	if (!empty($query['material_ext'])){
-		$where .= " AND lower(material_ext) like lower(".$db->qstr('%'.$query['material_ext'].'%').")";
+		$where .= 	" AND ( "
+					."lower(material_ext) like lower(".$db->qstr('%'.$query['material_ext'].'%').")"
+					." OR "
+					."lower(material) like lower(".$db->qstr('%'.$query['material_ext'].'%').")"
+					." )";
 	}
 	
 	if (!empty($query['location_ext'])){
-		$where .= " AND lower(location_ext) like lower(".$db->qstr('%'.$query['location_ext'].'%').")";
+		$where .= 	" AND ( "
+					."lower(location_ext) like lower(".$db->qstr('%'.$query['location_ext'].'%').")"
+					." OR "
+					."lower(location) like lower(".$db->qstr('%'.$query['location_ext'].'%').")"
+					." )";
 	}
 	
 	if (!empty($query['location'])){
