@@ -78,7 +78,7 @@
 
 	# --------------------------------------------------------
 
-	# $Id: install.php,v 1.10 2007/02/01 13:34:32 sdoeweling Exp $
+	# $Id: install.php,v 1.11 2007/03/09 12:16:53 sdoeweling Exp $
 
 	# --------------------------------------------------------
 
@@ -663,7 +663,6 @@
 	$f_skin = 'default';
 
 	$f_language = 'de';
-
 
 
 //	$f_backup = gpc_get_string('backup','');
