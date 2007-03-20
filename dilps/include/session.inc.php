@@ -32,9 +32,10 @@
  * -------------------------------------------------------------
  */
 
-include( $config['includepath'].'db.inc.php' );
+include( 'db.inc.php' );
 
 ini_set( 'session.use_cookies' , 0 );
+ini_set( 'session.auto_start' , 0 );
 
 define( "SESS_MAX_LIFETIME", 36000 );
 define( "SESS_MAX_INACTIVE", 1800 );
@@ -43,7 +44,9 @@ define( "LOG_LOGIN", 1 );
 define( "LOG_LOGOUT", 2 );
 define( "LOG_GENERIC", 4 );
 
-// print_r($GLOBALS);
+error_reporting(E_ALL);
+ini_set('display_errors',1);
+
 
 function sess_open( $save_path, $session_name )
 {		
@@ -70,8 +73,20 @@ function sess_read( $id )
 	global $sess_save_path, $sess_session_name, $sess_invalid;
 
 	// configuration data
-	global $db, $db_prefix;
+	global $db, $db_prefix, $db_host, $db_user, $db_pwd, $db_db;
+
+	if( $sess_invalid )
+	{
+		return false;
+	}
 	
+	if (!isset($db) || $db === false)
+	{
+		include('db.inc.php');
+	}
+	
+	// // $db->debug = true;
+
 	// read from database
 
 	$sql = 	"SELECT session_data, end-NOW() as lifetime, active FROM ".$db_prefix."session"
@@ -113,15 +128,35 @@ function sess_write( $id, $sess_data )
 	global $sess_save_path, $sess_session_name, $sess_invalid;
 
 	// configuration data
-	global $db, $db_prefix;
-	
+	global $db, $db_prefix, $db_host, $db_user, $db_pwd, $db_db;
+
 	if( $sess_invalid )
 	{
 		return false;
 	}
 	
+	/*
+	echo "\nDB: <br>\n";
+	print_r($db);
+	echo "\n<br>\n";
+	
+	echo ("Prefix: {$db_prefix}\n<br>\n");
+	echo ("Host: {$db_host}\n<br>\n");
+	echo ("User: {$db_user}\n<br>\n");
+	echo ("Password: {$db_pwd}\n<br>\n");
+	echo ("Database: {$db_db}\n<br>\n");
+	*/
+	
+	if (!isset($db) || $db === false)
+	{
+		include('db.inc.php');
+	}
+	
+	// $db->debug = true;
+
 	$sql =  "UPDATE ".$db_prefix."session SET counter=counter+1,lastaccess=NOW(),session_data="
 			.$db->qstr($sess_data)." WHERE sessionid=".$db->qstr($id);
+
 	$rs = $db->Execute ($sql);
 
 	// error executing database query
@@ -166,7 +201,19 @@ function sess_destroy ($id)
 	global $sess_save_path, $sess_session_name, $sess_invalid;
 
 	// configuration data
-	global $db, $db_prefix;
+	global $db, $db_prefix, $db_host, $db_user, $db_pwd, $db_db;
+
+	if( $sess_invalid )
+	{
+		return false;
+	}
+	
+	if (!isset($db) || $db === false)
+	{
+		include('db.inc.php');
+	}
+	
+	// $db->debug = true;
 
 	$sql = "UPDATE ".$db_prefix."session SET lastaccess=NOW(),active=0 WHERE sessionid="
 			.$db->qstr($id);
@@ -194,12 +241,19 @@ function sess_log( $type, $subtype, $descr, $status )
 	global $sess_save_path, $sess_session_name, $sess_invalid;
 
 	// configuration data
-	global $db, $db_prefix;
+	global $db, $db_prefix, $db_host, $db_user, $db_pwd, $db_db;
 
 	if( $sess_invalid )
 		$sessionid = "invalid";
 	else
 		$sessionid = session_id();
+		
+	if (!isset($db) || $db === false)
+	{
+		include('db.inc.php');
+	}
+	
+	// $db->debug = true;
 
 	$sql = 	"INSERT INTO ".$db_prefix."logfile (sessionid,logdate,type,subtype,descr,status) "
 			."VALUES(".$db->qstr($sessionid).",NOW(),".$type.",".$subtype
@@ -218,19 +272,19 @@ function sess_log( $type, $subtype, $descr, $status )
 
 function killSession()
 {
-	@session_unset();
-	@session_destroy();
+	session_unset();
+	session_destroy();
 }
 
 session_set_save_handler( "sess_open", "sess_close", "sess_read", "sess_write", "sess_destroy", "sess_gc" );
 session_start();
-
+/*
 if( $sess_invalid )
 {
 	session_unset();
 	session_destroy();
 }
-
+*/
 if( !isset( $_SESSION["counter"] ))
 {
 	$_SESSION["counter"] = 0;
