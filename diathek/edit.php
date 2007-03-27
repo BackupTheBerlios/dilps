@@ -1,6 +1,12 @@
 <?php
-	// include_once( 'session.inc.php' );
-	include( 'db.inc.php' );
+	include_once( 'session.inc.php' );
+	// include( 'db.inc.php' );
+	include( 'DilpsEntryWrapper.class.php');
+	include( 'DilpsBarcodeAndFileChecker.class.php');
+	
+	ini_set('display_errors',1);
+	ini_set('magic_quotes_runtime',0);
+	error_reporting (E_ALL);
 ?>
 
 
@@ -21,7 +27,7 @@ BEGIN grid_detail.tpl
 	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 	<meta http-equiv="Content-Script-Type" content="text/javascript">
 	<meta http-equiv="Content-Style-Type" content="text/css">
-	<meta name="author" content="jrgen enge, thorsten wbbena">
+	<meta name="author" content="juergen enge, thorsten wuebbena">
 	<meta name="date" content="2003-01-23">
 	<link rel="shortcut icon" href="favicon.ico">
 	<title>. : DILPS : .</title>
@@ -36,9 +42,15 @@ BEGIN grid_detail.tpl
 	<script type="text/javascript" src="yui/build/autocomplete/autocomplete.js"></script> 
 	<script type="text/javascript" src="yui/build/utilities/utilities.js"></script>
 	
+	<script type="text/javascript" src="resource/diathek.inc.js"></script>
+	
 </head>
 <body class="main" style="width: 100%;">
 <form name="Main" action="index.php" method="post" style="width: 100%;">
+
+<input type="hidden" name="PHPSESSID" value="<?php echo session_id();?>">
+<input type="hidden" name="saved" value="1">
+<input type="hidden" name="barcode" value="<?php if(isset($_POST['barcode'])) { echo (trim($_POST['barcode'])); } ?>">
 
 <script type="text/javascript">
 
@@ -46,32 +58,18 @@ var remoteHW = new DilpsAcquisitionAJAX();
 
 var num = 20;
 
-function do_getTitles( field, sQuery, num )
+function do_getCompletions( field, sQuery, num )
 {
-    return remoteHW.getTitles( field, sQuery, num );
-}
-
-function do_getNames( field, sQuery, num )
-{
-    return remoteHW.getNames( field, sQuery, num );
-}
-
-function do_getLocations( field, sQuery, num )
-{
-    return remoteHW.getLocations( field, sQuery, num );
+    return remoteHW.getCompletions( field, sQuery, num );
 }
 
 </script> 
-
-<body>
-<form name="main" method="get" action="<?=$_SERVER['PHP_SELF'] ?>">
-
 
 <table class="header" style="width: 100%;">
 	<!-- back link -->
 	<tr>
 		<td colspan="2">
-			&nbsp;<a href="index.php" style="text-decoration: underline;"><b>Zur&uuml;ck zur Barcode-Erfassung</b></a>
+			&nbsp;<a href="index.php?PHPSESSID=<?php echo session_id()?>" style="text-decoration: underline;"><b>Zur&uuml;ck zur Barcode-Erfassung</b></a>
 		</td>
 	</tr>
 	<!-- back end -->
@@ -86,23 +84,125 @@ function do_getLocations( field, sQuery, num )
 	</tr>
 	<!-- heading line end -->
 	
+	<!-- result -->
+	<tr>
+		<td colspan="2"  style="text-align: center;">
+		<?php
+		
+			if (!isset($_POST['barcode']))
+			{
+				die("Fehler bei der Übergabe des Barcodes\n");
+			}
+			else 
+			{
+				// auf vorhandenes Bild prüfen
+				
+				$filechecker = new DilpsBarcodeAndFileChecker(trim($_POST['barcode']));
+				
+				$hasFile = $filechecker->hasFile();
+				
+				// print_r($filechecker);
+				
+				if ($hasFile)
+				{
+					// Datei existiert - zum Datenbankeintrag verbinden
+				
+					$wrapper = new DilpsEntryWrapper($db, $db_prefix, trim($_POST['barcode']));
+					
+					$createStatus = $wrapper->createIfNotExists();
+					
+					if (!$createStatus)
+					{
+						echo ("{$createStatus}\n");
+					}
+					else 
+					{
+						$loadStatus = $wrapper->loadFromDbOrSession();
+					
+						if (!$loadStatus)
+						{
+							echo ("{$loadStatus}\n");
+						}
+						else 
+						{
+							echo ("&nbsp;\n");
+						}
+					}
+				}
+				else 
+				{
+					echo ("&nbsp;");
+				}
+			}
+		?>
+		
+		</td>
+	</tr>
+	<!-- result end -->
+	
 	<!-- content -->
 	<tr>
 		<td style="vertical-align: top; width: 50%">
 			<!-- left side (form fields) -->
 			<table class="query" cellspacing="0" cellpadding="0" style="width: 90%; vertical-align: top;">
+			<?php
+			if ($hasFile && $loadStatus)
+			{
+				if(isset($_SESSION['save_value']))
+				{
+					$save_value = $_SESSION['save_value'];
+				}
+				else 
+				{
+					$save_value = array();
+				}
+				
+				?>
+				<tr>
+					<td style="text-align: right; padding-right: 10px;">
+						<b>Feld</b>
+					</td>
+					<td style="text-align: left; padding-left: 3px;">
+						<b title="Bitte hier die Werte zu diesem Bild auswählen/eingeben">Wert</b>
+					</td>
+					<td style="text-align: center;">
+						<b title="Diesen Wert für die nächste Bearbeitung behalten">beh.</b>
+					</td>
+				</tr>
 				<tr>
 					<td class="queryinputfieldtext">
-						<label for="title_mod">Titel</label>
+						Typ
+					</td>
+					<td>
+						
+					  <select class="queryselectfield" name="type" style="width: 20em; text-align: center;">
+						   <option value="image" <?php if ($wrapper->getType() == 'image') { echo ('selected = "selected"'); } ?> >Bild</option>
+						   <option value="architecture" <?php if ($wrapper->getType() == 'architecture') { echo ('selected = "selected"'); } ?> >Architektur</option>
+						   <option value="other" <?php if ($wrapper->getType() == 'other') { echo ('selected = "selected"'); } ?> >Sonstige</option>
+					  </select>
+					  
+					  
+					  <!--
+					  <select class="queryselectfield" name="type" style="width: 20em; text-align: center;">
+						   <option value="image">Bild</option>
+						   <option value="architecture">Architektur</option>
+						   <option value="other">Sonstige</option>
+					  </select>
+					  -->
+					</td>
+					<td class="querycheckboxfield">
+						<input type="checkbox" name="save_value[]" value="type" <?php if (in_array('type',$save_value)) { echo "checked='checked'"; } ?> >
+					</td>
+				</tr>
+				<tr>
+					<td class="queryinputfieldtext">
+						Titel
 					</td>
 					<td class="queryinputfield">
-												
-						<!-- autocomplete title -->
-						<div id="title_mod">
-							<input id="title_input" class="queryinputfield" type="text" name="title" size="80" value="">
-						    <div id="title_container"></div>
-						</div>
-						<!-- autocomplete title end -->
+						<input class="queryinputfield" type="text" name="title" size="80" value="<?php echo (htmlentities($wrapper->getTitle())); ?>">
+					</td>
+					<td class="querycheckboxfield">
+						&nbsp;
 					</td>
 				</tr>
 				<tr>
@@ -112,10 +212,13 @@ function do_getLocations( field, sQuery, num )
 					<td class="queryinputfield">
 						<!-- autocomplete name -->
 						<div id="name_mod">
-							<input id="name_input" class="queryinputfield" type="text" name="name" size="80" value="">
+							<input id="name_input" class="queryinputfield" type="text" name="name" size="80" value="<?php echo (htmlentities($wrapper->getName())); ?>">
 						    <div id="name_container"></div>
 						</div>
 						<!-- autocomplete name end -->
+					</td>
+					<td class="querycheckboxfield">
+						<input type="checkbox" name="save_value[]" value="name" <?php if (in_array('name',$save_value)) { echo "checked='checked'"; } ?>>
 					</td>
 				</tr>
 				<tr>
@@ -123,7 +226,10 @@ function do_getLocations( field, sQuery, num )
 						Datierung
 					</td>
 					<td class="queryinputfield">
-						<input class="queryinputfield" type="text" name="dating" size="80" value="">
+						<input class="queryinputfield" type="text" name="dating" size="80" value="<?php echo (htmlentities($wrapper->getDating())); ?>">
+					</td>
+					<td class="querycheckboxfield">
+						&nbsp;
 					</td>
 				</tr>
 				<tr>
@@ -133,26 +239,92 @@ function do_getLocations( field, sQuery, num )
 					<td class="queryinputfield">
 						<!-- autocomplete name -->
 						<div id="location_mod">
-							<input id="location_input" class="queryinputfield" type="text" name="location" size="80" value="">
+							<input id="location_input" class="queryinputfield" type="text" name="location" size="80" value="<?php echo (htmlentities($wrapper->getLocation())); ?>">
 						    <div id="location_container"></div>
 						</div>
 						<!-- autocomplete name end -->
 					</td>
-				</tr>
-				<tr>
-					<td class="queryinputfieldtext">
-						Institution
-					</td>
-					<td class="queryinputfield">
-						<input class="queryinputfield" type="text" name="institution" size="80" value="">
+					<td class="querycheckboxfield">
+						<input type="checkbox" name="save_value[]" value="location" <?php if (in_array('location',$save_value)) { echo "checked='checked'"; } ?>>
 					</td>
 				</tr>
 				<tr>
 					<td class="queryinputfieldtext">
-						Quelle
+						<label for="institution_mod">Institution</label>
 					</td>
 					<td class="queryinputfield">
-						<input class="queryinputfield" type="text" name="literature" size="80" value="">
+												
+						<!-- autocomplete institution -->
+						<div id="institution_mod">
+							<input id="institution_input" class="queryinputfield" type="text" name="institution" size="80" value="<?php echo (htmlentities($wrapper->getInstitution())); ?>">
+						    <div id="institution_container"></div>
+						</div>
+						<!-- autocomplete institution end -->
+					</td>
+					<td class="querycheckboxfield">
+						<input type="checkbox" name="save_value[]" value="institution" <?php if (in_array('institution',$save_value)) { echo "checked='checked'"; } ?>>
+					</td>
+				</tr>
+				<tr>
+					<td class="queryinputfieldtext">
+						<label for="material_mod">Material</label>
+					</td>
+					<td class="queryinputfield">
+												
+						<!-- autocomplete material -->
+						<div id="material_mod">
+							<input id="material_input" class="queryinputfield" type="text" name="material" size="80" value="<?php echo (htmlentities($wrapper->getMaterial())); ?>">
+						    <div id="material_container"></div>
+						</div>
+						<!-- autocomplete material end -->
+					</td>
+					<td class="querycheckboxfield">
+						<input type="checkbox" name="save_value[]" value="material" <?php if (in_array('material',$save_value)) { echo "checked='checked'"; } ?>>
+					</td>
+				</tr>
+				<tr>
+					<td class="queryinputfieldtext">
+						<label for="technique_mod">Technik</label>
+					</td>
+					<td class="queryinputfield">
+												
+						<!-- autocomplete technique -->
+						<div id="technique_mod">
+							<input id="technique_input" class="queryinputfield"type="text" name="technique" size="80" value="<?php echo (htmlentities($wrapper->getTechnique())); ?>">
+						    <div id="technique_container"></div>
+						</div>
+						<!-- autocomplete technique end -->
+					</td>
+					<td class="querycheckboxfield">
+						<input type="checkbox" name="save_value[]" value="technique" <?php if (in_array('technique',$save_value)) { echo "checked='checked'"; } ?>>
+					</td>
+				</tr>
+				<tr>
+					<td class="queryinputfieldtext">
+						Format / Ma&szlig;e
+					</td>
+					<td class="queryinputfield">
+						<input class="queryinputfield" type="text" name="format" size="80" value="<?php echo (htmlentities($wrapper->getFormat())); ?>">
+					</td>
+					<td class="querycheckboxfield">
+						&nbsp;
+					</td>
+				</tr>
+				<tr>
+					<td class="queryinputfieldtext">
+						<label for="literature_mod">Quelle</label>
+					</td>
+					<td class="queryinputfield">
+												
+						<!-- autocomplete literature -->
+						<div id="literature_mod">
+							<input id="literature_input" class="queryinputfield"type="text" name="literature" size="80" value="<?php echo (htmlentities($wrapper->getLiterature())); ?>">
+						    <div id="literature_container"></div>
+						</div>
+						<!-- autocomplete literature end -->
+					</td>
+					<td class="querycheckboxfield">
+						<input type="checkbox" name="save_value[]" value="literature" <?php if (in_array('literature',$save_value)) { echo "checked='checked'"; } ?> >
 					</td>
 				</tr>
 				<tr>
@@ -160,7 +332,21 @@ function do_getLocations( field, sQuery, num )
 						Seite
 					</td>
 					<td class="queryinputfield">
-						<input class="queryinputfield" type="text" name="page" size="80" value="">
+						<input class="queryinputfield" type="text" name="page" size="80" value="<?php echo (htmlentities($wrapper->getPage())); ?>">
+					</td>
+					<td class="querycheckboxfield">
+						&nbsp;
+					</td>
+				</tr>
+				<tr>
+					<td class="queryinputfieldtext">
+						Tafel
+					</td>
+					<td class="queryinputfield">
+						<input class="queryinputfield" type="text" name="tableno" size="80" value="<?php echo (htmlentities($wrapper->getTableno())); ?>">
+					</td>
+					<td class="querycheckboxfield">
+						&nbsp;
 					</td>
 				</tr>
 				<tr>
@@ -168,7 +354,21 @@ function do_getLocations( field, sQuery, num )
 						Abbildung
 					</td>
 					<td class="queryinputfield">
-						<input class="queryinputfield" type="text" name="figure" size="80" value="">
+						<input class="queryinputfield" type="text" name="figure" size="80" value="<?php echo (htmlentities($wrapper->getFigure())); ?>">
+					</td>
+					<td class="querycheckboxfield">
+						&nbsp;
+					</td>
+				</tr>
+				<tr>
+					<td class="queryinputfieldtext">
+						Kommentar / Sonstiges
+					</td>
+					<td class="queryinputfield">
+						<input class="queryinputfield" type="text" name="commentary" size="80" value="<?php echo (htmlentities($wrapper->getCommentary())); ?>">
+					</td>
+					<td class="querycheckboxfield">
+						&nbsp;
 					</td>
 				</tr>
 				<tr>
@@ -187,7 +387,25 @@ function do_getLocations( field, sQuery, num )
 							</tr>
 						</table>
 					</td>
+					<td>
+						&nbsp;
+					</td>
 				</tr>
+				<?php
+			}
+			else 
+			{
+				?>
+				<tr>
+					<td style="text-align: center;">
+					<?php
+						echo ("<b>Die Datei zum Barcode ".trim($_POST['barcode'])." konnte nicht gefunden werden <br/>-<br/> Bearbeitung nicht möglich\n</b>");
+					?>
+					</td>
+				</tr>
+			<?php
+			}
+			?>
 			</table>
 			<!-- left side (form fields) end -->
 		</td>
@@ -203,12 +421,23 @@ function do_getLocations( field, sQuery, num )
 								<td><img src="/icons/blank.gif" width="121" height="1"></td>
 							</tr>
 							<tr colspan="2">
-								<td style="text-align: center"><img src="image.php?id="></td>
+								<td style="text-align: center">
+									<?php
+										if ($filechecker->hasFile()) 
+											{ $fn = $filechecker->getPreviewFilename();
+											echo "<img src='image.php?filename=".$fn."' style='width: 280px;'>";
+										}
+										else 
+										{
+											echo "<img src='resource/empty.jpg' style='width: 280px;'>"; 
+										}; 
+									?>
+								</td>
 							</tr>
 							<tr>
 								<td>&nbsp;</td>
 								<td class="result_list_data_data" style="text-align: center">
-									<b>Hauptbild</b>
+									<b>Digitalisat</b>
 								</td>
 							</tr>
 						</table>
@@ -224,12 +453,20 @@ function do_getLocations( field, sQuery, num )
 								<td><img src="/icons/blank.gif" width="121" height="1"></td>
 							</tr>
 							<tr colspan="2">
-								<td style="text-align: center"><img src="image.php?id="></td>
+								<td style="text-align: center">
+									<img src="<?php 
+									
+									if ($filechecker->hasWebcamImage('fs'))
+										echo 'image.php?filename='.$filechecker->getWebcamImageFilename('fs');
+									else 
+										echo "resource/empty_small.jpg";
+									?>" id="webcamFs" style="width: 160px;" onclick="getCameraImage('<?php echo session_id(); ?>','<?php echo trim($_POST['barcode']); ?>','fs');">
+								</td>
 							</tr>
 							<tr>
 								<td>&nbsp;</td>
 								<td class="result_list_data_data" style="text-align: center">
-									<b>Webcam Bild 1</b>
+									<b>Webcam - Vorderseite</b>
 								</td>
 							</tr>
 						</table>
@@ -244,12 +481,20 @@ function do_getLocations( field, sQuery, num )
 								<td><img src="/icons/blank.gif" width="121" height="1"></td>
 							</tr>
 							<tr colspan="2">
-								<td style="text-align: center"><img src="image.php?id="></td>
+								<td style="text-align: center">
+									<img src="<?php 
+									
+									if ($filechecker->hasWebcamImage('bs'))
+										echo 'image.php?filename='.$filechecker->getWebcamImageFilename('bs');
+									else 
+										echo "resource/empty_small.jpg";
+									?>" id="webcamBs" style="width: 160px;" onclick="getCameraImage('<?php echo session_id(); ?>','<?php echo trim($_POST['barcode']); ?>','bs');">
+								</td>
 							</tr>
 							<tr>
 								<td>&nbsp;</td>
 								<td class="result_list_data_data" style="text-align: center">
-									<b>Webcam Bild 2</b>
+									<b>Webcam - R&uuml;ckseite</b>
 								</td>
 							</tr>
 						</table>
@@ -266,7 +511,7 @@ function do_getLocations( field, sQuery, num )
 	<tr>
 		<td colspan="2">
 			<div id="line_1" style="text-align: center; vertical-align: middle; margin-top: 3px;"> 
-				<span style="font-size: 0.9em;"><b>Datenerfassung für Bild-Nr. "Barcode hier"</b></span>
+				<span style="font-size: 0.9em;"><b>Datenerfassung für Bild-Nr. "<?php if(isset($_POST['barcode'])) { echo (trim($_POST['barcode'])); } ?>"</b></span>
 			</div>
 		</td>
 	</tr>
@@ -275,39 +520,10 @@ function do_getLocations( field, sQuery, num )
 
 <script type="text/javascript">
 //
-// Title
-//
-var title_data = function( sQuery ) {
-    arr = do_getNames( "signatur", sQuery, num );
-    return arr;
-} 
-title_DS = new YAHOO.widget.DS_JSFunction(title_data);
-//name_DS.queryMatchContains = true;
-//name_DS.maxCacheEntries = num; 
-
-// Instantiate AutoComplete
-title_AutoComp = new YAHOO.widget.AutoComplete("title_input","title_container", title_DS);
-title_AutoComp.useShadow = true;
-title_AutoComp.minQueryLength = 1;
-title_AutoComp.queryDelay = 0;
-title_AutoComp.maxResultsDisplayed = num;
-title_AutoComp.allowBrowserAutocomplete = true; 
-title_AutoComp.formatResult = function(oResultItem, sQuery) 
-{
-    return oResultItem[1];
-};
-title_AutoComp.doBeforeExpandContainer = function(oTextbox, oContainer, sQuery, aResults) {
-    var pos = YAHOO.util.Dom.getXY(oTextbox);
-    pos[1] += YAHOO.util.Dom.get(oTextbox).offsetHeight;
-    YAHOO.util.Dom.setXY(oContainer,pos);
-    return true;
-};
-
-//
 // Name
 //
 var name_data = function( sQuery ) {
-    arr = do_getNames( "name1", sQuery, num );
+    arr = do_getCompletions( "name", sQuery, num );
     return arr;
 } 
 name_DS = new YAHOO.widget.DS_JSFunction(name_data);
@@ -336,7 +552,7 @@ name_AutoComp.doBeforeExpandContainer = function(oTextbox, oContainer, sQuery, a
 // Location
 //
 var location_data = function( sQuery ) {
-    arr = do_getLocations( "name1", sQuery, num );
+    arr = do_getCompletions( "location", sQuery, num );
     return arr;
 } 
 location_DS = new YAHOO.widget.DS_JSFunction(location_data);
@@ -360,6 +576,124 @@ location_AutoComp.doBeforeExpandContainer = function(oTextbox, oContainer, sQuer
     YAHOO.util.Dom.setXY(oContainer,pos);
     return true;
 };
+
+//
+// Institution
+//
+var institution_data = function( sQuery ) {
+    arr = do_getCompletions( "institution", sQuery, num );
+    return arr;
+} 
+institution_DS = new YAHOO.widget.DS_JSFunction(institution_data);
+//institution_DS.queryMatchContains = true;
+//institution_DS.maxCacheEntries = num; 
+
+// Instantiate AutoComplete
+institution_AutoComp = new YAHOO.widget.AutoComplete("institution_input","institution_container", institution_DS);
+institution_AutoComp.useShadow = true;
+institution_AutoComp.minQueryLength = 1;
+institution_AutoComp.queryDelay = 0;
+institution_AutoComp.maxResultsDisplayed = num;
+institution_AutoComp.allowBrowserAutocomplete = true; 
+institution_AutoComp.formatResult = function(oResultItem, sQuery) 
+{
+    return oResultItem[1];
+};
+institution_AutoComp.doBeforeExpandContainer = function(oTextbox, oContainer, sQuery, aResults) {
+    var pos = YAHOO.util.Dom.getXY(oTextbox);
+    pos[1] += YAHOO.util.Dom.get(oTextbox).offsetHeight;
+    YAHOO.util.Dom.setXY(oContainer,pos);
+    return true;
+};
+
+//
+// Material
+//
+var material_data = function( sQuery ) {
+    arr = do_getCompletions( "material", sQuery, num );
+    return arr;
+} 
+material_DS = new YAHOO.widget.DS_JSFunction(material_data);
+//material_DS.queryMatchContains = true;
+//material_DS.maxCacheEntries = num; 
+
+// Instantiate AutoComplete
+material_AutoComp = new YAHOO.widget.AutoComplete("material_input","material_container", material_DS);
+material_AutoComp.useShadow = true;
+material_AutoComp.minQueryLength = 1;
+material_AutoComp.queryDelay = 0;
+material_AutoComp.maxResultsDisplayed = num;
+material_AutoComp.allowBrowserAutocomplete = true; 
+material_AutoComp.formatResult = function(oResultItem, sQuery) 
+{
+    return oResultItem[1];
+};
+material_AutoComp.doBeforeExpandContainer = function(oTextbox, oContainer, sQuery, aResults) {
+    var pos = YAHOO.util.Dom.getXY(oTextbox);
+    pos[1] += YAHOO.util.Dom.get(oTextbox).offsetHeight;
+    YAHOO.util.Dom.setXY(oContainer,pos);
+    return true;
+};
+
+//
+// Technique
+//
+var technique_data = function( sQuery ) {
+    arr = do_getCompletions( "technique", sQuery, num );
+    return arr;
+} 
+technique_DS = new YAHOO.widget.DS_JSFunction(technique_data);
+//technique_DS.queryMatchContains = true;
+//technique_DS.maxCacheEntries = num; 
+
+// Instantiate AutoComplete
+technique_AutoComp = new YAHOO.widget.AutoComplete("technique_input","technique_container", technique_DS);
+technique_AutoComp.useShadow = true;
+technique_AutoComp.minQueryLength = 1;
+technique_AutoComp.queryDelay = 0;
+technique_AutoComp.maxResultsDisplayed = num;
+technique_AutoComp.allowBrowserAutocomplete = true; 
+technique_AutoComp.formatResult = function(oResultItem, sQuery) 
+{
+    return oResultItem[1];
+};
+technique_AutoComp.doBeforeExpandContainer = function(oTextbox, oContainer, sQuery, aResults) {
+    var pos = YAHOO.util.Dom.getXY(oTextbox);
+    pos[1] += YAHOO.util.Dom.get(oTextbox).offsetHeight;
+    YAHOO.util.Dom.setXY(oContainer,pos);
+    return true;
+};
+
+//
+// Literature
+//
+var literature_data = function( sQuery ) {
+    arr = do_getCompletions( "literature", sQuery, num );
+    return arr;
+} 
+literature_DS = new YAHOO.widget.DS_JSFunction(literature_data);
+//literature_DS.queryMatchContains = true;
+//literature_DS.maxCacheEntries = num; 
+
+// Instantiate AutoComplete
+literature_AutoComp = new YAHOO.widget.AutoComplete("literature_input","literature_container", literature_DS);
+literature_AutoComp.useShadow = true;
+literature_AutoComp.minQueryLength = 1;
+literature_AutoComp.queryDelay = 0;
+literature_AutoComp.maxResultsDisplayed = num;
+literature_AutoComp.allowBrowserAutocomplete = true; 
+literature_AutoComp.formatResult = function(oResultItem, sQuery) 
+{
+    return oResultItem[1];
+};
+literature_AutoComp.doBeforeExpandContainer = function(oTextbox, oContainer, sQuery, aResults) {
+    var pos = YAHOO.util.Dom.getXY(oTextbox);
+    pos[1] += YAHOO.util.Dom.get(oTextbox).offsetHeight;
+    YAHOO.util.Dom.setXY(oContainer,pos);
+    return true;
+};
+
+
 </script>
 
 

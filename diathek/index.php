@@ -1,83 +1,285 @@
 <?php
-// include_once( 'session.inc.php' );
-include( 'db.inc.php' );
-
-?><html>
-<head>
-<style type="text/css">
-#name_mod {text-align:left;}
-#name_input {width:20em;height:1.4em;}
-#name_container {position:absolute;z-index:9050;}
-#name_container .yui-ac-content {position:absolute;left:0;top:0;width:20em;border:1px solid #404040;background:#fff;overflow:hidden;text-align:left;z-index:9050;}
-#name_container .yui-ac-shadow {position:absolute;left:0;top:0;margin:.3em;background:#a0a0a0;z-index:9049;}
-#name_container ul {padding:5px 0;width:100%;}
-#name_container li {padding:0 5px;cursor:default;white-space:nowrap;}
-#name_container li.yui-ac-highlight {background:#ff0;}
-</style>
-<script type='text/javascript' src='dilpsserver.php?<?php echo strip_tags(SID); ?>&client=all&stub=dilpsacquisitionajax'></script>
-<script type="text/javascript" src="yui/build/yahoo/yahoo.js"></script> 
-<script type="text/javascript" src="yui/build/dom/dom.js"></script> 
-<script type="text/javascript" src="yui/build/event/event.js"></script> </head>
-<script type="text/javascript" src="yui/build/animation/animation.js"></script> 
-<script type="text/javascript" src="yui/build/autocomplete/autocomplete.js"></script> 
-<script type="text/javascript" src="yui/build/utilities/utilities.js"></script> 
-<script type="text/javascript">
-
-var remoteHW = new DilpsAcquisitionAJAX();
-
-var num = 20;
-
-function do_getContents( field, sQuery, num )
-{
-    return remoteHW.getContents( field, sQuery, num );
-}
-</script> 
-<body>
-<form name="main" method="get" action="<?=$_SERVER['PHP_SELF'] ?>">
-
-<!-- AutoComplete begins -->
-<div id="name_mod">
-    <label>Name</label>
-    <input id="name_input">
-    <!-- <input id="name_submit" type="submit" value="Submit Query"> -->
-    <div id="name_container"></div>
-</div>
-<!-- AutoComplete ends -->
-
-<script type="text/javascript">
-//
-// Name
-//
-var name_data = function( sQuery ) {
-    arr = do_getContents( "name1", sQuery, num );
-    return arr;
-} 
-name_DS = new YAHOO.widget.DS_JSFunction(name_data);
-//name_DS.queryMatchContains = true;
-//name_DS.maxCacheEntries = num; 
-
-// Instantiate AutoComplete
-name_AutoComp = new YAHOO.widget.AutoComplete("name_input","name_container", name_DS);
-name_AutoComp.useShadow = true;
-name_AutoComp.minQueryLength = 1;
-name_AutoComp.queryDelay = 0;
-name_AutoComp.maxResultsDisplayed = num;
-name_AutoComp.allowBrowserAutocomplete = true; 
-name_AutoComp.formatResult = function(oResultItem, sQuery) 
-{
-    return oResultItem[1];
-};
-name_AutoComp.doBeforeExpandContainer = function(oTextbox, oContainer, sQuery, aResults) {
-    var pos = YAHOO.util.Dom.getXY(oTextbox);
-    pos[1] += YAHOO.util.Dom.get(oTextbox).offsetHeight;
-    YAHOO.util.Dom.setXY(oContainer,pos);
-    return true;
-};
-</script>
-
-<?php
-
+	include_once( 'session.inc.php' );
+	// include( 'db.inc.php' );
+	include( 'DilpsEntryWrapper.class.php');
+	include( 'PhpRequestAndSessionWrapper.class.php');
+	ini_set('magic_quotes_runtime',0);
+	
+	global $db, $db_prefix;
+	
+	/*
+	print_r($_REQUEST);
+	$db->debug = true;
+	*/
+	
+	error_reporting(E_ALL);
+	ini_set('display_errors',1);
+	
 ?>
+
+
+<!-- ============================================
+BEGIN grid_detail.tpl
+============================================ -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+  "http://www.w3.org/TR/html4/strict.dtd">
+
+	
+
+<html>
+<head>
+	<meta http-equiv="pragma" content="no-cache">
+	<meta http-equiv="expires" content="0">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta name="keywords" content="Bilddatenbanksystem, Bilddatenbank, Diathek, digitalisiert">
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<meta http-equiv="Content-Script-Type" content="text/javascript">
+	<meta http-equiv="Content-Style-Type" content="text/css">
+	<meta name="author" content="juergen enge, sebastian doeweling, thorsten wuebbena">
+	<meta name="date" content="2007-01-01">
+	<link rel="shortcut icon" href="favicon.ico">
+	<title>. : DILPS : .</title>
+	<link rel="stylesheet" type="text/css" href="resource/dilps.css">
+	
+	
+	<script type="text/javascript">
+		function checkBarcode()
+		{
+			var barcode = document.forms[0].elements['barcode'].value;
+			
+			if( barcode == '') 
+			{ 
+				alert('Bitte einen Wert eingeben!');
+				return false;
+			}
+			else
+			{
+				if (barcode.length != 13)
+				{
+					alert('Barcode hat die falsche Länge!');
+					return false;
+				}
+				else
+				{
+					reg = new RegExp('^(A[0-9]{2}[-|ß][0-9]{2})[-|ß][0-9]{2}[-|ß][0-9]{3}$');
+					res = reg.test(barcode);
+					
+					if (res)
+					{					
+						return true;
+					}
+					else
+					{
+						alert('Barcode hat die falsche Struktur (korrekt: Axx-xx-xx-xxx)!');
+						return false;						
+					}
+					
+				}
+			}	
+		}
+	</script>
+	
+	
+	
+</head>
+<body class="main" style="width: 100%;">
+<form name="Main" action="edit.php" method="post" style="width: 100%;" onsubmit="javascript:return checkBarcode();">
+
+<input type="hidden" name="PHPSESSID" value="<?php echo session_id();?>">
+
+<table class="header" style="width: 100%;">
+	<!-- heading line -->
+	<tr>
+		<td colspan="3">
+			<div id="line_2" style="text-align: center;"> 
+				<a class="heading" href="index.php?PHPSESSID=<?php echo session_id()?>"><b>Johann Wolfgang Goethe-Universität Frankfurt / Bilderfassungs-System der Diathek</b></a>
+			</div>
+		</td>
+	</tr>
+	<!-- heading line end -->
+	
+	<tr>
+		<td colspan="3" style="height: 40px;">&nbsp;
+			
+		</td>
+	</tr>
+	
+	<!-- result -->
+	<tr>
+		<td style="vertical-align: top; text-align: center; width: 100%">
+			<table class="query" cellspacing="0" cellpadding="0" style="width: 60%; vertical-align: top; text-align: center;">
+				<tr>
+					<td colspan="3" style="text-align: center;">
+					
+					<?php
+						if (isset($_POST['saved']) && $_POST['saved'] == 1)
+						{
+							$rasWrapper = new PhpRequestAndSessionWrapper($_POST, $_GET, $_SESSION);
+							
+							if (!$rasWrapper->getValue('post','barcode'))
+							{
+								echo ("Fehler bei der Übergabe des Barcodes\n");
+							}
+							else 
+							{
+								?>
+								<!-- barcode o.k. -->
+								<?php
+								$barcode = $rasWrapper->getValue('post','barcode');
+								
+								// eventuell noch vorhandene, nicht mehr gewünschte Werte aus der Session entfernen
+								
+								$unsetSessionValues = array(	
+																'type', 'name', 'location',
+																'institution', 'material',
+																'technique', 'format',
+																'literature', 'commentary'
+															);
+								
+								foreach ($unsetSessionValues as $valueKey)
+								{
+									$rasWrapper->unsetValue('session',$valueKey);
+									// echo ("\$rasWrapper->unsetValue('session',$valueKey); aufgerufen\n<br>\n");
+								}
+								
+								?>
+								<!-- session bereinigt -->
+								<?php
+															
+								// Datenbank-Objekt initialisieren
+							
+								$wrapper = new DilpsEntryWrapper($db, $db_prefix, $barcode);
+								
+								$storeDbValues = array(	
+															'type', 'title', 'dating', 
+															'material', 'technique', 'format',
+															'institution', 'literature',
+															'page', 'figure', 'tableno',
+															'name', 'location', 'commentary'
+														);
+														
+								$sessionSavedValues = $rasWrapper->getValue('post','save_value');
+								
+								foreach ($storeDbValues as $valueKey)
+								{
+									if ($rasWrapper->getValue('post',$valueKey))
+									{
+										$funcName = 'set'.ucfirst($valueKey);
+										if (method_exists($wrapper,$funcName))
+										{
+											$wrapper->{$funcName}($rasWrapper->getValue('post',$valueKey));
+											// echo ("\$wrapper->{$funcName}(".$rasWrapper->getValue('post',$valueKey).") aufgerufen\n<br>\n");
+										}
+										/*
+										else 
+										{
+											echo ("\$wrapper->{$funcName}() nicht gefunden\n<br>\n");
+										}
+										*/
+										
+										if ($sessionSavedValues)
+										{
+											if (in_array($valueKey,$sessionSavedValues))
+											{
+												$rasWrapper->setValue('session',$valueKey,$rasWrapper->getValue('post',$valueKey));
+											}
+										}
+									}
+									/*
+									else 
+									{
+										echo ("Wert {$valueKey} nicht in \$_POST enthalten\n<br>\n");
+									}
+									*/
+								}
+								
+								// zur einfacheren Handhabung, die Angabe zu den in der Session gespeicherten Werten,
+								// dort ablegen
+								
+								if (isset($_POST['save_value']))
+								{
+									$_SESSION['save_value'] = $_POST['save_value'];
+								}
+								else 
+								{
+									$rasWrapper->unsetValue('session','save_value');
+								}
+								
+								// print_r($_SESSION);
+								
+								// die("Here we stop!\n<br>\n");
+								
+								echo ($wrapper->updateDB()."\n");
+							}
+							
+						}
+						else 
+						{
+							echo ("&nbsp;\n");
+						}
+					?>
+					
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<!-- result end -->
+	
+	<!-- content -->
+	<tr>
+		<td style="vertical-align: top; text-align: center; width: 100%">
+			<!-- barcode input field -->
+			<table class="query" cellspacing="0" cellpadding="0" style="width: 60%; vertical-align: top; text-align: center;">
+				<tr>
+					<td class="queryinputfieldtext">
+						Barcode
+					</td>
+					<td class="queryinputfield">
+						<input class="queryinputfield" type="text" name="barcode" size="80" value="">
+					</td>
+					<td class="queryinputfield">
+						<input type="submit" class="suche" name="save" value="WEITER">
+					</td>
+				</tr>
+			</table>
+			<!-- barcode input field end -->
+		</td>
+	</tr>
+	<!-- content end -->
+	
+	<tr>
+		<td colspan="3" style="height: 50px;">&nbsp;
+			
+		</td>
+	</tr>
+
+	<!-- footing line -->
+	<tr>
+		<td colspan="2">
+			<div id="line_1" style="text-align: center; vertical-align: middle; margin-top: 3px;"> 
+				<span style="font-size: 0.9em;"><b>Bitte den Barcode des Bildes scannen</b></span>
+			</div>
+		</td>
+	</tr>
+	<!-- footing line end -->
+	
+	<tr>
+		<td colspan="3" style="height: 5px;">&nbsp;
+			
+		</td>
+	</tr>
+	
+	<!-- link to directory preparation -->
+	<tr>
+		<td colspan="2">
+			<div style="text-align: right; margin-right: 10px;"> 
+				<a href="prepare.php?PHPSESSID=<?php echo session_id()?>" style="text-decoration: underline;"><b>Verzeichnisse f&uuml;r Erfassung vorbereiten</b></a>
+			</div>
+		</td>
+	</tr>
+	<!-- link to directory preparation end -->
+</table>
 </form>
 </body>
 </html>

@@ -37,11 +37,16 @@ td.heading {
 
 table {
    border-style: none;
-   text-align: left;
 }
 
 table.main {
    border-style: none;
+}
+
+table.centered {
+   border-style: none;
+   text-align: center;
+   vertical-align: middle;
 }
 
 h1, h2, p, a, a:visited, a:hover, a:active, a:focus, span
@@ -51,6 +56,13 @@ h1, h2, p, a, a:visited, a:hover, a:active, a:focus, span
 	font-style:			normal;
 	text-decoration:	none;
 	color:				#333;
+}
+
+a.heading
+{
+	font-size: 1em;
+	font-weight: bold;
+	text-decoration: underline;
 }
 
 h1
@@ -63,8 +75,6 @@ form, input, select  {
 }
 
 input {
-	float:				left;
-	width:				47em;
 	border:				1px solid ;
     border-color: 		#778899 #fff #fff #778899;
 	background-color: 	#dcdcdc;
@@ -72,13 +82,15 @@ input {
 	padding:			2px;
 }
 
+input.queryinputfield {
+	width: 47em;
+}
+
 select {
-	float:				left;
 	border:				1px solid #000;
 	background-color: 	#dcdcdc;
 	margin:				3px;
 	padding:			2px;
-	width:				23em;
 }
 
 .suche { 
@@ -98,6 +110,7 @@ table.header {
    margin-bottom:	12px;
 }
 
+
 table.query {
    	margin-right:			75px;
    	text-align:				left;
@@ -107,6 +120,7 @@ td.queryinputfieldtext {
 	width:			10em; 
 	margin:			1px;
 	padding: 		5px;
+	padding-right: 	10px;
 	float:			left; 
 	text-align: 	right;
 
@@ -119,6 +133,11 @@ td.queryinputfield {
 
 td.queryselectfield {
  	padding-bottom: 2px;
+}
+
+td.querycheckboxfield {
+ 	padding-bottom: 2px;
+ 	text-align: center;
 }
 
 #line_1 
