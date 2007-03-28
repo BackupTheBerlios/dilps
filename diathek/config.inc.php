@@ -11,7 +11,7 @@ $db_db		= 'diathek';
 $ip_webcam1 = '192.168.178.35';
 $ip_webcam2 = '192.168.178.36';
 
-$cfg_videoResolution 	= '640x480';
+$cfg_videoResolution 	= '320x240';
 $cfg_imageResolution 	= '320x240';
 $cfg_axisUser 			= 'root';
 $cfg_axisPassword 		= 'pass';
