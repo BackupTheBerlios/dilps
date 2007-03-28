@@ -5,15 +5,18 @@ include_once( 'session.inc.php' );
 
 ini_set('magic_quotes_runtime',0);
 
+global $cfg_videoResolution, $cfg_imageResolution, $cfg_axisUser, $cfg_axisPassword;
+global $cfg_basedir;
+    
 class AxisImageAcquisition
 {   
     private $barcode, $webcamno;
     
-    private $videoResolution = '640x480';
-    private $imageResolution = '640x480';
+    private $videoResolution;
+    private $imageResolution;
     
-    private $axisUser 		= 'root';
-    private $axisPassword 	= 'pass';
+    private $axisUser;
+    private $axisPassword;
     
     private $basedir = '/Programme/xampp/htdocs/diathek/images';
     
@@ -25,6 +28,14 @@ class AxisImageAcquisition
     {
     	$this->barcode 	= $barcode;
     	$this->webcamno	= $webcamno;
+    	
+    	$this->videoResolution 	= $GLOBALS['cfg_videoResolution'];
+    	$this->imageResolution 	= $GLOBALS['cfg_imageResolution'];
+    	
+    	$this->axisUser			= $GLOBALS['cfg_axisUser'];
+    	$this->axisPassword		= $GLOBALS['cfg_axisPassword'];
+    	
+    	$this->basedir= $GLOBALS['cfg_basedir'];
     	
     	$this->videoAccessPath 	= "axis-cgi/mjpg/video.cgi?resolution=".$this->videoResolution;
     	$this->imageAccessPath	= "axis-cgi/jpg/image.cgi?resolution=".$this->imageResolution;

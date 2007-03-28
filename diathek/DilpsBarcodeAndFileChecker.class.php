@@ -3,26 +3,26 @@
 include_once( 'session.inc.php' );
 ini_set('magic_quotes_runtime',0);
 
+global $cfg_basedir, $cfg_convert, $cfg_resolutions;
+
 class DilpsBarcodeAndFileChecker
 {   
     private $barcode, $filename;
     
     private $schrank, $lade, $reihe, $bildno;
     
-    private $basedir = '/Programme/xampp/htdocs/diathek/images';
-    private $convert = '/Programme/ImageMagick/convert.exe';
+    private $basedir;
+    private $convert;
     
-    private $resolutions = array (
-		"0"	=>	"120x90",
-		"1"	=>	"640x480",
-		"2"	=>	"800x600",
-		"3"	=>	"1024x768",
-		"4"	=>	"1280x1024",
-	);
+    private $resolutions;
     
     function __construct( $barcode )
     {
     	$this->barcode = $barcode;
+    	
+    	$this->basedir		= $GLOBALS['cfg_basedir'];
+    	$this->convert 		= $GLOBALS['cfg_convert'];
+    	$this->resolutions	= $GLOBALS['cfg_resolutions'];
     }
     
     public function hasFile()

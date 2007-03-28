@@ -25,6 +25,9 @@
 		$barcode 	= $rasWrapper->getValue('get','barcode');
 	}
 	
+	// standardmaessig kamera 1 verwenden
+	$useWebcamNo = 1;
+	
 	if ($rasWrapper->getValue('post','useWebcamNo') === false)
 	{
 		if (($rasWrapper->getValue('session','useWebcamNo')) !== false)
@@ -162,17 +165,27 @@
 						<?php
 							if (!$rasWrapper->getValue('get','showonly') == 'true')
 							{
-								echo ("<img src='".$camWrapper->getImageURL()."'>");
+								$imageTag = "<img src='".$camWrapper->getImageURL()."'"
+											." width='640px' >";
+											
+								echo $imageTag;
 							}
 							else 
 							{
 								if ($fileWrapper->hasWebcamImage($rasWrapper->getValue('get','side')))
 								{
-									echo ("<img src='image.php?filename=".$fileWrapper->getWebcamImageFilename($rasWrapper->getValue('get','side'))."' >");
+									$imageTag = "<img src='image.php?filename="
+												.$fileWrapper->getWebcamImageFilename($rasWrapper->getValue('get','side'))
+												."'"
+												." width='640px' >";
+									echo $imageTag;
 								}
 								else 
 								{
-									echo ("<img src='".$camWrapper->getImageURL()."'>");
+									$imageTag = "<img src='".$camWrapper->getImageURL()."'"
+												." width='640px' >";
+											
+									echo $imageTag;
 								}
 							}
 						?>
