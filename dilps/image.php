@@ -42,6 +42,7 @@ if (isset($_REQUEST['PHPSESSID'])) {
 } else {
 	$sessionid = '';
 }
+
 include_once( 'config.inc.php');
 include_once( $config['includepath'].'../includes.inc.php' );
 //include_once( $config['includepath'].'tools.inc.php' );
@@ -59,6 +60,17 @@ function extractID( $id, &$sammlung, &$imageid )
 	}
 	$sammlung = intval( substr( $id, 0, $p ));
 	$imageid = substr( $id, $p+1 );
+}
+
+function sendImageHTTP($path = 'empty.jpg')
+{
+	ob_end_clean();
+	header('Last-Modified: '.date('r'));
+	header('Accept-Ranges: bytes');
+	header('Content-Length: '.@filesize($path));
+	header('Content-Type: image/jpeg');
+	readfile($path);
+	exit;
 }
 
 global $formats_suffix, $db, $db_prefix;
@@ -108,7 +120,7 @@ if ($remoteCollectionId) {
             echo $req->getResponseBody();
         }
     } else {
-        no_file();
+        sendImageHTTP('empty.jpg');
     }
     
 } else {
@@ -186,20 +198,9 @@ if ($remoteCollectionId) {
     		echo "No corresponding file found\n<br>\n";
     	}
     	
-    	no_file();    	
+    	sendImageHTTP('empty.jpg');
     }
     
-    header( "Content-type: image/jpeg\n\n" ); 
-
-    readfile( $path );
-    // echo ("Pfad: ".$path."\n");
-    
+    sendImageHTTP($path);
 }
-
-function no_file() {
-	header( "Content-type: image/jpeg\n\n" );
-	readfile( 'empty.jpg' );
-	exit;
-}
-
 ?>

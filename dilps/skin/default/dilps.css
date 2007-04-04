@@ -873,4 +873,11 @@ td.right-pad {
     padding-right: 33px;
 }
 {/literal}
+
+{literal}	
+img.detailpreview {
+    max-width: 550px;
+}
+{/literal}
+
 /*	END dilps.css	*/

@@ -244,7 +244,10 @@ function newQuery()
 
 function clearSimpleQuery()
 {
-	var fieldnames = new Array('all','name','title','year','status','imageid');
+	var fieldnames = new Array(	'all','title','category','object',
+									'name','iconography','dating_ext',
+									'material_ext','location_ext',
+									'location','literature','imageid');
 	var actfn = '';
 	
 	for(var i =0; i < fieldnames.length; i++)
@@ -253,9 +256,14 @@ function clearSimpleQuery()
 		
 		if (document.forms["Main"].elements[actfn] != null)
 		{
-			document.forms["Main"].elements[actfn].value = '';
+				document.forms["Main"].elements[actfn].value = '';			
 		}
 	}
+	
+	// reset image status query field
+	actfn = 'query[status]';
+	
+	document.forms["Main"].elements[actfn].options[0].selected = true;
 	
 	cleargroup();
 	

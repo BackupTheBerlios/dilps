@@ -184,10 +184,12 @@ class dilpsQuery {
 
         if ($operator == 'like') {
         	
+        	$column_short = substr($column,0,strpos($column,'_ext'));
+        	
             $where = "( "
-            		.get_archaeology_where_query($column, $value, $operator)
+            		.$this->get_archaeology_where_query($column, $value, $operator)
             		." OR "
-            		.get_meta_where_query($column, $value, $operator)
+            		.$this->get_meta_where_query($column_short, $value, $operator)
             		." )";
         }
     	return $where;

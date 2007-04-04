@@ -62,7 +62,13 @@ function smarty_block_query($params, $content, &$smarty, &$repeat)
 	if ($collectionid  == '-1') {
 	    // search all collections, showing only a count of matching records
 	    $options['count'] = 1;
-	    $localCollections = query_local_collection_overview($dbquery, $options, $db, $db_prefix);
+	     
+	    if ($config['queryextended']) {
+	       	$localCollections = query_local_collection_overview_extended($dbquery, $options, $db, $db_prefix);
+	    }
+	    else {
+	    	$localCollections = query_local_collection_overview($dbquery, $options, $db, $db_prefix);
+	    }
 	    
 	    // uncomment, if you want to use remote collections
 	    // $remoteCollections = get_remote_collections_links($db, $db_prefix);
@@ -207,6 +213,7 @@ function query_local_collection($query, $options, $db, $db_prefix) {
 
 // gets an overview of local collections, with a count of records that match as per the query
 function query_local_collection_overview($query, $options, $db, $db_prefix) {
+	
     $querystruct = transform_query($query['querypiece']);
 	$dbQuery = new dilpsQuery($db, $db_prefix);
     $fields =  "1 as local, {$db_prefix}collection.collectionid, {$db_prefix}collection.name";
@@ -239,6 +246,42 @@ function query_local_collection_overview($query, $options, $db, $db_prefix) {
 	}
 	return $result;
 }
+
+
+function query_local_collection_overview_extended($query, $options, $db, $db_prefix) 
+{
+	$querystruct = transform_query($query['querypiece']);
+	$dbQuery = new dilpsQuery($db, $db_prefix);
+	$where = $dbQuery->buildWhere($querystruct);
+	$fields =  "1 as local, {$db_prefix}collection.collectionid, {$db_prefix}collection.name";
+	$from = "{$db_prefix}collection LEFT JOIN {$db_prefix}meta ON {$db_prefix}collection.collectionid = {$db_prefix}meta.collectionid LEFT JOIN {$db_prefix}archaeology ON {$db_prefix}archaeology.collectionid = {$db_prefix}meta.collectionid AND {$db_prefix}meta.imageid = {$db_prefix}archaeology.imageid ";
+    $where .= " AND {$db_prefix}collection.host = 'local' ";
+    if (!empty($query['groupid'])){
+		// add grouptable to query
+		$fields .= ", sum(if(groupid, 1, 0)) as count";
+		$from .= " LEFT JOIN {$db_prefix}img_group ON {$db_prefix}img_group.imageid = {$db_prefix}meta.imageid AND {$db_prefix}img_group.collectionid = {$db_prefix}meta.collectionid";
+		$from .= get_groupid_where_clause($query, $db, $db_prefix);
+	} else {
+		$fields .= ", count({$db_prefix}meta.id) as count";
+	}
+
+	$sql = "SELECT DISTINCT $fields FROM $from WHERE $where"
+            ." group by {$db_prefix}collection.collectionid, {$db_prefix}collection.name";
+//die($sql);	
+	$result = array();
+    $rs = $db->GetAll($sql);
+	if( !$rs ) {
+	    if ($db->ErrorNo()) {
+	       $result['error'] = $db->ErrorMsg();
+	    } else {
+	        $result = array();
+	    }
+	} else {
+	    $result = $rs;
+	}
+	return $result;
+}
+
 
 function query_local_collection_extended($query, $options, $db, $db_prefix) {
     
@@ -295,7 +338,38 @@ function query_local_collection_extended($query, $options, $db, $db_prefix) {
 	
 	// search architecture fields
 	if (!empty($query['object'])){
-		$where .= " AND lower(object) like lower(".$db->qstr('%'.$query['object'].'%').")";
+		$where .= "AND lower(concat_ws(' ',{$db_prefix}archaeology.obj_culture, "
+				."{$db_prefix}archaeology.obj_culthistory, "
+				."{$db_prefix}archaeology.obj_topography, "
+				."{$db_prefix}archaeology.obj_arch_structelems, "
+				."{$db_prefix}archaeology.obj_arch_tenement, "
+				."{$db_prefix}archaeology.obj_arch_funcbuild, "
+				."{$db_prefix}archaeology.obj_arch_amusement, "
+				."{$db_prefix}archaeology.obj_arch_economy, "
+				."{$db_prefix}archaeology.obj_arch_sacral, "
+				."{$db_prefix}archaeology.obj_arch_sepulchre, "
+				."{$db_prefix}archaeology.obj_arch_military, "
+				."{$db_prefix}archaeology.obj_mosaic, "
+				."{$db_prefix}archaeology.obj_painting, "
+				."{$db_prefix}archaeology.obj_sculpture, "
+				."{$db_prefix}archaeology.obj_portrait, "
+				."{$db_prefix}archaeology.obj_ceramic_vascularforms, "
+				."{$db_prefix}archaeology.obj_ceramic_groups, "
+				."{$db_prefix}archaeology.obj_toreutics, "
+				."{$db_prefix}archaeology.obj_jewellery, "
+				."{$db_prefix}archaeology.obj_glass, "
+				."{$db_prefix}archaeology.obj_glyptics, "
+				."{$db_prefix}archaeology.obj_numismatics, "
+				."{$db_prefix}archaeology.obj_textiles, "
+				."{$db_prefix}archaeology.obj_misc, "
+				."{$db_prefix}archaeology.obj_epigraphy, "
+				."{$db_prefix}archaeology.obj_methods, "
+				."{$db_prefix}archaeology.obj_reception)) "
+				." like lower(".$db->qstr('%'.$query['object'].'%').")";
+	}
+	
+	if (!empty($query['category'])){
+		$where .= " AND lower(category) like lower(".$db->qstr('%'.$query['category'].'%').")";
 	}
 	
 	if (!empty($query['iconography'])){
@@ -327,7 +401,7 @@ function query_local_collection_extended($query, $options, $db, $db_prefix) {
 	}
 	
 	if (!empty($query['literature'])){
-		$where .= " AND lower(location) like lower(".$db->qstr('%'.$query['literature'].'%').")";
+		$where .= " AND lower(literature) like lower(".$db->qstr('%'.$query['literature'].'%').")";
 	}
 	
 	$sql = "SELECT DISTINCT $fields FROM $from WHERE $where"

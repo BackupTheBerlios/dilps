@@ -43,7 +43,7 @@ BEGIN archaeology_detail.tpl
       <tr>
         <td colspan="2" class="result_detail_data_image">
         <div class="outer">
-        <img src="image.php?PHPSESSID={$sessionid}&id={$result.id}&resolution=640x480&remoteCollection={$query.remoteCollection}" border="0" style="max-width: 450px;"><br>
+        <img class="detailpreview" src="image.php?PHPSESSID={$sessionid}&id={$result.id}&resolution=640x480&remoteCollection={$query.remoteCollection}" border="0"><br>
         [{$row.width|escape:htmlall}x{$row.height|escape:htmlall}]
         </div>
         </td>
