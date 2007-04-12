@@ -34,7 +34,7 @@ portal				=	Tor/Tür/Portal
 jamb				=	Gewände
 tympanum			=	Tympanon
 
-window				=	Fenster
+architecturewindow	=	Fenster
 stairway			=	Treppe/Treppenhaus
 tower				=	Turm
 cupola				=	Dach/Kuppel

@@ -78,7 +78,7 @@
 
 	# --------------------------------------------------------
 
-	# $Id: install.php,v 1.11 2007/03/09 12:16:53 sdoeweling Exp $
+	# $Id: install.php,v 1.12 2007/04/12 23:48:24 sdoeweling Exp $
 
 	# --------------------------------------------------------
 
@@ -641,7 +641,7 @@
     $f_mailssl = gpc_get_string('mailssl','false');
         
     
-    $f_soundex = gpc_get_string('soundex','true');
+    $f_soundex = gpc_get_string('soundex','false');
     
     $f_soundexthreshold = gpc_get_string('soundexthreshold','3');
     
@@ -2546,6 +2546,8 @@ if ( 3 == $t_install_state ) {
 <?php
 
 		// data part
+		
+		$ret = true;
 	    
 	    $handle = @fopen('data.sql', 'r');
 	    

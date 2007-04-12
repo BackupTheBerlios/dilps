@@ -184,7 +184,7 @@ CREATE TABLE `ng_architecture` (
   `classification` text NOT NULL,
   
    PRIMARY KEY  (`collectionid`,`imageid`)
-) 
+);
 
 
 CREATE TABLE `!prefix_!artist` (

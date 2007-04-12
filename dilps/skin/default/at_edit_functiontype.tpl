@@ -23,7 +23,7 @@
 *}
 
 <!-- =================================================
-BEGIN ac_edit_iconography.tpl
+BEGIN at_edit_functiontype.tpl
 ================================================= -->
 
 {if $config.utf8 eq "true"}

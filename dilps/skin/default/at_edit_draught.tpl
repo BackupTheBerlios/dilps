@@ -23,7 +23,7 @@
 *}
 
 <!-- =================================================
-BEGIN ac_edit_iconography.tpl
+BEGIN at_edit_draught.tpl
 ================================================= -->
 
 {if $config.utf8 eq "true"}
@@ -63,7 +63,7 @@ BEGIN ac_edit_iconography.tpl
 
 	{if $query.id ne ""}
 	
-	{query_ext_element type="architecture" element="functiontype" fieldnames="fieldnames" values="values" sql="sql" query=$query}
+	{query_ext_element type="architecture" element="draught" fieldnames="fieldnames" values="values" sql="sql" query=$query}
 	
 	<!-- {$sql} -->
 	
@@ -107,7 +107,7 @@ BEGIN ac_edit_iconography.tpl
 				</tr>
 				</table>  
 				
-				<strong>{#view#}</strong>><br>
+				<strong>{#view#}</strong><br>
 				<textarea name="view" rows="2" cols="40"></textarea>
 				
 				<br /><br />
@@ -126,7 +126,7 @@ BEGIN ac_edit_iconography.tpl
 			<td>
 				<table width="0*" border="0" cellspacing="10" cellpadding="0">
 					<tr>
-						<td><input type="button" value="eingeben" onclick="saveSelection('functiontype');window.close();"></td>
+						<td><input type="button" value="eingeben" onclick="saveSelection('draught');window.close();"></td>
 						<td><input type="button" value="zur&uuml;cksetzen" onclick="restoreState(js_fn, js_val);"></td>
 						<td><input type="reset" value="alle l&ouml;schen"></td>
 					</tr>

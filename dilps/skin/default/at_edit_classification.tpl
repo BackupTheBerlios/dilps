@@ -23,7 +23,7 @@
 *}
 
 <!-- =================================================
-BEGIN ac_edit_iconography.tpl
+BEGIN at_edit_classification.tpl
 ================================================= -->
 
 {if $config.utf8 eq "true"}
@@ -63,7 +63,7 @@ BEGIN ac_edit_iconography.tpl
 
 	{if $query.id ne ""}
 	
-	{query_ext_element type="architecture" element="functiontype" fieldnames="fieldnames" values="values" sql="sql" query=$query}
+	{query_ext_element type="architecture" element="classification" fieldnames="fieldnames" values="values" sql="sql" query=$query}
 	
 	<!-- {$sql} -->
 	
@@ -126,7 +126,7 @@ BEGIN ac_edit_iconography.tpl
 				</tr>
 				</table>  
 				
-				<input type="checkbox" name="window" value="{#window#}">{#window#}<br />
+				<input type="checkbox" name="architecturewindow" value="{#architecturewindow#}">{#architecturewindow#}<br />
 				<br />
 				
 				<input type="checkbox" name="stairway" value="{#stairway#}">{#stairway#}<br />
@@ -163,6 +163,7 @@ BEGIN ac_edit_iconography.tpl
 				
 				<strong>{#additionalentry#}</strong><br>
 				<textarea name="classificationaddition" rows="2" cols="40"></textarea>
+				
 			</td>
 		</tr>
 		<tr>
@@ -174,7 +175,7 @@ BEGIN ac_edit_iconography.tpl
 			<td>
 				<table width="0*" border="0" cellspacing="10" cellpadding="0">
 					<tr>
-						<td><input type="button" value="eingeben" onclick="saveSelection('functiontype');window.close();"></td>
+						<td><input type="button" value="eingeben" onclick="saveSelection('classification'); window.close();"></td>
 						<td><input type="button" value="zur&uuml;cksetzen" onclick="restoreState(js_fn, js_val);"></td>
 						<td><input type="reset" value="alle l&ouml;schen"></td>
 					</tr>
