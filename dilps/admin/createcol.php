@@ -410,7 +410,21 @@ $status = 0;
 
 </tr>
 
+<tr>
 
+	<td bgcolor="#ffffff">
+
+		SOAP URL (used for remote access only) 
+
+	</td>
+
+	<td bgcolor="#ffffff">
+
+	  <input type="text" name="soapurl" size="80" value="dilps/soapquery.php"></input>	  
+
+	</td>
+
+</tr>
 
 
 
@@ -604,9 +618,12 @@ $status = 0;
        		$cid = $_POST['id'];
        }
        
-       $values = "'".$cid. "',"."'".$_POST['name']."',"."'".$_POST['host']. "',"."'".$_POST['active']. "',"."'".$_POST['location']. "',"."'".$_POST['description']. "',"."'".$_POST['email']. "',"."'".$_POST['url']. "'";
+       $values = 	"'".$cid. "',"."'".$_POST['name']."',"
+       				."'".$_POST['host']. "',"."'".$_POST['soap_url']. "',"."'".$_POST['active']. "',"
+       				."'".$_POST['location']. "',"."'".$_POST['description']. "',"
+       				."'".$_POST['email']. "',"."'".$_POST['url']. "'";
 
-	    $sql = "insert into {$db_prefix}collection (collectionid, name, host, active,sammlung_ort,descr,email,url) values (";
+	    $sql = "insert into {$db_prefix}collection (collectionid, name, host, soap_url, active,sammlung_ort,descr,email,url) values (";
 
 	   $sql .= ($values);
 

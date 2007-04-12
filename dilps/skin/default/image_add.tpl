@@ -217,13 +217,16 @@ function cleargroup3() {
 		    	{#targetdirectory#}
 		   	</td>
 		   	<td>
+		   	
+		   		{basedir_list var=basedirs cid=$query.collectionid sql=sql}
+		   	
 				<select class="queryselectfield" name="query[baseid]">
-				{basedir_list var=basedirs cid=$query.collectionid sql=sql}
 					<!-- {$sql} -->
 					{foreach from=$basedirs item=row}
-						<option value="{$row.img_baseid}" {if $query.baseid eq $row.img_baseid} selected{/if}>{if $row.host neq ""}{$row.host}{else}localhost{/if} :: {$row.base}</option>
+						<option value="{$row.img_baseid}" {if $query.baseid eq $row.img_baseid} selected{/if}>{if $row.host neq "local" and $row.host neq ""}{$row.host}{else}localhost{/if} :: {$row.base}</option>
 					{/foreach}
 				</select>
+					
 			</td>
 		</tr>
 		<tr>

@@ -24,6 +24,7 @@
 	<p>[ <a href="createcol.php">Create new collection</a> ]</p>
 	<p>[ <a href="addbase.php">Add an image base to a collection</a> ]</p>
 	<p>[ <a href="manageusers.php">Manage user logins and permissions</a> ]</p>
+	<p>[ <a href="manageremoteaccess.php">Manage DILPS remote access</a> <span style="color: red"> (EXPERIMENTAL)</span> ] </p>
 	<br />
 	<p>[ <a href="migrate.php">Migrate a DILPS v1 collection</a> ]</p>
 	<p>[ <a href="refresh_art_loc.php">Refresh artist and location database</a> ]</p>

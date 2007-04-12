@@ -1019,7 +1019,7 @@
 	    srand ((double) microtime() * 1000000);
 	    
 		for ($i = 0; $i < $length; $i++ ) {
-			$random_string .= $characters{rand (0, strlen($characters))};
+			$random_string .= $characters{rand (0, strlen($characters) - 1)};
 		}
 		
 		return $random_string;

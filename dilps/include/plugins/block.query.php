@@ -63,16 +63,15 @@ function smarty_block_query($params, $content, &$smarty, &$repeat)
 	    // search all collections, showing only a count of matching records
 	    $options['count'] = 1;
 	     
-	    if ($config['queryextended']) {
-	       	$localCollections = query_local_collection_overview_extended($dbquery, $options, $db, $db_prefix);
-	    }
-	    else {
-	    	$localCollections = query_local_collection_overview($dbquery, $options, $db, $db_prefix);
-	    }
+    	$localCollections = query_local_collection_overview($dbquery, $options, $db, $db_prefix);
 	    
 	    // uncomment, if you want to use remote collections
-	    // $remoteCollections = get_remote_collections_links($db, $db_prefix);
-	    $remoteCollections = array();
+	    $remoteCollections = get_remote_collections_links($db, $db_prefix);
+	    
+	    if (isset($remoteCollections['error']))
+	    {
+	    	$remoteCollections = array();	
+	    }
 	    
 	    $result = array('result_type'=>'collections');
 	    $result['rs'] = array_merge($localCollections, $remoteCollections);
@@ -101,12 +100,7 @@ function smarty_block_query($params, $content, &$smarty, &$repeat)
 	    } else {
 	        // search a local collection
 	        
-	        if ($config['queryextended']) {
-	        	$result = query_local_collection_extended($dbquery, $options, $db, $db_prefix);	
-	        }
-	        else {
-	        	$result = query_local_collection($dbquery, $options, $db, $db_prefix);	
-	        }
+        	$result = query_local_collection($dbquery, $options, $db, $db_prefix);	
 	        
     	    $result['local'] = 1;
     	    $result['remoteCollection'] = 0;
@@ -168,93 +162,14 @@ function get_pagesize($query, $view) {
 //
 // LOCAL-QUERY FUNCTIONS
 //
-function query_local_collection($query, $options, $db, $db_prefix) {
-    
-	$querystruct = transform_query($query['querypiece']);
-	$dbQuery = new dilpsQuery($db, $db_prefix);
-	$where = $dbQuery->buildWhere($querystruct);
-	$from = "{$db_prefix}meta ";
-	$fields = "{$db_prefix}meta.type as type,{$db_prefix}meta.collectionid as collectionid,{$db_prefix}meta.imageid as imageid,ifnull({$db_prefix}meta.name1, '') as name1,ifnull({$db_prefix}meta.name2, '') as name2,{$db_prefix}meta.addition as addition, {$db_prefix}meta.title as title, {$db_prefix}meta.dating as dating";
-	if (!empty($query['groupid'])){
-		// add grouptable to query
-		$fields .= ", {$db_prefix}img_group.groupid as groupid";
-		$from .= "LEFT JOIN {$db_prefix}img_group ON {$db_prefix}img_group.imageid = {$db_prefix}meta.imageid AND {$db_prefix}img_group.collectionid = {$db_prefix}meta.collectionid";
-		$where .= get_groupid_where_clause($query, $db, $db_prefix);
-	}
 
-	$sql = "SELECT DISTINCT $fields FROM $from WHERE $where"
-	       ." ORDER BY insert_date DESC, imageid DESC";
-	       
-	//die($sql);
-	
-    $pagesize = $options['pagesize'];
-    $page = $options['page'];
-	$rs = $db->PageExecute( $sql, $pagesize, $page );
-	$result = array();
-	if( !$rs ) {
-	    $result['error'] = $db->ErrorMsg();
-	} else {
-    	$result['lastpage'] = $rs->LastPageNo();
-    	$result['maxrecords'] = $rs->MaxRecordCount();
-    	$result['rs'] = array();
-    	while( !$rs->EOF )
-    	{
-    		array_walk( $rs->fields, '__stripslashes' );
-    		$result['rs'][] = $rs->fields;
-    		$rs->MoveNext();
-    	}
-    	$rs->Close();
-    	if( $page > $result['lastpage'] ) $page = $result['lastpage'];
-    	$result['page'] = $page;
-    	$result['pagesize'] = $pagesize;
-	}
-	return $result;
-}
-
-// gets an overview of local collections, with a count of records that match as per the query
-function query_local_collection_overview($query, $options, $db, $db_prefix) {
-	
-    $querystruct = transform_query($query['querypiece']);
-	$dbQuery = new dilpsQuery($db, $db_prefix);
-    $fields =  "1 as local, {$db_prefix}collection.collectionid, {$db_prefix}collection.name";
-	$joinOn = $dbQuery->buildWhere($querystruct);
-    $joinOn .= " and {$db_prefix}collection.collectionid = {$db_prefix}meta.collectionid ";
-    $from = "{$db_prefix}collection left join {$db_prefix}meta  on $joinOn";
-    $where = "{$db_prefix}collection.host = 'local'";
-    if (!empty($query['groupid'])){
-		// add grouptable to query
-		$fields .= ", sum(if(groupid, 1, 0)) as count";
-		$from .= " LEFT JOIN {$db_prefix}img_group ON {$db_prefix}img_group.imageid = {$db_prefix}meta.imageid AND {$db_prefix}img_group.collectionid = {$db_prefix}meta.collectionid";
-		$from .= get_groupid_where_clause($query, $db, $db_prefix);
-	} else {
-		$fields .= ", count({$db_prefix}meta.id) as count";
-	}
-
-	$sql = "SELECT DISTINCT $fields FROM $from WHERE $where"
-            ." group by {$db_prefix}collection.collectionid, {$db_prefix}collection.name";
-//die($sql);	
-	$result = array();
-    $rs = $db->GetAll($sql);
-	if( !$rs ) {
-	    if ($db->ErrorNo()) {
-	       $result['error'] = $db->ErrorMsg();
-	    } else {
-	        $result = array();
-	    }
-	} else {
-	    $result = $rs;
-	}
-	return $result;
-}
-
-
-function query_local_collection_overview_extended($query, $options, $db, $db_prefix) 
+function query_local_collection_overview($query, $options, $db, $db_prefix) 
 {
 	$querystruct = transform_query($query['querypiece']);
 	$dbQuery = new dilpsQuery($db, $db_prefix);
 	$where = $dbQuery->buildWhere($querystruct);
 	$fields =  "1 as local, {$db_prefix}collection.collectionid, {$db_prefix}collection.name";
-	$from = "{$db_prefix}collection LEFT JOIN {$db_prefix}meta ON {$db_prefix}collection.collectionid = {$db_prefix}meta.collectionid LEFT JOIN {$db_prefix}archaeology ON {$db_prefix}archaeology.collectionid = {$db_prefix}meta.collectionid AND {$db_prefix}meta.imageid = {$db_prefix}archaeology.imageid ";
+	$from = "{$db_prefix}collection LEFT JOIN {$db_prefix}meta ON {$db_prefix}collection.collectionid = {$db_prefix}meta.collectionid LEFT JOIN {$db_prefix}archaeology ON {$db_prefix}archaeology.collectionid = {$db_prefix}meta.collectionid AND {$db_prefix}meta.imageid = {$db_prefix}archaeology.imageid LEFT JOIN {$db_prefix}architecture ON {$db_prefix}architecture.collectionid = {$db_prefix}meta.collectionid AND {$db_prefix}meta.imageid = {$db_prefix}architecture.imageid ";
     $where .= " AND {$db_prefix}collection.host = 'local' ";
     if (!empty($query['groupid'])){
 		// add grouptable to query
@@ -283,13 +198,17 @@ function query_local_collection_overview_extended($query, $options, $db, $db_pre
 }
 
 
-function query_local_collection_extended($query, $options, $db, $db_prefix) {
-    
+function query_local_collection($query, $options, $db, $db_prefix) {
+	
+	
 	$querystruct = transform_query($query['querypiece']);
+	
+	// print_r($querystruct);
+	
 	$dbQuery = new dilpsQuery($db, $db_prefix);
 	$where = $dbQuery->buildWhere($querystruct);
 	
-	$from = "{$db_prefix}meta LEFT JOIN {$db_prefix}archaeology ON {$db_prefix}archaeology.imageid = {$db_prefix}meta.imageid AND {$db_prefix}archaeology.collectionid = {$db_prefix}meta.collectionid";
+	$from = "{$db_prefix}meta LEFT JOIN {$db_prefix}archaeology ON {$db_prefix}archaeology.imageid = {$db_prefix}meta.imageid AND {$db_prefix}archaeology.collectionid = {$db_prefix}meta.collectionid LEFT JOIN {$db_prefix}architecture ON {$db_prefix}architecture.collectionid = {$db_prefix}meta.collectionid AND {$db_prefix}meta.imageid = {$db_prefix}architecture.imageid ";
 	
 	$fields = 	"{$db_prefix}meta.type as type,{$db_prefix}meta.collectionid as collectionid,"
 				."{$db_prefix}meta.imageid as imageid,ifnull({$db_prefix}meta.name1, '') as name1,ifnull({$db_prefix}meta.name2, '') as name2,"
@@ -297,111 +216,13 @@ function query_local_collection_extended($query, $options, $db, $db_prefix) {
 				."{$db_prefix}meta.dating as dating, {$db_prefix}meta.literature as literature, "
 				."{$db_prefix}meta.location as location, "
 				."{$db_prefix}archaeology.category as category, "
-				."{$db_prefix}archaeology.iconography as iconography, "
-				."{$db_prefix}archaeology.dating_ext as dating_ext, "
-				."{$db_prefix}archaeology.material_ext as material_ext, "
-				."{$db_prefix}archaeology.location_ext as location_ext, "
-				."concat_ws(' ',{$db_prefix}archaeology.obj_culture, "
-				."{$db_prefix}archaeology.obj_culthistory, "
-				."{$db_prefix}archaeology.obj_topography, "
-				."{$db_prefix}archaeology.obj_arch_structelems, "
-				."{$db_prefix}archaeology.obj_arch_tenement, "
-				."{$db_prefix}archaeology.obj_arch_funcbuild, "
-				."{$db_prefix}archaeology.obj_arch_amusement, "
-				."{$db_prefix}archaeology.obj_arch_economy, "
-				."{$db_prefix}archaeology.obj_arch_sacral, "
-				."{$db_prefix}archaeology.obj_arch_sepulchre, "
-				."{$db_prefix}archaeology.obj_arch_military, "
-				."{$db_prefix}archaeology.obj_mosaic, "
-				."{$db_prefix}archaeology.obj_painting, "
-				."{$db_prefix}archaeology.obj_sculpture, "
-				."{$db_prefix}archaeology.obj_portrait, "
-				."{$db_prefix}archaeology.obj_ceramic_vascularforms, "
-				."{$db_prefix}archaeology.obj_ceramic_groups, "
-				."{$db_prefix}archaeology.obj_toreutics, "
-				."{$db_prefix}archaeology.obj_jewellery, "
-				."{$db_prefix}archaeology.obj_glass, "
-				."{$db_prefix}archaeology.obj_glyptics, "
-				."{$db_prefix}archaeology.obj_numismatics, "
-				."{$db_prefix}archaeology.obj_textiles, "
-				."{$db_prefix}archaeology.obj_misc, "
-				."{$db_prefix}archaeology.obj_epigraphy, "
-				."{$db_prefix}archaeology.obj_methods, "
-				."{$db_prefix}archaeology.obj_reception) as object";
+				."{$db_prefix}architecture.classification as classification";
 	
 	if (!empty($query['groupid'])){
 		// add grouptable to query
 		$fields .= ", {$db_prefix}img_group.groupid as groupid";
 		$from .= "LEFT JOIN {$db_prefix}img_group ON {$db_prefix}img_group.imageid = {$db_prefix}meta.imageid AND {$db_prefix}img_group.collectionid = {$db_prefix}meta.collectionid";
 		$where .= get_groupid_where_clause($query, $db, $db_prefix);
-	}
-	
-	// search architecture fields
-	if (!empty($query['object'])){
-		$where .= "AND lower(concat_ws(' ',{$db_prefix}archaeology.obj_culture, "
-				."{$db_prefix}archaeology.obj_culthistory, "
-				."{$db_prefix}archaeology.obj_topography, "
-				."{$db_prefix}archaeology.obj_arch_structelems, "
-				."{$db_prefix}archaeology.obj_arch_tenement, "
-				."{$db_prefix}archaeology.obj_arch_funcbuild, "
-				."{$db_prefix}archaeology.obj_arch_amusement, "
-				."{$db_prefix}archaeology.obj_arch_economy, "
-				."{$db_prefix}archaeology.obj_arch_sacral, "
-				."{$db_prefix}archaeology.obj_arch_sepulchre, "
-				."{$db_prefix}archaeology.obj_arch_military, "
-				."{$db_prefix}archaeology.obj_mosaic, "
-				."{$db_prefix}archaeology.obj_painting, "
-				."{$db_prefix}archaeology.obj_sculpture, "
-				."{$db_prefix}archaeology.obj_portrait, "
-				."{$db_prefix}archaeology.obj_ceramic_vascularforms, "
-				."{$db_prefix}archaeology.obj_ceramic_groups, "
-				."{$db_prefix}archaeology.obj_toreutics, "
-				."{$db_prefix}archaeology.obj_jewellery, "
-				."{$db_prefix}archaeology.obj_glass, "
-				."{$db_prefix}archaeology.obj_glyptics, "
-				."{$db_prefix}archaeology.obj_numismatics, "
-				."{$db_prefix}archaeology.obj_textiles, "
-				."{$db_prefix}archaeology.obj_misc, "
-				."{$db_prefix}archaeology.obj_epigraphy, "
-				."{$db_prefix}archaeology.obj_methods, "
-				."{$db_prefix}archaeology.obj_reception)) "
-				." like lower(".$db->qstr('%'.$query['object'].'%').")";
-	}
-	
-	if (!empty($query['category'])){
-		$where .= " AND lower(category) like lower(".$db->qstr('%'.$query['category'].'%').")";
-	}
-	
-	if (!empty($query['iconography'])){
-		$where .= " AND lower(iconography) like lower(".$db->qstr('%'.$query['iconography'].'%').")";
-	}
-	
-	if (!empty($query['dating_ext'])){
-		$where .= " AND lower(dating_ext) like lower(".$db->qstr('%'.$query['dating_ext'].'%').")";
-	}
-	
-	if (!empty($query['material_ext'])){
-		$where .= 	" AND ( "
-					."lower(material_ext) like lower(".$db->qstr('%'.$query['material_ext'].'%').")"
-					." OR "
-					."lower(material) like lower(".$db->qstr('%'.$query['material_ext'].'%').")"
-					." )";
-	}
-	
-	if (!empty($query['location_ext'])){
-		$where .= 	" AND ( "
-					."lower(location_ext) like lower(".$db->qstr('%'.$query['location_ext'].'%').")"
-					." OR "
-					."lower(location) like lower(".$db->qstr('%'.$query['location_ext'].'%').")"
-					." )";
-	}
-	
-	if (!empty($query['location'])){
-		$where .= " AND lower(location) like lower(".$db->qstr('%'.$query['location'].'%').")";
-	}
-	
-	if (!empty($query['literature'])){
-		$where .= " AND lower(literature) like lower(".$db->qstr('%'.$query['literature'].'%').")";
 	}
 	
 	$sql = "SELECT DISTINCT $fields FROM $from WHERE $where"

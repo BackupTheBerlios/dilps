@@ -59,6 +59,8 @@ function smarty_block_query_image($params, $content, &$smarty, &$repeat)
 
 		global $db, $db_prefix, $query;
 		
+		// $db->debug = true;
+		
 		$ids = explode( ':', $params['id'] );
 		$collectionid = intval( $ids[0] );
 		$imageid = intval( $ids[1] );
@@ -160,11 +162,32 @@ function smarty_block_query_image($params, $content, &$smarty, &$repeat)
 	    		}
     		}
     		
+    		// load additional fields for architecture
+    		if ($result['rs']['type'] == 'architecture')
+    		{
+				$sql = 	"SELECT `functiontype_fn`, `functiontype`, `formtype_fn`, `formtype`, ".
+						" `draught_fn`, `draught`, `classification_fn`, `classification`".
+						"FROM {$db_prefix}architecture ".
+						"WHERE".
+			    		" collectionid=".$collectionid.
+			    		" AND imageid=".$imageid;
+    			
+			    $sqls = $sql;
+	    		$row = $db->GetRow( $sql );
+	    		
+	    		if( $row ) {
+	    			array_walk( $row, "__stripslashes" );
+	    			
+	    			foreach ($row as $name => $val)
+	    			{
+	    				$result['rs'][$name] = $val;
+	    			}
+	    		}
+    		}
+    		
     		// print_r($result);
     		
     		// echo('block.query_image.php: '.$row['type'].' - Einsprungpunkt realisieren'."\n<br>\n");
-    		
-    		
     		
     		if( !empty($params['sql'])) {
     			  $smarty->assign($params['sql'], $sqls);

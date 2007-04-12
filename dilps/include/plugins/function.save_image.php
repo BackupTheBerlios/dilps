@@ -313,6 +313,46 @@ WHERE
 			}
 		}
 	}
+	
+	
+	// save additional fields for architecture
+	if ($edit['type'] == 'architecture')
+	{
+		// $db->debug = true;
+		
+		$sql = "DELETE FROM {$db_prefix}architecture WHERE collectionid=$collectionid AND imageid=$imageid;";
+		$sqls .= "\n".$sql;
+		if( !$db->Execute( $sql ))
+		{
+			   $error .= "\n".$db->ErrorMsg()."[$sql]";
+		}
+		else
+		{
+			$sql =	"INSERT INTO {$db_prefix}architecture (".
+					"  `collectionid`, `imageid` ".
+					", `functiontype_fn`, `functiontype` ".
+					", `formtype_fn`, `formtype` ".
+					", `draught_fn`, `draught` ".
+					", `classification_fn`, `classification`".
+					" ) VALUES (".
+					$collectionid.",".$imageid.",".
+					$db->qstr(trim($edit['functiontype_fn'])).",".
+					$db->qstr(trim($edit['functiontype'])).",".
+					$db->qstr(trim($edit['formtype_fn'])).",".
+					$db->qstr(trim($edit['formtype'])).",".
+					$db->qstr(trim($edit['draught_fn'])).",".
+					$db->qstr(trim($edit['draught'])).",".
+					$db->qstr(trim($edit['classification_fn'])).",".
+					$db->qstr(trim($edit['classification'])).")";
+	
+			$sqls .= "\n".$sql;
+			if( !$db->Execute( $sql ))
+			{
+				   $error = $db->ErrorMsg()."[$sql]";
+			}
+		}
+	}
+	
 
 	$smarty->assign( $params['error'], $error );
 	if( isset( $params['sql'] ))

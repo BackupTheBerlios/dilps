@@ -64,7 +64,7 @@ function extractID( $id, &$sammlung, &$imageid )
 
 function sendImageHTTP($path = 'empty.jpg')
 {
-	ob_end_clean();
+	@ob_end_clean();
 	header('Last-Modified: '.date('r'));
 	header('Accept-Ranges: bytes');
 	header('Content-Length: '.@filesize($path));

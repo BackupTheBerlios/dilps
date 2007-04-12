@@ -23,13 +23,13 @@
 *}
 
 <!-- =================================================
-BEGIN ac_edit_obj_topography.tpl
+BEGIN ac_edit_iconography.tpl
 ================================================= -->
 
 {if $config.utf8 eq "true"}
-	{config_load file="`$config.skinBase``$config.skin`/`$config.language`/result.conf.utf8"}
+	{config_load file="`$config.skinBase``$config.skin`/`$config.language`/edit_architecture.conf.utf8"}
 {else}
-	{config_load file="`$config.skinBase``$config.skin`/`$config.language`/result.conf"}
+	{config_load file="`$config.skinBase``$config.skin`/`$config.language`/edit_architecture.conf"}
 {/if}
 
 <html>
@@ -63,7 +63,7 @@ BEGIN ac_edit_obj_topography.tpl
 
 	{if $query.id ne ""}
 	
-	{query_ext_element type="archaeology" element="obj_topography" fieldnames="fieldnames" values="values" sql="sql" query=$query}
+	{query_ext_element type="architecture" element="functiontype" fieldnames="fieldnames" values="values" sql="sql" query=$query}
 	
 	<!-- {$sql} -->
 	
@@ -79,7 +79,7 @@ BEGIN ac_edit_obj_topography.tpl
 
 	<table class="header" style="width: 90%; margin: auto;"/>
 		<tr>
-			<td class="heading">Bildkategorie</td>
+			<td class="heading">{#classification#}</td>
 		</tr>
 		<tr>
 			<td style="height: 20px;">
@@ -88,96 +88,81 @@ BEGIN ac_edit_obj_topography.tpl
 		</tr>
 		<tr>
 			<td>
-				<input type="checkbox" name="MSTopographie" value="Topographie"><b>Topographie</b>
-				<p>
-				<i>nat&uuml;rliches Gel&auml;nde</i>
-				
 				<table width="0*" border="0" cellspacing="10" cellpadding="0">
 				<tr>
-					<td><input type="checkbox" name="MSFestland" value="Festland">Festland</td>
-					<td><input type="checkbox" name="MSInsel" value="Insel">Insel</td>
-					<td><input type="checkbox" name="MSEbene" value="Ebene">Ebene</td>
-					<td><input type="checkbox" name="MSBerg" value="Berg">Berg</td>
-					<td><input type="checkbox" name="MSBach" value="Bach">Bach</td>
-				
-					<td><input type="checkbox" name="MSSee" value="See">See</td>
-				</tr>
-				<tr>
-					<td><input type="checkbox" name="MSK&uuml;ste" value="K&uuml;ste">K&uuml;ste</td>
-					<td><input type="checkbox" name="MSHalbinsel" value="Halbinsel">Halbinsel</td>
-					<td><input type="checkbox" name="MSTal" value="Tal">Tal</td>
-					<td><input type="checkbox" name="MSH&uuml;gel" value="H&uuml;gel">H&uuml;gel</td>
-				
-					<td><input type="checkbox" name="MSFlu&szlig;" value="Flu&szlig;">Flu&szlig;</td>
-					<td><input type="checkbox" name="MSMeer" value="Meer">Meer</td>
-				</tr>
-				</table>	
-				<p>
-				
-				<i>menschliche Ver&auml;nderungen</i>
-				
-				<table width="0*" border="0" cellspacing="10" cellpadding="0">
-				<tr>
-					<td><input type="checkbox" name="Grenze" value="Grenze">Grenze</td>
-				
-					<td><input type="checkbox" name="Stra&szlig;e2" value="Landstra&szlig;e, Fernstra&szlig;e">Landstra&szlig;e/Fernstra&szlig;e</td>
-					<td><input type="checkbox" name="Steinbruch" value="Steinbruch">Steinbruch</td>
-				</tr>
-				<tr>
-					<td><input type="checkbox" name="Grenzstein" value="Grenzstein">Grenzstein</td>
-					<td><input type="checkbox" name="Meilenstein" value="Meilenstein">Meilenstein</td>
-					<td><input type="checkbox" name="Bergwerk" value="Bergwerk">Bergwerk</td>
-				
+					<td><input type="checkbox" name="total" value="{#total#}">{#total#}</td>
+					<td><input type="checkbox" name="facade" value="{#facade#}">{#facade#}</td>
+					<td><input type="checkbox" name="yard" value="{#yard#}">{#yard#}</td>
+					<td><input type="checkbox" name="wing" value="{#wing#}">{#wing#}</td>
 				</tr>
 				</table>  
 				
-				<hr>
-				<input type="checkbox" name="MSUrbanistik" value="Urbanistik"><b>Urbanistik</b><p>
+				<input type="checkbox" name="choir" value="{#choir#}">{#choir#}<br />
+				<br />
 				
-					<input type="checkbox" name="Stadt" value="Stadt">Stadt
-					
+				<input type="checkbox" name="transept" value="{#transept#}">{#transept#}<br />
+				<br />
+				
+				<input type="checkbox" name="nave" value="{#nave#}">{#nave#}<br />
 				<table width="0*" border="0" cellspacing="10" cellpadding="0">
 				<tr>
-					<td><input type="checkbox" name="MSAkropolis" value="Akropolis">Akropolis</td>
-					<td><input type="checkbox" name="MSStra&szlig;e1" value="Stra&szlig;e">Stra&szlig;e     </td>
-				
-					<td><input type="checkbox" name="MSWohnviertel1" value="Wohnviertel, Wohnquartier">Wohnviertel</td>
-					<td><input type="checkbox" name="MSHaus" value="Wohnhaus, Haus">Haus</td>
-				</tr>
-				<tr>
-					<td><input type="checkbox" name="MSBefestigung" value="Befestigung">Befestigung</td>
-					<td><input type="checkbox" name="MSPlatz" value="Platz">Platz</td>
-					<td><input type="checkbox" name="MSHandwerkerviertel" value="Handwerkerviertel">Handwerkerviertel</td>
-				
-					<td><input type="checkbox" name="MSInsula" value="Insula">Insula</td>	
-				</tr>
-				</table>
-				<br>
-				
-					<input type="checkbox" name="MSl&auml;ndliche Umgebung" value="l&auml;ndliche Umgebung">l&auml;ndliche Umgebung
-				
-				<table width="0*" border="0" cellspacing="10" cellpadding="0">
-				<tr>
-					<td><input type="checkbox" name="MSGarten" value="Garten">Garten</td>
-					<td><input type="checkbox" name="MSHain" value="Hain">Hain</td>
-				
-					<td><input type="checkbox" name="MSPark" value="Park">Park</td>
-				</tr>
-				<tr>
-					<td><input type="checkbox" name="MSGeh&ouml;ft" value="Geh&ouml;ft">Geh&ouml;ft</td>
-					<td><input type="checkbox" name="MSLandgut" value="Landgut">Landgut</td>
-					<td><input type="checkbox" name="MSVilla" value="Villa">Villa</td>
+					<td><input type="checkbox" name="centralaisle" value="{#centralaisle#}">{#centralaisle#}</td>
+					<td><input type="checkbox" name="sideaisle" value="{#sideaisle#}">{#sideaisle#}</td>
 				</tr>
 				</table>  
 				
-				<br>
-					
-				<input type="checkbox" name="MSHafenanlage1" value="Hafen, Hafenanlage">Hafenanlage<p>
-				<input type="checkbox" name="MSHeiligtum1" value="Heiligtum">Heiligtum<p>
-				<input type="checkbox" name="MSNekropole1" value="Nekropole, Friedhof">Nekropole<p>
-			
-				<b>anderer Zusammenhang oder genauere Bezeichnung:</b><br>
-				<textarea name="MSTopographieText" rows="2" cols="40"></textarea>
+				<input type="checkbox" name="annex" value="{#annex#}">{#annex#}<br />
+				<table width="0*" border="0" cellspacing="10" cellpadding="0">
+				<tr>
+					<td><input type="checkbox" name="chapel" value="{#chapel#}">{#chapel#}</td>
+				</tr>
+				</table>  
+				
+				<input type="checkbox" name="portal" value="{#portal#}">{#portal#}<br />
+				<table width="0*" border="0" cellspacing="10" cellpadding="0">
+				<tr>
+					<td><input type="checkbox" name="jamb" value="{#jamb#}">{#jamb#}</td>
+					<td><input type="checkbox" name="tympanum" value="{#tympanum#}">{#tympanum#}</td>
+				</tr>
+				</table>  
+				
+				<input type="checkbox" name="window" value="{#window#}">{#window#}<br />
+				<br />
+				
+				<input type="checkbox" name="stairway" value="{#stairway#}">{#stairway#}<br />
+				<br />
+				
+				<input type="checkbox" name="tower" value="{#tower#}">{#tower#}<br />
+				<br />
+				
+				<input type="checkbox" name="cupola" value="{#cupola#}">{#cupola#}<br />
+				<br />
+				
+				<input type="checkbox" name="hall" value="{#hall#}">{#hall#}<br />
+				<br />
+				
+				<input type="checkbox" name="vault" value="{#vault#}">{#vault#}<br />
+				<br />
+				
+				<input type="checkbox" name="architectureelement" value="{#architectureelement#}">{#architectureelement#}<br />
+				<table width="0*" border="0" cellspacing="10" cellpadding="0">
+				<tr>
+					<td><input type="checkbox" name="column" value="{#column#}">{#column#}</td>
+					<td><input type="checkbox" name="base" value="{#base#}">{#base#}</td>
+					<td><input type="checkbox" name="capital" value="{#capital#}">{#capital#}</td>
+					<td><input type="checkbox" name="frames" value="{#frames#}">{#frames#}</td>
+				</tr>
+				</table>  
+				
+				
+				<input type="checkbox" name="park" value="{#park#}">{#park#}<br />
+				<br />
+				
+				<input type="checkbox" name="square" value="{#square#}">{#square#}<br />
+				<br />
+				
+				<strong>{#additionalentry#}</strong><br>
+				<textarea name="classificationaddition" rows="2" cols="40"></textarea>
 			</td>
 		</tr>
 		<tr>
@@ -189,7 +174,7 @@ BEGIN ac_edit_obj_topography.tpl
 			<td>
 				<table width="0*" border="0" cellspacing="10" cellpadding="0">
 					<tr>
-						<td><input type="button" value="eingeben" onclick="saveSelection('obj_topography');history.back();"></td>
+						<td><input type="button" value="eingeben" onclick="saveSelection('functiontype');window.close();"></td>
 						<td><input type="button" value="zur&uuml;cksetzen" onclick="restoreState(js_fn, js_val);"></td>
 						<td><input type="reset" value="alle l&ouml;schen"></td>
 					</tr>
@@ -211,5 +196,5 @@ BEGIN ac_edit_obj_topography.tpl
 </html>
 
 <!-- =================================================
-END ac_edit_obj_topography.tpl
+END ac_edit_iconography.tpl
 ================================================= -->

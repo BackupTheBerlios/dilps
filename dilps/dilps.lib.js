@@ -18,7 +18,7 @@ function editNameElement( sessionid, imageid, element, docelements ) {
    win.focus();
 }
 
-function editArchElement( sessionid, imageid, element, docelements ) {
+function editArchaeologyElement( sessionid, imageid, element, docelements ) {
    var props = 'toolbar=no,location=no,directories=no,status=yes,scrollbars=yes,resizable=yes,menubar=no,copyhistory=no';
    
    //	var fn_index = "edit["+element+"_fn]";
@@ -26,7 +26,19 @@ function editArchElement( sessionid, imageid, element, docelements ) {
    // 	var fn_val = docelements[fn_index].value;
    //	var val_val = docelements[val_index].value;
    
-   win = window.open( 'edit_arch_element.php?PHPSESSID='+sessionid+'&query[id]='+imageid+'&query[element]='+element, 'archaelogyEdit', props + ',width=900,height=720' );
+   win = window.open( 'edit_archaeology_element.php?PHPSESSID='+sessionid+'&query[id]='+imageid+'&query[element]='+element, 'archaelogyEdit', props + ',width=900,height=720' );
+   win.focus();
+}
+
+function editArchitectureElement( sessionid, imageid, element, docelements ) {
+   var props = 'toolbar=no,location=no,directories=no,status=yes,scrollbars=yes,resizable=yes,menubar=no,copyhistory=no';
+   
+   //	var fn_index = "edit["+element+"_fn]";
+   //	var val_index = "edit["+element+"]";
+   // 	var fn_val = docelements[fn_index].value;
+   //	var val_val = docelements[val_index].value;
+   
+   win = window.open( 'edit_architecture_element.php?PHPSESSID='+sessionid+'&query[id]='+imageid+'&query[element]='+element, 'archaelogyEdit', props + ',width=900,height=720' );
    win.focus();
 }
 

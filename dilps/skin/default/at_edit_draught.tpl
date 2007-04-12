@@ -23,13 +23,13 @@
 *}
 
 <!-- =================================================
-BEGIN ac_edit_obj_misc.tpl
+BEGIN ac_edit_iconography.tpl
 ================================================= -->
 
 {if $config.utf8 eq "true"}
-	{config_load file="`$config.skinBase``$config.skin`/`$config.language`/result.conf.utf8"}
+	{config_load file="`$config.skinBase``$config.skin`/`$config.language`/edit_architecture.conf.utf8"}
 {else}
-	{config_load file="`$config.skinBase``$config.skin`/`$config.language`/result.conf"}
+	{config_load file="`$config.skinBase``$config.skin`/`$config.language`/edit_architecture.conf"}
 {/if}
 
 <html>
@@ -63,7 +63,7 @@ BEGIN ac_edit_obj_misc.tpl
 
 	{if $query.id ne ""}
 	
-	{query_ext_element type="archaeology" element="obj_misc" fieldnames="fieldnames" values="values" sql="sql" query=$query}
+	{query_ext_element type="architecture" element="functiontype" fieldnames="fieldnames" values="values" sql="sql" query=$query}
 	
 	<!-- {$sql} -->
 	
@@ -79,7 +79,7 @@ BEGIN ac_edit_obj_misc.tpl
 
 	<table class="header" style="width: 90%; margin: auto;"/>
 		<tr>
-			<td class="heading">Andere Objekte</td>
+			<td class="heading">{#draught#}</td>
 		</tr>
 		<tr>
 			<td style="height: 20px;">
@@ -88,12 +88,33 @@ BEGIN ac_edit_obj_misc.tpl
 		</tr>
 		<tr>
 			<td>
-				<i>Dies ist kein M&uuml;llabladeplatz!<br>
-				Bitte auch &uuml;ber andere sinnvolle Kategorisierungen nachdenken.</i>
-				<p>
+				<table width="0*" border="0" cellspacing="10" cellpadding="0">
+				<tr>
+					<td><input type="checkbox" name="indoors" value="{#indoors#}">{#indoors#}</td>
+					<td><input type="checkbox" name="outdoors" value="{#outdoors#}">{#outdoors#}</td>
+				</tr>
+				</table>  
 				
-				<b>Text:</b><br>
-				<textarea name="MSandereObjekteText" rows="3" cols="40"></textarea>
+				<strong>{#stage#}</strong><br>
+				<input type="text" name="stage"></input>>
+				
+				<table width="0*" border="0" cellspacing="10" cellpadding="0">
+				<tr>
+					<td><input type="checkbox" name="longitudinalsection" value="{#longitudinalsection#}">{#longitudinalsection#}</td>
+					<td><input type="checkbox" name="crosssection" value="{#crosssection#}">{#crosssection#}</td>
+					<td><input type="checkbox" name="verticalsection" value="{#verticalsection#}">{#verticalsection#}</td>
+					<td><input type="checkbox" name="groundplan" value="{#groundplan#}">{#groundplan#}</td>				
+				</tr>
+				</table>  
+				
+				<strong>{#view#}</strong>><br>
+				<textarea name="view" rows="2" cols="40"></textarea>
+				
+				<br /><br />
+				
+				<strong>{#additionalentry#}</strong><br>
+				<textarea name="draughtaddition" rows="2" cols="40"></textarea>
+				
 			</td>
 		</tr>
 		<tr>
@@ -105,7 +126,7 @@ BEGIN ac_edit_obj_misc.tpl
 			<td>
 				<table width="0*" border="0" cellspacing="10" cellpadding="0">
 					<tr>
-						<td><input type="button" value="eingeben" onclick="saveSelection('obj_misc');history.back();"></td>
+						<td><input type="button" value="eingeben" onclick="saveSelection('functiontype');window.close();"></td>
 						<td><input type="button" value="zur&uuml;cksetzen" onclick="restoreState(js_fn, js_val);"></td>
 						<td><input type="reset" value="alle l&ouml;schen"></td>
 					</tr>
@@ -127,5 +148,5 @@ BEGIN ac_edit_obj_misc.tpl
 </html>
 
 <!-- =================================================
-END ac_edit_obj_misc.tpl
+END ac_edit_iconography.tpl
 ================================================= -->

@@ -1,5 +1,7 @@
 <?php
-    /* @author: brian@mediagonal.ch
+    /* 
+    	@author: brian@mediagonal.ch
+    	@author: sdoeweling@hfg-karlsruhe.de
     */
 
 class dilpsQuery {
@@ -43,14 +45,22 @@ class dilpsQuery {
 												'operators'=>'like'),
 						'iconography' =>	array('function'=>'get_archaeology_where_query',
 												'operators'=>'like'),
-						'dating_ext' =>		array('function'=>'get_archaeology_where_query_combined',
+						'dating_ext' =>		array('function'=>'get_archaeology_where_query',
 												'operators'=>'like'),
-						'material_ext' =>	array('function'=>'get_archaeology_where_query_combined',
+						'material_ext' =>	array('function'=>'get_archaeology_where_query',
 												'operators'=>'like'),
-						'location_ext' =>	array('function'=>'get_archaeology_where_query_combined',
+						'location_ext' =>	array('function'=>'get_archaeology_where_query',
 												'operators'=>'like'),
 						'object' 	=>		array('function'=>'get_archaeology_where_query_extended',
-												'operators'=>'like')
+												'operators'=>'like'),
+						'functiontype' =>	array('function'=>'get_architecture_where_query',
+												'operators'=>'like'),
+						'formtype'	=>		array('function'=>'get_architecture_where_query',
+												'operators'=>'like'),
+						'draught' =>		array('function'=>'get_architecture_where_query',
+												'operators'=>'like'),
+						'classification' =>	array('function'=>'get_architecture_where_query',
+												'operators'=>'like'),
                                                 );
 
     function dilpsQuery($db = null, $db_prefix = null) {
@@ -180,17 +190,11 @@ class dilpsQuery {
     	return $where;
     }
     
-    function get_archaeology_where_query_combined($column, $value, $operator) {
+    function get_architecture_where_query($column, $value, $operator) {
 
         if ($operator == 'like') {
         	
-        	$column_short = substr($column,0,strpos($column,'_ext'));
-        	
-            $where = "( "
-            		.$this->get_archaeology_where_query($column, $value, $operator)
-            		." OR "
-            		.$this->get_meta_where_query($column_short, $value, $operator)
-            		." )";
+            $where = "lower({$this->db_prefix}architecture.$column) like lower(" . $this->db->qstr("%$value%") .")";
         }
     	return $where;
     }

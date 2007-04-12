@@ -42,7 +42,7 @@ BEGIN archaeology_edit.tpl
             			</td>
             			<td style="vertical-align: top;">
             				<input type="hidden" name="edit[category_fn]" size="60" value="{$row.category_fn|escape:html}">
-							&nbsp;[<a onClick="editArchElement( '{$sessionid}', '{$id}', 'category');">{#enter#}</a>]
+							&nbsp;[<a onClick="editArchaeologyElement( '{$sessionid}', '{$id}', 'category');">{#enter#}</a>]
             			</td>
             		</tr>
             	</table>
@@ -370,7 +370,7 @@ BEGIN archaeology_edit.tpl
 			            	</table>
             			</td>
             			<td style="vertical-align: top;">
-							&nbsp;[<a onClick="editArchElement( '{$sessionid}', '{$id}', 'obj');">{#enter#}</a>]
+							&nbsp;[<a onClick="editArchaeologyElement( '{$sessionid}', '{$id}', 'obj');">{#enter#}</a>]
             			</td>
             		</tr>
             	</table>
@@ -415,7 +415,7 @@ BEGIN archaeology_edit.tpl
             			</td>
             			<td style="vertical-align: top;">
             				<input type="hidden" name="edit[iconography_fn]" size="60" value="{$row.iconography_fn|escape:htmlall}">
-		   					&nbsp;[<a onClick="editArchElement( '{$sessionid}', '{$id}', 'iconography');">{#enter#}</a>]
+		   					&nbsp;[<a onClick="editArchaeologyElement( '{$sessionid}', '{$id}', 'iconography');">{#enter#}</a>]
             			</td>
             		</tr>
             	</table>
@@ -432,7 +432,7 @@ BEGIN archaeology_edit.tpl
             			<td style="vertical-align: top;">
             				<input type="hidden" name="edit[dating]" size="60" value="{$row.dating|escape:html}" style="width: 400px;">
 							<input type="hidden" name="edit[dating_ext_fn]" size="60" value="{$row.dating_ext_fn|escape:html}">
-							&nbsp;[<a onClick="editArchElement( '{$sessionid}', '{$id}', 'dating_ext');">{#enter#}</a>]
+							&nbsp;[<a onClick="editArchaeologyElement( '{$sessionid}', '{$id}', 'dating_ext');">{#enter#}</a>]
             			</td>
             		</tr>
             	</table>
@@ -448,7 +448,7 @@ BEGIN archaeology_edit.tpl
             			</td>
             			<td style="vertical-align: top;">
             				<input type="hidden" name="edit[material_ext_fn]" size="60" value="{$row.material_ext_fn|escape:html}">
-							&nbsp;[<a onClick="editArchElement( '{$sessionid}', '{$id}', 'material_ext');">{#enter#}</a>]
+							&nbsp;[<a onClick="editArchaeologyElement( '{$sessionid}', '{$id}', 'material_ext');">{#enter#}</a>]
             			</td>
             		</tr>
             	</table>

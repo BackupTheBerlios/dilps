@@ -161,6 +161,31 @@ CREATE TABLE `!prefix_!archaeology` (
   PRIMARY KEY  (`collectionid`,`imageid`)
 );
 
+CREATE TABLE `ng_architecture` (
+
+  `collectionid` bigint(20) NOT NULL,
+  
+  `imageid` bigint(20) NOT NULL,
+  
+  `functiontype_fn` text NOT NULL,
+  
+  `functiontype` text NOT NULL,
+  
+  `formtype_fn` text NOT NULL,
+  
+  `formtype` text NOT NULL,
+  
+  `draught_fn` text NOT NULL,
+  
+  `draught` text NOT NULL,
+  
+  `classification_fn` text  NOT NULL,
+  
+  `classification` text NOT NULL,
+  
+   PRIMARY KEY  (`collectionid`,`imageid`)
+) 
+
 
 CREATE TABLE `!prefix_!artist` (
 
@@ -195,6 +220,8 @@ CREATE TABLE `!prefix_!collection` (
   `name` varchar(255) NOT NULL default '',
 
   `host` varchar(255) NOT NULL default 'local',
+  
+  `soap_url` varchar(255) NOT NULL default '',
 
   `active` int(11) NOT NULL default '1',
 
@@ -222,6 +249,20 @@ CREATE TABLE `!prefix_!collection` (
 
   KEY `active` (`active`)
 
+);
+
+
+CREATE TABLE `!prefix_!interdilps_hosts` (
+
+    `id`  int(10) UNSIGNED NOT NULL auto_increment,
+    
+    `ip` varchar(30) NOT NULL default '',
+    
+    `access` tinyint(3) UNSIGNED NOT NULL default 0,
+    
+	`description` varchar(255) NOT NULL default '',
+	
+    primary key (`id`)
 );
 
 CREATE TABLE `!prefix_!config` (

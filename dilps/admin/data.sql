@@ -20,7 +20,7 @@ INSERT INTO `!prefix_!type` VALUES ('archaeology', 'Archaeologie', 'archaeology_
 
 INSERT INTO `!prefix_!type` VALUES ('image', 'Bild', 'default_detail.tpl', 'default_edit.tpl', 'default_list.tpl',  'default_list_short.tpl', 'default_grid.tpl');
 
-INSERT INTO `!prefix_!type` VALUES ('architecture', 'Architektur', 'default_detail.tpl', 'default_edit.tpl', 'default_list.tpl', 'default_list_short.tpl', 'default_grid.tpl');
+INSERT INTO `!prefix_!type` VALUES ('architecture', 'Architektur', 'architecture_detail.tpl', 'architecture_edit.tpl', 'default_list.tpl', 'default_list_short.tpl', 'default_grid.tpl');
 
 
 INSERT INTO `!prefix_!location` VALUES (1, 'Getty TGN', '1000003', '7029392', 'Europe', '29000/continent', 'World', '.ERP.');

@@ -16,6 +16,11 @@ is two pieces.  the second piece has two phrases.
 function prepare_html_query($query) {
 
     $query['submitted_query'] = $query;  // save a copy of the clean, submitted html query - to use for creating the databse query    
+    
+    if (!isset($query['querytype']))
+    {
+    	$query['querytype'] = 'simple';
+    }
        
     if ($query['querytype'] == 'advanced') {
         if ($query['fromquerytype'] == 'simple') {

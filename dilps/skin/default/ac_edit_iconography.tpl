@@ -54,7 +54,7 @@ BEGIN ac_edit_iconography.tpl
 <title>. : DILPS : .</title>
 <link rel="stylesheet" type="text/css" href="css.php">
 <script src="dilps.lib.js" type="text/javascript"></script>
-<script src="include/archaeology/ac_edit.js" type="text/javascript"></script>
+<script src="include/extended/ext_edit.js" type="text/javascript"></script>
 
 </head>
 
