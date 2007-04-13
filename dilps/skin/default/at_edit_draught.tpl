@@ -96,7 +96,7 @@ BEGIN at_edit_draught.tpl
 				</table>  
 				
 				<strong>{#stage#}</strong><br>
-				<input type="text" name="stage"></input>>
+				<input type="text" name="stage"></input>
 				
 				<table width="0*" border="0" cellspacing="10" cellpadding="0">
 				<tr>
