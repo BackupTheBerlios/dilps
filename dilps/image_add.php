@@ -1183,7 +1183,7 @@ if ($process == 2) {
 
 	echo ("\n<br>\n<em>Adding images - done</em>\n");
 	echo ("<br>\n<br>\n");
-	echo ('<a href="javascript:opener.document.forms[0].submit();window.close();" class="navlink">Close window</a>');
+	echo ('<a href="javascript:opener.document.forms[0].submit();window.close();" class="navigationlink">Close window</a>');
 
 	echo ("</td>\n</tr>\n</table>");
 	echo ('</body>');

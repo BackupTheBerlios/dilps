@@ -21,15 +21,13 @@
    | 02111-1307, USA                                                      |
    +----------------------------------------------------------------------+
 *}
-
 <!-- =================================================
-BEGIN at_edit_formtype.tpl
+BEGIN image_exchange.tpl
 ================================================= -->
-
 {if $config.utf8 eq "true"}
-	{config_load file="`$config.skinBase``$config.skin`/`$config.language`/edit_architecture.conf.utf8"}
+	{config_load file="`$config.skinBase``$config.skin`/`$config.language`/easy_query.conf.utf8"}
 {else}
-	{config_load file="`$config.skinBase``$config.skin`/`$config.language`/edit_architecture.conf"}
+	{config_load file="`$config.skinBase``$config.skin`/`$config.language`/easy_query.conf"}
 {/if}
 
 <html>
@@ -45,83 +43,61 @@ BEGIN at_edit_formtype.tpl
 {else}
 	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 {/if}
-
 <meta http-equiv="Content-Script-Type" content="text/javascript">
 <meta http-equiv="Content-Style-Type" content="text/css">
 <meta name="author" content="juergen enge, thorsten wuebbena, sebastian doeweling">
 <meta name="date" content="2003-01-23">
 <link rel="shortcut icon" href="favicon.ico">
 <title>. : DILPS : .</title>
-<link rel="stylesheet" type="text/css" href="css.php">
-<script src="dilps.lib.js" type="text/javascript"></script>
-<script src="include/extended/ext_edit.js" type="text/javascript"></script>
-</head>
 
-<body class="headerstyle" style="width: 100%; height: 100%; vertical-align: top;">
+<link rel="stylesheet" type="text/css" href="css.php">
+</head>
+<body class="main" style="width: 100%; height: 100%;">
 	<form name="Main" action="{$SCRIPT_NAME}" method="POST" enctype="multipart/form-data">
 	<input type="hidden" name="PHPSESSID" value="{$sessionid}">
 
-	{if $query.id ne ""}
-	
-	{query_ext_element type="architecture" element="formtype" fieldnames="fieldnames" values="values" sql="sql" query=$query}
-	
-	<!-- {$sql} -->
-	
-	<script language="javascript">
-		var rs_fn 	= "{$fieldnames}";
-		var rs_val 	= "{$values}";
-		
-		js_fn 	= rs_fn.split('; ');
-		js_val	= rs_val.split('; ');
-	</script>
-	
-	<input type="hidden" name="imageid" value="{$query.id}">
+	<table class="header" style="width: 100%; height: 100%; vertical-align: top;">
+	{if $query.process eq "" or $query.process lt "2"}
+		<tr>
+			<td class="queryinputfieldtext">
+		  		{#sourcefile#}
+			</td>
+			<td class="queryinputfield">
+				<input class="queryinputfield" type="file" name="query[sourcedirectory]" value="{$query.directory|escape:html}" size="40">
+				<input type="hidden" name="query[completedir]" value="0">
+			</td>
+		</tr>
+		<tr>
+		   	<td class="queryinputfieldtext">
+		    	{#targetdirectory#}
+		   	</td>
+		   	<td>
+				<select class="queryselectfield" name="query[baseid]">
+					<option value="{$baseid}">{if $host neq "local" and $host neq ""}{$host}{else}localhost{/if} :: {$base}</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td class="field_name">
+				&nbsp;
+			</td>
+			<td>
+				<input type="hidden" name="query[id]" value="{$collectionid}:{$imageid}">
+				<input type="hidden" name="query[process]" value="2">
+				<input type="submit" name="query[new]" value="{#exchangeimage#|escape:html}">
+			</td>
+		</tr>
+	{/if}
 
-	<table class="header" style="width: 90%; margin: auto;"/>
-		<tr>
-			<td class="heading">{#formtype#}</td>
-		</tr>
-		<tr>
-			<td style="height: 20px;">
-				&nbsp;
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<b>{#formtype#}</b><br>
-				<textarea name="OtherFormtype" rows="2" cols="40"></textarea>
-			</td>
-		</tr>
-		<tr>
-			<td style="height: 20px;">
-				&nbsp;
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<table width="0*" border="0" cellspacing="10" cellpadding="0">
-					<tr>
-						<td><input type="button" value="eingeben" onclick="saveSelection('formtype');window.close();"></td>
-						<td><input type="button" value="zur&uuml;cksetzen" onclick="restoreState(js_fn, js_val);"></td>
-						<td><input type="reset" value="alle l&ouml;schen"></td>
-					</tr>
-				</table>
-			</td>
-		</tr>
+	<tr>
+		<td>
+		&nbsp;
+		</td>
+	</tr>
 	</table>
-	<input type="hidden" name="step" value="1">
 </form>
-
-<script language="javascript">
-	restoreState(js_fn, js_val);
-</script>
-
-
-{/if}
-
 </body>
 </html>
-
-<!-- =================================================
-END ac_edit_iconography.tpl
-================================================= -->
+<!-- --------------------------------------------
+END image_exchangetpl
+--------------------------------------------- -->

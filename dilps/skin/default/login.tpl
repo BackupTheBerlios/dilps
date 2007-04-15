@@ -90,7 +90,7 @@ BEGIN login.tpl
 
   <meta http-equiv="Content-Style-Type" content="text/css">
 
-  <meta name="author" content="jrgen enge, thorsten wbbena">
+  <meta name="author" content="juergen enge, thorsten wuebbena, sebastian doeweling">
 
   <meta name="date" content="2003-01-23">
 

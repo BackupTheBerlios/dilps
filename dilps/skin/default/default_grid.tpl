@@ -37,8 +37,8 @@ BEGIN default_grid.tpl
 </tr>
 <tr>
 	<td colspan="2" class="result_list_data_data" style="text-align: center">
-	<b>
 	{if $row.name1 ne "" or $row.name2 ne ""}
+		<b>
 		{$row.name1|escape:htmlall}
 		{if $row.name2 ne ""}<br/>
 			{$row.name2|escape:htmlall}
@@ -47,8 +47,8 @@ BEGIN default_grid.tpl
 	{else}
 		&nbsp;
 	{/if}
-	<br>
 	{if $row.title ne ""}
+		<br/>
 		{$row.title|replace:"-":"- "|truncate:50|escape:htmlall}		
 	{else}
 		&nbsp;
@@ -65,9 +65,13 @@ BEGIN default_grid.tpl
 	<td colspan="2" class="result_list_data_data" style="text-align: center">
 		<table border="0" cellspacing="0" style="width: 100%">			
 			<tr>
-				<td class="result_list_data_data" style="width: 50%">					
+				<td style="text-align: right; padding: 4px; padding-right: 15px;  width: 15%">
 					{if $query.mygroupid neq ""}
 						{#group#}
+					{/if}
+				</td>
+				<td class="result_list_data_data">					
+					{if $query.mygroupid neq ""}
 						{mygroup_isin ingroup=ingroup changeable=changeable sql=sql cid=$row.collectionid groupid=$query.mygroupid imageid=$row.imageid}
 						{if $ingroup eq 'no'}
 							{if $changeable eq 'yes'}
@@ -86,21 +90,29 @@ BEGIN default_grid.tpl
 					{else}
 						&nbsp;
 					{/if}
-				</td>				
-				<td class="result_list_data_data">
+				</td>
+			<tr>
+			{image_isremote isremote=isremote sql=sql cid=$row.collectionid imageid=$row.imageid}
+			{if $isremote eq 'no'}
+			<tr>
+				<td style="text-align: right; padding: 4px; padding-right: 15px;">
 					{if $user.editor or $user.admin}
 						{#image#}
-					{else}
-						&nbsp;
 					{/if}
+				</td>
+				<td class="result_list_data_data">
 					{if $user.editor}
 						<button type="button" name="rot-{$row.collectionid}-{$row.imageid}" class="actionbutton" onclick="rotateimage('{$row.collectionid}','{$row.imageid}');" style="padding: 1px;" title="{#rotate#|escape:htmlall}"><img src="rotate-90.png" style="width: 12px; height: 12px" /></button>
 					{/if}
 					{if $user.admin}
 						<button type="button" name="del-{$row.collectionid}-{$row.imageid}" class="actionbutton" onclick="deleteimage('{$row.collectionid}','{$row.imageid}');" style="padding: 1px;" title="{#delete#|escape:htmlall}"><img src="delete.png" style="width: 12px; height: 12px" /></button>
 					{/if}
+					{if $user.admin}
+						<button type="button" name="exchange-{$row.collectionid}-{$row.imageid}" class="actionbutton" onclick="exchangeimage('{$row.collectionid}','{$row.imageid}');" style="padding: 1px;" title="{#exchange#|escape:htmlall}"><img src="exchange.png" style="width: 12px; height: 12px" /></button>
+					{/if}
 				</td>
 			</tr>
+			{/if}
 		</table>
    </td>
 </tr>

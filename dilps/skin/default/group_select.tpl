@@ -48,7 +48,7 @@
 	{/if}
 	<meta http-equiv="Content-Script-Type" content="text/javascript" />
 	<meta http-equiv="Content-Style-Type" content="text/css" />
-	<meta name="author" content="jürgen enge, thorsten wübbena" />
+	<meta name="author" content="juergen enge, thorsten wuebbena, sebastian doeweling">
 	<meta name="date" content="2003-01-23" />
 	<link rel="shortcut icon" href="favicon.ico" />
 
@@ -384,7 +384,7 @@
 			<td class="heading" colspan="2" style="text-align: left;">
 				<a class="navsymbol" href="{$SCRIPT_NAME}?PHPSESSID={$sessionid}&target={$target}">{#groupselection#}</a>
 				<span style="font-size: 12pt;">
-				&nbsp; ( <a class="navsymbol" href="window.close();">{#closewindow#}</a> )
+				&nbsp; ( <a class="navsymbol" href="javascript:window.close();">{#closewindow#}</a> )
 				</span>
 			</td>
 		</tr>

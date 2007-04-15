@@ -73,6 +73,27 @@ BEGIN easy_query.tpl
 		}
 	}
 	{/literal}
+	
+	function exchangeimage(cid, imageid)
+	{literal}
+	{
+		{/literal}
+		var sessionid		=	"{$sessionid}";
+		var confirmstring 	= 	"{#exchangeimagewithid#}";		
+		
+		var agree=confirm(confirmstring+": "+cid+":"+imageid+" ?");	
+		
+		{literal}
+		if (agree)
+		{
+			props = 'toolbar=no,location=no,directories=no,status=yes,scrollbars=yes,resizable=yes,menubar=no,copyhistory=no';
+   			win = window.open( 
+   						'image_exchange.php?PHPSESSID='+sessionid+'&query[id]='+cid+':'+imageid+'&query[remoteCollection]=0', 'imageExchange', props + ',width=700,height=420'
+   							);
+   			win.focus();
+		}
+	}
+	{/literal}
 </script>
 
 <input type="hidden" name="PHPSESSID" value="{$sessionid}">

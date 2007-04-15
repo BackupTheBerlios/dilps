@@ -45,7 +45,7 @@ BEGIN image_add.tpl
 {/if}
 <meta http-equiv="Content-Script-Type" content="text/javascript">
 <meta http-equiv="Content-Style-Type" content="text/css">
-<meta name="author" content="jrgen enge, thorsten wbbena">
+<meta name="author" content="juergen enge, thorsten wuebbena, sebastian doeweling">
 <meta name="date" content="2003-01-23">
 <link rel="shortcut icon" href="favicon.ico">
 <title>. : DILPS : .</title>

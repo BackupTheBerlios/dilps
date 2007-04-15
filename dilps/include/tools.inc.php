@@ -854,6 +854,51 @@
 	}
 	
 	/**
+	 *	update image data with new filename and imagedata
+	 *
+	 *	update image data in database with new
+	 *  filename and corresponding image data
+	 *  after uploading a new image for the given database
+	 * 
+	 *
+	 *	@access		public
+	 *	@param 		int		$collectionid
+	 *	@param 		int		$imageid
+	 *	@param 		int		$img_baseid
+	 *  @param		string	$filename
+	 *  @param		array	$img_data
+	 *	@param 		string	$time
+	 *	@return		bool
+	 *
+	 */
+	
+	function update_img($collectionid, $imageid, $img_baseid, $filename, $img_data, $time)
+	{
+		global $db, $db_prefix;		
+		
+		// insert information into database	
+		$sql = 	"UPDATE ".$db_prefix."img "
+				."SET `filename` = ".$db->qstr($filename).","
+				." `width` = ".$db->qstr($img_data['width']).","
+				." `height` = ".$db->qstr($img_data['height']).","
+				." `size` = ".$db->qstr($img_data['size']).","
+				." `magick` = ".$db->qstr($img_data['type']).","
+				." `insert_date` = ".$db->qstr($time);
+	
+		$rs = @$db->Execute($sql);
+	
+		if (!$rs)
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}
+	
+	
+	/**
 	 *	insert image metadata into database
 	 *
 	 *	insert image metadata into database
@@ -1063,6 +1108,6 @@
 		{
 			return true;
 		}
-	}	
+	}
 	
 ?>
