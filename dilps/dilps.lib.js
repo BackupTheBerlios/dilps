@@ -42,6 +42,34 @@ function editArchitectureElement( sessionid, imageid, element, docelements ) {
    win.focus();
 }
 
+function editGroupSelection (sessionid, target, lastpath, currentid) {
+	var props = 'toolbar=no,location=no,directories=no,status=yes,scrollbars=yes,resizable=yes,menubar=no,copyhistory=no';
+	
+	win = window.open( 'group_select.php?PHPSESSID='+sessionid+'&target='+target+'&lastpath='+lastpath+'&currentid='+currentid, target+'Selection', props + ',width=800,height=300,left=10,top=250' );
+	win.focus();
+}
+
+function editGroups (sessionid) {
+	var props = 'toolbar=no,location=no,directories=no,status=yes,scrollbars=yes,resizable=yes,menubar=no,copyhistory=no';
+	
+	win = window.open( 'group_edit.php?PHPSESSID='+sessionid, 'editGroups', props + ',width=900,height=420' );
+	win.focus();
+}
+
+function addImages( sessionid ) {
+	var props = 'toolbar=no,location=no,directories=no,status=yes,scrollbars=yes,resizable=yes,menubar=no,copyhistory=no';
+	
+	win = window.open( 'image_add.php?PHPSESSID='+sessionid, 'addImages', props + ',width=900,height=420' );
+	win.focus();
+}
+
+function exportGroup( sessionid, groupid, groupname ) {
+	var props = 'toolbar=no,location=no,directories=no,status=yes,scrollbars=yes,resizable=yes,menubar=no,copyhistory=no';
+	
+	win = window.open( 'group_export.php?PHPSESSID='+sessionid+'&groupid='+groupid+'&groupname='+groupname, 'exportGroup', props + ',width=800,height=420' );
+	win.focus();
+}
+
 
 function Adjust() {
   if ((document.forms["Main"].elements["view[detail][id]"].value==""))
@@ -315,6 +343,7 @@ function clearmygroup() {
 	document.forms["Main"].elements["query[mygrouplastpath]"].value = '';
 	document.forms["Main"].submit();
 }
+
 
 function updatemygroup()
 {
@@ -736,4 +765,20 @@ function collapseTextbox(elementName)
 		opener.document.forms["Main"].elements[elementName].style.height = '0px';
 		opener.document.forms["Main"].elements[elementName].style.visibility = 'hidden';
 	}
+}
+
+function cleartarget() {
+	document.forms["Main"].elements["target[group]"].value = '';
+	document.forms["Main"].elements["target[groupid]"].value = '';
+	document.forms["Main"].elements["target[groupowner]"].value = '';
+	document.forms["Main"].elements["target[grouplastpath]"].value = '';
+	document.forms["Main"].submit();
+}
+
+function clearsource() {
+	document.forms["Main"].elements["source[group]"].value = '';
+	document.forms["Main"].elements["source[groupid]"].value = '';
+	document.forms["Main"].elements["source[groupowner]"].value = '';
+	document.forms["Main"].elements["source[grouplastpath]"].value = '';
+	document.forms["Main"].submit();
 }

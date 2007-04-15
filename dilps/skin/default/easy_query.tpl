@@ -177,14 +177,17 @@ BEGIN easy_query.tpl
 			</td>
 			<td class="queryinputfield">
 				{if $query.group eq ""}
-					<input class="queryinputfield" type="text" name="query[group]" size="40" readonly="readonly" value=" ({#selecthere#|escape:htmlall}) " onclick="window.open('group_select.php?PHPSESSID={$sessionid}&target=group','groupselection1','width=800,height=300,left=10,top=250,dependent=yes');">					
+					<input class="queryinputfield" type="text" name="query[group]" size="40" readonly="readonly" value=" ({#selecthere#|escape:htmlall}) " onclick="editGroupSelection('{$sessionid}','group','{$query.grouplastpath}','{$query.groupid}');">					
 				{else}
-					<input class="queryinputfield" type="text" name="query[group]" size="40" readonly="readonly" value="{$query.group|escape:html}" onclick="window.open('group_select.php?PHPSESSID={$sessionid}&target=group','groupselection1','width=800,height=300,left=10,top=250,dependent=yes');">
+					<input class="queryinputfield" type="text" name="query[group]" size="40" readonly="readonly" value="{$query.group|escape:html}" onclick="editGroupSelection('{$sessionid}','group','{$query.grouplastpath}','{$query.groupid}');">
 				{/if}
+				
 				<input class="queryinputfield" type="hidden" name="query[groupid]" value="{$query.groupid|escape:html}">
 				<input class="queryinputfield" type="hidden" name="query[groupowner]" value="{$query.groupowner|escape:html}">
 				<input class="queryinputfield" type="hidden" name="query[grouplastpath]" value="{$query.lastpath|escape:html}">
-				<button type="button" class="actionbutton2" onclick="cleargroup();" title="{#nogroup#|escape:htmall}"><img src="clear.png" style="width: 12px; height: 12px;" /></button>
+				{if $query.group neq ""}
+					<button type="button" class="actionbutton2" onclick="cleargroup();" title="{#nogroup#|escape:htmall}"><img src="clear.png" style="width: 12px; height: 12px;" /></button>
+				{/if}
 			</td>
 		</tr>
 		<tr>
@@ -215,7 +218,7 @@ BEGIN easy_query.tpl
 			  &nbsp;
 			</td>
 			<td>
-				<table class="query" cellpadding="0" cellspacing="0" style="width: 100%;">
+				<table class="query" cellpadding="0" cellspacing="0" style="width: 60%;">
 					<tr>
 						<td style="width: 55%; text-align: left;">
 							<button type="button" class="actionbutton" onClick="newQuery(); return true;" title="{#search#|escape:html}">{#search#|escape:html}</button>

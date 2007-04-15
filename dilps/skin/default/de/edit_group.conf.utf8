@@ -61,3 +61,6 @@ selectgroup = Bitte Gruppe auswählen
 addsubgroup = Untergruppe hinzufügen
 addgroup = Neue Gruppe (Hauptebene)
 commitaction = Aktion ausführen
+
+source = Quelle
+target = Ziel

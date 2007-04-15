@@ -33,14 +33,20 @@
  */
 
 
+/*
+print_r($_REQUEST);
+
+die ('stop!');
+*/
+
+
 // import standard libraries and configuraiton values
 require('includes.inc.php');
 
 global $db, $db_prefix, $user;
 
-/*
-print_r($_REQUEST);
 
+/*
 $db->debug = true;
 */
 
@@ -61,18 +67,6 @@ if (!empty($_REQUEST['action'])){
 	$action = array();
 }
 
-if (!empty($_REQUEST['lastL1'])){
-	$lastL1 = trim($_REQUEST['lastL1']);
-} else {
-	$lastL1 = '';
-}
-
-if (!empty($_REQUEST['lastL2'])){
-	$lastL2 = trim($_REQUEST['lastL2']);
-} else {
-	$lastL2 = '';
-}
-
 /*
 echo ("Action: \n<br>\n");
 print_r($action);
@@ -81,8 +75,6 @@ echo ("\n<br>\n");
 
 $smarty->assign('sessionid',$sessionid);
 $smarty->assign('action',$action); 
-$smarty->assign('lastL1', $lastL1);
-$smarty->assign('lastL2', $lastL2);
 
 $smarty->display( $config['skin'].'/'.'group_edit.tpl' );
 

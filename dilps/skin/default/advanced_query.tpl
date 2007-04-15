@@ -79,6 +79,27 @@ BEGIN advanced_query.tpl
 		}
 	}
 	{/literal}
+	
+	function exchangeimage(cid, imageid)
+	{literal}
+	{
+		{/literal}
+		var sessionid		=	"{$sessionid}";
+		var confirmstring 	= 	"{#exchangeimagewithid#}";		
+		
+		var agree=confirm(confirmstring+": "+cid+":"+imageid+" ?");	
+		
+		{literal}
+		if (agree)
+		{
+			props = 'toolbar=no,location=no,directories=no,status=yes,scrollbars=yes,resizable=yes,menubar=no,copyhistory=no';
+   			win = window.open( 
+   						'image_exchange.php?PHPSESSID='+sessionid+'&query[id]='+cid+':'+imageid+'&query[remoteCollection]=0', 'imageExchange', props + ',width=700,height=420'
+   							);
+   			win.focus();
+		}
+	}
+	{/literal}
 </script>
 
 <script language="javascript">
@@ -140,13 +161,16 @@ column_operators["{$column}"] = "{$op.operators}";
 								</td>
 								<td class="queryinputfield" align="right">
 								{if $query.group eq ""}
-									<input class="queryinputfield" type="text" name="query[group]" size="40" readonly="readonly" value=" ({#selecthere#|escape:htmlall}) " onclick="window.open('group_select.php?PHPSESSID={$sessionid}&target=group','groupselection1','width=800,height=300,left=10,top=250,dependent=yes');">					
+									<input class="queryinputfield" type="text" name="query[group]" size="40" readonly="readonly" value=" ({#selecthere#|escape:htmlall}) " onclick="editGroupSelection('{$sessionid}','group','{$query.grouplastpath}','{$query.groupid}');">					
 								{else}
-									<input class="queryinputfield" type="text" name="query[group]" size="40" readonly="readonly" value="{$query.group|escape:html}" onclick="window.open('group_select.php?PHPSESSID={$sessionid}&target=group','groupselection1','width=800,height=300,left=10,top=250,dependent=yes');">
+									<input class="queryinputfield" type="text" name="query[group]" size="40" readonly="readonly" value="{$query.group|escape:html}" onclick="editGroupSelection('{$sessionid}','group','{$query.grouplastpath}','{$query.groupid}');">
 								{/if}
 								<input class="queryinputfield" type="hidden" name="query[groupid]" value="{$query.groupid|escape:html}">
 								<input class="queryinputfield" type="hidden" name="query[groupowner]" value="{$query.groupowner|escape:html}">
-								<button type="button" class="actionbutton2" onclick="cleargroup();" title="{#nogroup#|escape:htmall}"><img src="clear.png" style="width: 12px; height: 12px;" /></button>
+								<input class="queryinputfield" type="hidden" name="query[grouplastpath]" value="{$query.lastpath|escape:html}">
+								{if $query.group neq ""}
+									<button type="button" class="actionbutton2" onclick="cleargroup();" title="{#nogroup#|escape:htmall}"><img src="clear.png" style="width: 12px; height: 12px;" /></button>
+								{/if}
             					<input type="hidden" name="query[groupconnector]" value="and" checked="checked"/>
 							</td>
 						</tr>

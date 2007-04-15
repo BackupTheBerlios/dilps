@@ -8,7 +8,7 @@
 		</tr>
 		<tr>
 			<td style="padding-top: 1px;">
-				<table class="query" cellpadding="0" cellspacing="0" style="width: 100%;">
+				<table class="query" cellpadding="0" cellspacing="0" style="width: 90%;">
 					<tr>
 						<td style="width: 55%; text-align: left;">							
 							{if $user.login neq ""}
@@ -35,30 +35,40 @@
 		</tr>
 		<tr>
 			<td class="queryinputfield">
-				{if $query.mygroup eq ""}
-					<input class="queryinputfield" type="text" name="query[mygroup]" size="40" readonly="readonly" value=" ({#selecthere#|escape:htmlall}) " onclick="window.open('group_select.php?PHPSESSID={$sessionid}&target=mygroup&lastpath={$query.mygrouplastpath}&currentid={$query.mygroupid}','groupselection2','width=800,height=300,left=10,top=250,resizable=yes,dependent=yes');">
-				{else}
-					<input class="queryinputfield" type="text" name="query[mygroup]" size="40" readonly="readonly" value="{$query.mygroup|escape:html}" onclick="window.open('group_select.php?PHPSESSID={$sessionid}&target=mygroup&lastpath={$query.mygrouplastpath}&currentid={$query.mygroupid}','groupselection2','width=800,height=300,left=10,top=250,resizable=yes,dependent=yes');">
-				{/if}
-
-				<input class="queryinputfield" type="hidden" name="query[mygroupid]" value="{$query.mygroupid|escape:html}">
-				<input class="queryinputfield" type="hidden" name="query[mygroupowner]" value="{$query.mygroupowner|escape:html}">
-				<input class="queryinputfield" type="hidden" name="query[mygrouplastpath]" value="{$query.mygrouplastpath|escape:html}">
+				<table class="query" cellpadding="0" cellspacing="0" style="width: 90%;">
+					<tr>
+						<td style="width: 90%; text-align: left;">
+							{if $query.mygroup eq ""}
+								<input class="queryinputfield" type="text" name="query[mygroup]" size="40" readonly="readonly" value=" ({#selecthere#|escape:htmlall}) " onclick="editGroupSelection('{$sessionid}','mygroup','{$query.mygrouplastpath}','{$query.mygroupid}');">
+							{else}
+								<input class="queryinputfield" type="text" name="query[mygroup]" size="40" readonly="readonly" value="{$query.mygroup|escape:html}" onclick="editGroupSelection('{$sessionid}','mygroup','{$query.mygrouplastpath}','{$query.mygroupid}');">
+							{/if}
+			
+							<input class="queryinputfield" type="hidden" name="query[mygroupid]" value="{$query.mygroupid|escape:html}">
+							<input class="queryinputfield" type="hidden" name="query[mygroupowner]" value="{$query.mygroupowner|escape:html}">
+							<input class="queryinputfield" type="hidden" name="query[mygrouplastpath]" value="{$query.mygrouplastpath|escape:html}">
+						</td>
+						<td style="width: 10%; text-align: right;">
+							{if $query.mygroup neq ""}
+								<button type="button" class="actionbutton2" onclick="clearmygroup();" title="{#nogroup#|escape:htmall}"><img src="clear.png" style="width: 12px; height: 12px;" /></button>			
+							{else}
+								&nbsp;
+							{/if}
+						</td>
+					</tr>
+				</table>
 			</td>
 		</tr>
 		<tr>
 			<td style="padding-top: 2px;">
 				{if $query.mygroupid neq ""}
-					<table class="query" cellpadding="0" cellspacing="0" style="width: 100%;">
+					<table class="query" cellpadding="0" cellspacing="0" style="width: 90%;">
 						<tr>
 							<td style="width: 55%; text-align: left;">
 								<button type="button" class="actionbutton" onclick="updatemygroup();" title="{#applychanges#|escape:htmlall}">{#applychanges#|escape:htmall}</button>							
 							</td>
-							<td style="width: 35%; text-align: right;">
-								<button type="button" class="actionbutton" onclick="window.open('group_export.php?PHPSESSID={$sessionid}&groupid={$query.mygroupid}&groupname={$query.mygroup}','groupexport','width=800,height=420,resizable=yes,scrollbars=yes,resizable=yes');" title="{#exportgroup#}">{#exportgroup#}</button>							
-							</td>
-							<td style="width: 10%; text-align: right;">
-								<button type="button" class="actionbutton2" onclick="clearmygroup();" title="{#nogroup#|escape:htmall}"><img src="clear.png" style="width: 12px; height: 12px;" /></button>
+							<td style="width: 45%; text-align: right;">
+								<button type="button" class="actionbutton" onclick="exportGroup('{$sessionid}','{$query.mygroupid}','{$query.mygroup}');" title="{#exportgroup#}">{#exportgroup#}</button>
 							</td>
 						</tr>
 					</table>
@@ -92,21 +102,21 @@
 		</tr>
 		<tr>
 			<td style="padding-top: 1px;">
-				<table class="query" cellpadding="0" cellspacing="0" style="width: 100%;">
+				<table class="query" cellpadding="0" cellspacing="0" style="width: 90%;">
 					<tr>
 						<td style="width: 55%; text-align: left;">
 							{if $user.editgroups}
 								<!--
-								<button type="button" class="actionbutton" onclick="window.open('group_edit.php?PHPSESSID={$sessionid}','groupedit','width=800,height=420,scrollbars=yes,resizable=yes');" title="{#editgroups#|escape:htmlall}">{#editgroups#|escape:htmlall}</button>
+									<button type="button" class="actionbutton" onclick="showError('{#notimplemented#}');" title="{#editgroups#|escape:htmlall}" style="color: #aaaaaa; ">{#editgroups#|escape:htmlall}</button>
 								-->
-								<button type="button" class="actionbutton" onclick="showError('{#notimplemented#}');" title="{#editgroups#|escape:htmlall}" style="color: #aaaaaa; ">{#editgroups#|escape:htmlall}</button>
+								<button type="button" class="actionbutton" onclick="editGroups('{$sessionid}');" title="{#editgroups#|escape:htmlall}">{#editgroups#|escape:htmlall}</button>						
 							{else}
 								&nbsp;
 							{/if}
 						</td>
 						<td style="width: 45%; text-align: right;">
 							{if $user.insertimages}
-								<button type="button" class="actionbutton" onclick="window.open('image_add.php?PHPSESSID={$sessionid}','imageadd','width=900,height=420,scrollbars=yes,resizable=yes');" title="{#insertimages#|escape:htmlall}">{#insertimages#|escape:htmlall}</button>
+								<button type="button" class="actionbutton" onclick="addImages('{$sessionid}');" title="{#insertimages#|escape:htmlall}">{#insertimages#|escape:htmlall}</button>
 							{else}
 								&nbsp;
 							{/if}

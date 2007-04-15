@@ -63,6 +63,10 @@
 		<script src="include/group/group.inc.js" type="text/javascript"></script>
 	{elseif $target eq "mygroup"}
 		<script src="include/group/mygroup.inc.js" type="text/javascript"></script>
+	{elseif $target eq "source"}
+		<script src="include/group/source.inc.js" type="text/javascript"></script>
+	{elseif $target eq "target"}
+		<script src="include/group/target.inc.js" type="text/javascript"></script>
 	{else}
 		<script src="include/group/img_group.inc.js" type="text/javascript"></script>
 	{/if}
@@ -353,7 +357,7 @@
 		actionListElement.options[actionListElement.length] = doselect;
 		
 		
-		if ((userid == currentGroupOwner || iseditor) && (target != 'group'))
+		if ((userid == currentGroupOwner || iseditor) && (target != 'group' && target != 'source' && target != 'target'))
 		{
 			actionListElement.options[actionListElement.length] = clear;
 			actionListElement.options[actionListElement.length] = rename;			
