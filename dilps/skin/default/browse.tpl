@@ -1,7 +1,9 @@
 {php}
 
   $lastpage = $this->_tpl_vars['result']['lastpage'];
-  $curpage  = $this->_tpl_vars['result']['page']; 
+  
+  $curpage  = ((isset($this->_tpl_vars['result']['page']) && $this->_tpl_vars['result']['page'] > 0) ? $this->_tpl_vars['result']['page'] : 1); 
+  
   $out = '';
   $pfirstpage = false;
   $pLastpage  = false;

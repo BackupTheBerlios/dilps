@@ -48,6 +48,7 @@ BEGIN image_add.tpl
 <meta name="author" content="juergen enge, thorsten wuebbena, sebastian doeweling">
 <meta name="date" content="2003-01-23">
 <link rel="shortcut icon" href="favicon.ico">
+<script src="dilps.lib.js" type="text/javascript"></script>
 <title>. : DILPS : .</title>
 <script type="text/javascript">
 {literal}

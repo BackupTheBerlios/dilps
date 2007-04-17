@@ -357,7 +357,7 @@
 		actionListElement.options[actionListElement.length] = doselect;
 		
 		
-		if ((userid == currentGroupOwner || iseditor) && (target != 'group' && target != 'source' && target != 'target'))
+		if ((userid == currentGroupOwner || iseditor) && (target != 'group'))
 		{
 			actionListElement.options[actionListElement.length] = clear;
 			actionListElement.options[actionListElement.length] = rename;			

@@ -33,9 +33,9 @@
  */
 
 
-/*
-print_r($_REQUEST);
+// print_r($_REQUEST);
 
+/*
 die ('stop!');
 */
 
@@ -61,10 +61,22 @@ else
 	$sessionid = '';
 }
 
-if (!empty($_REQUEST['action'])){
+if (isset ($_REQUEST['action']) && !empty($_REQUEST['action'])){
 	$action = $_REQUEST['action'];
 } else {
 	$action = array();
+}
+
+if (isset ($_REQUEST['source']) && !empty($_REQUEST['source'])){
+	$source = $_REQUEST['source'];
+} else {
+	$source = array("page" => 1);
+}
+
+if (isset ($_REQUEST['target']) && !empty($_REQUEST['target'])){
+	$target = $_REQUEST['target'];
+} else {
+	$target = array();
 }
 
 /*
@@ -75,6 +87,8 @@ echo ("\n<br>\n");
 
 $smarty->assign('sessionid',$sessionid);
 $smarty->assign('action',$action); 
+$smarty->assign('source',$source); 
+$smarty->assign('target',$target); 
 
 $smarty->display( $config['skin'].'/'.'group_edit.tpl' );
 

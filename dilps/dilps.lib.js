@@ -52,7 +52,7 @@ function editGroupSelection (sessionid, target, lastpath, currentid) {
 function editGroups (sessionid) {
 	var props = 'toolbar=no,location=no,directories=no,status=yes,scrollbars=yes,resizable=yes,menubar=no,copyhistory=no';
 	
-	win = window.open( 'group_edit.php?PHPSESSID='+sessionid, 'editGroups', props + ',width=900,height=420' );
+	win = window.open( 'group_edit.php?PHPSESSID='+sessionid, 'editGroups', props + ',width=940,height=720' );
 	win.focus();
 }
 
@@ -780,5 +780,11 @@ function clearsource() {
 	document.forms["Main"].elements["source[groupid]"].value = '';
 	document.forms["Main"].elements["source[groupowner]"].value = '';
 	document.forms["Main"].elements["source[grouplastpath]"].value = '';
+	document.forms["Main"].submit();
+}
+
+function groupsChangePage(page)
+{
+	document.forms["Main"].elements["source[page]"].value = page;
 	document.forms["Main"].submit();
 }
