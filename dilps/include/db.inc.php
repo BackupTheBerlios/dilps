@@ -1,5 +1,5 @@
 <?php
-/*      
+/*
    +----------------------------------------------------------------------+
    | DILPS - Distributed Image Library System                             |
    +----------------------------------------------------------------------+
@@ -33,6 +33,7 @@
  */
 
 
+global $config;
 require( $config['includepath'].'adodb/adodb.inc.php' );
 
 $db = NewADOConnection( "mysql" );
@@ -45,7 +46,7 @@ $ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 if( !$res )
 {
 	?>
-	
+
 	<html>
 	<head><title>Database Error</title></head>
 	<body>
@@ -61,7 +62,7 @@ if( !$res )
 	<tr><td align="right"><b>message</b></td><td><?= $db->ErrorMsg(); ?></td></tr>
 	</table>
 	</body>
-	
+
 	<?php
 	die( "" );
 }
@@ -70,13 +71,13 @@ if( !$res )
 $sql = "SELECT * FROM {$db_prefix}config";
 $result = $db->Execute( $sql );
 
-while( !$result->EOF ) 
+while( !$result->EOF )
 {
 	$name = $result->fields["name"];
     $config[$name] = $result->fields["val"];
     $result->MoveNext();
 }
-   
+
    // print_r($config);
 
 ?>
