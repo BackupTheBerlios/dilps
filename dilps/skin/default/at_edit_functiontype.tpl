@@ -87,9 +87,48 @@ BEGIN at_edit_functiontype.tpl
 			</td>
 		</tr>
 		<tr>
+				<table width="0*" border="0" cellspacing="10" cellpadding="0">
+  				<tr>
+  					<td>
+  					   <input type="checkbox" name="SacralChristian" value="{#sacral_christian#}">{#sacral_christian#}<br />
+  					   <input type="checkbox" name="SacralJewish" value="{#sacral_jewish#}">{#sacral_jewish#}<br />
+  					   <input type="checkbox" name="SacralMuslim" value="{#sacral_muslim#}">{#sacral_muslim#}<br />
+  					   <input type="checkbox" name="SacralAncient" value="{#sacral_ancient#}">{#sacral_ancient#}<br />
+  					</td>
+  				</tr>
+  				<tr>
+  				  <td>
+  				    <input type="checkbox" name="TenementPrivate" value="{#tenement_private#}">{#tenement_private#}<br />
+  				    <input type="checkbox" name="TenementCollective" value="{#tenement_collective#}">{#tenement_collective#}<br />
+  				  </td>
+  				</tr>
+  				<tr>
+  				  <td>
+  				    <input type="checkbox" name="PublicBuilding" value="{#public_building#}">{#public_building#}<br />
+  				  </td>
+  				</tr>
+  				<tr>
+  				  <td>
+  				    <input type="checkbox" name="Fortification" value="{#fortification#}">{#fortication#}<br />
+  				  </td>
+  				</tr>
+  				<tr>
+  				  <td>
+  				    <input type="checkbox" name="IndustrialBuilding" value="{#industrial_building#}">{#industrial_building#}<br />
+  				  </td>
+  				</tr>
+				</table>  
+		</tr>
+		<tr>
 			<td>
-				<b>{#functiontype#}</b><br>
-				<textarea name="OtherFunctiontype" rows="2" cols="40"></textarea>
+			   <table width="0*" border="0" cellspacing="10" cellpadding="0">
+  				<tr>
+  					<td>
+  					   <strong>{#other#} {#functiontype#}</strong><br />
+				        <textarea name="OtherFunctiontype" rows="2" cols="40"></textarea>
+  					</td>
+  				</tr>
+				</table>  
 			</td>
 		</tr>
 		<tr>
