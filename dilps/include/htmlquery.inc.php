@@ -15,13 +15,13 @@ is two pieces.  the second piece has two phrases.
 
 function prepare_html_query($query) {
 
-    $query['submitted_query'] = $query;  // save a copy of the clean, submitted html query - to use for creating the databse query    
-    
+    $query['submitted_query'] = $query;  // save a copy of the clean, submitted html query - to use for creating the databse query
+
     if (!isset($query['querytype']))
     {
-    	$query['querytype'] = 'simple';
+      $query['querytype'] = 'simple';
     }
-       
+
     if ($query['querytype'] == 'advanced') {
         if ($query['fromquerytype'] == 'simple') {
             // when switching from simple to advanced, add non-empty, non-standard fields from the simple query to the advanced query html data structure
@@ -30,7 +30,10 @@ function prepare_html_query($query) {
         //
         // add new html fields for the advanced query, if required
         //
-        if ($count = count($query['querypiece'])) {
+        $count = isset($query['querypiece']) ? count($query['querypiece']) : 0;
+
+        if ($count > 0)
+        {
             if (!empty($query['querypiece'][$count-1]['piece_connector'])) {
                 // user wants another phrase: they've clicked on "and" or "or"
                 append_query_piece($query, new_simple_qpiece('','','','','0','',''),$query['querypiece'][$count-1]['piece_connector']);
@@ -39,7 +42,7 @@ function prepare_html_query($query) {
             // zero (non-standard) query pieces present, so add one
             append_query_piece($query, new_simple_qpiece('','','','','0','',''));
         }
-        
+
         // add a new phrase to one of the query pieces if the user has clicked to add a new phrase
         foreach ($query['querypiece'] as $key=>$qp) {
             $count = count($qp['field']);
@@ -47,13 +50,13 @@ function prepare_html_query($query) {
                 $query['querypiece'][$key] = add_new_phrase($query['querypiece'][$key]);
             }
         }
-    } 
+    }
     return $query;
 }
 
 // transforms submitted html query into an intermediate structure that includes all relevant fields
 function html_to_db_query($query) {
-	
+
     if ($query['querytype'] == 'simple') {
         if ($query['fromquerytype'] != 'advanced') {
             addSimpleQueryPieces($query, true);
@@ -71,10 +74,10 @@ function html_to_db_query($query) {
 
 /* transforms query pieces into the data structure expected by the dilpsQuery class
 */
-function transform_query($querypieces, $forRemote = false) 
+function transform_query($querypieces, $forRemote = false)
 {
     /*
-    query = array(phrases, connectors) 
+    query = array(phrases, connectors)
     phrases = array(atoms, connectors)
     connectors = array ({and | or})
     atoms = array(field, val, operator, not)
@@ -82,7 +85,7 @@ function transform_query($querypieces, $forRemote = false)
     if (empty($querypieces)) {
         return array();
     }
-    
+
     $atomfields = array('field', 'operator', 'val', 'not');
     $phrases = array();
     $qconnectors = array();
@@ -90,26 +93,26 @@ function transform_query($querypieces, $forRemote = false)
     foreach ($querypieces as $querypiece) {
         $atoms = array();
         $aconnectors = array();
-        
+
         $i = 0;
         foreach ($querypiece['field'] as $qpfield) {
             $atom = array();
             foreach ($atomfields as $atomfield) {
                 // don't include collection id for remote queries
                 if ($forRemote && $atomfield == 'field' && $querypiece[$atomfield][$i] == 'collectionid') {
-                    if (isset($atoms[$i])) { 
-                        unset($atoms[$i]); 
-                        unset($aconnectors[$i]); 
+                    if (isset($atoms[$i])) {
+                        unset($atoms[$i]);
+                        unset($aconnectors[$i]);
                     }
-                    continue 2;                    
+                    continue 2;
                 }
-            	$atom[$atomfield] = $querypiece[$atomfield][$i];
+              $atom[$atomfield] = $querypiece[$atomfield][$i];
             }
             $atoms[$i] = $atom;
-            $aconnectors[$i] = $querypiece['connector'][$i]; 
+            $aconnectors[$i] = $querypiece['connector'][$i];
             $i++;
         }
-        
+
         if (!empty($atoms)) {
             $phrases[$j] = array(
                 'atoms'=>$atoms,
@@ -120,12 +123,12 @@ function transform_query($querypieces, $forRemote = false)
         }
         $j++;
     }
-    
+
     // "unset" the last connector
     if ($count = count($qconnectors)) {
         $qconnectors[$count-1] = '';
     }
-    
+
     $query = array(
         'phrases' => $phrases,
         'connectors' => $qconnectors);
@@ -148,7 +151,7 @@ function cleanQuery(&$query) {
                 unset($query['querypiece'][$qpiece][$key][$index]);
             }
         }
-        
+
         // unset the connector of the preceeding item, if this was the last item
         $piece_content_count = count($query['querypiece'][$qpiece]['field']);
         if ($index == $piece_content_count) {
@@ -167,7 +170,7 @@ function cleanQuery(&$query) {
             }
         }
     }
-    
+
     // reorder the query pieces (qp) to start from a 0 index and
     // get rid of phrases in the query with no value
     $i = 0;
@@ -175,7 +178,7 @@ function cleanQuery(&$query) {
     foreach ($query['querypiece'] as $key=>$qp) {
        $j = 0;
        $newquerypiece = array();
-       
+
        // get the numerical keys of the query phrases
        $qpkeys = array_keys($qp['field']);
        $lastphrase = max (0, count($qpkeys) - 1);
@@ -210,7 +213,7 @@ function cleanQuery(&$query) {
             $newquerypieces[$key]['connector'] = array('');
         }
     }
-    
+
     $query['querypiece'] = $newquerypieces;
 }
 
@@ -219,7 +222,7 @@ function addSimpleQueryPieces(&$query, $includeStandardFields) {
     if ($includeStandardFields) {
         addStandardQueryPieces($query);
     }
-    
+
     $qpieces = array();
     if (!empty($query['name'])) {
         $qpieces[] = new_simple_qpiece('name', $query['name'], 'like', 'extended');
@@ -241,9 +244,9 @@ function addSimpleQueryPieces(&$query, $includeStandardFields) {
     }
 
     if (!empty($query['all']) && trim($query['all']) !== '') {
-	    $queryall_fields = array('year', 'name', 'title');    
-	    $qpiece = query_all_piece($queryall_fields, $query['all']);
-	    append_query_piece($query, $qpiece, 'and');
+      $queryall_fields = array('year', 'name', 'title');
+      $qpiece = query_all_piece($queryall_fields, $query['all']);
+      append_query_piece($query, $qpiece, 'and');
     }
 }
 
@@ -268,18 +271,19 @@ function query_all_piece($fields, $value) {
     }
     $queryall = combine_pieces($qpieces, '');
     return $queryall;
-} 	    
+}
 
 // appends given query piece to $query['querypiece']
 function append_query_piece(&$query, $qpiece, $connector = '') {
-    $count = count($query['querypiece']);
+		$count = isset($query['querypiece']) ? count($query['querypiece']) : 0;
+
     $query['querypiece'][$count] = $qpiece;
     if ($count) {
         $query['querypiece'][$count-1]['piece_connector'] = $connector;
     }
 }
 
-// returns the query piece with a new empty phrase added to it.  
+// returns the query piece with a new empty phrase added to it.
 function add_new_phrase($query_piece) {
     $array_elements = array('val', 'field', 'connector', 'operator', 'not', 'operator_list');
     $index = count($query_piece['field']);
@@ -291,15 +295,15 @@ function add_new_phrase($query_piece) {
 
 // returns a new query piece with one phrase set to the given values
 function new_simple_qpiece($field, $val, $operator, $operator_list, $not = '0', $connector = 'and', $piece_connector = 'and') {
-    $query_piece = array(   
-        'val'=>array($val), 
-        'field'=>array($field), 
-        'connector'=>array($connector), 
-        'operator'=>array($operator), 
-        'not'=>array($not), 
+    $query_piece = array(
+        'val'=>array($val),
+        'field'=>array($field),
+        'connector'=>array($connector),
+        'operator'=>array($operator),
+        'not'=>array($not),
         'operator_list'=>array($operator_list),
         'piece_connector'=>$piece_connector);
-    return $query_piece;        
+    return $query_piece;
 }
 
 // accepts array of simple query pieces
@@ -317,7 +321,7 @@ function combine_pieces($qpieces, $pieceConnector = 'and') {
         foreach ($qpieces as $phrase) {
             foreach ($phrase as $key=>$val) {
                 if ($key != 'piece_connector') {
-                    $compoundPiece[$key][$i] = $val[0];                
+                    $compoundPiece[$key][$i] = $val[0];
                 }
             }
             $i++;
@@ -335,7 +339,7 @@ function is_switching_type($query, $key1, $key2) {
     }
 
     return ("$key1:$key2" == $query['transforming_field']);
-}           
+}
 
 
 ?>

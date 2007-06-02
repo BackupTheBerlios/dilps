@@ -49,6 +49,8 @@ function smarty_function_column_metainfo($params, &$smarty)
     $dq = new dilpsQuery();
     $colinfo = $dq->getColumnMetainfo($excludeFields);
     $smarty->assign($params['var'], $colinfo);
+    
+    // print_r($colinfo);
 }
 
 

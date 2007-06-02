@@ -42,58 +42,58 @@ BEGIN advanced_query.tpl
 	{literal}
 	{
 		{/literal}
-		var confirmstring = "{#rotateimagewithid#}";		
-		var agree=confirm(confirmstring+": "+cid+":"+imageid+" ?");	
-		
+		var confirmstring = "{#rotateimagewithid#}";
+		var agree=confirm(confirmstring+": "+cid+":"+imageid+" ?");
+
 		{literal}
 		if (agree)
 		{
 			document.forms["Main"].elements["action[target]"].value = 'image';
 			document.forms["Main"].elements["action[function]"].value = 'rotate';
 			document.forms["Main"].elements["action[cid]"].value = cid;
-			document.forms["Main"].elements["action[imageid]"].value = imageid;			
-			document.forms["Main"].submit();			
+			document.forms["Main"].elements["action[imageid]"].value = imageid;
+			document.forms["Main"].submit();
 		}
-		
+
 	}
 	{/literal}
-	
+
 	function deleteimage(cid, imageid)
 	{literal}
 	{
-		{/literal}			
-		var confirmstring = "{#deleteimagewithid#}";		
-		var agree=confirm(confirmstring+": "+cid+":"+imageid+" ?");			
-		
+		{/literal}
+		var confirmstring = "{#deleteimagewithid#}";
+		var agree=confirm(confirmstring+": "+cid+":"+imageid+" ?");
+
 		if (agree)
 		{literal}
 		{
 			{/literal}
-			
+
 			document.forms["Main"].elements["action[target]"].value = 'image';
 			document.forms["Main"].elements["action[function]"].value = 'delete';
 			document.forms["Main"].elements["action[cid]"].value = cid;
-			document.forms["Main"].elements["action[imageid]"].value = imageid;			
+			document.forms["Main"].elements["action[imageid]"].value = imageid;
 			document.forms["Main"].submit();
 			{literal}
 		}
 	}
 	{/literal}
-	
+
 	function exchangeimage(cid, imageid)
 	{literal}
 	{
 		{/literal}
 		var sessionid		=	"{$sessionid}";
-		var confirmstring 	= 	"{#exchangeimagewithid#}";		
-		
-		var agree=confirm(confirmstring+": "+cid+":"+imageid+" ?");	
-		
+		var confirmstring 	= 	"{#exchangeimagewithid#}";
+
+		var agree=confirm(confirmstring+": "+cid+":"+imageid+" ?");
+
 		{literal}
 		if (agree)
 		{
 			props = 'toolbar=no,location=no,directories=no,status=yes,scrollbars=yes,resizable=yes,menubar=no,copyhistory=no';
-   			win = window.open( 
+   			win = window.open(
    						'image_exchange.php?PHPSESSID='+sessionid+'&query[id]='+cid+':'+imageid+'&query[remoteCollection]=0', 'imageExchange', props + ',width=700,height=420'
    							);
    			win.focus();
@@ -113,7 +113,9 @@ normal["like"] = "{#like#}";
 normal["equals"] = "{#equals#}";
 extended["like"] = "{#like#}";
 extended["equals"] = "{#equals#}";
-extended["soundslike"] = "{#soundslike#}";
+{if $config.soundex eq "true" or $config.soundex eq "yes"}
+  extended["soundslike"] = "{#soundslike#}";
+{/if}
 like["like"] = "{#like#}";
 equals["equals"] = "{#equals#}";
 operator_lists["normal"] = normal;
@@ -161,7 +163,7 @@ column_operators["{$column}"] = "{$op.operators}";
 								</td>
 								<td class="queryinputfield" align="right">
 								{if $query.group eq ""}
-									<input class="queryinputfield" type="text" name="query[group]" size="40" readonly="readonly" value=" ({#selecthere#|escape:htmlall}) " onclick="editGroupSelection('{$sessionid}','group','{$query.grouplastpath}','{$query.groupid}');">					
+									<input class="queryinputfield" type="text" name="query[group]" size="40" readonly="readonly" value=" ({#selecthere#|escape:htmlall}) " onclick="editGroupSelection('{$sessionid}','group','{$query.grouplastpath}','{$query.groupid}');">
 								{else}
 									<input class="queryinputfield" type="text" name="query[group]" size="40" readonly="readonly" value="{$query.group|escape:html}" onclick="editGroupSelection('{$sessionid}','group','{$query.grouplastpath}','{$query.groupid}');">
 								{/if}
@@ -209,7 +211,7 @@ column_operators["{$column}"] = "{$op.operators}";
 							   </td>
 							   <td align="left">
 							      <input type="hidden" name="query[querypiece][{$qpindex}][not][{$key}]" value="{if $qp.not[$key] == 1 or $qp.not[$key] eq 'on'}1{else}0{/if}" />
-							      <input type="checkbox" class="queryinputfield" name="query[querypiece][{$qpindex}][not][{$key}]box" onchange="queryCheckbox(this.form, 'query[querypiece][{$qpindex}][not][{$key}]', 'query[querypiece][{$qpindex}][not][{$key}]box');" {if $qp.not[$key] == 1  or $qp.not[$key] eq 'on'}checked="checked" {/if}/>
+							      <input type="checkbox" class="queryinputfield" name="query[querypiece][{$qpindex}][not][{$key}]box" onchange="queryCheckbox(this.form, 'query[querypiece][{$qpindex}][not][{$key}]', 'query[querypiece][{$qpindex}][not][{$key}]box');" {if $qp.not[$key] == 1  or $qp.not[$key] eq 'on'}checked="checked" {/if}/>({#not#})
 							   </td>
 							   <td align="left">
 							   {if $qp.operator_list[$key] eq 'normal'}
@@ -221,25 +223,22 @@ column_operators["{$column}"] = "{$op.operators}";
 							      <select  class="queryselectfield" name="query[querypiece][{$qpindex}][operator][{$key}]" >
 										<option value="like" {if $qp.operator[$key] eq "like"} selected="selected"{/if}>{#like#}</option>
 										<option value="equals" {if $qp.operator[$key] eq "equals"} selected="selected"{/if}>{#equals#}</option>
-										<option value="soundslike" {if $qp.operator[$key] eq "soundslike"} selected="selected"{/if}>{#soundslike#}</option>
+										{if $config.soundex eq "true" or $config.soundex eq "yes"}
+										  <option value="soundslike" {if $qp.operator[$key] eq "soundslike"} selected="selected"{/if}>{#soundslike#}</option>
+									  {/if}
 								  </select>
 							   {elseif $qp.operator_list[$key] eq 'like'}
 							      <select  class="queryselectfield" name="query[querypiece][{$qpindex}][operator][{$key}]" >
-										<option value="like" {if $qp.operator[$key] eq "like"} selected="selected"{/if}>{#like#}</option>
-								  </select>
+										  <option value="like" {if $qp.operator[$key] eq "like"} selected="selected"{/if}>{#like#}</option>
+								    </select>
 							   {elseif $qp.operator_list[$key] eq 'equals'}
 							      <select  class="queryselectfield" name="query[querypiece][{$qpindex}][operator][{$key}]" >
-										<option value="equals" {if $qp.operator[$key] eq "equals"} selected="selected"{/if}>{#equals#}</option>
-								  </select>
+  										<option value="equals" {if $qp.operator[$key] eq "equals"} selected="selected"{/if}>{#equals#}</option>
+  								  </select>
 							   {else}
 							      <select  class="queryselectfield" name="query[querypiece][{$qpindex}][operator][{$key}]" >
-										<option value="-1">&nbsp;&nbsp;&nbsp;&nbsp;</option>
-										<option value="-1">&nbsp;&nbsp;&nbsp;&nbsp;</option>
-										<option value="-1">&nbsp;&nbsp;&nbsp;&nbsp;</option>
-										<option value="-1">&nbsp;&nbsp;&nbsp;&nbsp;</option>
-										<option value="-1">&nbsp;&nbsp;&nbsp;&nbsp;</option>
-										<option value="-1">&nbsp;&nbsp;&nbsp;&nbsp;</option>
-								  </select>
+										  <option value="-1">&nbsp;&nbsp;&nbsp;&nbsp;</option>
+								    </select>
 							   {/if}
 							   </td>
 							   <td align="left">
@@ -268,7 +267,7 @@ column_operators["{$column}"] = "{$op.operators}";
 							        {if $smarty.foreach.phraseloop.last} onclick="submit()"{/if} />{#queryand#}
 							      <input type="radio" name="query[querypiece][{$qpindex}][connector][{$key}]" value="or" {if $qp.connector[$key] eq "or"}checked="checked"{/if}
 							        {if $smarty.foreach.phraseloop.last} onclick="submit()"{/if} />{#queryor#}
-							      <input type="button" name="delete[{$qpindex}][{$key}]" value="X" onclick="setAndSubmit(this.form, 'query[delete_phrase]', '{$qpindex}:{$key}')" />
+							      <input type="button" class="actionbutton2" name="delete[{$qpindex}][{$key}]" value="X" onclick="setAndSubmit(this.form, 'query[delete_phrase]', '{$qpindex}:{$key}')" />
 							   </td>
 							</tr>
 						{/foreach}

@@ -22,7 +22,7 @@ commentary = Kommentar
 keyword = Schlüsselwörter
 status = Bildstatus
 all2 = Alle
-like = Ähnlich zu
+like = ähnlich zu
 equals = gleich
 soundslike = klingt ähnlich zu
 likesoundslike = geschrieben oder klingt ähnlich zu
@@ -44,7 +44,7 @@ targetdirectory = Ziel-Verzeichnis
 nextstep = wird im nächsten Schritt bestimmt
 continue = weiter
 insertimages = Bilder einfügen
-completedir = Quelle ist ein/e?
+completedir = Quelle ist ein/e
 file = Datei
 directory = Verzeichnis
 
@@ -100,7 +100,16 @@ category 		= Bildkategorie
 object 			= Objekt (Gattung)
 iconography 	= Ikonographie
 artistname 		= Künstler
+material_ext	= Material (Archäologie)
+dating_ext	= Datierung (Archäologie)
 
 newsearch = Neue Suche
 
 exchangeimage = Bild austauschen
+
+not = nicht
+
+functiontype	= Funktionstypus
+formtype		= Formtypus
+draught			= Risse / Pläne / Entwürfe / Modelle etc.
+classification	= Klassifikation
