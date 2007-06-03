@@ -410,6 +410,8 @@
     
     $f_gnu_zip 			= $config['gnu_zip'];
     
+    $f_gnu_unzip 			= $config['gnu_unzip'];
+    
 
 ?>
 
@@ -842,6 +844,22 @@
 
 </tr>
 
+<tr>
+
+	<td>
+
+		GNU Unzip
+
+	</td>
+
+	<td>
+
+		<input size="80"  name="gnu_unzip" type="textbox" value="<?php echo ( ( !empty($f_gnu_unzip) ) ? $f_gnu_unzip : ''); ?>"></input>
+
+	</td>
+
+</tr>
+
 
 <tr>
 
@@ -969,46 +987,49 @@
 
 	
 
-	$f_smartybasepath 		= getPost('smartybasepath');
-
-	$f_smartyskin 			= getPost('smartyskin');
-	
-	$f_upload 				= getPost('upload');
-	
-	$f_export          		= getPost('export');
+  $f_smartybasepath 		= getPost('smartybasepath');
+  
+  $f_smartyskin 			= getPost('smartyskin');
+  
+  $f_upload 				= getPost('upload');
+  
+  $f_export          		= getPost('export');
     
-    $f_dilps 				= getPost('dilps');
-	
+  $f_dilps 				= getPost('dilps');
+  
 
 	$f_authdomain 			= getPost('authdomain');
 
 	$f_ldapserver 			= getPost('ldapserver');
 
 	$f_basedn 		   		= getPost('basedn');
+	
 
-    $f_mailserver 			= getPost('mailserver');
-        
-    $f_mailport 			= getPost('mailport');
-    
-    $f_mailssl 				= getPost('mailssl');
-        
+  $f_mailserver 			= getPost('mailserver');
+      
+  $f_mailport 			= getPost('mailport');
+  
+  $f_mailssl 				= getPost('mailssl');
+      
 
-    $f_soundex 				= getPost('soundex');
-    
-    $f_soundexthreshold 	= getPost('soundexthreshold');    
-    
-    $f_utf8					= getPost('utf8');
-    
-    $f_imagick_mode			= getPost('imagick_mode');
-    
-    
-    $f_imagick_convert 		= getPost('imagick_convert');
-    
-    $f_imagick_identify 	= getPost('imagick_identify');
-    
-    $f_gnu_file 			= getPost('gnu_file');
-    
-    $f_gnu_zip 				= getPost('gnu_zip');
+  $f_soundex 				= getPost('soundex');
+  
+  $f_soundexthreshold 	= getPost('soundexthreshold');    
+  
+  $f_utf8					= getPost('utf8');
+  
+  $f_imagick_mode			= getPost('imagick_mode');
+  
+  
+  $f_imagick_convert 		= getPost('imagick_convert');
+  
+  $f_imagick_identify 	= getPost('imagick_identify');
+  
+  $f_gnu_file 			= getPost('gnu_file');
+  
+  $f_gnu_zip 				= getPost('gnu_zip');
+  
+  $f_gnu_unzip 				= getPost('gnu_unzip');
 	
 	
 	
@@ -1095,6 +1116,8 @@
     $g_config_db_entry['gnu_file']			= $f_gnu_file;
     
     $g_config_db_entry['gnu_zip']			= $f_gnu_zip;
+    
+    $g_config_db_entry['gnu_unzip']			= $f_gnu_unzip;
      
 ?>
 

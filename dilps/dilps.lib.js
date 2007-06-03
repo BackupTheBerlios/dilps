@@ -788,3 +788,9 @@ function groupsChangePage(page)
 	document.forms["Main"].elements["source[page]"].value = page;
 	document.forms["Main"].submit();
 }
+
+function findISBN()
+{
+	document.forms["Main"].elements["edit[loadtype]"].value="isbn";
+	document.forms["Main"].submit();
+}

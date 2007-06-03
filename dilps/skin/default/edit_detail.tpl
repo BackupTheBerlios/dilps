@@ -43,6 +43,14 @@ BEGIN edit_detail.tpl
 {else}
 {assign var="rs" value=$result.rs}
 {/if}
+
+{if $edit.loadtype eq "isbn"}
+  {if $smarty.request.edit.isbn neq ""}
+    {find_isbn var=isbninfo info="title" isbn=$smarty.request.edit.isbn}
+    <!-- {$isbninfo.title} -->
+  {/if}
+{/if}
+
 <!-- {$sql} -->
 {if $result.id ne ""}
 <input type="hidden" name="edit[loadtype]" value="">

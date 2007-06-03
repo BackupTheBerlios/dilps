@@ -99,7 +99,7 @@ BEGIN default_edit.tpl
 		</tr>
 		<tr>
 		   <td class="result_detail_data_head">{#src#|escape:htmlall}</td>
-		   <td colspan="2" class="result_detail_data_data"><input type="text" name="edit[literature]" size="60" style="width: 400px;" value="{$row.literature|escape:html}"></td>
+		   <td colspan="2" class="result_detail_data_data"><input type="text" name="edit[literature]" size="60" style="width: 400px;" value="{if $edit.loadtype eq "isbn"}{$isbninfo.title|escape:html}{else}{$row.literature|escape:html}{/if}"></td>
 		</tr>
 		<tr>
 		   <td class="result_detail_data_head">{#page#|escape:htmlall}</td>
@@ -115,7 +115,12 @@ BEGIN default_edit.tpl
 		</tr>
 		<tr>
 		   <td class="result_detail_data_head">{#isbn#|escape:htmlall}</td>
-		   <td colspan="2" class="result_detail_data_data"><input type="text" name="edit[isbn]" size="16" style="width: 150px;"  value="{$row.isbn|escape:html}"></td>
+		   <td colspan="2" class="result_detail_data_data"><input type="text" name="edit[isbn]" size="16" style="width: 150px;" value="{if $edit.loadtype eq "isbn"}{$smarty.post.edit.isbn|escape:html}{else}{$row.isbn|escape:html}{/if}">
+		      <!-- 
+            ISBN-finder is not compatible with PHP5
+		        <input type="button" name="find[isbn]" value="{#search#|escape:htmlall}" onClick="findISBN();">
+		      -->
+		   </td>
 		</tr>
 		<tr>
 		   <td class="result_detail_data_head">{#exportedto#|escape:htmlall}</td>

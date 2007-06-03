@@ -164,6 +164,18 @@ function cleargroup3() {
 		</tr>
 		<tr>
 			<td class="queryinputfieldtext">
+		  		{#upload#}
+			</td>
+			<td class="queryinputfield">
+				<select class="queryselectfield" name="query[completedir]">
+					<option value="0">{#file_zip#}</option>
+					<option value="1">{#applet#}</option>
+				</select>
+			</td>
+		</tr>
+		<!--
+		<tr>
+			<td class="queryinputfieldtext">
 		  		{#completedir#}
 			</td>
 			<td class="queryinputfield">
@@ -173,6 +185,7 @@ function cleargroup3() {
 				</select>
 			</td>
 		</tr>
+		-->
 		<tr>
 		   	<td class="queryinputfieldtext">
 		    	{#targetdirectory#}
@@ -202,14 +215,12 @@ function cleargroup3() {
 			</td>
 		</tr>
 		{else}
+		<!--
 		<tr>
 			<td class="queryinputfieldtext">
 		  		{#sourcedirectory#}
 			</td>
 			<td class="queryinputfield">
-				<!--
-				<input class="queryinputfield" type="text" name="query[sourcedirectory]" value="{$config.uploaddir|escape:html}" size="40">
-				-->
 
 				<select class="queryselectfield" name="query[sourcedirectory]">
 				{dir_list var=basedirs dir=$config.uploaddir}
@@ -218,6 +229,139 @@ function cleargroup3() {
 					{/foreach}
 				</select>
 				<input type="hidden" name="query[completedir]" value="1">
+			</td>
+		</tr>
+		-->
+		<tr>
+			<td class="queryinputfieldtext">
+				&nbsp;
+			</td>
+			<td class="queryinputfield">
+				&nbsp;
+				<input type="hidden" name="query[completedir]" value="1">
+			</td>
+		</tr>
+		<tr>
+			<td class="queryinputfieldtext" colspan="3">
+		  	<applet
+					title="JUpload"
+					name="JUpload"
+					code="com.smartwerkz.jupload.classic.JUpload"
+					codebase="include/jupload/"
+					archive="dist/jupload.jar,
+							dist/commons-codec-1.3.jar,
+							dist/commons-httpclient-3.0-rc4.jar,
+							dist/commons-logging.jar,
+							skinlf/skinlf-6.2.jar"
+					width="810"
+					height="300"
+					mayscript="mayscript"
+					alt="JUpload by www.jupload.biz">
+
+				<param name="Debug" value="true">
+				<param name="Encoding" value="UTF-8">
+				<param name="Files.Convert.Format" value="">
+				<param name="Files.Convert.ImprovedRendering" value="false">
+				<param name="Files.Convert.IncludeMetadata" value="false">
+				<param name="Files.Convert.InterpolationAlgo" value="">
+				<param name="Files.Convert.MaxHeight" value="-1">
+				<param name="Files.Convert.MaxWidth" value="-1">
+				<param name="Files.Filter.Duplicates" value="true">
+				<param name="Files.Filter.Folders" value="true">
+				<param name="Files.Filter.MaxImageDimension" value="">
+				<param name="Files.Filter.Multi" value="">
+				<param name="Files.ForceImageCache" value="false">
+				<param name="Files.KeepImagesCached" value="false">
+				<param name="Files.MaxImageSize" value="1285760">
+				<param name="Files.Preselected" value="">
+				<param name="Files.Thumbnails.Smooth" value="true">
+				<param name="Files.UploadInvalidImages" value="true">
+				<param name="Gui.ContextMenu.Files" value="AddFolder,Seperator,ConvertImage,Seperator,CopyClipboard,PasteClipboard,Seperator,RenameFile,SaveFiles,DeleteFiles">
+				<param name="Gui.ContextMenu.General" value="ShowInvalids,Options,Seperator,Screenshot,JUploadScreenshot,ScreenshotDelay,Seperator,About">
+				<param name="Gui.DeactivateOnUpload" value="false">
+				<param name="Gui.Enabled" value="true">
+				<param name="Gui.FileChooser.DefaultDir" value="">
+				<param name="Gui.FileChooser.Filter.All" value="true">
+				<param name="Gui.FileChooser.Filter.Image" value="true">
+				<param name="Gui.FileChooser.Filter.Multi" value="">
+				<param name="Gui.FileChooser.Preview.Enabled" value="true">
+				<param name="Gui.FileChooser.Preview.FixedWidth" value="true">
+				<param name="Gui.FileChooser.Preview.Show" value="false">
+				<param name="Gui.FileChooser.Preview.Size" value="192x192">
+				<param name="Gui.FileChooser.Preview.Smooth" value="false">
+				<param name="Gui.FileChooser.Size" value="800x600">
+				<param name="Gui.ImageView.ItemGap" value="4">
+				<param name="Gui.ImageView.ItemSize" value="">
+				<param name="Gui.LF.Background" value="#F1F3F0">
+				<param name="Gui.LF.Borders" value="true">
+				<param name="Gui.LF.Classname" value="skinlf">
+				<param name="Gui.LF.Font" value="">
+				<param name="Gui.LF.Foreground" value="">
+				<param name="Gui.LF.OverrideColorsBorders" value="false">
+				<param name="Gui.LF.OverrideFont" value="true">
+				<param name="Gui.LF.SelectedBackground" value="#778898">
+				<param name="Gui.LF.SelectedForeground" value="#DDF2FF">
+				<param name="Gui.LF.SkinPackUrl" value="../../include/jupload/skinlf/opusOSDeepthemepack.zip">
+				<param name="Gui.ServerResponse.AutoShow" value="true">
+				<param name="Gui.ServerResponse.Enable" value="true">
+				<param name="Gui.ServerResponse.Height" value="100">
+				<param name="Gui.Status.BorderColor" value="#000000">
+				<param name="Gui.Status.PanelHeight" value="70">
+				<param name="Gui.Status.ShowBar" value="true">
+				<param name="Gui.Status.ShowPanel" value="true">
+				<param name="Gui.Status.ShowPrepare" value="true">
+				<param name="Gui.Status.ShowSuccessDialog" value="true">
+				<param name="Gui.Toolbar.Buttons" value="add,remove,upload">
+				<param name="Gui.Views.AutoSelectAddedFiles" value="false">
+				<param name="Gui.Views.Details.Widths" value="">
+				<param name="Gui.Views.Display" value="tree,list,details,thumbnail">
+				<param name="Gui.Views.Icon.MaxHeight" value="32">
+				<param name="Gui.Views.Icon.MaxWidth" value="32">
+				<param name="Gui.Views.Icon.SystemIcons" value="true">
+				<param name="Gui.Views.ShowPaths" value="false">
+				<param name="Gui.Views.Thumbs.Enabled" value="true">
+				<param name="Gui.Views.Tree.MinSize" value="120x200">
+				<param name="ID" value="jupload0">
+				<param name="Locale" value="">
+				<param name="MinJavaVersion" value="1.4">
+				<param name="Upload.Auth.AutoLogin" value="">
+				<param name="Upload.Auth.UserAuthRequired" value="false">
+				<param name="Upload.AutoRemove" value="true">
+				<param name="Upload.Autostart" value="false">
+				<param name="Upload.Formname" value="">
+				<param name="Upload.Http.AdditionalHeaders" value="">
+				<param name="Upload.Http.AdditionalPostFields" value="phpsessid={$sessionid}">
+				<param name="Upload.Http.Auth.Scheme" value="basic">
+				<param name="Upload.Http.Cookies" value="">
+				<param name="Upload.Http.MaxRequestFileCount" value="-1">
+				<param name="Upload.Http.MaxRequestSize" value="20388608">
+				<param name="Upload.Http.Meta.AbsolutePath" value="false">
+				<param name="Upload.Http.Meta.FileTag" value="files">
+				<param name="Upload.Http.Meta.LastModified" value="true">
+				<param name="Upload.Http.Meta.MD5" value="false">
+				<param name="Upload.Http.Method" value="post">
+				<param name="Upload.Http.Query" value="">
+				<param name="Upload.MaxFileSize" value="-1">
+				<param name="Upload.MaxTotalFileCount" value="-1">
+				<param name="Upload.MaxTotalFileSize" value="-1">
+				<param name="Upload.Thumbnails.Enable" value="false">
+				<param name="Upload.Thumbnails.Format" value="jpg">
+				<param name="Upload.Thumbnails.Http.AdditionalHeaders" value="">
+				<param name="Upload.Thumbnails.Http.AdditionalPostFields" value="">
+				<param name="Upload.Thumbnails.Http.Cookies" value="">
+				<param name="Upload.Thumbnails.Http.Query" value="">
+				<param name="Upload.Thumbnails.Http.TagName" value="thumbnail">
+				<param name="Upload.Thumbnails.Size" value="100x100">
+				<param name="Upload.Thumbnails.TargetURL" value="../../include/jupload/scripts/php/jupload-post.php">
+				<param name="Upload.URL.Action" value="../../include/jupload/scripts/php/jupload-post.php">
+				<param name="WaitForPlugins" value="">
+
+
+				Your browser does not support Java Applets or you disabled Java Applets in your browser-options.
+				To use this applet, please install the newest version of Sun's Java Runtime Environment (JRE).
+				You can get it from <a href="http://www.java.com/">java.com</a>
+
+			</applet>
 			</td>
 		</tr>
 		{/if}

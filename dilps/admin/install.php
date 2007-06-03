@@ -78,7 +78,7 @@
 
 	# --------------------------------------------------------
 
-	# $Id: install.php,v 1.12 2007/04/12 23:48:24 sdoeweling Exp $
+	# $Id: install.php,v 1.13 2007/06/03 19:38:36 sdoeweling Exp $
 
 	# --------------------------------------------------------
 
@@ -534,23 +534,26 @@
 	
 	$tmp_path = check_for_binary('identify');
     
-    $t_imagick_identify = ($tmp_path == "" ? 'not found. Please enter.' : $tmp_path);
-    
-    $tmp_path = check_for_binary('file');
-    
-    $t_gnu_file = ($tmp_path == "" ? 'not found. Please enter.' : $tmp_path);
-    
-    $tmp_path = check_for_binary('zip');
-    
-    $t_gnu_zip = ($tmp_path == "" ? 'not found. Please enter.' : $tmp_path);
+  $t_imagick_identify = ($tmp_path == "" ? 'not found. Please enter.' : $tmp_path);
+  
+  $tmp_path = check_for_binary('file');
+  
+  $t_gnu_file = ($tmp_path == "" ? 'not found. Please enter.' : $tmp_path);
+  
+  $tmp_path = check_for_binary('zip');
+  
+  $t_gnu_zip = ($tmp_path == "" ? 'not found. Please enter.' : $tmp_path);
+  
+  $tmp_path = check_for_binary('unzip');
+  
+  $t_gnu_unzip = ($tmp_path == "" ? 'not found. Please enter.' : $tmp_path);
+  
 
+  $t_includepath = determine_path('include'.DIRECTORY_SEPARATOR.'smarty.inc.php', 'include');
+  
+  $t_smartyskin = determine_path('skin','skin');
 
-
-    $t_includepath = determine_path('include'.DIRECTORY_SEPARATOR.'smarty.inc.php', 'include');
-
-    $t_smartyskin = determine_path('skin','skin');
-
-    $t_smartybasepath = determine_path('include'.DIRECTORY_SEPARATOR.'smarty'.DIRECTORY_SEPARATOR.'Smarty.class.php','include'.DIRECTORY_SEPARATOR.'smarty');
+  $t_smartybasepath = determine_path('include'.DIRECTORY_SEPARATOR.'smarty'.DIRECTORY_SEPARATOR.'Smarty.class.php','include'.DIRECTORY_SEPARATOR.'smarty');
 
 	$t_upload = determine_path('upload', 'upload');
 
@@ -563,12 +566,12 @@
 
 	$t_authdomain = 'not found. Please enter.';
 
-    $t_ldapserver = 'not found. Please enter, if you want to use LDAP authentication.';
-    
-    $t_basedn = 'not found. Please enter, if you want to use LDAP authentication.';
-    
-    
-    $t_mailserver = 'not found. Please enter, if you want to use IMAP authenication'; 
+  $t_ldapserver = 'not found. Please enter, if you want to use LDAP authentication.';
+  
+  $t_basedn = 'not found. Please enter, if you want to use LDAP authentication.';
+  
+  
+  $t_mailserver = 'not found. Please enter, if you want to use IMAP authenication'; 
 	
 
 	# install_state
@@ -659,10 +662,12 @@
     
     $f_gnu_zip = gpc_get_string('gnu_zip','');
     
+    $f_gnu_unzip = gpc_get_string('gnu_unzip','');
+    
 
-	$f_skin = 'default';
-
-	$f_language = 'de';
+  	$f_skin = 'default';
+  
+  	$f_language = 'de';
 
 
 //	$f_backup = gpc_get_string('backup','');
@@ -684,37 +689,39 @@
     $g_config_db_entry['mailssl'] 				= $f_mailssl;
     
     
-    $g_config_db_entry['soundex'] 				= $f_soundex;
+    $g_config_db_entry['soundex'] 				    = $f_soundex;
     
     $g_config_db_entry['soundexthreshold'] 		= $f_soundexthreshold;
     
     
-    $g_config_db_entry['utf8'] 					= $f_utf8;
+    $g_config_db_entry['utf8'] 					      = $f_utf8;
         
-    $g_config_db_entry['imagick_mode'] 			= $f_imagick_mode;
+    $g_config_db_entry['imagick_mode'] 			  = $f_imagick_mode;
     
     
     $g_config_db_entry['imagick_convert'] 		= $f_imagick_convert;
     
     $g_config_db_entry['imagick_identify'] 		= $f_imagick_identify;
     
-    $g_config_db_entry['gnu_file']		 		= $f_gnu_file;
+    $g_config_db_entry['gnu_file']		 		    = $f_gnu_file;
     
-    $g_config_db_entry['gnu_zip']		 		= $f_gnu_zip;    
+    $g_config_db_entry['gnu_zip']		 		      = $f_gnu_zip;    
+    
+    $g_config_db_entry['gnu_unzip']		 	      = $f_gnu_unzip;    
 
 
 
-    $g_config_db_entry['skin'] 					= $f_skin;
+    $g_config_db_entry['skin'] 					  = $f_skin;
 
     $g_config_db_entry['language'] 				= $f_language;
 
     $g_config_db_entry['uploaddir'] 			= $f_upload;
 
-	$g_config_db_entry['exportdir']				= $f_export;
-
-	$g_config_db_entry['dilpsdir'] 				= $f_dilps;
-	
-	$g_config_db_entry['imageTmp'] 				= $f_imagetmp;
+  	$g_config_db_entry['exportdir']				= $f_export;
+  
+  	$g_config_db_entry['dilpsdir'] 				= $f_dilps;
+  	
+  	$g_config_db_entry['imageTmp'] 				= $f_imagetmp;
 	
 	
 
@@ -1318,6 +1325,30 @@ if ( 2 == $t_install_state ) {
 	<?php
 
 	  if ((!empty($f_gnu_zip)) && (file_exists($f_gnu_zip)))  {
+
+		print_test_result( GOOD );
+
+	  } else {
+
+		print_test_result( BAD );
+
+	  }
+
+	 ?>
+
+</tr>
+
+<tr>
+
+	<td bgcolor="#ffffff">
+
+		GNU Unzip
+
+	</td>
+
+	<?php
+
+	  if ((!empty($f_gnu_unzip)) && (file_exists($f_gnu_unzip)))  {
 
 		print_test_result( GOOD );
 
@@ -2195,6 +2226,22 @@ if ( 1 == $t_install_state ) {
 	<td>
 
 		<input size="80"  name="gnu_zip" type="textbox" value="<?php echo ( ( !empty($f_gnu_zip) ) ? $f_gnu_zip : $t_gnu_zip); ?>"></input>
+
+	</td>
+
+</tr>
+
+<tr>
+
+	<td>
+
+		GNU Unzip
+
+	</td>
+
+	<td>
+
+		<input size="80"  name="gnu_unzip" type="textbox" value="<?php echo ( ( !empty($f_gnu_unzip) ) ? $f_gnu_unzip : $t_gnu_unzip); ?>"></input>
 
 	</td>
 

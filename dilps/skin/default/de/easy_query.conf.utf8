@@ -47,6 +47,9 @@ insertimages = Bilder einfügen
 completedir = Quelle ist ein/e
 file = Datei
 directory = Verzeichnis
+upload = Upload über ...
+file_zip = eine einzelne Datei (Bild/Zip)
+applet = ein Applet (mehrere Bilder)
 
 imagestatus = Bildstatus
 images_all = alle

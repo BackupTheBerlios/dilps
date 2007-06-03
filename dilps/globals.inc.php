@@ -34,7 +34,7 @@
 	// ini_set('display_errors',1);
 	ini_set('magic_quotes_runtime',0);
 	
-    error_reporting(E_ALL ^ E_NOTICE);
+  error_reporting(E_ALL ^ E_NOTICE);
     
 	// activate compatibility mode
 	ini_set( 'zend.ze1_compatibility_mode', 'On' );
@@ -64,9 +64,10 @@
 	{
 		// if the first one was loaded from the database, all others are probably there, too
 		$imagemagick_convert 	= $config['imagick_convert'];
-		$imagemagick_identify 	= $config['imagick_identify'];
-		$file_binary 			= $config['gnu_file'];
-		$zip_binary 			= $config['gnu_zip'];	
+		$imagemagick_identify = $config['imagick_identify'];
+		$file_binary 			    = $config['gnu_file'];
+		$zip_binary 		    	= $config['gnu_zip'];	
+		$unzip_binary   			= $config['gnu_unzip'];	
 	}
 	
 	// available resolutions and formats for dilps image generation

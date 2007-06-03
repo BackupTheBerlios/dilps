@@ -43,6 +43,7 @@
 include_once('includes.inc.php');
 
 // import helper functions
+global $config;
 include($config['includepath'].'tools.inc.php');
 
 global $db, $db_prefix, $user;
@@ -86,8 +87,8 @@ if ($debug)
 
 if (!empty($_REQUEST['query']))
 {
-	$query 			= $_REQUEST['query'];
-	$process 		= $query['process'];
+	$query 			  = $_REQUEST['query'];
+	$process 		  = $query['process'];
 	$completedir 	= $query['completedir'];
 }
 else
@@ -124,11 +125,13 @@ if ($process == 2) {
 
 	if ($completedir) {
 
-		$dir = trim($query['sourcedirectory']);
-
-		if ($dir{strlen($dir)-1} == DIRECTORY_SEPARATOR ) {
-			$dir = substr($dir,0,strlen($dir)-1);
+		// get cache directory
+		$upload_dir = $config['uploaddir'];
+		if ($upload_dir{strlen($upload_dir)-1} != DIRECTORY_SEPARATOR ) {
+			$upload_dir .= DIRECTORY_SEPARATOR;
 		}
+		
+		$dir = trim($config['uploaddir'].$_REQUEST['PHPSESSID']);
 
 		if(!is_dir($dir)) {
 			echo ("No Directory\n<br>\n");
@@ -141,7 +144,551 @@ if ($process == 2) {
 
 		echo ("<em>Reading directory structure:</em>\n<br>\n<br>\n");
 
-		$files = array();
+		process_image_directory($dir,$query,false);
+	}
+	else
+	{
+		
+		// this is for single uploaded files
+
+		if (!($userfilename = $_FILES['query']['name']['sourcedirectory'])) {
+			$errorstring = "Error uploading file! \n";
+			$errorstring .= "File: ".$userfilename." \n";
+
+ 			echo ($errorstring);
+ 			exit;
+		}
+
+		$filename = $_FILES['query']['tmp_name']['sourcedirectory'];
+
+
+		$mimetype = '';
+
+		$userfileext = '';
+
+		$dotpos = strrpos($userfilename,'.');
+
+		if ((strlen($userfilename) - $dotpos) > 3 && (strlen($userfilename) - $dotpos) < 6)
+		{
+			$userfileext = strtolower(substr($userfilename,$dotpos+1));
+		}
+
+		$ret = read_mime($filename, $mimetype, $userfileext);
+
+		if (!$ret)
+		{
+			$errorstring = "Error reading image mimetype! \n<br>\n";
+			$errorstring .= "File:".$userfilename."\n<br>\n";
+			echo ($errorstring);
+		}
+		elseif ($mimetype=="application/x-zip") // extension to handle zip files
+		{
+			$type = "ZIP";
+			
+			echo ("Mimetype: ".$mimetype."\n<br>\n");
+			echo ("Type: ".$type."\n<br>\n");
+			
+			// get cache directory
+			$upload_dir = $config['uploaddir'];
+			
+  		if ($upload_dir{strlen($upload_dir)-1} != DIRECTORY_SEPARATOR ) {
+  			 $upload_dir .= DIRECTORY_SEPARATOR;
+  		}
+  		
+  		$zip_dir = generate_random_string(16);
+  		$dest_dir = $upload_dir.$zip_dir.DIRECTORY_SEPARATOR;
+  		
+			$ret = check_dir($dest_dir,true,true,0755);
+			
+			if (!$ret)
+			{
+				$errorstring = "Could not create temporary directory for archive extraction! \n<br>\n";
+				die ($errorstring);
+			}
+			
+			// move_uploaded_file($filename,$dest_dir);
+			
+			if (!$ret)
+			{
+				$errorstring = "Could not copy archive to temporary directory! \n<br>\n";
+				die ($errorstring);
+			}
+			
+			move_uploaded_file($filename,$dest_dir.'images.zip');
+			
+			echo ("\n<br>\nUnzipping file\n<br>\n");
+						
+			// unzip the file
+			$cmd = $unzip_binary." -o ".escapeshellarg($dest_dir.'images.zip')." -d ".escapeshellarg(substr($dest_dir,0,strlen($dest_dir)-1));
+			exec($cmd,$errors,$ret);
+			
+			// die("Cmd: ".$cmd."\n<br>n");
+			
+			echo ("\n<br>\nUnzipping file - done\n");
+			
+			@unlink($dest_dir.'images.zip');
+			
+			echo ("\n<br>\n");
+			echo ("Reading directory structure:\n<br>\n<br>\n");
+
+			process_image_directory($dest_dir,$query,false);
+		}
+		else
+		{
+			echo ("Mimetype: ".$mimetype."\n<br>\n");
+
+			if (in_array($mimetype,$formats_available)){
+
+				// extract image information
+
+				// we already have the mimetype
+				$img_data = array();
+				$img_data['mime'] = $mimetype;
+
+				// try to read the rest
+
+				$ret = read_image($filename,$img_data);
+
+				if (!$ret)
+				{
+					$errorstring = "Error reading image information! \n<br>\n";
+					$errorstring .= "File:".$userfilename."\n<br>\n";
+					echo ($errorstring);
+				}
+				else
+				{
+			 		echo ("Type:\t\t".$img_data["type"]."\n<br>\n");
+			 		echo ("Width:\t\t".$img_data["width"]."\n<br>\n");
+			 		echo ("Height:\t\t".$img_data["height"]."\n<br>\n");
+
+					// get output directory
+					$baseid 		= 	$query['baseid'];
+					$sql 			= 	"SELECT base FROM ".$db_prefix."img_base WHERE img_baseid="
+										.$db->qstr($baseid);
+					$output_dir 	= 	$db->GetOne($sql);
+
+					if (empty($output_dir))
+					{
+						$errorstring = "Error reading output directory! \n<br>\n";
+						$errorstring .= "BaseID: ".$baseid."\n<br>\n";
+						$errorstring .= "Directory: ".$output_dir."\n<br>\n";
+						die ($errorstring);
+					}								
+
+					// use a temporary directory, where we can store the converted files until we have
+					// completed the task for all resolutions. 
+					// we will move files from there into the correct directory later
+					
+					$tmpdir		= $config['imageTmp'];
+
+					if (!is_dir($tmpdir))
+					{
+						$errorstring = "Could not find temporary directory! \n<br>\n";
+						$errorstring .= "Path: ".$tmpdir."\n<br>\n";
+						die ($errorstring);
+					}
+					
+					// check if we already have a cache directory structure, otherwise create
+
+					$ret = check_dir($tmpdir.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR,true,true,0755);
+
+					if (!$ret)
+					{
+						$errorstring = "Temporary directory cache does not exist or is not writable! \n<br>\n";
+						die ($errorstring);
+					}
+					
+					// generate image in all necessary resolutions
+					// you can skip resolutions by changing the array at this point
+							
+					$resolutions = $resolutions_available;
+					
+					foreach ($resolutions as $res)
+					{
+						$ret = check_dir($tmpdir.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.$res,true,true,0755);
+						if (!$ret)
+						{
+							$errorstring = "Error creating temporary directory cache for resolution: {$res}! \n<br>\n";
+							die ($errorstring);
+						}
+					}
+					
+					
+					// assign temporary id - randomized from 0 to 2**20
+					
+					$tmpid 		= generate_random_string();
+					
+					
+					// carry out conversion steps
+					
+					echo ("\n<br>\n<em>Generating image versions for all resolutions:</em>\n<br><br>\n");
+					
+					if ($config['imagick_mode'] == 'fast')
+					{
+						$ret = convert_image_batch($filename,$tmpdir.'cache',$tmpid,$resolutions);
+
+						if ($ret)
+						{
+							echo ("Generating images (batch mode)\t\t\t: success\n<br>\n");
+							$convert_success = true;
+						}
+						else
+						{
+							echo ("Generating images (batch mode)\t\t\t: failed\n<br>\n");
+							echo ("Aborting...\n<br>\n");
+							$convert_success = false;
+						}	
+					}
+					else 
+					{
+					
+						// convert image to JPG at 1600x1200 as a base for the following conversion
+						
+						$baseimage_filename = $tmpdir.'cache'.DIRECTORY_SEPARATOR.$tmpid.'.jpg';
+
+						$res = '1600x1200';
+
+						$ret = convert_image($filename,$baseimage_filename,$res, false);
+
+						if ($ret)
+						{
+							echo ("Generating base image\t\t\t: success\n<br>\n");
+							$convert_success = true;
+						}
+						else
+						{
+							echo ("Generating base image\t\t\t: failed\n<br>\n");
+							echo ("Aborting...\n<br>\n");
+							$convert_success = false;
+						}
+						
+						// the following lines will generate a JPG-version of your original image
+						// uncomment them, if you need it (requires additional computation time)
+						
+						/*
+						if ($convert_success)
+						{
+							$output_filename = $tmpdir.'cache'.DIRECTORY_SEPARATOR.$tmpid.'.jpg';
+
+							$res = $img_data['width'].'x'.$img_data['height'];
+
+							$ret = convert_image($filename,$output_filename,$res, false);
+
+							if ($ret)
+							{
+								echo ("Writing (".$res.")\t\t\t: success\n<br>\n");
+								$convert_success = true;
+							}
+							else
+							{
+								echo ("Writing (".$res.")\t\t\t: failed\n<br>\n");
+								echo ("Aborting...\n<br>\n");
+								$convert_success = false;
+							}
+						}
+						*/								
+					
+						if ($convert_success)
+						{					
+							
+							foreach ($resolutions as $res)
+							{
+
+								$ret = check_dir($tmpdir.'cache'.DIRECTORY_SEPARATOR.$res,true,true, 0755);
+
+								// check if cache subdirectories exist
+								if (!$ret)
+								{
+									$errorstring = "Error creating directory for resolution ".$res."\n<br>\n";
+									$errorstring .= "or directory exists and is not writable\n<br>\n";
+									die ($errorstring);
+								}
+
+								if ($res == '120x90')
+								{
+									$is_thumbnail = true;
+								}
+								else
+								{
+									$is_thumbnail = false;
+								}
+
+								$output_filename = $tmpdir.'cache'.DIRECTORY_SEPARATOR.$res.DIRECTORY_SEPARATOR.$tmpid.'.jpg';
+
+								$ret = convert_image($baseimage_filename,$output_filename,$res, $is_thumbnail);
+
+								if ($ret)
+								{
+									echo ("Writing (".$res.")\t\t\t: success\n<br>\n");
+									$convert_success = true;
+								}
+								else
+								{
+									echo ("Writing (".$res.")\t\t\t: failed\n<br>\n");
+									echo ("Aborting...\n<br>\n");
+									$convert_success = false;
+							 		break;
+								}
+							}
+						}
+					}
+						
+					if ($convert_success)
+					{
+						
+						// we have all necessary files now, so we get a correct id and move the files
+						//
+						// in unlikely cases this section will cause trouble, i.e. when someone gets
+						// a new id while we are copying and before we insert into the database
+						
+						echo ("\n<br>\n<em>Copying generated image versions to their correct locations:</em> \n<br><br>\n");
+						
+						// check if we already have a cache directory structure, otherwise create
+
+						$ret = check_dir($output_dir.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR,true,true,0755);
+
+						if (!$ret)
+						{
+							$errorstring = "Output directory cache does not exist or is not writable! \n<br>\n";
+							die ($errorstring);
+						}
+						
+						// get new id for filename
+
+						$sql 		=	"SELECT max(imageid)+1 FROM ".$db_prefix."img";
+						$newid 		= $db->GetOne($sql);
+
+						if (!$newid)
+						{
+							$newid 	= 1;
+						}
+						
+						// iterate through all available resolutions and check whether the target directory exists
+						// if yes, move the corresponding file, otherwise abort.
+						
+						foreach ($resolutions as $res)
+						{	
+							$ret = check_dir($output_dir.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.$res,true,true, 0755);
+
+							// check if cache subdirectories exist
+							if (!$ret)
+							{
+								$errorstring = "Error creating directory for resolution ".$res."\n<br>\n";
+								$errorstring .= "or directory exists and is not writable\n<br>\n";
+								die ($errorstring);
+							}
+							
+							$tmp_filename = $tmpdir.'cache'.DIRECTORY_SEPARATOR.$res.DIRECTORY_SEPARATOR.$tmpid.'.jpg';
+								
+							$output_filename = $output_dir.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.$res.DIRECTORY_SEPARATOR.$query['collectionid'].'-'.$newid.'.jpg';
+
+							$ret = @copy($tmp_filename,$output_filename);
+							
+							if ($ret)
+							{
+								echo ("Writing (".$res.")\t\t\t: success\n<br>\n");
+								$convert_success = true;
+							}
+							else
+							{
+								echo ("Writing (".$res.")\t\t\t: failed\n<br>\n");
+								echo ("Aborting...\n<br>\n");
+								$convert_success = false;
+						 		break;
+							}
+							
+							// if unlink fails, we just loose some disk space
+							@unlink($tmp_filename);	
+						}
+						
+						// if you decided to enable JPG-Versions in original resolution,
+						// uncomment the following lines to copy them to the target
+						// directory
+						
+						/*
+						// copy the JPEG version with original resolution
+						if ($convert_success)
+						{
+							$tmp_filename = $tmpdir.'cache'.DIRECTORY_SEPARATOR.$tmpid.'.jpg';
+																	
+							$output_filename = $output_dir.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.$query['collectionid'].'-'.$newid.'.jpg';
+
+							$ret = @copy($tmp_filename,$output_filename);
+							
+							$res = $img_data['width'].'x'.$img_data['height'];
+
+							if ($ret)
+							{
+								echo ("Writing (".$res.")\t\t\t: success\n<br>\n");
+								$convert_success = true;
+							}
+							else
+							{
+								echo ("Writing (".$res.")\t\t\t: failed\n<br>\n");
+								echo ("Aborting...\n<br>\n");
+								$convert_success = false;
+							}
+							
+							// if unlink fails, we just loose some disk space
+							@unlink($tmp_filename);	
+						}			
+						*/
+						
+						if ($config['imagick_mode'] != 'fast')
+						{
+						
+							// try to delete temprorary base image
+							// if unlink fails, we just loose some disk space
+							@unlink($baseimage_filename);	
+						}
+
+						if ($convert_success)
+						{
+							
+							// all generated versions copied, so we try to move the uploaded original
+							
+							$newfilename = $query['collectionid'].'-'.$newid.'.'.$formats_suffix[$img_data["mime"]];
+	
+							$source = $filename;
+							$dest = $output_dir.DIRECTORY_SEPARATOR.$newfilename;
+
+							// this will give a warning (which we suppress), but work in the end
+							$ret = @move_uploaded_file($source,$dest);							
+	
+							if (!$ret)
+							{
+								echo ("Moving uploaded original image\t: failed\n<br>\n");
+								echo ("Aborting...\n<br>\n");
+							}
+							else
+							{
+								echo ("Moving uploaded original image\t: success\n<br>\n");
+	
+								// set permissions
+								$ret = @chmod($output_dir.DIRECTORY_SEPARATOR.$newfilename,0755);
+	
+								if (!$ret)
+								{
+									echo ("Modyfing permissions\t: failed\n<br>\n");
+								}
+								else
+								{
+									echo ("Modyfing permissions\t: success\n<br>\n");
+								}
+	
+								// here our critical section ends, after the next command, the image counter
+								// is increased by 1
+	
+								// get current time
+								$sql =	"SELECT NOW()";
+								$time = $db->GetOne($sql);
+	
+								$ret = insert_img($query['collectionid'],$newid,$baseid,$userfilename,$img_data,$time);
+	
+								if (!$ret)
+								{
+									echo ("Inserting into database (image)\t\t\t: failed\n<br>\n");
+									echo ("Aborting...\n<br>\n");
+								}
+								else
+								{
+									echo ("Inserting into database (image)\t\t\t: success\n<br>\n");
+	
+									$ret = insert_meta($query['collectionid'],$newid,$time,$user['login'],$query['type']);
+	
+									if (!$ret)
+									{
+										echo ("Inserting into database (meta)\t\t\t: failed\n<br>\n");
+										echo ("Aborting...\n<br>\n");
+									}
+									else
+									{
+										echo ("Inserting into database (meta)\t\t\t: success\n<br>\n");
+	
+										if(!empty($query['group1id']))
+										{
+											$ret = insert_img_group($query['group1id'],$query['collectionid'],$newid);
+	
+											if (!$ret)
+											{
+												// a failed group insertion is non-critical, so we continue
+												echo ("Inserting into database (group1)\t\t\t: failed\n<br>\n");														}
+											else
+											{
+												echo ("Inserting into database (group1)\t\t\t: success\n<br>\n");
+											}
+										}
+	
+										if(!empty($query['group2id']))
+										{
+											$ret = insert_img_group($query['group2id'],$query['collectionid'],$newid);
+	
+											if (!$ret)
+											{
+												// a failed group insertion is non-critical, so we continue
+												echo ("Inserting into database (group2)\t\t\t: failed\n<br>\n");														}
+											else
+											{
+												echo ("Inserting into database (group2)\t\t\t: success\n<br>\n");
+											}
+										}
+	
+										if(!empty($query['group3id']))
+										{
+											$ret = insert_img_group($query['group3id'],$query['collectionid'],$newid);
+	
+											if (!$ret)
+											{
+												// a failed group insertion is non-critical, so we continue
+												echo ("Inserting into database (group3)\t\t\t: failed\n<br>\n");														}
+											else
+											{
+												echo ("Inserting into database (group3)\t\t\t: success\n<br>\n");
+											}
+										}
+									}
+	
+									// end of actions - output a newline
+									echo ("\n<br>\n");
+	
+								}
+							}
+						}									
+					}
+			 	}
+			}
+		}
+	}
+
+	echo ("\n<br>\n<em>Adding images - done</em>\n");
+	echo ("<br>\n<br>\n");
+	echo ('<a href="javascript:opener.document.forms[0].submit();window.close();" class="navigationlink">Close window</a>');
+
+	echo ("</td>\n</tr>\n</table>");
+	echo ('</body>');
+	echo ('</html>');
+
+} else {
+
+
+	$smarty->assign('sessionid',$sessionid);
+	$smarty->display( $config['skin'].DIRECTORY_SEPARATOR.'image_add.tpl' );
+
+}
+
+function process_image_directory ($dir, $query, $debug = false)
+{
+    global $config;
+    global $db, $db_prefix, $user;
+    
+    global $resolutions_available;
+    global $formats_available;
+    global $formats_suffix;
+    global $imagemagick_identify;
+    global $imagemagick_convert;
+    global $file_binary,$zip_binary,$unzip_binary;
+    
+    $files = array();
 		$remove = array();
 
 		if (!read_recursive($dir,$files,$remove))
@@ -717,484 +1264,8 @@ if ($process == 2) {
 			$errorstring .= "Insufficient permission or directory not empty\n<br>\n";
 			echo ($errorstring);
 		}
-	}
-	else
-	{
 		
-		// this is for single uploaded files
-
-		if (!($userfilename = $_FILES['query']['name']['sourcedirectory'])) {
-			$errorstring = "Error uploading file! \n";
-			$errorstring .= "File: ".$userfilename." \n";
-
- 			echo ($errorstring);
- 			exit;
-		}
-
-		$filename = $_FILES['query']['tmp_name']['sourcedirectory'];
-
-
-		$mimetype = '';
-
-		$userfileext = '';
-
-		$dotpos = strrpos($userfilename,'.');
-
-		if ((strlen($userfilename) - $dotpos) > 3 && (strlen($userfilename) - $dotpos) < 6)
-		{
-			$userfileext = strtolower(substr($userfilename,$dotpos+1));
-		}
-
-		$ret = read_mime($filename, $mimetype, $userfileext);
-
-		if (!$ret)
-		{
-			$errorstring = "Error reading image mimetype! \n<br>\n";
-			$errorstring .= "File:".$userfilename."\n<br>\n";
-			echo ($errorstring);
-		}
-		else
-		{
-			echo ("Mimetype: ".$mimetype."\n<br>\n");
-
-			if (in_array($mimetype,$formats_available)){
-
-				// extract image information
-
-				// we already have the mimetype
-				$img_data = array();
-				$img_data['mime'] = $mimetype;
-
-				// try to read the rest
-
-				$ret = read_image($filename,$img_data);
-
-				if (!$ret)
-				{
-					$errorstring = "Error reading image information! \n<br>\n";
-					$errorstring .= "File:".$userfilename."\n<br>\n";
-					echo ($errorstring);
-				}
-				else
-				{
-			 		echo ("Type:\t\t".$img_data["type"]."\n<br>\n");
-			 		echo ("Width:\t\t".$img_data["width"]."\n<br>\n");
-			 		echo ("Height:\t\t".$img_data["height"]."\n<br>\n");
-
-					// get output directory
-					$baseid 		= 	$query['baseid'];
-					$sql 			= 	"SELECT base FROM ".$db_prefix."img_base WHERE img_baseid="
-										.$db->qstr($baseid);
-					$output_dir 	= 	$db->GetOne($sql);
-
-					if (empty($output_dir))
-					{
-						$errorstring = "Error reading output directory! \n<br>\n";
-						$errorstring .= "BaseID: ".$baseid."\n<br>\n";
-						$errorstring .= "Directory: ".$output_dir."\n<br>\n";
-						die ($errorstring);
-					}								
-
-					// use a temporary directory, where we can store the converted files until we have
-					// completed the task for all resolutions. 
-					// we will move files from there into the correct directory later
-					
-					$tmpdir		= $config['imageTmp'];
-
-					if (!is_dir($tmpdir))
-					{
-						$errorstring = "Could not find temporary directory! \n<br>\n";
-						$errorstring .= "Path: ".$tmpdir."\n<br>\n";
-						die ($errorstring);
-					}
-					
-					// check if we already have a cache directory structure, otherwise create
-
-					$ret = check_dir($tmpdir.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR,true,true,0755);
-
-					if (!$ret)
-					{
-						$errorstring = "Temporary directory cache does not exist or is not writable! \n<br>\n";
-						die ($errorstring);
-					}
-					
-					// generate image in all necessary resolutions
-					// you can skip resolutions by changing the array at this point
-							
-					$resolutions = $resolutions_available;
-					
-					foreach ($resolutions as $res)
-					{
-						$ret = check_dir($tmpdir.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.$res,true,true,0755);
-						if (!$ret)
-						{
-							$errorstring = "Error creating temporary directory cache for resolution: {$res}! \n<br>\n";
-							die ($errorstring);
-						}
-					}
-					
-					
-					// assign temporary id - randomized from 0 to 2**20
-					
-					srand((double)microtime()*1000000);
-					$tmpid 		= rand(0,1048576);							
-					
-					
-					// carry out conversion steps
-					
-					echo ("\n<br>\n<em>Generating image versions for all resolutions:</em>\n<br><br>\n");
-					
-					if ($config['imagick_mode'] == 'fast')
-					{
-						$ret = convert_image_batch($filename,$tmpdir.'cache',$tmpid,$resolutions);
-
-						if ($ret)
-						{
-							echo ("Generating images (batch mode)\t\t\t: success\n<br>\n");
-							$convert_success = true;
-						}
-						else
-						{
-							echo ("Generating images (batch mode)\t\t\t: failed\n<br>\n");
-							echo ("Aborting...\n<br>\n");
-							$convert_success = false;
-						}	
-					}
-					else 
-					{
-					
-						// convert image to JPG at 1600x1200 as a base for the following conversion
-						
-						$baseimage_filename = $tmpdir.'cache'.DIRECTORY_SEPARATOR.$tmpid.'.jpg';
-
-						$res = '1600x1200';
-
-						$ret = convert_image($filename,$baseimage_filename,$res, false);
-
-						if ($ret)
-						{
-							echo ("Generating base image\t\t\t: success\n<br>\n");
-							$convert_success = true;
-						}
-						else
-						{
-							echo ("Generating base image\t\t\t: failed\n<br>\n");
-							echo ("Aborting...\n<br>\n");
-							$convert_success = false;
-						}
-						
-						// the following lines will generate a JPG-version of your original image
-						// uncomment them, if you need it (requires additional computation time)
-						
-						/*
-						if ($convert_success)
-						{
-							$output_filename = $tmpdir.'cache'.DIRECTORY_SEPARATOR.$tmpid.'.jpg';
-
-							$res = $img_data['width'].'x'.$img_data['height'];
-
-							$ret = convert_image($filename,$output_filename,$res, false);
-
-							if ($ret)
-							{
-								echo ("Writing (".$res.")\t\t\t: success\n<br>\n");
-								$convert_success = true;
-							}
-							else
-							{
-								echo ("Writing (".$res.")\t\t\t: failed\n<br>\n");
-								echo ("Aborting...\n<br>\n");
-								$convert_success = false;
-							}
-						}
-						*/								
-					
-						if ($convert_success)
-						{					
-							
-							foreach ($resolutions as $res)
-							{
-
-								$ret = check_dir($tmpdir.'cache'.DIRECTORY_SEPARATOR.$res,true,true, 0755);
-
-								// check if cache subdirectories exist
-								if (!$ret)
-								{
-									$errorstring = "Error creating directory for resolution ".$res."\n<br>\n";
-									$errorstring .= "or directory exists and is not writable\n<br>\n";
-									die ($errorstring);
-								}
-
-								if ($res == '120x90')
-								{
-									$is_thumbnail = true;
-								}
-								else
-								{
-									$is_thumbnail = false;
-								}
-
-								$output_filename = $tmpdir.'cache'.DIRECTORY_SEPARATOR.$res.DIRECTORY_SEPARATOR.$tmpid.'.jpg';
-
-								$ret = convert_image($baseimage_filename,$output_filename,$res, $is_thumbnail);
-
-								if ($ret)
-								{
-									echo ("Writing (".$res.")\t\t\t: success\n<br>\n");
-									$convert_success = true;
-								}
-								else
-								{
-									echo ("Writing (".$res.")\t\t\t: failed\n<br>\n");
-									echo ("Aborting...\n<br>\n");
-									$convert_success = false;
-							 		break;
-								}
-							}
-						}
-					}
-						
-					if ($convert_success)
-					{
-						
-						// we have all necessary files now, so we get a correct id and move the files
-						//
-						// in unlikely cases this section will cause trouble, i.e. when someone gets
-						// a new id while we are copying and before we insert into the database
-						
-						echo ("\n<br>\n<em>Copying generated image versions to their correct locations:</em> \n<br><br>\n");
-						
-						// check if we already have a cache directory structure, otherwise create
-
-						$ret = check_dir($output_dir.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR,true,true,0755);
-
-						if (!$ret)
-						{
-							$errorstring = "Output directory cache does not exist or is not writable! \n<br>\n";
-							die ($errorstring);
-						}
-						
-						// get new id for filename
-
-						$sql 		=	"SELECT max(imageid)+1 FROM ".$db_prefix."img";
-						$newid 		= $db->GetOne($sql);
-
-						if (!$newid)
-						{
-							$newid 	= 1;
-						}
-						
-						// iterate through all available resolutions and check whether the target directory exists
-						// if yes, move the corresponding file, otherwise abort.
-						
-						foreach ($resolutions as $res)
-						{	
-							$ret = check_dir($output_dir.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.$res,true,true, 0755);
-
-							// check if cache subdirectories exist
-							if (!$ret)
-							{
-								$errorstring = "Error creating directory for resolution ".$res."\n<br>\n";
-								$errorstring .= "or directory exists and is not writable\n<br>\n";
-								die ($errorstring);
-							}
-							
-							$tmp_filename = $tmpdir.'cache'.DIRECTORY_SEPARATOR.$res.DIRECTORY_SEPARATOR.$tmpid.'.jpg';
-								
-							$output_filename = $output_dir.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.$res.DIRECTORY_SEPARATOR.$query['collectionid'].'-'.$newid.'.jpg';
-
-							$ret = @copy($tmp_filename,$output_filename);
-							
-							if ($ret)
-							{
-								echo ("Writing (".$res.")\t\t\t: success\n<br>\n");
-								$convert_success = true;
-							}
-							else
-							{
-								echo ("Writing (".$res.")\t\t\t: failed\n<br>\n");
-								echo ("Aborting...\n<br>\n");
-								$convert_success = false;
-						 		break;
-							}
-							
-							// if unlink fails, we just loose some disk space
-							@unlink($tmp_filename);	
-						}
-						
-						// if you decided to enable JPG-Versions in original resolution,
-						// uncomment the following lines to copy them to the target
-						// directory
-						
-						/*
-						// copy the JPEG version with original resolution
-						if ($convert_success)
-						{
-							$tmp_filename = $tmpdir.'cache'.DIRECTORY_SEPARATOR.$tmpid.'.jpg';
-																	
-							$output_filename = $output_dir.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.$query['collectionid'].'-'.$newid.'.jpg';
-
-							$ret = @copy($tmp_filename,$output_filename);
-							
-							$res = $img_data['width'].'x'.$img_data['height'];
-
-							if ($ret)
-							{
-								echo ("Writing (".$res.")\t\t\t: success\n<br>\n");
-								$convert_success = true;
-							}
-							else
-							{
-								echo ("Writing (".$res.")\t\t\t: failed\n<br>\n");
-								echo ("Aborting...\n<br>\n");
-								$convert_success = false;
-							}
-							
-							// if unlink fails, we just loose some disk space
-							@unlink($tmp_filename);	
-						}			
-						*/
-						
-						if ($config['imagick_mode'] != 'fast')
-						{
-						
-							// try to delete temprorary base image
-							// if unlink fails, we just loose some disk space
-							@unlink($baseimage_filename);	
-						}
-
-						if ($convert_success)
-						{
-							
-							// all generated versions copied, so we try to move the uploaded original
-							
-							$newfilename = $query['collectionid'].'-'.$newid.'.'.$formats_suffix[$img_data["mime"]];
-	
-							$source = $filename;
-							$dest = $output_dir.DIRECTORY_SEPARATOR.$newfilename;
-
-							// this will give a warning (which we suppress), but work in the end
-							$ret = @move_uploaded_file($source,$dest);							
-	
-							if (!$ret)
-							{
-								echo ("Moving uploaded original image\t: failed\n<br>\n");
-								echo ("Aborting...\n<br>\n");
-							}
-							else
-							{
-								echo ("Moving uploaded original image\t: success\n<br>\n");
-	
-								// set permissions
-								$ret = @chmod($output_dir.DIRECTORY_SEPARATOR.$newfilename,0755);
-	
-								if (!$ret)
-								{
-									echo ("Modyfing permissions\t: failed\n<br>\n");
-								}
-								else
-								{
-									echo ("Modyfing permissions\t: success\n<br>\n");
-								}
-	
-								// here our critical section ends, after the next command, the image counter
-								// is increased by 1
-	
-								// get current time
-								$sql =	"SELECT NOW()";
-								$time = $db->GetOne($sql);
-	
-								$ret = insert_img($query['collectionid'],$newid,$baseid,$userfilename,$img_data,$time);
-	
-								if (!$ret)
-								{
-									echo ("Inserting into database (image)\t\t\t: failed\n<br>\n");
-									echo ("Aborting...\n<br>\n");
-								}
-								else
-								{
-									echo ("Inserting into database (image)\t\t\t: success\n<br>\n");
-	
-									$ret = insert_meta($query['collectionid'],$newid,$time,$user['login'],$query['type']);
-	
-									if (!$ret)
-									{
-										echo ("Inserting into database (meta)\t\t\t: failed\n<br>\n");
-										echo ("Aborting...\n<br>\n");
-									}
-									else
-									{
-										echo ("Inserting into database (meta)\t\t\t: success\n<br>\n");
-	
-										if(!empty($query['group1id']))
-										{
-											$ret = insert_img_group($query['group1id'],$query['collectionid'],$newid);
-	
-											if (!$ret)
-											{
-												// a failed group insertion is non-critical, so we continue
-												echo ("Inserting into database (group1)\t\t\t: failed\n<br>\n");														}
-											else
-											{
-												echo ("Inserting into database (group1)\t\t\t: success\n<br>\n");
-											}
-										}
-	
-										if(!empty($query['group2id']))
-										{
-											$ret = insert_img_group($query['group2id'],$query['collectionid'],$newid);
-	
-											if (!$ret)
-											{
-												// a failed group insertion is non-critical, so we continue
-												echo ("Inserting into database (group2)\t\t\t: failed\n<br>\n");														}
-											else
-											{
-												echo ("Inserting into database (group2)\t\t\t: success\n<br>\n");
-											}
-										}
-	
-										if(!empty($query['group3id']))
-										{
-											$ret = insert_img_group($query['group3id'],$query['collectionid'],$newid);
-	
-											if (!$ret)
-											{
-												// a failed group insertion is non-critical, so we continue
-												echo ("Inserting into database (group3)\t\t\t: failed\n<br>\n");														}
-											else
-											{
-												echo ("Inserting into database (group3)\t\t\t: success\n<br>\n");
-											}
-										}
-									}
-	
-									// end of actions - output a newline
-									echo ("\n<br>\n");
-	
-								}
-							}
-						}									
-					}
-			 	}
-			}
-		}
-	}
-
-	echo ("\n<br>\n<em>Adding images - done</em>\n");
-	echo ("<br>\n<br>\n");
-	echo ('<a href="javascript:opener.document.forms[0].submit();window.close();" class="navigationlink">Close window</a>');
-
-	echo ("</td>\n</tr>\n</table>");
-	echo ('</body>');
-	echo ('</html>');
-
-} else {
-
-
-	$smarty->assign('sessionid',$sessionid);
-	$smarty->display( $config['skin'].DIRECTORY_SEPARATOR.'image_add.tpl' );
-
+		return;
 }
 
 //phpinfo();
