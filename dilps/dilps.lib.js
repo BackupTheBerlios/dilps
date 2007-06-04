@@ -52,7 +52,7 @@ function editGroupSelection (sessionid, target, lastpath, currentid) {
 function editGroups (sessionid) {
 	var props = 'toolbar=no,location=no,directories=no,status=yes,scrollbars=yes,resizable=yes,menubar=no,copyhistory=no';
 	
-	win = window.open( 'group_edit.php?PHPSESSID='+sessionid, 'editGroups', props + ',width=940,height=720' );
+	win = window.open( 'group_edit.php?PHPSESSID='+sessionid, 'editGroups', props + ',width=940,height=220' );
 	win.focus();
 }
 

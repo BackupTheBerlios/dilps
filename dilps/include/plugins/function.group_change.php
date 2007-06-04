@@ -25,10 +25,10 @@
 /*
  * Smarty plugin
  * --------------------------------------------------------------------
- * File:     		function.group_change.php
+ * File:     	function.group_change.php
  * Type:     	function
  * Name:     	group_change
- * Purpose:  add, delete or edit group
+ * Purpose:   add, delete or edit group
  * --------------------------------------------------------------------
  */
 
@@ -66,7 +66,7 @@ function smarty_function_group_change($params, &$smarty)
     }
     
     if (empty($params['owner'])) {
-    	$smarty->trigger_error("assign: missing 'id' parameter");
+    	$smarty->trigger_error("assign: missing 'owner' parameter");
         return;
     } else {
     	$owner = $params['owner'];

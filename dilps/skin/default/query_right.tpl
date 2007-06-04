@@ -97,7 +97,9 @@
 					<strong>{#administration#|escape:htmlall}</strong>
 				</td>
 			{else}
-				&nbsp;
+				<td class="field_name">
+					&nbsp;
+				</td>
 			{/if}
 		</tr>
 		<tr>
@@ -105,14 +107,7 @@
 				<table class="query" cellpadding="0" cellspacing="0" style="width: 90%;">
 					<tr>
 						<td style="width: 55%; text-align: left;">
-							{if $user.editgroups}
-								<!--
-									<button type="button" class="actionbutton" onclick="showError('{#notimplemented#}');" title="{#editgroups#|escape:htmlall}" style="color: #aaaaaa; ">{#editgroups#|escape:htmlall}</button>
-								-->
-								<button type="button" class="actionbutton" onclick="editGroups('{$sessionid}');" title="{#editgroups#|escape:htmlall}">{#editgroups#|escape:htmlall}</button>						
-							{else}
-								&nbsp;
-							{/if}
+							<button type="button" class="actionbutton" onclick="editGroups('{$sessionid}');" title="{#editgroups#|escape:htmlall}">{#editgroups#|escape:htmlall}</button>						
 						</td>
 						<td style="width: 45%; text-align: right;">
 							{if $user.insertimages}

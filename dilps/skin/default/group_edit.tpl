@@ -137,18 +137,40 @@
 					<tr>
 						<td class="queryinputfield">
 							<select name="action" class="queryselectfield" onchange="checkParameter();" style="width: 300px; text-align: center;">
-								<option value="nothing" style="text-align: center;">
-									{#selectgroup#}
-								</option>
-								<option value="movegrouptogroup" style="text-align: center;">
-									{#movegrouptogroup#}
-								</option>
-								<option value="movegrouptogroup" style="text-align: center;">
-									{#movecontenttogroup#}
-								</option>
-								<option value="movegrouptogroup" style="text-align: center;">
-									{#moveselectiontogroup#}
-								</option>
+							 {if $source.groupid eq "" and $target.groupid eq ""}
+  								<option value="select" style="text-align: center;">
+  									{#selectsourceandtarget#}
+  								</option>
+								{else}
+								    {if $target.groupid eq ""}
+    								  <option value="select" style="text-align: center;">
+      									{#selecttarget#}
+      								</option>
+    								{elseif $source.groupid eq ""}
+    								  <option value="select" style="text-align: center;">
+      									{#selectsource#}
+      								</option>
+  								  {else}
+  								    {if $source.groupid eq $target.groupid}
+  								      <option value="select" style="text-align: center;">
+        									{#invalidselection#}
+        								</option>
+      								{else}
+      								  <option value="movegroup" style="text-align: center;">
+        									{#movegrouptogroup#}
+        								</option>
+        								<option value="copygroup" style="text-align: center;">
+        									{#copygrouptogroup#}
+        								<option value="movecontent" style="text-align: center;">
+        									{#movecontenttogroup#}
+        								</option>
+        								<option value="copycontent" style="text-align: center;">
+        									{#copycontenttogroup#}
+        								</option>
+        								{/if}
+								    {/if}
+							  {/if}
+								
 							</select>
 						</td>
 					</tr>
@@ -198,12 +220,12 @@
 		</tr>
 	</table>
 	
+	<!--
 	<table style="width: 930px; padding-left: 10px;">
 		<tr>
 			<td style="text-align: center; width: 100%;">
 				{if $source.groupid neq ""}
 					{group_content_list var=groupcontent numpages=numpages groupid=$source.groupid page=$source.page limit=15 sql=sql}
-					<!-- {$sql} -->
 					
 					{if count($groupcontent) > 0}
 						<table cellpadding="0" cellspacing="0" style="border: 1px solid black; text-align: left;">
@@ -323,6 +345,9 @@
 		</tr>
 		
 	</table>
+	
+	-->
+	
 </form>
 
 </body>

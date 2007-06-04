@@ -65,8 +65,14 @@ commitaction = Aktion ausführen
 source = Quelle
 target = Ziel
 
+selectsourceandtarget = Quell- und Zielgruppe auswählen
+selectsource  = Quellgruppe auswählen
+selecttarget  = Zielgruppe auswählen
+invalidselection = Ungültige Auswahl
 movegrouptogroup = als Untergruppe in Zielgruppe verschieben
+copygrouptogroup = als Untergruppe in Zielgruppe kopieren
 movecontenttogroup = Gruppeninhalt in Zielgruppe verschieben
+copycontenttogroup = Gruppeninhalt in Zielgruppe kopieren
 moveselectiontogroup = Auswahl in Zielgruppe verschieben
 
 page = Seite

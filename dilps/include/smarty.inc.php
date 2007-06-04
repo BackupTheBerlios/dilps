@@ -79,11 +79,11 @@ $editor = $logins->isInGroup( $config['authdomain'], $config['editorgroup'] );
 
 // print_r($permissions);
 
-$admin 			=	(isset($permissions['admin']) ? $permissions['admin'] : 0);
-$editor 		= 	(isset($permissions['editor']) ? $permissions['editor'] : 0);
-$usegroups		=	(isset($permissions['usegroups']) ? $permissions['usegroups'] : 0);
+$admin 			=	    (isset($permissions['admin']) ? $permissions['admin'] : 0);
+$editor 		= 	  (isset($permissions['editor']) ? $permissions['editor'] : 0);
+$usegroups		=	  (isset($permissions['usegroups']) ? $permissions['usegroups'] : 0);
 $editgroups		= 	(isset($permissions['editgroups']) ? $permissions['editgroups'] : 0);
-$insertimages	=	(isset($permissions['addimages']) ? $permissions['addimages'] : 0);;
+$insertimages	=	  (isset($permissions['addimages']) ? $permissions['addimages'] : 0);;
 
 if( $admin ) 
 {

@@ -348,7 +348,6 @@
 		clear	 		= new Option('{#clear#}', 'clear', false, false);
 		del				= new Option('{#delete#}', 'del', false, false);
 		addsubgroup		= new Option('{#addsubgroup#}', 'addsubgroup', false, false);
-		addgroup		= new Option('{#addgroup#}', 'addgroup', false, false);
 		
 		{literal}
 		
@@ -357,13 +356,20 @@
 		actionListElement.options[actionListElement.length] = doselect;
 		
 		
-		if ((userid == currentGroupOwner || iseditor) && (target != 'group'))
+		if ((userid == currentGroupOwner || iseditor > 0) && (target != 'group'))
 		{
 			actionListElement.options[actionListElement.length] = clear;
 			actionListElement.options[actionListElement.length] = rename;			
 			actionListElement.options[actionListElement.length] = del;
 			actionListElement.options[actionListElement.length] = addsubgroup;
-			actionListElement.options[actionListElement.length] = addgroup;
+			
+			if (iseditor > 0)
+			{
+			  {/literal}
+			   addgroup		= new Option('{#addgroup#}', 'addgroup', false, false);
+			   {literal}
+			   actionListElement.options[actionListElement.length] = addgroup;
+			}
 		}
 		
 		checkParameter();
