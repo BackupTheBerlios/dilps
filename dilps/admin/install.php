@@ -78,7 +78,7 @@
 
 	# --------------------------------------------------------
 
-	# $Id: install.php,v 1.13 2007/06/03 19:38:36 sdoeweling Exp $
+	# $Id: install.php,v 1.14 2007/06/14 19:23:47 sdoeweling Exp $
 
 	# --------------------------------------------------------
 
@@ -1257,7 +1257,7 @@ if ( 2 == $t_install_state ) {
 
 	  } else {
 
-		print_test_result( BAD );
+		print_test_result( BAD, false );
 
 	  }
 
@@ -1282,7 +1282,7 @@ if ( 2 == $t_install_state ) {
 
 	  } else {
 
-		print_test_result( BAD );
+		print_test_result( BAD, false );
 
 	  }
 
@@ -1306,7 +1306,7 @@ if ( 2 == $t_install_state ) {
 
 	  } else {
 
-		print_test_result( BAD );
+		print_test_result( BAD, false );
 
 	  }
 
@@ -1330,7 +1330,7 @@ if ( 2 == $t_install_state ) {
 
 	  } else {
 
-		print_test_result( BAD );
+		print_test_result( BAD, false );
 
 	  }
 
@@ -1354,7 +1354,7 @@ if ( 2 == $t_install_state ) {
 
 	  } else {
 
-		print_test_result( BAD );
+		print_test_result( BAD, false );
 
 	  }
 

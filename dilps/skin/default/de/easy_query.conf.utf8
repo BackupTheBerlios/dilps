@@ -116,3 +116,8 @@ functiontype	= Funktionstypus
 formtype		= Formtypus
 draught			= Risse / Pläne / Entwürfe / Modelle etc.
 classification	= Klassifikation
+
+java_upload_applet = Java Upload-Applet
+upload_errors = Fehler beim Upload
+not_uploaded = nicht hochgeladen
+none = keine

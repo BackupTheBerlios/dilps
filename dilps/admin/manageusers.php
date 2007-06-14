@@ -600,7 +600,7 @@
 						
 			echo("></td>");
 			
-			echo ("<td><input type='checkbox' name='userfolders' checked='checked'");
+			echo ("<td><input type='checkbox' name='usefolders' checked='checked'");
 						
 			echo("></td>");
 			

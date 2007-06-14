@@ -24,12 +24,7 @@
 <!-- --------------------------------------------
 BEGIN edit_element_loc.tpl
 --------------------------------------------- -->
-{if $config.utf8 eq "true"}
-	{config_load file="`$config.skinBase``$config.skin`/`$config.language`/result.conf.utf8"}
-{else}
-	{config_load file="`$config.skinBase``$config.skin`/`$config.language`/result.conf"}
-{/if}
-
+{config_load file="`$config.skinBase``$config.skin`/`$config.language`/result.conf"}
 <html>
 <head>
   <meta name="robots" content="index,follow">
@@ -37,14 +32,10 @@ BEGIN edit_element_loc.tpl
   <meta http-equiv="expires" content="0">
   <meta http-equiv="cache-control" content="no-cache">
   <meta name="keywords" content="Bilddatenbanksystem, Bilddatenbank, Diathek, digitalisiert">
-  {if $config.utf8 eq 'true'}
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  {else}
-	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-  {/if}
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <meta http-equiv="Content-Script-Type" content="text/javascript">
   <meta http-equiv="Content-Style-Type" content="text/css">
-  <meta name="author" content="juergen enge, thorsten wuebbena, sebastian doeweling">
+  <meta name="author" content="jürgen enge, thorsten wübbena">
   <meta name="date" content="2003-01-23">
   <link rel="shortcut icon" href="favicon.ico">
   <title>. : {#title#|escape:"htmlall"} : .  [[{$query.id}]]</title>
@@ -65,10 +56,11 @@ function setLocation()
 	   window.opener.document.forms["Main"].elements["edit[locationid]"].value=document.Main.elements["query[city]"].value;
 	}
 
-	if( document.Main.institution.value != "" )
+	if( document.Main.institution.value != "" ) {
 	   window.opener.document.forms["Main"].elements["edit[institution]"].value=document.Main.institution.value;
-	else
+	} else if (document.Main.elements["query[institution]"]) {
 	   window.opener.document.forms["Main"].elements["edit[institution]"].value=document.Main.elements["query[institution]"].value;
+	}
 
 	close();
 }

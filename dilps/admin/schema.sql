@@ -161,7 +161,7 @@ CREATE TABLE `!prefix_!archaeology` (
   PRIMARY KEY  (`collectionid`,`imageid`)
 );
 
-CREATE TABLE `ng_architecture` (
+CREATE TABLE `!prefix_!architecture` (
 
   `collectionid` bigint(20) NOT NULL,
   
@@ -225,7 +225,7 @@ CREATE TABLE `!prefix_!collection` (
 
   `active` int(11) NOT NULL default '1',
 
-  `sammlu!prefix_!ort` varchar(155) NOT NULL default '',
+  `sammlung_ort` varchar(155) NOT NULL default '',
 
   `descr` varchar(255) default NULL,
 

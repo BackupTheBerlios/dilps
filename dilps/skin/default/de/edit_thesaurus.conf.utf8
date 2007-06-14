@@ -1,0 +1,25 @@
+changethesaurus = Änderung eines Thesauruseintrages
+warningtext = Diese Operation kann nicht rückgängig gemacht werden und wird auf alle Datensätze angewendet, die diesen Thesauruseintrag enthalten
+warningtextinstitution = Diese Operation kann nicht rückgängig gemacht werden und wird auf alle Datensätze (für diesen Ort) angewendet, die diesen Thesauruseintrag enthalten
+current = Aktuell
+new = Neu
+deletetext = Diesen Eintrag vollständig aus dem Thesaurus entfernen
+deletebutton = löschen
+cancelbutton = abbrechen
+applybutton = anwenden
+name = Künstler
+city = Ort
+institution = Institution
+missingparam = Bitte einen Wert angeben
+closewindow = Das Fenster schließen
+success = Die Änderung wurde erfolgreich durchgeführt
+
+error = Fehler
+err_missingparam = Fehlender Parameter
+err_norecord = Kein Eintrag gefunden
+err_removing_old_row = Problem deleting old row
+err_updateerror = Problem updating row
+err_update_child_table = Problem updating child table
+err_update_child_table_1 = Problem updating child table (1)
+err_update_child_table_2 = Problem updating child table (2)
+err_unsafe_update_requested = Refusing to update row with id == 0

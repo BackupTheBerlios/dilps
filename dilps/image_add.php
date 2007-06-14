@@ -38,6 +38,16 @@
 	ini_set('display_errors',1);
 	error_reporting(E_ALL);
 	*/
+	
+// read sessiond id from get/post
+if (isset($_REQUEST['PHPSESSID']))
+{
+	$sessionid = $_REQUEST['PHPSESSID'];
+}
+else
+{
+	$sessionid = '';
+}
 
 // import standard libraries and configuraiton values
 include_once('includes.inc.php');
@@ -55,15 +65,124 @@ global $imagemagick_identify;
 global $imagemagick_convert;
 global $file_binary;
 
-// read sessiond id from get/post
-if (isset($_REQUEST['PHPSESSID']))
+// create personal upload directory for user (if it does not already exist)
+
+$dilps_upload_dir = $config['uploaddir'];
+if ($dilps_upload_dir{strlen($dilps_upload_dir)-1} != DIRECTORY_SEPARATOR ) {
+	 $dilps_upload_dir .= DIRECTORY_SEPARATOR;
+}
+
+if (!isset($user['login']))
 {
-	$sessionid = $_REQUEST['PHPSESSID'];
+  $user_upload_dir = 'common';
+}
+else 
+{
+  $user_upload_dir = str_replace('/','_',$user['login']);
+  $user_upload_dir = str_replace("\\",'_',$user_upload_dir);
+}
+
+$dest_dir = $dilps_upload_dir.$user_upload_dir;
+
+$ret = check_dir($dest_dir,true,true,0755);
+
+if (!$ret)
+{
+	$errorstring = "Error creating personal upload directory for user:".$user['login']."! \n<br>\n";
+	die ($errorstring);
+}
+
+// check whether this script is called from the java upload applet
+
+if (isset($_REQUEST['javaupload']))
+{
+	$javaupload = intval($_REQUEST['javaupload']);
 }
 else
 {
-	$sessionid = '';
+	$javaupload = 0;
 }
+
+if ($javaupload > 0)
+{
+  // Uploaddir MUST have a trailing slash.
+  $uploaddir = $dest_dir.DIRECTORY_SEPARATOR;
+  
+  // Whether or not to allow the upload of specific files
+  $allow_or_deny = true;
+  // If the above is true, then this states whether the array of files is a list of
+  // extensions to ALLOW, or DENY
+  $allow_or_deny_method = "deny"; // "allow" or "deny"
+  $file_extension_list = array("php","asp","pl");
+  
+  if ($allow_or_deny){
+  	if (($allow_or_deny_method == "allow" && !in_array(strtolower(array_pop(explode('.', $_FILES['userfile']['name']))), $file_extension_list))
+  		|| ($allow_or_deny_method == "deny" && in_array(strtolower(array_pop(explode('.', $_FILES['userfile']['name']))), $file_extension_list))){		
+  		// Atempt to upload a file with a specific extension when NOT allowed.
+  		// 403 error
+  		header("HTTP/1.1 403 Forbidden");
+  		echo "POSTLET REPLY\r\n";
+  		echo "POSTLET:NO\r\n";
+  		echo "POSTLET:FILE TYPE NOT ALLOWED\r\n";
+  		echo "POSTLET:ABORT THIS\r\n"; // Postlet should NOT send this file again.
+  		echo "END POSTLET REPLY\r\n";
+  		exit;
+  	}
+  }
+  
+  // try moving uploaded files
+  
+  if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploaddir .$_FILES['userfile']['name']))
+  {
+  	echo "POSTLET REPLY\r\n";
+    echo "POSTLET:YES\r\n";
+  	echo "END POSTLET REPLY\r\n";
+  	exit;
+  } 
+  else
+  {
+  	// If the file can not be uploaded (most likely due to size), then output the
+  	// correct error code
+  	// If $_FILES is EMPTY, or $_FILES['userfile']['error']==1 then TOO LARGE
+  	if (count($_FILES)==0 || $_FILES['userfile']['error']==1){
+  		// All replies MUST start with "POSTLET REPLY", if they don't, then Postlet will
+  		// not read the reply and will assume the file uploaded successfully.
+  		header("HTTP/1.1 413 Request Entity Too Large");
+  		echo "POSTLET REPLY\r\n";
+  		echo "POSTLET:NO\r\n";
+  		echo "POSTLET:TOO LARGE\r\n";
+  		echo "POSTLET:ABORT THIS\r\n"; // Postlet should NOT send this file again.
+  		echo "END POSTLET REPLY\r\n";
+  		exit;
+  	}
+  	// Unable to write the file to the server ALL WILL FAIL
+  	else if ($_FILES['userfile']['error']==6 || $_FILES['userfile']['error']==7){
+  		// All replies MUST start with "POSTLET REPLY", if they don't, then Postlet will
+  		// not read the reply and will assume the file uploaded successfully.
+  		header("HTTP/1.1 500 Internal Server Error");
+  		echo "POSTLET REPLY\r\n";
+  		echo "POSTLET:NO\r\n";
+  		echo "POSTLET:SERVER ERROR\r\n";
+  		echo "POSTLET:ABORT ALL\r\n"; // Postlet should NOT send any more files
+  		echo "END POSTLET REPLY\r\n";
+  		exit;
+  	}
+  	// Unsure of the error here (leaves 2,3,4, which means try again)
+  	else {
+  		// All replies MUST start with "POSTLET REPLY", if they don't, then Postlet will
+  		// not read the reply and will assume the file uploaded successfully.
+  		header("HTTP/1.1 500 Internal Server Error");
+  		echo "POSTLET REPLY\r\n";
+  		echo "POSTLET:NO\r\n";
+  		echo "POSTLET:UNKNOWN ERROR\r\n";
+  		echo "POSTLET:RETRY\r\n";
+  		print_r($_REQUEST); // Possible usefull for debugging
+  		echo "END POSTLET REPLY\r\n";
+  		exit;
+  	}
+  }
+}
+
 
 $debug = false;
 
@@ -131,7 +250,8 @@ if ($process == 2) {
 			$upload_dir .= DIRECTORY_SEPARATOR;
 		}
 		
-		$dir = trim($config['uploaddir'].$_REQUEST['PHPSESSID']);
+		// set source directory to personal user upload directory
+		$dir = $dest_dir;
 
 		if(!is_dir($dir)) {
 			echo ("No Directory\n<br>\n");

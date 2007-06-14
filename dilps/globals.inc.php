@@ -50,9 +50,10 @@
 	
 	if (isset($config['exportdir']) && isset($config['dilpsdir']))
 	{
-		$exportdir 			= substr($config['exportdir'],strlen($config['dilpsdir']),strlen($config['exportdir']));
-		$exportdirlong		= $config['exportdir'];		
-		$dilpsdir 			= $config['dilpsdir'];
+		$exportdir 			    = substr($config['exportdir'],strlen($config['dilpsdir']),strlen($config['exportdir']));
+		$exportdirlong		  = $config['exportdir'];		
+		$dilpsdir 			    = $config['dilpsdir'];
+		$dilpsdirrelative 	= substr($config['dilpsdir'],strlen($_SERVER['DOCUMENT_ROOT']),strlen($config['dilpsdir']));
 		
 		// $exporturl 			= 'http://'.$_SERVER['SERVER_NAME'].'/'.$exportdir;
 	}

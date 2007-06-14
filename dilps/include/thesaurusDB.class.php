@@ -342,7 +342,8 @@
         function loadDB_names($sourcefile) {    
             global $config;
             
-            ini_set('include_path',  $config['includepath'].'pear'.':'.ini_get('include_path'));
+            ini_set('include_path', ini_get('include_path') . ':' . $config['includepath'].'pear');
+            //ini_set('include_path', ini_get('include_path') . ':' . $config['includepath'].'pear/XML');
             ini_set("memory_limit", "64M");
             
             setlocale(LC_CTYPE, 'en_US.iso88591');
@@ -383,7 +384,7 @@
                         $subname = utf8_decode($subname);
                         $sounds = $this->get_sounds_string($subname);
 
-                        $result = $this->db->Execute("insert into $this->names_table (name, src, sounds, preferred_name_id) values (" . $this->db->qstr($subname) . ", 'Prometheus K¸nstler Norm Datei', '$sounds', '$id')");
+                        $result = $this->db->Execute("insert into $this->names_table (name, src, sounds, preferred_name_id) values (" . $this->db->qstr($subname) . ", 'Prometheus K√ºnstler Norm Datei', '$sounds', '$id')");
                         if ($result === false) {
                             die('Invalid query: ' . $this->db->ErrorMsg());
                         }
@@ -424,7 +425,7 @@
             
             $source = 'Getty TGN';
             
-            ini_set('include_path', $config['includepath'].'pear'. ':' . ini_get('include_path'));
+            ini_set('include_path', ini_get('include_path') . ':' . $config['includepath'].'pear');
             //ini_set("memory_limit", "64M");
             ini_set("memory_limit", "1024M");
             setlocale(LC_CTYPE, 'en_US.iso88591');
@@ -435,7 +436,7 @@
             
             //foreach ($files as $sourcefile) {
 echo "processing file $sourcefile\n";                
-                // strange character at beginning of file was causing problems, voil‡ cette hack:
+                // strange character at beginning of file was causing problems, voil√† cette hack:
                 $handle = fopen($sourcefile, "rb");
                 $contents = fread($handle, filesize($sourcefile));
                 fclose($handle);            
