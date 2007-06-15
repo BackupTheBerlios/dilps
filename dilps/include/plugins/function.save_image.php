@@ -416,19 +416,6 @@ function get_or_set_values($db, $db_prefix, $dilpsid, $field, $fieldtext, $recor
 
         } else if (empty($rs)) {
 
-        	// sometimes 'new' is not set correctly, workaround this
-        	
-        	/*
-            if ($recordid != 'new') {
-
-                $result['is_error'] = true;
-                $result['error_msg'] = "\nNo record found, when id should exist [$sql]";
-
-            } else {
-                $result = false;
-            }
-            */
-        	
         	$result = false;
 
         } else {
@@ -442,10 +429,33 @@ function get_or_set_values($db, $db_prefix, $dilpsid, $field, $fieldtext, $recor
         $tdb = new thesaurusDB($db, $db_prefix);
 
         $sounds = $tdb->get_sounds_string($text);
-
+        
         if ($field == 'location') {
+          
+            // $db->debug = true;
+          
+            // generate a running number in case someone creates more than one entry with a single data item
+          
+            $pre = "select source_id from $table WHERE source_id = ".$db->qstr($dilpsid);
+            $exists = $db->GetOne($pre);
+            
+            if ($exists)
+            {
+              $i = 0;
+              
+              while ($exists && $i < 10)
+              {
+                $i++;
+                $id = $dilpsid.':'.$i;
+                $pre = "select source_id from $table WHERE source_id = ".$db->qstr($id);
+                $exists = $db->GetOne($pre);
+              }  
+            }
+            
+            
             $sql = "insert into $table (src, source_id, location, loc_type, sounds) ".
-                "values ('dilps',".$db->qstr($dilpsid).",".$db->qstr($text).", '83002/inhabited place',".$db->qstr($sounds).")";
+                "values ('dilps',".$db->qstr($id).",".$db->qstr($text).", '83002/inhabited place',".$db->qstr($sounds).")";
+                
         } else if ($field == 'name') {
             $sql = "insert into $table (src, name, sounds) ".
                 "values ('dilps',".$db->qstr($text).",".$db->qstr($sounds).")";

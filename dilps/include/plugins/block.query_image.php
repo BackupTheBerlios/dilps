@@ -76,31 +76,35 @@ function smarty_block_query_image($params, $content, &$smarty, &$repeat)
 	    } else {
 	        // search a local collection
     		$sql = "SELECT {$db_prefix}meta.collectionid AS collectionid
-    		                          ,{$db_prefix}meta.imageid AS imageid
-    		                          ,{$db_prefix}meta.type AS type
-    		                          ,{$db_prefix}meta.status AS status
-    		                                  ,{$db_prefix}meta.name1id, {$db_prefix}meta.name2id
-    										  ,{$db_prefix}meta.name1 as name1text
-    		                                  ,{$db_prefix}meta.name2 as name2text
-    										  ,{$db_prefix}meta.addition,{$db_prefix}meta.title,{$db_prefix}meta.dating
-    										  ,{$db_prefix}meta.material,{$db_prefix}meta.technique,{$db_prefix}meta.format
-    										  ,{$db_prefix}meta.location as city
-    		                                  ,{$db_prefix}meta.locationid as locationid
-    		                                  ,{$db_prefix}meta.exp_prometheus, {$db_prefix}meta.exp_sid, {$db_prefix}meta.exp_unimedia
-    		                                  ,{$db_prefix}meta.commentary
-    		                                  ,{$db_prefix}meta.metacreator, {$db_prefix}meta.metaeditor
-    		                                  ,{$db_prefix}meta.imagerights
-    		                                  ,{$db_prefix}meta.institution,{$db_prefix}meta.literature
-    										  ,{$db_prefix}meta.page,{$db_prefix}meta.figure,{$db_prefix}meta.`table`
-    										  ,{$db_prefix}meta.isbn,base,filename,width,height,xres,yres,size,magick ".
+                  ,{$db_prefix}meta.imageid AS imageid
+                  ,{$db_prefix}meta.id AS id
+                  ,{$db_prefix}meta.type AS type
+                  ,{$db_prefix}meta.status AS status
+                  ,{$db_prefix}meta.name1id, {$db_prefix}meta.name2id
+								  ,{$db_prefix}meta.name1 as name1text
+                  ,{$db_prefix}meta.name2 as name2text
+								  ,{$db_prefix}meta.addition,{$db_prefix}meta.title,{$db_prefix}meta.dating
+								  ,{$db_prefix}meta.material,{$db_prefix}meta.technique,{$db_prefix}meta.format
+								  ,{$db_prefix}meta.location as city
+                  ,{$db_prefix}meta.locationid as locationid
+                  ,{$db_prefix}meta.exp_prometheus, {$db_prefix}meta.exp_sid, {$db_prefix}meta.exp_unimedia
+                  ,{$db_prefix}meta.commentary
+                  ,{$db_prefix}meta.metacreator, {$db_prefix}meta.metaeditor
+                  ,{$db_prefix}meta.imagerights
+                  ,{$db_prefix}meta.institution,{$db_prefix}meta.literature
+								  ,{$db_prefix}meta.page,{$db_prefix}meta.figure,{$db_prefix}meta.`table`
+								  ,{$db_prefix}meta.isbn,base,filename,width,height,xres,yres,size,magick ".
     		
             		  "FROM {$db_prefix}meta,{$db_prefix}img,{$db_prefix}img_base ".
-                       " WHERE {$db_prefix}meta.collectionid={$db_prefix}img.collectionid".
-    									" AND {$db_prefix}meta.imageid={$db_prefix}img.imageid".
-    									" AND {$db_prefix}img.img_baseid={$db_prefix}img_base.img_baseid".
-    									" AND {$db_prefix}img.collectionid={$db_prefix}img_base.collectionid".
-    									" AND {$db_prefix}meta.collectionid=$collectionid".
-    									" AND {$db_prefix}meta.imageid=$imageid";
+            		  
+                  " WHERE {$db_prefix}meta.collectionid={$db_prefix}img.collectionid".
+									" AND {$db_prefix}meta.imageid={$db_prefix}img.imageid".
+									" AND {$db_prefix}img.img_baseid={$db_prefix}img_base.img_baseid".
+									" AND {$db_prefix}img.collectionid={$db_prefix}img_base.collectionid".
+									" AND {$db_prefix}meta.collectionid=$collectionid".
+									" AND {$db_prefix}meta.imageid=$imageid";
+									
+									
     		$sqls = $sql;
     		$row = $db->GetRow( $sql );
     		if( $row ) array_walk( $row, "__stripslashes" );

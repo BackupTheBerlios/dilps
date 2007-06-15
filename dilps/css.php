@@ -34,7 +34,28 @@
 header("content-type: text/css");
 
 // import standard libraries and configuraiton values
-require('includes.inc.php');
+// require('includes.inc.php');
+
+// read db-config from file
+	$config = array();
+	include('config.inc.php');	
+	
+	$GLOBALS['force'] = true;
+	
+	// read config-variables from db and connect
+	include( $config['includepath'].'db.inc.php' );	
+	
+	// read the rest of the configuration
+	include( 'globals.inc.php' );
+
+	// session management
+	if (!defined('DILPS_SOAP_QUERY') && !defined('DILPS_INTER_DILPS_IMAGE_REQUEST')) {
+    	// smarty base include
+    	include( $config['includepath'].'smarty/Smarty.class.php' );
+		
+    	// smarty customization
+    	include( $config['includepath'].'smarty.inc.php' );
+}
 
 
 $smarty->display( $config['skin'].DIRECTORY_SEPARATOR.'dilps.css' );

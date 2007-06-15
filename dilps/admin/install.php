@@ -78,7 +78,7 @@
 
 	# --------------------------------------------------------
 
-	# $Id: install.php,v 1.14 2007/06/14 19:23:47 sdoeweling Exp $
+	# $Id: install.php,v 1.15 2007/06/15 16:17:03 sdoeweling Exp $
 
 	# --------------------------------------------------------
 
@@ -648,11 +648,12 @@
     
     $f_soundexthreshold = gpc_get_string('soundexthreshold','3');
     
-    
     $f_utf8	=  gpc_get_string('utf8','false');
     
     $f_imagick_mode	=  gpc_get_string('imagick_mode','compatible');
     
+    $f_defaulttype	=  gpc_get_string('defaulttype','image');
+
     
     $f_imagick_convert = gpc_get_string('imagick_convert','');
     
@@ -697,6 +698,8 @@
     $g_config_db_entry['utf8'] 					      = $f_utf8;
         
     $g_config_db_entry['imagick_mode'] 			  = $f_imagick_mode;
+    
+    $g_config_db_entry['defaulttype'] 			  = $f_defaulttype;
     
     
     $g_config_db_entry['imagick_convert'] 		= $f_imagick_convert;
@@ -2262,7 +2265,28 @@ if ( 1 == $t_install_state ) {
 
 	<td>
 
-		ImageMagick operation mode ('fast' requires at least ImageMagick version 6.0.0)
+		Default type (will be preselected in select-boxes)
+
+	</td>
+
+	<td>
+	
+		<select name="defaulttype">
+		  <option value="archaeology" <?php if ( $f_defaulttype == 'archaeology' ) echo ("selected='selected' "); ?> >		archaeology	</option>
+		  <option value="architecture" <?php if ( $f_defaulttype == 'architecture' ) echo ("selected='selected' "); ?> >		architecture	</option>
+			<option value="image" <?php if ( $f_defaulttype == 'image' ) echo ("selected='selected' "); ?> >		image	</option>
+		</select>
+	
+	</td>
+
+</tr>
+
+
+<tr>
+
+	<td>
+
+		ImageMagick operation mode ('fast' requires at least ImageMagick version 6.1)
 
 	</td>
 
@@ -2300,7 +2324,7 @@ if ( 1 == $t_install_state ) {
 
 	<td>
 
-		Enable sound similarity search (soundex)
+		Enable soundex similarity search (uses French version of soundex)
 
 	</td>
 
@@ -2319,7 +2343,7 @@ if ( 1 == $t_install_state ) {
 
 	<td>
 
-		Threshold (characters) for sound similarity search (soundex)
+		Threshold (characters) for soundex similarity search
 
 	</td>
 

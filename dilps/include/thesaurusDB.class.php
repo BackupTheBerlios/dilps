@@ -19,6 +19,7 @@
             $this->meta_table = $db_prefix.$this->meta_table;
             
             $this->db = $db;
+            $this->db->debug = true;
         }            
         
         function get_html_location($location) {
@@ -103,14 +104,16 @@
                 
                 $where .= " or lower(names.name) like lower('%$word%')";
                 $score .= " + if(lower(names.name) like lower('%$word%'), 2, 0)";
-
-                $sound = trim(soundex2($word));
                 
-                if ($sound != '') {
-                    $where .= " or names.sounds like '%.{$sound}.%'";
-                    $score .= " + if(sounds like '%.{$sound}.%', 1, 0) ";
+                if ($config['soundex'])
+                {
+                  $sound = trim(soundex2($word));
+                  
+                  if ($sound != '') {
+                      $where .= " or names.sounds like '%.{$sound}.%'";
+                      $score .= " + if(sounds like '%.{$sound}.%', 1, 0) ";
+                  }
                 }
-                
             }
             
             $score .= ') as score';
@@ -188,7 +191,11 @@
                 $words = array();
             }
             
+           
             foreach ($words as $key=>$word) {
+              
+              if ($config['soundex'])
+              {
                 
                 $sound = trim(soundex2($word));
                 
@@ -198,8 +205,15 @@
                     $score .= " + if(lower(locations.location) like lower('%$word%'), 2, 0)" .
                               " + if(locations.sounds like '%.{$sound}.%', 1, 0) ";
                 }
-                
+              }
+              else 
+              {
+                  $where .= " or lower(locations.location) like lower('%$word%')";
+                  $score .= " + if(lower(locations.location) like lower('%$word%'), 2, 0)";
+              }
             }
+            
+            
             $score .= ') as score';
             
             $query = "select $fields, $score from $from where $where order by $orderby limit $limit";

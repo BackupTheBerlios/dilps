@@ -1,6 +1,6 @@
 changethesaurus = Änderung eines Thesauruseintrages
 warningtext = Diese Operation kann nicht rückgängig gemacht werden und wird auf alle Datensätze angewendet, die diesen Thesauruseintrag enthalten
-warningtextinstitution = Diese Operation kann nicht rückgängig gemacht werden und wird auf alle Datensätze (für diesen Ort) angewendet, die diesen Thesauruseintrag enthalten
+warningtextinstitution = Diese Operation kann nicht rückgängig gemacht werden und wird auf alle Datensätze (für den zugehörigen Ort) angewendet, die diesen Thesauruseintrag enthalten
 current = Aktuell
 new = Neu
 deletetext = Diesen Eintrag vollständig aus dem Thesaurus entfernen

@@ -45,7 +45,7 @@ function editArchitectureElement( sessionid, imageid, element, docelements ) {
 function editThesaurus( sessionid, id, element, elementid, elementindex) {
    var props = 'toolbar=no,location=no,directories=no,status=yes,scrollbars=yes,resizable=yes,menubar=no,copyhistory=no';
    
-   win = window.open( 'edit_thesaurus.php?PHPSESSID='+sessionid+'&query[id]='+id+'&query[element]='+element+'&query[elementid]='+elementid+'&query[elementindex]='+elementindex, 'thesaurusEdit', props + ',width=700,height=350' );
+   win = window.open( 'edit_thesaurus.php?PHPSESSID='+sessionid+'&query[id]='+id+'&query[element]='+element+'&query[elementid]='+elementid+'&query[elementindex]='+elementindex, 'thesaurusEdit', props + ',width=600,height=350' );
    win.focus();
 }
 

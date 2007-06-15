@@ -92,7 +92,7 @@ function submitChange()
 {/literal}
 </script>
 </head>
-<body class="headerstyle" onLoad="setFocus();" style="padding:10px;">
+<body class="headerstyle" onLoad="setFocus();" style="padding:10px; text-align: center;">
 <p style="text-align:center; font-size:24px; font-weight: bold;color: #cccccc; text-decoration: none;">{#changethesaurus#|escape:html}</p>
 
 {if $error}

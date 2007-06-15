@@ -45,6 +45,9 @@ function smarty_function_institution_list($params, &$smarty)
     }
 
 	 global $db, $db_prefix;
+	 
+	 $db->debug = true;
+	 
 	 $sql = "SELECT DISTINCT institution, concat(collectionid, ':', imageid) as id FROM {$db_prefix}meta WHERE locationid=".$db->qstr($params['city'])." group by institution ORDER BY institution ASC";
 	 $rs = $db->GetArray( $sql );
 	 

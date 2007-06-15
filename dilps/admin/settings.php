@@ -401,6 +401,8 @@
     
     $f_imagick_mode		= $config['imagick_mode'];
     
+    $f_defaulttype = $config['defaulttype'];
+    
     
     $f_imagick_convert 	= $config['imagick_convert'];
     
@@ -875,7 +877,28 @@
 
 	<td>
 
-		ImageMagick operation mode ('fast' requires at least ImageMagick version 6.0.0)
+		Default type (will be preselected in select-boxes)
+
+	</td>
+
+	<td>
+	
+		<select name="defaulttype">
+		  <option value="archaeology" <?php if ( $f_defaulttype == 'archaeology' ) echo ("selected='selected' "); ?> >		archaeology	</option>
+		  <option value="architecture" <?php if ( $f_defaulttype == 'architecture' ) echo ("selected='selected' "); ?> >		architecture	</option>
+			<option value="image" <?php if ( $f_defaulttype == 'image' ) echo ("selected='selected' "); ?> >		image	</option>
+		</select>
+	
+	</td>
+
+</tr>
+
+
+<tr>
+
+	<td>
+
+		ImageMagick operation mode ('fast' requires at least ImageMagick version 6.1)
 
 	</td>
 
@@ -889,7 +912,6 @@
 	</td>
 
 </tr>
-
 
 <tr>
 
@@ -914,7 +936,7 @@
 
 	<td>
 
-		Enable sound similarity search (soundex)
+		Enable soundex similarity search (uses French version of soundex)
 
 	</td>
 
@@ -933,7 +955,7 @@
 
 	<td>
 
-		Threshold (characters) for sound similarity search (soundex)
+		Threshold (characters) for soundex similarity search
 
 	</td>
 
@@ -1019,6 +1041,8 @@
   $f_utf8					= getPost('utf8');
   
   $f_imagick_mode			= getPost('imagick_mode');
+  
+  $f_defaulttype   = getPost('defaulttype');
   
   
   $f_imagick_convert 		= getPost('imagick_convert');
@@ -1107,6 +1131,8 @@
     $g_config_db_entry['utf8']				= $f_utf8;
     
     $g_config_db_entry['imagick_mode']		= $f_imagick_mode;
+    
+    $g_config_db_entry['defaulttype']  = $f_defaulttype;
     
     
     $g_config_db_entry['imagick_convert']	= $f_imagick_convert;

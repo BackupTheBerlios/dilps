@@ -65,94 +65,99 @@ $config['soapresults'] = (!empty($query['collectionid']) && $query['collectionid
 
 $smarty->assign( 'config', $config );
 
-if( !$valid_login )
+
+if (!(isset($GLOBALS['force']) && $GLOBALS['force']))
 {
-  $logins->logout();
-  $smarty->display( $config['skin'].'/login.tpl' );
-  exit();
+
+  if( !$valid_login)
+  {
+    $logins->logout();
+    $smarty->display( $config['skin'].'/login.tpl' );
+    exit();
+  }
+  
+  /*
+  $admin = $logins->isInGroup( $config['authdomain'], $config['admingroup'] );
+  $editor = $logins->isInGroup( $config['authdomain'], $config['editorgroup'] );
+  */
+  
+  // print_r($permissions);
+  
+  $admin 			=	    (isset($permissions['admin']) ? $permissions['admin'] : 0);
+  $editor 		= 	  (isset($permissions['editor']) ? $permissions['editor'] : 0);
+  $usegroups		=	  (isset($permissions['usegroups']) ? $permissions['usegroups'] : 0);
+  $editgroups		= 	(isset($permissions['editgroups']) ? $permissions['editgroups'] : 0);
+  $insertimages	=	  (isset($permissions['addimages']) ? $permissions['addimages'] : 0);;
+  
+  if( $admin ) 
+  {
+  	$editor = true;
+  }
+  
+  $user = array( 	
+  			'login'			=>	$logins->getUID( $config['authdomain'] ),
+  			'editor'		=>	($editor ? 1 : 0 ),
+  			'admin'			=>	($admin ? 1 : 0 ),
+  			'usegroups' 	=>	(($admin || $usegroups) ? 1 : 0),
+  			'editgroups' 	=>	(($admin || $editgroups) ? 1 : 0),
+  			'insertimages' 	=>	(($admin || $insertimages) ? 1 : 0)
+  		);
+  	
+  $smarty->assign( 'user', $user );
+  					
+  $view = array();
+  if( isset($_REQUEST['view']) && is_array( $_REQUEST['view'] ))
+  	$view = $_REQUEST['view'];
+  $smarty->assign( 'view', $view );
+  
+  $edit = array();
+  if( isset($_REQUEST['edit']) && is_array( $_REQUEST['edit'] ))
+  	$edit = $_REQUEST['edit'];
+  $smarty->assign( 'edit', $edit );
+  
+  $template = array();
+  $sql = "SELECT * FROM {$db_prefix}type";
+  $rs = $db->Execute( $sql );
+  while( !$rs->EOF )
+  {
+  	$template[$rs->fields['name']] = $rs->fields;
+  	$rs->MoveNext();
+  }
+  $rs->Close();
+  $smarty->assign( 'template', $template );
+  
+  if( !isset( $view['type'] ) )
+  {
+  	$view['type'] = 'grid_detail';
+  }
+  
+  switch( $view['type'] )
+  {
+  	case 'detail':
+  		if( !isset( $query['rows'] )) $query['rows'] = 12;
+  	   $tpl = 'detail.tpl';
+  		break;
+  	case 'liste':
+  		if( !isset( $query['rows'] )) $query['rows'] = 12;
+  	   $tpl = 'liste.tpl';
+  		break;
+  	case 'grid':
+  		if( !isset( $query['rows'] )) $query['rows'] = 4;
+  		if( !isset( $query['cols'] )) $query['cols'] = 4;
+  	   $tpl = 'grid.tpl';
+  		break;
+  	case 'grid_detail':
+  		if( !isset( $query['rows'] )) $query['rows'] = 4;
+  		if( !isset( $query['cols'] )) $query['cols'] = 3;
+  	   $tpl = 'grid_detail.tpl';
+  		break;
+  	default:
+  		if( !isset( $query['rows'] )) $query['rows'] = 4;
+  		if( !isset( $query['cols'] )) $query['cols'] = 3;
+  	   $tpl = 'grid_detail.tpl';
+  		break;
+  }
+  $smarty->assign( 'query', $query );
 }
-
-/*
-$admin = $logins->isInGroup( $config['authdomain'], $config['admingroup'] );
-$editor = $logins->isInGroup( $config['authdomain'], $config['editorgroup'] );
-*/
-
-// print_r($permissions);
-
-$admin 			=	    (isset($permissions['admin']) ? $permissions['admin'] : 0);
-$editor 		= 	  (isset($permissions['editor']) ? $permissions['editor'] : 0);
-$usegroups		=	  (isset($permissions['usegroups']) ? $permissions['usegroups'] : 0);
-$editgroups		= 	(isset($permissions['editgroups']) ? $permissions['editgroups'] : 0);
-$insertimages	=	  (isset($permissions['addimages']) ? $permissions['addimages'] : 0);;
-
-if( $admin ) 
-{
-	$editor = true;
-}
-
-$user = array( 	
-			'login'			=>	$logins->getUID( $config['authdomain'] ),
-			'editor'		=>	($editor ? 1 : 0 ),
-			'admin'			=>	($admin ? 1 : 0 ),
-			'usegroups' 	=>	(($admin || $usegroups) ? 1 : 0),
-			'editgroups' 	=>	(($admin || $editgroups) ? 1 : 0),
-			'insertimages' 	=>	(($admin || $insertimages) ? 1 : 0)
-		);
-	
-$smarty->assign( 'user', $user );
-					
-$view = array();
-if( isset($_REQUEST['view']) && is_array( $_REQUEST['view'] ))
-	$view = $_REQUEST['view'];
-$smarty->assign( 'view', $view );
-
-$edit = array();
-if( isset($_REQUEST['edit']) && is_array( $_REQUEST['edit'] ))
-	$edit = $_REQUEST['edit'];
-$smarty->assign( 'edit', $edit );
-
-$template = array();
-$sql = "SELECT * FROM {$db_prefix}type";
-$rs = $db->Execute( $sql );
-while( !$rs->EOF )
-{
-	$template[$rs->fields['name']] = $rs->fields;
-	$rs->MoveNext();
-}
-$rs->Close();
-$smarty->assign( 'template', $template );
-
-if( !isset( $view['type'] ) )
-{
-	$view['type'] = 'grid_detail';
-}
-
-switch( $view['type'] )
-{
-	case 'detail':
-		if( !isset( $query['rows'] )) $query['rows'] = 12;
-	   $tpl = 'detail.tpl';
-		break;
-	case 'liste':
-		if( !isset( $query['rows'] )) $query['rows'] = 12;
-	   $tpl = 'liste.tpl';
-		break;
-	case 'grid':
-		if( !isset( $query['rows'] )) $query['rows'] = 4;
-		if( !isset( $query['cols'] )) $query['cols'] = 4;
-	   $tpl = 'grid.tpl';
-		break;
-	case 'grid_detail':
-		if( !isset( $query['rows'] )) $query['rows'] = 4;
-		if( !isset( $query['cols'] )) $query['cols'] = 3;
-	   $tpl = 'grid_detail.tpl';
-		break;
-	default:
-		if( !isset( $query['rows'] )) $query['rows'] = 4;
-		if( !isset( $query['cols'] )) $query['cols'] = 3;
-	   $tpl = 'grid_detail.tpl';
-		break;
-}
-$smarty->assign( 'query', $query );
 
 ?>

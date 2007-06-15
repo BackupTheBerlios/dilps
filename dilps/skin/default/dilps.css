@@ -1,4 +1,9 @@
 /* BEGIN dilps.css */
+{literal}
+html {
+  overflow: scroll; 
+}
+{/literal}
 
 {literal}
 td.heading2 {
@@ -61,6 +66,10 @@ body.headerstyle {
 .outer {
   border-left: 1px solid #FFFFFF;
   border-top:  1px solid #FFFFFF;
+  max-width: 550px;
+  text-align: center;
+  vertical-align: middle;
+  padding: 10px;
 }
 {/literal}
 
@@ -434,8 +443,9 @@ td.result_detail_data_subhead {
 
 {literal}
 td.result_detail_data_sub_subhead {
-   font-family: Times;
-	font-weight: italic;
+  font-family: Times;
+  font-weight: normal;
+	font-style: italic;
 	font-size: 10pt;
 	text-align: left;
 	color: #363636;
@@ -446,8 +456,9 @@ td.result_detail_data_sub_subhead {
 
 {literal}
 td.result_detail_data_sub_head2 {
-   font-family: Times;
-	font-weight: italic;
+  font-family: Times;
+	font-weight: normal;
+	font-style: italic;
 	font-size: 10pt;
 	text-align: left;
 	color: #363636;
@@ -457,8 +468,9 @@ td.result_detail_data_sub_head2 {
 
 {literal}
 td.result_detail_data_sub_head {
-   font-family: Times;
-	font-weight: italic;
+  font-family: Times;
+	font-weight: normal;
+	font-style: italic;
 	font-size: 10pt;
 	text-align: left;
 	color: #363636;
@@ -883,8 +895,9 @@ td.right-pad {
 
 {literal}	
 img.detailpreview {
-    max-width: 550px;
+    width: 500px;
 }
 {/literal}
+
 
 /*	END dilps.css	*/
