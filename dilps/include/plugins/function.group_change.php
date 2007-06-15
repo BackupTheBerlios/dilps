@@ -51,7 +51,7 @@ function smarty_function_group_change($params, &$smarty)
     	$action = $params['action'];
     }
     
-    if (empty($params['id'])) {
+    if (empty($params['id']) && $action != 'addgroup') {
     	$smarty->trigger_error("assign: missing 'id' parameter");
         return;
     } else {

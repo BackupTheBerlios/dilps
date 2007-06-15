@@ -62,17 +62,24 @@ addsubgroup = Untergruppe hinzufügen
 addgroup = Neue Gruppe (Hauptebene)
 commitaction = Aktion ausführen
 
+group  = Gruppe
 source = Quelle
 target = Ziel
 
-selectsourceandtarget = Quell- und Zielgruppe auswählen
-selectsource  = Quellgruppe auswählen
-selecttarget  = Zielgruppe auswählen
-invalidselection = Ungültige Auswahl
-movegrouptogroup = als Untergruppe in Zielgruppe verschieben
-copygrouptogroup = als Untergruppe in Zielgruppe kopieren
-movecontenttogroup = Gruppeninhalt in Zielgruppe verschieben
-copycontenttogroup = Gruppeninhalt in Zielgruppe kopieren
-moveselectiontogroup = Auswahl in Zielgruppe verschieben
+select_action = Funktion auswählen
+none = ---
+flush = Gruppe leeren
+deleteContent = Enthaltene Elemente aus dem System löschen
+copyContent = Enthaltene Elemente kopieren
+moveContent = Enthaltene Elemente verschieben
 
-page = Seite
+commit_action = Funktion ausführen
+
+R_COPYCONT_SUCCESS = Elemente erfolgreich kopiert
+E_COPYCONT_FAILED = Fehler beim Kopieren der Elemente
+R_MOVECONT_SUCCESS = Elemente erfolgreich verschoben
+E_MOVECONT_FAILED = Fehler beim Verschieben der Elemente
+R_DELCONT_SUCCESS = Elemente erfolgreich aus dem System gelöscht
+E_DELCONT_NOADMIN = Sie müssen Administrator sein, um Elemente aus dem System zu löschen
+
+deletecontentispermanent = Achtung! Alle in dieser Gruppe enthaltenen Elemente werden unwiderruflich gelöscht! Wollen Sie fortfahren?

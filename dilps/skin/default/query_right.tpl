@@ -1,4 +1,4 @@
-<td width="30%" valign="top">
+<td width="32%" valign="top">
 	<!-- right side of query -->
 	<table class="query" cellspacing="1" cellpadding="0" >
 		<tr>

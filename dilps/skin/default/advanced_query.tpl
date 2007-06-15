@@ -137,7 +137,7 @@ column_operators["{$column}"] = "{$op.operators}";
 
 <table class="query" cellspacing="0" cellpadding="0" width="100%">
 <tr>
-	<td width="70%">
+	<td width="68%">
 	<!-- left side of query -->
 		<table class="query" cellspacing="1" cellpadding="0">
 			<tr>
@@ -285,9 +285,15 @@ column_operators["{$column}"] = "{$op.operators}";
 				</td>
 			</tr>
 			<tr>
+			 <td>
+			   &nbsp;<br />&nbsp;
+			 </td>
+			</tr>
+			<tr>
 			   <td class="queryinputfieldtext" align="left">
-			      <input type="button" onClick="newQuery(); return true;" name="submitquery" value="{#search#|escape:html}">
-			      <input type="button" onClick="changeQueryType('simple');" name="changequerytype" value="{#simplesearch#|escape:html}">
+						<button type="button" class="actionbutton" onClick="newQuery(); return true;" title="{#search#|escape:html}">{#search#|escape:html}</button>
+						&nbsp;
+						<button type="button" class="actionbutton" onClick="changeQueryType('simple');" title="{#simplesearch#|escape:html}">{#simplesearch#|escape:html}</button>
 			   </td>
 			</tr>
 		</table>

@@ -104,7 +104,7 @@ BEGIN easy_query.tpl
 <!--<input type="hidden" name="query[querypiece][0][piece_connector]" value="and">-->
 <table class="query" cellspacing="0" cellpadding="0" width="100%">
 <tr>
-	<td width="70%">
+	<td width="68%">
 	<!-- left side of query -->
 		<table class="query" cellspacing="1" cellpadding="0">
 		<tr>

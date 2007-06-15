@@ -214,6 +214,14 @@ function smarty_function_image_change($params, &$smarty)
 				." AND collectionid=".intval($collectionid);																										
 		$rs = $db->Execute( $sql );
 		
+		$sql = "DELETE FROM ".$db_prefix."archaeology WHERE imageid=".intval($imageid)
+				." AND collectionid=".intval($collectionid);																										
+		$rs = $db->Execute( $sql );
+		
+		$sql = "DELETE FROM ".$db_prefix."architecture WHERE imageid=".intval($imageid)
+				." AND collectionid=".intval($collectionid);																										
+		$rs = $db->Execute( $sql );
+		
 		$sql = "DELETE FROM ".$db_prefix."img_group WHERE imageid=".intval($imageid)
 				." AND collectionid=".intval($collectionid);
 		$rs = $db->Execute( $sql );		

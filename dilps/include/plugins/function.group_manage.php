@@ -34,11 +34,11 @@
 
 function smarty_function_group_manage($params, &$smarty)
 {
-    global $db, $db_prefix;
+    global $db, $db_prefix, $resolutions_available, $formats_suffix;
     
     global $user;
 
-	// print_r($params);
+	  // print_r($params);
 
     // $db->debug = true;
     
@@ -58,324 +58,200 @@ function smarty_function_group_manage($params, &$smarty)
     	$sourceid = $params['sourceid'];
     }
     
-    if (empty($params['sourcename'])) {
-    	$smarty->trigger_error("assign: missing 'sourcename' parameter");
-        return;
-    } else {
-    	$sourcename = $params['sourcename'];
-    }
-    
-    if (empty($params['sourceowner'])) {
-    	$smarty->trigger_error("assign: missing 'sourceowner' parameter");
-        return;
-    } else {
-    	$sourceowner = $params['sourceowner'];
-    }
-    
-    if (empty($params['targetid'])) {
-    	$smarty->trigger_error("assign: missing 'targetid' parameter");
-        return;
-    } else {
+    if (!empty($params['targetid'])) {
     	$targetid = $params['targetid'];
     }
-    
-    if (empty($params['targetname'])) {
-    	$smarty->trigger_error("assign: missing 'targetname' parameter");
-        return;
-    } else {
-    	$targetname = $params['targetname'];
+    else {
+      $targetid = '';
     }
-    
-    if (empty($params['targetowner'])) {
-    	$smarty->trigger_error("assign: missing 'targetowner' parameter");
-        return;
-    } else {
-    	$targetowner = $params['targetowner'];
-    }
+
+    $login      = $user['login'];
+    $admin      = $user['admin'];
+    $editgroups = $user['editgroups'];
     
 
-	// perform actions
-
-	if ($action == 'addgroup' || $action == 'addsubgroup')
-	{
-		/* 
-			state:
-			action 		= add a group
-			id 			= current group's id
-			name 		= current group's name
-			owner 		= current group's owner
-			parameter 	= new group's name
-		*/
-		
-		if ($action == 'addgroup') {
-			$id = 0;
-		}
-		
-		// check access rights
-		
-		if ($id == 0) {
-			// this means our group is a public one
-			$p_owner = 'public';
-		}
-		else {
-			$sql 		= 	"SELECT owner FROM ".$db_prefix."group "
-						." WHERE parentid = ".$db->qstr($id);
-			$p_owner 	= 	$db->GetOne($sql);
-		}
-		
-		if ($p_owner == $user['login'] || $user['editgroups'])
-		{
-			// get new groupid
-			$sql = "SELECT ifnull((max(id)+1),1) FROM ".$db_prefix."group ";
-			$newid = $db->GetOne($sql);
-	
-			$sql = "INSERT INTO ".$db_prefix."group "
-						."(id, name,parentid,owner) "
-						."VALUES ("
-						.$db->qstr($newid).", "
-						.$db->qstr($parameter).", "
-						.$db->qstr($id).", "
-						.$db->qstr($owner).")";
-			$rs  = $db->Execute ($sql);
-	
-			// keep result codes for the moment
-			if (!$rs)
-			{
-				$result = "E_ADD_FAILED";
-			} else
-			{
-				$result = "R_ADD_SUCCESS";
-			}
-		}
-		else 
-		{
-			$result = "E_NO_RIGHTS";
-		}
-	}
-	elseif ($action == "rename")
-	{
-		/* 
-			state:
-			action 		= rename a group
-			id 			= current group's id
-			name 		= current group's name
-			owner 		= current group's owner
-			parameter 	= new name for current group
-		*/
-		
-		// check access rights
-		
-		if ($id == 0) {
-			// this means our group is a public one
-			$p_owner = 'public';
-		}
-		else {
-			$sql 		= 	"SELECT owner FROM ".$db_prefix."group "
-						." WHERE parentid = ".$db->qstr($id);
-			$p_owner 	= 	$db->GetOne($sql);
-		}
-		
-		if ($p_owner == $user['login'] || $user['editgroups'])
-		{
-			if ($p_owner != 'public') {
-				// personal groups are identified by squared brackets
-				if ($parameter{0} != '[') {
-					$parameter = '['.$parameter;
-				}
-				
-				if ($parameter{strlen($parameter)-1} != ']') {
-					$parameter = $parameter.']';
-				}
-			}
-			
-			$sql = 	"UPDATE ".$db_prefix."group SET"
-					." name=".$db->qstr($parameter)
-					." WHERE id= ".$db->qstr($id);
-
-			$rs  = $db->Execute ($sql);
-	
-			// keep result codes for the moment
-			if (!$rs)
-			{
-				$result = "E_EDIT_FAILED";
-			}
-			else
-			{
-				$result = "R_EDIT_SUCCESS";
-			}
-		}
-		else 
-		{
-			$result = "E_NO_RIGHTS";
-		}
-	}
-	elseif ($action == 'clear') 
-	{
-		/* 
-			state:
-			action 		= clear a group (remove all contained images from the group)
-			id 			= group to clear: id
-			name 		= group to clear: name
-			owner 		= group to clear: owner
-			parameter 	= empty
-		*/
-		
-		// check access rights
-		if ($id == 0) {
-			// this means our group is a public one
-			$p_owner = 'public';
-		}
-		else {
-			$sql 		= 	"SELECT owner FROM ".$db_prefix."group "
-						." WHERE parentid = ".$db->qstr($id);
-			$p_owner 	= 	$db->GetOne($sql);
-		}
-		
-		if ($p_owner == $user['login'] || $user['editgroups'])
-		{
-			// empty group - otherwise ghost members will appear later
- 			$sql = 	"DELETE FROM ".$db_prefix."img_group "
-					." WHERE groupid = ".$db->qstr($id);
-
-			$rs = $db->Execute ($sql);
-	
-			if (!$rs) {
-				$result = "E_CLEAR_FAILED";
-	 		}
-	 		else {
-	 			$result = "R_CLEAR_SUCCESS";
-	 		}
-		}
-		else 
-		{
-			$result = "E_NO_RIGHTS";
-		}
-	}
-	elseif ($action == 'del')
-	{
-		/* 
-			state:
-			action 		= delete a group (and all subgroups)
-			id 			= group to delete: id
-			name 		= group to delete: name
-			owner 		= group to delete: owner
-			parameter 	= empty
-		*/
-		
-		// check access rights
-		if ($id == 0) {
-			// this means our group is a public one
-			$p_owner = 'public';
-		}
-		else {
-			$sql 		= 	"SELECT owner FROM ".$db_prefix."group "
-						." WHERE parentid = ".$db->qstr($id);
-			$p_owner 	= 	$db->GetOne($sql);
-		}
-		
-		if ($p_owner == $user['login'] || $user['editgroups'])
-		{
-			// a bit more care is required - we have to look for subgroups
-			// and delete images there as well as the groups themselv
-	
-			$sql = "SELECT id, name, owner FROM ".$db_prefix."group "
-					." WHERE parentid = ".$db->qstr($id);
-	 		$rs = $db->Execute($sql);
-	
-			// collect all groups to delete, how far we get depends on the level
-			// in the group hierarchy our group resides in
-	
-			$groups = array();
-	
-			// add our group first
-			$groups[$id] = $id;
-	
-			// get its children
-			while (!$rs->EOF)
-			{
-				$sql2 = "SELECT id, name, owner FROM ".$db_prefix."group WHERE "
-							."parentid = ".$db->qstr($rs->fields['id'])
-							." ORDER BY name";
-	
-				$rs2 = $db->Execute($sql2);
-	
-				while(!$rs2->EOF)
-				{
-					$sql3 = "SELECT id, name, owner FROM ".$db_prefix."group WHERE "
-							."parentid = ".$db->qstr($rs2->fields['id'])
-							." ORDER BY name";
-	
-					$rs3 = $db->Execute($sql3);
-	
-					while(!$rs3->EOF)
-					{
-						$groups[$rs->fields['id']] = $rs3->fields['id'];
-						$rs3->MoveNext();
-					}
-	
-					$groups[$rs2->fields['id']] = $rs2->fields['id'];
-					$rs2->MoveNext();
-				}
-	
-				$groups[$rs->fields['id']] = $rs->fields['id'];
-				$rs->MoveNext();
-			}
-	
-			// we have our groupids now, empty them, then delete
-	
-			$delete_success = true;
-	
-			foreach ($groups as $delid)
-			{
-				// empty group - otherwise ghost members will appear later
-	 			$sql = 	"DELETE FROM ".$db_prefix."img_group "
-							." WHERE groupid = ".$db->qstr($delid);
-	
-	 			$rs = $db->Execute ($sql);
-	
-				if (!$rs)
-				{
-					$delete_success = false;
-				}
-	
-				// delete group
-	 			$sql = 	"DELETE FROM ".$db_prefix."group "
-							." WHERE id = ".$db->qstr($delid);
-	
-	 			$rs = $db->Execute ($sql);
-				if (!$rs)
-				{
-					$delete_success = false;
-				}
-	 		}
-	
-			// keep result codes for the moment
-			if ($rs === false)
-			{
-				$result = "E_DELETE_FAILED";
-			}
-			else
-			{
-				$result = "R_DELETE_SUCCESS";
-			}
-		}
-		else 
-		{
-			$result = "E_NO_RIGHTS";
-		}
-	}
-	else
-	{
-		$result = 'NO_ACTION_TAKEN';
-	}
-	
-	// echo ("Result: {$result}");
-
-   	$smarty->assign($params['result'], $result);
-   	
+  	// perform actions
+  
+  	if ($action == 'copyContent')
+  	{
+  	   $result = copy_groupcontent($sourceid,$targetid,$db_prefix,$db);
+  	   if ($result)
+  	   {
+  	     $result = 'R_COPYCONT_SUCCESS';
+  	   }
+  	   else 
+  	   {
+  	     $result = 'E_COPYCONT_FAILED';  
+  	   }
+  	}
+  	elseif ($action == 'moveContent')
+  	{
+  	   $result = copy_groupcontent($sourceid,$targetid,$db_prefix,$db);
+  	   if (!$result)
+  	   {
+  	     $result = 'E_MOVECONT_FAILED';  
+  	   }
+  	   else 
+  	   {
+  	     $sql = "DELETE FROM {$db_prefix}img_group WHERE groupid=".$db->qstr($sourceid);
+  	     $rs  = $db->execute($sql);
+  	     
+  	     if ($rs === false)
+  	     {
+  	       $result = 'E_MOVECONT_FAILED';  
+  	     }
+  	     else 
+  	     {
+  	       $result = 'R_MOVECONT_SUCCESS';  
+  	     }
+  	   }
+  	  
+  	}
+  	elseif ($action == 'deleteContent')
+  	{
+  	  // only admins may delete content from the system
+  	  if ($admin)
+  	  {
+  	    $sql = "SELECT * FROM {$db_prefix}img_group WHERE groupid=".$db->qstr($sourceid);
+  	    
+  	    $rs  = $db->execute($sql);
+  	    
+  	    while (!$rs->EOF)
+  	    {
+  	      $collectionid = $rs->fields['collectionid'];
+  	      $imageid = $rs->fields['imageid'];
+  	      
+  	      delete_image($collectionid,$imageid,$db_prefix,$db,$resolutions_available, $formats_suffix);
+  	      
+  	      $rs->MoveNext();
+  	    }
+  	    
+  	    $result = 'R_DELCONT_SUCCESS';
+  	  }
+  	  else 
+  	  {
+  	    $result = 'E_DELCONT_NOADMIN';
+  	  }
+  	}
+  	
+  	// echo ("Result: {$result}");
+  
+    $smarty->assign($params['result'], $result);
+     	
     if( !empty($params['sql']))
-	{
-		$smarty->assign($params['sql'], $sql);
-	}
+  	{
+  		$smarty->assign($params['sql'], $sql);
+  	}
 }
+
+function delete_image($collectionid, $imageid, $db_prefix, &$db, &$resolutions_available, &$formats_suffix)
+{
+  // Get file location
+
+		$sql = "SELECT filename,base FROM ".$db_prefix."img,".$db_prefix."img_base WHERE ".$db_prefix."img.imageid=".intval($imageid)
+				." AND ".$db_prefix."img.collectionid=".intval($collectionid)
+				." AND ".$db_prefix."img.collectionid=".$db_prefix."img_base.collectionid"
+				." AND ".$db_prefix."img.img_baseid=".$db_prefix."img_base.img_baseid";
+				
+		$row = $db->GetRow( $sql );
+		
+		$base = $row['base'];
+		
+		$file = intval($imageid).'.jpg';
+		if( $base != '' && $base{strlen($base)-1} != DIRECTORY_SEPARATOR )
+		{
+			$base .= DIRECTORY_SEPARATOR;
+		}
+		
+		// Iterate through all available resolutions and formats and delete corresponding files
+		
+		foreach ($resolutions_available as $resolution)
+		{		
+			$path = $base.'cache'.DIRECTORY_SEPARATOR.$resolution.DIRECTORY_SEPARATOR.intval($collectionid).'-'.intval($imageid).'.jpg';
+			
+			// echo "Delete-Path: $path";
+		
+			if (file_exists($path)){
+				unlink($path);
+			}
+		}
+		
+		// Delete JPEG-version of original image
+		
+		$path = $base.'cache'.DIRECTORY_SEPARATOR.intval($collectionid).'-'.intval($imageid).'.jpg';
+		
+		// echo "Delete-Path: $path";
+	
+		if (file_exists($path)){
+			unlink($path);
+		}
+
+		
+		// Delete copy of original image
+		
+		foreach ($formats_suffix as $mime => $suffix)
+		{
+			$path = $base.intval($collectionid).'-'.intval($imageid).'.'.$suffix;
+			
+			// echo "Delete-Path: $path";
+		
+			if (file_exists($path)){
+				unlink($path);
+			}
+		}
+		
+		
+		// Delete image information
+		
+		$sql = "DELETE FROM ".$db_prefix."img WHERE imageid=".intval($imageid)
+				." AND collectionid=".intval($collectionid);																										
+		$rs = $db->Execute( $sql );
+		
+		$sql = "DELETE FROM ".$db_prefix."meta WHERE imageid=".intval($imageid)
+				." AND collectionid=".intval($collectionid);																										
+		$rs = $db->Execute( $sql );
+		
+		$sql = "DELETE FROM ".$db_prefix."archaeology WHERE imageid=".intval($imageid)
+				." AND collectionid=".intval($collectionid);																										
+		$rs = $db->Execute( $sql );
+		
+		$sql = "DELETE FROM ".$db_prefix."architecture WHERE imageid=".intval($imageid)
+				." AND collectionid=".intval($collectionid);																										
+		$rs = $db->Execute( $sql );
+		
+		$sql = "DELETE FROM ".$db_prefix."img_group WHERE imageid=".intval($imageid)
+				." AND collectionid=".intval($collectionid);
+		$rs = $db->Execute( $sql );		
+}
+
+function copy_groupcontent($sourceid,$targetid,$db_prefix,&$db)
+{
+  $sql = "SELECT * FROM {$db_prefix}img_group WHERE groupid=".$db->qstr($sourceid);
+   $rs  = $db->execute($sql);
+   
+   if ($rs === false)
+   {
+     return false;
+   }
+   else 
+   {
+     while (!$rs->EOF)
+     {
+       $sql2 = "REPLACE INTO {$db_prefix}img_group (groupid,collectionid,imageid) VALUES ("
+               .$db->qstr($targetid).",".$db->qstr($rs->fields['collectionid']).",".$db->qstr($rs->fields['imageid']).")";
+       
+       $rs2  = $db->execute($sql2);
+               
+       if ($rs2 === false)
+       {
+         return false;
+       }
+       
+       $rs->MoveNext();
+     }
+   }
+   
+   return true;
+}
+
 ?>

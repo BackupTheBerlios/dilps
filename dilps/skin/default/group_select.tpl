@@ -413,25 +413,7 @@
 					
 					<!-- display localized information on action success -->
 					&nbsp;
-					{if $result eq "E_ADD_FAILED"}
-						{#E_ADD_FAILED#}
-					{elseif $result eq "R_ADD_SUCCESS"}
-						{#R_ADD_SUCCESS#}
-					{elseif $result eq "E_EDIT_FAILED"}
-						{#E_EDIT_FAILED#}
-					{elseif $result eq "R_EDIT_SUCCESS"}
-						{#R_EDIT_SUCCESS#}
-					{elseif $result eq "E_CLEAR_FAILED"}
-						{#E_CLEAR_FAILED#}
-					{elseif $result eq "R_CLEAR_SUCCESS"}
-						{#R_CLEAR_SUCCESS#}
-					{elseif $result eq "E_DELETE_FAILED"}
-						{#E_DELETE_FAILED#}
-					{elseif $result eq "R_DELETE_SUCCESS"}
-						{#R_DELETE_SUCCESS#}
-					{elseif $result eq "E_NO_RIGHTS"}
-						{#E_NO_RIGHTS#}
-					{/if}
+					{$smarty.config.$result}
 					<br />
 					<br />
 					
