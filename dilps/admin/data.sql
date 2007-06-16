@@ -16,11 +16,13 @@ INSERT INTO `!prefix_!user_auth` VALUES ('editor', 'static', 0, 1, 0, 1, 1, 1);
 INSERT INTO `!prefix_!user_auth` VALUES ('student', 'static', 0, 0, 0, 1, 1, 1);
 
 
+INSERT INTO `!prefix_!type` VALUES ('architecture', 'Architektur', 'architecture_detail.tpl', 'architecture_edit.tpl', 'default_list.tpl', 'default_list_short.tpl', 'default_grid.tpl');
+
 INSERT INTO `!prefix_!type` VALUES ('archaeology', 'Archaeologie', 'archaeology_detail.tpl', 'archaeology_edit.tpl', 'default_list.tpl', 'default_list_short.tpl', 'default_grid.tpl');
 
 INSERT INTO `!prefix_!type` VALUES ('image', 'Bild', 'default_detail.tpl', 'default_edit.tpl', 'default_list.tpl',  'default_list_short.tpl', 'default_grid.tpl');
 
-INSERT INTO `!prefix_!type` VALUES ('architecture', 'Architektur', 'architecture_detail.tpl', 'architecture_edit.tpl', 'default_list.tpl', 'default_list_short.tpl', 'default_grid.tpl');
+INSERT INTO `!prefix_!type` VALUES ('other', 'Sonstige', 'default_detail.tpl', 'default_edit.tpl', 'default_list.tpl',  'default_list_short.tpl', 'default_grid.tpl');
 
 
 INSERT INTO `!prefix_!dating_rules` VALUES ('0', 'match', '/^[[:space:]]*([[:digit:]]{2})[[:space:]]*$/', 'return _GregorianToJD( 1, 1, intval(\"19\".$match[1]) );', 'return _GregorianToJD( 12, 31, intval(\"19\".$match[1]) );', '64 == 1.1.1964 - 31.12.1964');
