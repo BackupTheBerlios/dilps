@@ -73,8 +73,8 @@ BEGIN edit_detail.tpl
 		   <td rowspan="4" class="result_detail_data_image">
 			<table border="0" cellspacing="0" width="100%">
 			<tr>
-			   <td rowspan="2"><img src="/icons/blank.gif" width="1" height="91"></td>
-			   <td><img src="/icons/blank.gif" width="121" height="1"></td>
+			   <td rowspan="2"><img src="blank.gif" width="1" height="91"></td>
+			   <td><img src="blank.gif" width="121" height="1"></td>
 			</tr>
 			<tr><td style="text-align: center"><img src="image.php?PHPSESSID={$sessionid}&id={$result.id}&resolution=120x90&remoteCollection={$query.remoteCollection}" border="0"></td></tr>
 			</tr>

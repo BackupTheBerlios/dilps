@@ -146,7 +146,7 @@ locations = new Array();
 </tr>
 <tr>
 	<td colspan="2">
-	   <img src="/icons/blank.gif" width="1" height="3">
+	   <img src="blank.gif" width="1" height="3">
 	</td>
 </tr>
 <tr>

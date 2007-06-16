@@ -88,6 +88,7 @@ function smarty_block_query_image($params, $content, &$smarty, &$repeat)
 								  ,{$db_prefix}meta.location as city
                   ,{$db_prefix}meta.locationid as locationid
                   ,{$db_prefix}meta.exp_prometheus, {$db_prefix}meta.exp_sid, {$db_prefix}meta.exp_unimedia
+                  ,{$db_prefix}meta.keyword 
                   ,{$db_prefix}meta.commentary
                   ,{$db_prefix}meta.metacreator, {$db_prefix}meta.metaeditor
                   ,{$db_prefix}meta.imagerights

@@ -528,12 +528,16 @@ BEGIN archaeology_edit.tpl
 		   </td>
 		</tr>
 		<tr>
+		   <td class="result_detail_data_head">{#keyword#|escape:htmlall}</td>
+		   <td colspan="2" class="result_detail_data_data"><input type="text" name="edit[keyword]" size="60" style="width: 300px;" value="{$row.keyword|escape:html}"></td>
+		</tr>
+		<tr>
 		   <td class="result_detail_data_head">{#metacreator#|escape:htmlall}</td>
-		   <td colspan="2" class="result_detail_data_data"><input type="text" name="edit[metacreator]" size="60" value="{$row.metacreator|escape:html}" style="width: 300px;" readonly="readonly"></td>
+		   <td colspan="2" class="result_detail_data_data"><input class="inactive" type="text" name="edit[metacreator]" size="60" style="width: 300px;" value="{$row.metacreator|escape:html}" readonly="readonly"></td>
 		</tr>
 		<tr>
 		   <td class="result_detail_data_head">{#metaeditor#|escape:htmlall}</td>
-		   <td colspan="2" class="result_detail_data_data"><input type="text" name="edit[metaeditor]" size="60" value="{$row.metaeditor|escape:html}" style="width: 300px;" readonly="readonly"></td>
+		   <td colspan="2" class="result_detail_data_data"><input class="inactive" type="text" name="edit[metaeditor]" size="60" style="width: 300px;" value="{$row.metaeditor|escape:html}" readonly="readonly"></td>
 		</tr>
 		<tr>
 		   <td class="result_detail_data_head">{#imagerights#|escape:htmlall}</td>

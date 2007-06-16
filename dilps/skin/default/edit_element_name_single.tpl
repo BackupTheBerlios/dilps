@@ -175,7 +175,7 @@ function compareValue(element)
 		<button type="button" class="actionbutton" name="search" title="{#search#|escape:html}" onclick="searchName();" tabindex="2">{#search#|escape:html}</button>
 	</td>
 	<td>
-	   <img src="/icons/blank.gif" width="10" height="1">
+	   <img src="blank.gif" width="10" height="1">
 	</td>
 </tr>
 </table>
@@ -245,7 +245,7 @@ function compareValue(element)
 
 <!--<tr>
 	<td colspan="2">
-	   <img src="/icons/blank.gif" width="1" height="3">
+	   <img src="blank.gif" width="1" height="3">
 	</td>
 </tr>-->
 </table>

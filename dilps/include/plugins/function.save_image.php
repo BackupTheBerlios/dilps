@@ -77,11 +77,9 @@ function smarty_function_save_image($params, &$smarty)
 
 	}
 	
-	/*
 	print_r($edit);
 	
 	$db->debug = true;
-	*/
 
     // If the name1id, name2id or locationid is "new", check to see whether it does actually already exist.
     // if not, insert the new name into the DB and set the id

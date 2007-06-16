@@ -109,7 +109,7 @@ BEGIN at_edit_functiontype.tpl
   				</tr>
   				<tr>
   				  <td>
-  				    <input type="checkbox" name="Fortification" value="{#fortification#}">{#fortication#}<br />
+  				    <input type="checkbox" name="Fortification" value="{#fortification#}">{#fortification#}<br />
   				  </td>
   				</tr>
   				<tr>

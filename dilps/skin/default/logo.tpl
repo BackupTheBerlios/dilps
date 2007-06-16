@@ -26,31 +26,31 @@ BEGIN logo.tpl
 --------------------------------------------- -->
 <table width="100%" border="0" align="center">
 <tr>
-	<td><img src="/icons/blank.gif" width="1" height="40"></td> 
+	<td><img src="blank.gif" width="1" height="40"></td> 
 	<td class="logo_left">01000100</td>
 	<td class="logo_middle">D</td>
 	<td class="logo_right">IGITAL...</td>
 </tr>
 <tr>
-	<td><img src="/icons/blank.gif" width="1" height="40"></td> 
+	<td><img src="blank.gif" width="1" height="40"></td> 
 	<td class="logo_left">01001001</td>
 	<td class="logo_middle">I</td>
 	<td class="logo_right">MAGE.....</td>
 </tr>
 <tr>
-	<td><img src="/icons/blank.gif" width="1" height="40"></td> 
+	<td><img src="blank.gif" width="1" height="40"></td> 
 	<td class="logo_left">01001100</td>
 	<td class="logo_middle">L</td>
 	<td class="logo_right">IBRARY...</td>
 </tr>
 <tr>
-	<td><img src="/icons/blank.gif" width="1" height="40"></td> 
+	<td><img src="blank.gif" width="1" height="40"></td> 
  	<td class="logo_left">01010000</td>
 	<td class="logo_middle">P</td>
 	<td class="logo_right">ROCESSING</td>
 </tr>
 <tr>
-	<td><img src="/icons/blank.gif" width="1" height="40"></td> 
+	<td><img src="blank.gif" width="1" height="40"></td> 
    <td class="logo_left">01010011</td>
 	<td class="logo_middle">S</td>
 	<td class="logo_right">YSTEM....</td>
