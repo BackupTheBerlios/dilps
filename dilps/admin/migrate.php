@@ -1,10 +1,21 @@
 <?php
 
 	include( '../config.inc.php' );
-	include( '../globals.inc.php' );	
+	include( '../globals.inc.php' );
 	include( $config['includepath'].'convert_v1.inc.php');
 	include( $config['includepath'].'adodb/adodb.inc.php' );
-	include( $config['includepath'].'tools.inc.php' );	
+	include( $config['includepath'].'tools.inc.php' );
+
+	ini_set('display_errors',1);
+	ini_set('magic_quotes_runtime',0);
+
+  error_reporting(E_ALL);
+
+	// activate compatibility mode
+	ini_set( 'zend.ze1_compatibility_mode', 'On' );
+
+	// deactive output buffering
+	ini_set( 'output_buffering', 0 );
 
 	global $db_db, $db_host, $db_prefix, $db_pwd, $db_user;
 
@@ -151,7 +162,7 @@
 				Hostname (for Database Server)
 			</td>
 			<td>
-				<input size="80"  name="ng_hostname" type="textbox" value="<?php echo ($db_host); ?>"></input>
+				<input size="80"  name="ng_hostname" type="text" value="<?php echo ($db_host); ?>"></input>
 			</td>
 		</tr>
 
@@ -160,7 +171,7 @@
 				Username (for Database)
 			</td>
 			<td>
-				<input  size="80" name="ng_username" type="textbox" value="<?php echo ($db_user); ?>"></input>
+				<input  size="80" name="ng_username" type="text" value="<?php echo ($db_user); ?>"></input>
 			</td>
 		</tr>
 
@@ -178,7 +189,7 @@
 				Database name (for Database)
 			</td>
 			<td>
-				<input  size="80" name="ng_name" type="textbox" value="<?php echo ($db_db); ?>"></input>
+				<input  size="80" name="ng_name" type="text" value="<?php echo ($db_db); ?>"></input>
 			</td>
 		</tr>
 
@@ -187,7 +198,7 @@
 			  Table prefix (for Database)
 			</td>
 			<td>
-				<input  size="80" name="ng_prefix" type="textbox" value="<?php echo ($db_prefix); ?>"></input>
+				<input  size="80" name="ng_prefix" type="text" value="<?php echo ($db_prefix); ?>"></input>
 			</td>
 		</tr>
 
@@ -202,7 +213,7 @@
 				Hostname (for Database Server)
 			</td>
 			<td>
-				<input size="80"  name="old_hostname" type="textbox" value="<?php echo ($db_host); ?>"></input>
+				<input size="80"  name="old_hostname" type="text" value="<?php echo ($db_host); ?>"></input>
 			</td>
 		</tr>
 
@@ -211,7 +222,7 @@
 				Username (for Database)
 			</td>
 			<td>
-				<input  size="80" name="old_username" type="textbox" value="<?php echo ($db_user); ?>"></input>
+				<input  size="80" name="old_username" type="text" value="<?php echo ($db_user); ?>"></input>
 			</td>
 		</tr>
 
@@ -229,7 +240,7 @@
 				Database name (for Database)
 			</td>
 			<td>
-				<input  size="80" name="old_name" type="textbox" value="<?php echo ($db_db); ?>"></input>
+				<input  size="80" name="old_name" type="text" value="<?php echo ($db_db); ?>"></input>
 			</td>
 		</tr>
 		<tr>
@@ -326,7 +337,7 @@
 							."imb.base as base, imb.img_baseid as baseid "
 							."FROM sammlung AS smg LEFT JOIN img_base imb ON smg.sammlungid = imb.sammlungid "
 							."WHERE active = 1 AND base != '' ORDER BY sammlungid, baseid";
-					$old_rs = @$old_db->Execute( $sql );
+					$old_rs = $old_db->Execute( $sql );
 
 					echo '<td>';
 					if ($old_rs === false)
@@ -390,7 +401,7 @@
 							."WHERE active = 1 AND base != '' "
 							."ORDER BY collectionid, baseid";
 
-					$ng_rs = @$ng_db->Execute( $sql );
+					$ng_rs = $ng_db->Execute( $sql );
 
 					if ($ng_rs === false)
 					{
@@ -498,7 +509,7 @@
 							."imb.base as base, imb.img_baseid AS baseid "
 							."FROM sammlung AS smg LEFT JOIN img_base imb ON smg.sammlungid = imb.sammlungid "
 							."WHERE imb.img_baseid = ".$old_db->qstr($_REQUEST['old_baseid']);
-					$rs = @$old_db->Execute( $sql );
+					$rs = $old_db->Execute( $sql );
 
 					$olddir_exists = is_dir($rs->fields["base"]);
 
@@ -534,7 +545,7 @@
 							."FROM ".$ng_prefix."collection AS col "
 							."LEFT JOIN ".$ng_prefix."img_base AS imb ON col.collectionid = imb.collectionid "
 							."WHERE imb.img_baseid = ".$ng_db->qstr($_REQUEST['ng_baseid']);
-					$rs = @$ng_db->Execute( $sql );
+					$rs = $ng_db->Execute( $sql );
 
 					$ngdir_exists = @is_dir($rs->fields["base"]);
 					$ngdir_writeable = @fopen( $rs->fields['base'] . DIRECTORY_SEPARATOR . 'test.txt', 'w+' );
@@ -593,158 +604,197 @@
 
 		}
 		elseif (3 == $step) {
-			
+
 
 			$old_db = NewADOConnection("mysql");
 			$old_res = $old_db->NConnect( $old_hostname, $old_username, $old_password, $old_name);
 			$old_db->SetFetchMode(ADODB_FETCH_ASSOC);
-			
+
 			// $old_db->debug = true;
-			
+
 			$ng_db = NewADOConnection("mysql");
 			$ng_res = $ng_db->NConnect( $ng_hostname, $ng_username, $ng_password, $ng_name);
 			$ng_db->SetFetchMode(ADODB_FETCH_ASSOC);
-			
+
 			// $ng_db->debug = true;
-			
+
 			// get old image base and image table
 
 			$sql = "SELECT smg.sammlungid as sammlungid, smg.tabelle as tabelle, imb.base as base, imb.img_baseid AS baseid "
 					."FROM sammlung AS smg LEFT JOIN img_base imb ON smg.sammlungid = imb.sammlungid "
 					."WHERE imb.img_baseid = ".$old_db->qstr($_REQUEST['old_baseid']);
-			$rs = @$old_db->Execute( $sql );
+			$rs = $old_db->Execute( $sql );
 
 			$old_table = $rs->fields['tabelle'];
 
 			$old_img_dir = $rs->fields['base'];
-			
+
 			// get new image base
 
 			$sql3 = "SELECT col.collectionid AS collectionid, col.name AS name, col.sammlung_ort AS sammlung_ort, imb.base AS base, imb.img_baseid AS baseid "
 							."FROM ".$ng_prefix."collection AS col "
 							."LEFT JOIN ".$ng_prefix."img_base AS imb ON col.collectionid = imb.collectionid "
 							."WHERE imb.img_baseid = ".$ng_db->qstr($_REQUEST['ng_baseid']);
-			$rs3 = @$ng_db->Execute( $sql3 );
+			$rs3 = $ng_db->Execute( $sql3 );
 
 			$new_img_dir = $rs3->fields['base'];
-			
+
 			// clear information in target image tables (img, meta) for the selected
 			// collection and baseid
-				
-			$sql4 	= 	"DELETE img.*, meta.* FROM "
-						."{$ng_prefix}img as img LEFT JOIN {$ng_prefix}meta as meta ON "
-						."(img.collectionid = meta.collectionid AND img.imageid = meta.imageid) "
-						."WHERE "
-						."(img.collectionid = ".$ng_db->qstr($_REQUEST['ng_collection'])." AND "
-						."img.img_baseid = ".$ng_db->qstr($_REQUEST['ng_baseid']).")";
-			$rs4 	= 	@$ng_db->Execute( $sql4 );
-			
-			echo ("Clearing target images tables: ");
-			if ($rs4){
-				echo ("OK\n<br>\n");
-			} 
-			else {
-				echo ("<b>Failed</b>\n<br>\n");
-				echo ("SQL: $sql4\n<br>\n");
-				echo ("\n<br>\n");
-			}
-			
-			// clear all groups and group content
-			
-			$sql4 = "DELETE FROM ".$ng_prefix."group WHERE 1";
-			$rs4 = @$ng_db->Execute( $sql4 );
-			
-			echo ("Clearing target group table: ");
-			if ($rs4){
-				echo ("OK\n<br>\n");
-			} 
-			else {
-				echo ("<b>Failed</b>\n<br>\n");
-				echo ("SQL: $sql4\n<br>\n");
-				echo ("\n<br>\n");
-			}
-			
-			$sql4 = "DELETE FROM ".$ng_prefix."img_group WHERE 1";
-			$rs4 = @$ng_db->Execute( $sql4 );
-			
-			echo ("Clearing target group content: ");
-			if ($rs4){
-				echo ("OK\n<br>\n");
-			} 
-			else {
-				echo ("<b>Failed</b>\n<br>\n");
-				echo ("SQL: $sql4\n<br>\n");
-				echo ("\n<br>\n");
-			}
-			
+
+			//			$sql4 	= 	"DELETE img.*, meta.* FROM "
+			//						."{$ng_prefix}img as img LEFT JOIN {$ng_prefix}meta as meta ON "
+			//						."(img.collectionid = meta.collectionid AND img.imageid = meta.imageid) "
+			//						."WHERE "
+			//						."(img.collectionid = ".$ng_db->qstr($_REQUEST['ng_collection'])." AND "
+			//						."img.img_baseid = ".$ng_db->qstr($_REQUEST['ng_baseid']).")";
+			//			$rs4 	= 	$ng_db->Execute( $sql4 );
+			//
+			//			echo ("Clearing target images tables: ");
+			//			if ($rs4){
+			//				echo ("OK\n<br>\n");
+			//			}
+			//			else {
+			//				echo ("<b>Failed</b>\n<br>\n");
+			//				echo ("SQL: $sql4\n<br>\n");
+			//				echo ("\n<br>\n");
+			//			}
+
 			// get the entries to import from the old database
-			
-			$sql2 = "SELECT ".$old_table.".*,".$old_table."_bild.bildid "
+
+			$sql2 = "SELECT ".$old_table.".*, bild.* "
 					."FROM ".$old_table." INNER JOIN ".$old_table."_bild "
 					."ON ".$old_table.".bildnr = ".$old_table."_bild.bildnr "
-					."ORDER BY {$old_table}_bild.bildid";
+					."INNER JOIN bild ON ".$old_table."_bild.bildid = bild.bildid "
+					."WHERE bild.img_baseid = ".$old_db->qstr($_REQUEST['old_baseid'])." ORDER BY bild.bildid ";
+
 			$rs2 = $old_db->Execute( $sql2 );
-			
+
 			$num_results = $rs2->MaxRecordCount();
-			
+
 			echo ("Loading old database entries: ");
 			if ($rs2){
 				echo ("OK ({$num_results} entries)\n<br>\n");
-			} 
+			}
 			else {
 				echo ("<b>Failed</b>\n<br>\n");
 				echo ("SQL: $sql2\n<br>\n");
 				echo ("\n<br>\n");
 			}
-			
+
 			// echo "$sql2\n";
-			
+
 			// insert converted entries
-			
+
 			while( !$rs2->EOF )
-			{		
-				echo ("\n<br>\n<em>Inserting entry (".$_REQUEST['ng_collection'].":".$rs2->fields['bildid']."):</em>\n<br>\n");
-				
+			{
+				echo ("\n<br>\n<em>Database entry (".$_REQUEST['ng_collection'].":".$rs2->fields['bildid']."):</em>\n<br>\n");
+
+				echo ("Deleting old image data:\n");
+				$sql4   =   "DELETE FROM {$ng_prefix}img WHERE "
+				            ."collectionid=".$ng_db->qstr($_REQUEST['ng_collection'])
+				            ." AND imageid=".$ng_db->qstr($rs2->fields['bildid']);
+
+        $rs4    =   $ng_db->Execute($sql4);
+				if ($rs4){
+	        echo ("OK \n<br>\n");
+	      }
+	      else {
+	        echo ("<b>Failed</b>\n<br>\n");
+	        echo ("SQL: $sql4\n<br>\n");
+	        echo ("\n<br>\n");
+	      }
+
+			  echo ("Deleting old meta data:\n");
+        $sql4   =   "DELETE FROM {$ng_prefix}meta WHERE "
+                    ."collectionid=".$ng_db->qstr($_REQUEST['ng_collection'])
+                    ." AND imageid=".$ng_db->qstr($rs2->fields['bildid']);
+
+        $rs4    =   $ng_db->Execute($sql4);
+        if ($rs4){
+          echo ("OK \n<br>\n");
+        }
+        else {
+          echo ("<b>Failed</b>\n<br>\n");
+          echo ("SQL: $sql4\n<br>\n");
+          echo ("\n<br>\n");
+        }
+
+				echo ("\n<br>\n<em>Inserting new entry:</em>\n<br>\n");
 				migrate_insert_meta($_REQUEST['ng_collection'], $_REQUEST['ng_baseid'], $rs2->fields, $ng_db, $ng_prefix, $old_db );
-				
+
 				$rs2->MoveNext();
 			}
-			
+
 			// insert all old groups
-			
+
+			//			$old_db->debug = true;
+			//			$ng_db->debug = true;
+
+			echo ("\n<br>\n<em>Copying group data:</em>\n<br>\n");
+
 			$sql4 = "SELECT groupsid, owner, name FROM `groups` WHERE 1";
-			$rs4 = @$old_db->Execute( $sql4 );
-			
+			$rs4 = $old_db->Execute( $sql4 );
+
 			while( !$rs4->EOF)
 			{
+			  echo ("\n<br>\n<em>Copying group:</em>".$rs4->fields['groupsid']."\n<br>\n");
+
+			  // clear old groups (assuming id is equal)
+
+  			$sql5  = "DELETE FROM ".$ng_prefix."group WHERE id=".$ng_db->qstr($rs4->fields['groupsid']);
+  			$rs5   = $ng_db->Execute( $sql5 );
+
+  			echo ("Deleting old group ".$rs4->fields['groupsid']." from target table: ");
+  			if ($rs5){
+  				echo ("OK\n<br>\n");
+  			}
+  			else {
+  				echo ("<b>Failed</b>\n<br>\n");
+  			}
+
+  			$sql5 = "DELETE FROM ".$ng_prefix."img_group WHERE groupid=".$ng_db->qstr($rs4->fields['groupsid']);
+  			$rs5 = $ng_db->Execute( $sql5 );
+
+  			echo ("Deleting content for old group ".$rs4->fields['groupsid']." from target table: ");
+  			if ($rs5){
+  				echo ("OK\n<br>\n");
+  			}
+  			else {
+  				echo ("<b>Failed</b>\n<br>\n");
+  			}
+
 				migrate_insert_group($rs4->fields['groupsid'],$rs4->fields['name'],'public',0,$ng_db,$ng_prefix);
 				$rs4->MoveNext();
+
+				// transfer the group content (imageid's) to new groups (only for images for which we
+	      // have db entries
+
+	      $sql5   =    "SELECT g.groupsid as groupsid, g.bildid as bildid FROM `groups_bild` as g, `"
+	                   .$old_table."_bild` as b WHERE "
+	                   ."g.bildid = b.bildid AND g.groupsid=".$old_db->qstr($rs4->fields['groupsid']);
+	      $rs5    =    $old_db->Execute( $sql5 );
+
+	      echo ("Transferring new content for group ".$rs4->fields['groupsid']." to target table: ");
+
+	      while( !$rs5->EOF)
+	      {
+	        migrate_insert_into_group($rs5->fields['groupsid'],$_REQUEST['ng_collection'],$rs5->fields['bildid'],$ng_db,$ng_prefix);
+	        $rs5->MoveNext();
+	      }
 			}
-			
-			// transfer the group content (imageid's) to new groups (only for images for which we
-			// have db entries
-			
-			$sql5 	= 	"SELECT g.groupsid as groupsid, g.bildid as bildid FROM `groups_bild` as g, `".$old_table."_bild` as b WHERE "
-						."g.bildid = b.bildid ORDER BY groupsid, bildid";
-			$rs5 	= 	@$old_db->Execute( $sql5 );
-			
-			while( !$rs5->EOF)
-			{
-				migrate_insert_into_group($rs5->fields['groupsid'],$_REQUEST['ng_collection'],$rs5->fields['bildid'],$ng_db,$ng_prefix);
-				$rs5->MoveNext();
-			}			
-			
+
 			// database updates done, copy files
-			
+
 			echo ("\n<br>\n<em>Database conversion complete.</em>\n<br>\n");
 
 			echo ("\n<br>\n<em>Your old files will now be copied (this can take very long, depending on the number of files that are copied).</em>\n<br>\n");
-			echo ("\n<br>\n<em>(messages about files that have already been copied in earlier import sessions, will be suppressed)</em>\n<br>\n");
+			// echo ("\n<br>\n<em>(messages about files that have already been copied in earlier import sessions, will be suppressed)</em>\n<br>\n");
 			echo ("\n<br>\n");
-			
+
 			echo ("Source directory: ".$old_img_dir.DIRECTORY_SEPARATOR."\n<br>\n");
 			echo ("Target directory: ".$new_img_dir.DIRECTORY_SEPARATOR."\n<br>\n");
-			
+
 			$resolutions = array(
 				"0"	=>	"120x90",
 				"1"	=>	"640x480",
@@ -755,7 +805,7 @@
 			);
 
 			// reuse the results from above and copy all corresponding files
-			
+
 			$rs2->MoveFirst();
 
 			while (!$rs2->EOF) {
@@ -764,47 +814,50 @@
 				$imageid = $rs2->fields['bildid'];
 
 				echo ("\n<br>\n<em>Copying image for entry (".$collectionid.":".$imageid.").</em>\n<br>\n");
-				
+
 				$source = 'cache'.DIRECTORY_SEPARATOR.'<em>resolution</em>'.DIRECTORY_SEPARATOR.$imageid.'.jpg';
 				$target = $new_img_dir.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.'<em>resolution</em>'.DIRECTORY_SEPARATOR.$collectionid.'-'.$imageid.'.jpg';
-				
-				foreach ($resolutions as $res) {
 
-					$old_file = $old_img_dir.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.$res.DIRECTORY_SEPARATOR.$imageid.'.jpg';
-					$new_file = $new_img_dir.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.$res.DIRECTORY_SEPARATOR.$collectionid.'-'.$imageid.'.jpg';
+				$test_new_file = $new_img_dir.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.'1600x1200'.DIRECTORY_SEPARATOR.$collectionid.'-'.$imageid.'.jpg';
 
-					/*
-					echo ("Res:".$res."\n<br>\n");
-					echo ("Old: ".$old_file."\n<br>\n");
-					echo ("New: ".$new_file."\n<br>\n");
-					*/
-					
-					echo ($res.": ");
+				if (file_exists($test_new_file))
+        {
+          echo ("Already copied\n<br>\n");
+        }
+        else
+        {
+          foreach ($resolutions as $res) {
 
-					if (file_exists($old_file)) {
-						
-						if (file_exists($new_file))
-						{
-							// echo ("Target exists");
-						}
-						else 
-						{
-							$ret = @copy($old_file,$new_file);
+            $old_file = $old_img_dir.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.$res.DIRECTORY_SEPARATOR.$imageid.'.jpg';
+            $new_file = $new_img_dir.DIRECTORY_SEPARATOR.'cache'.DIRECTORY_SEPARATOR.$res.DIRECTORY_SEPARATOR.$collectionid.'-'.$imageid.'.jpg';
 
-							if (!$ret) {
-								echo ("<b>Copying failed!</b>");
-							} else {
-								echo ("Copying succesful");
-							}
-						}
-					}
-					else 
-					{
-						echo ("<b>Failed!</b> (Source not found)");
-					}
-					echo ("\n<br>\n");
-				}
-					
+            /*
+            echo ("Res:".$res."\n<br>\n");
+            echo ("Old: ".$old_file."\n<br>\n");
+            echo ("New: ".$new_file."\n<br>\n");
+            */
+
+            echo ($res.": ");
+
+            if (file_exists($old_file))
+            {
+              $ret = @copy($old_file,$new_file);
+
+              if (!$ret) {
+                echo ("<b>Copying failed!</b>");
+              } else {
+                echo ("Copying succesful");
+              }
+            }
+            else
+            {
+              echo ("<b>Failed!</b> (Source not found)\n<br>\n");
+              echo ("<em>Expected filepath was</em>: ".$old_file."\n<br>\n");
+            }
+            echo ("\n<br>\n");
+          }
+        }
+
 				$rs2->MoveNext();
 			}
 
@@ -822,7 +875,7 @@
 						</strong>
 					</td>
 				</tr>
-				<tr></tr>
+				<tr>
 					<td class="links">
 						<a href="index.php">Back to Administration</a>
 					</td>

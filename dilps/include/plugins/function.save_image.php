@@ -434,14 +434,16 @@ function get_or_set_values($db, $db_prefix, $dilpsid, $field, $fieldtext, $recor
           
             // generate a running number in case someone creates more than one entry with a single data item
           
-            $pre = "select source_id from $table WHERE source_id = ".$db->qstr($dilpsid);
+            $id = $dilpsid;
+            
+            $pre = "select source_id from $table WHERE source_id = ".$db->qstr($id);
             $exists = $db->GetOne($pre);
             
             if ($exists)
             {
               $i = 0;
               
-              while ($exists && $i < 10)
+              while ($exists)
               {
                 $i++;
                 $id = $dilpsid.':'.$i;

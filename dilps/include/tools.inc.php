@@ -1,5 +1,5 @@
 <?php
-/*      
+/*
    +----------------------------------------------------------------------+
    | DILPS - Distributed Image Library System                             |
    +----------------------------------------------------------------------+
@@ -27,23 +27,23 @@
 	 * PHP helper functions
 	 * -------------------------------------------------------------
 	 * File:     		tools.inc.php
-	 * Purpose:  provide helper functions for the dilps 
+	 * Purpose:  provide helper functions for the dilps
 	 *					system
 	 * -------------------------------------------------------------
 	 */
-	 
-	
+
+
 	/*
 	ini_set('display_errors',1);
 	error_reporting(E_ALL);
 	*/
-	
+
 	//include_once($config['dilpsdir'].'includes.inc.php');
 	//include_once($config['includepath'].'dating.inc.php');
-	
+
 	global $config;
 	include_once($config['includepath'].'mime'.DIRECTORY_SEPARATOR.'Type.php');
-	
+
 
 	/**
 	 *	execute stripslashes on a string
@@ -55,13 +55,13 @@
 	 *	@return		void
 	 *
 	 */
-	 
+
 
 	function __stripslashes( &$str )
 	{
 		$str = stripslashes( $str );
 	}
-	
+
 	/**
 	 *	execute stripslashes on an array
 	 *
@@ -72,13 +72,13 @@
 	 *	@return		void
 	 *
 	 */
-	
+
 	function __stripslashes_array( &$arr )
 	{
 		array_walk( $arr, '__stripslashes' );
 	}
-	
-	
+
+
 	/**
 	 *	deep-converts object to array
 	 *
@@ -103,13 +103,13 @@
                     }
                 }
                 $a[$p] = $a1;
-            } else { 
+            } else {
                 $a[$p] = $v;
             }
         }
         return  $a;
     }
-    
+
     function utf8_encode_recursive($array) {
         foreach ($array as $key => $val){
             if (is_string($val)) {
@@ -121,7 +121,7 @@
         }
         return $array;
     }
-    
+
     function utf8_decode_recursive($array) {
         foreach ($array as $key => $val){
             if (is_string($val)) {
@@ -133,7 +133,7 @@
         }
         return $array;
     }
-    
+
 	/**
 	 *	extracts collectionid and imageid from a string
 	 *
@@ -146,7 +146,7 @@
 	 *	@return		void
 	 *
 	 */
-	
+
 	function extractID( $id, &$sammlung, &$imageid )
 	{
 		$p = strpos( $id, ':' );
@@ -159,8 +159,8 @@
 		$sammlung = intval( substr( $id, 0, $p ));
 		$imageid = substr( $id, $p+1 );
 	}
-	
-	
+
+
 	/**
 	 *	check, if a directory exists, is writeable and create
 	 *
@@ -176,9 +176,9 @@
 	 *	@return		bool
 	 *
 	 */
-	
+
 	function check_dir($dir, $test_writeable = false, $create_nonexistant = false, $create_perms = 0755)
-	{		
+	{
 		if (!is_dir($dir))
 		{
 			if ($create_nonexistant)
@@ -200,7 +200,7 @@
 			}
 		}
 	}
-	
+
 	/**
 	 *	recursive copy function for php
 	 *
@@ -212,7 +212,7 @@
 	 *	@return		bool
 	 *
 	 */
-	
+
 	function copy_recursive($dirsource, $dirdest)
 	{
 		if(is_dir($dirsource))
@@ -224,7 +224,7 @@
 			echo ("copy_recursive error: source cannot be opened\n<br>\n");
 			return false;
 		}
-	
+
 		if (!is_dir($dirdest))
 		{
 			echo ("copy_recursive error: destination is not a directory\n<br>\n");
@@ -236,7 +236,7 @@
 			{
 				mkdir($dirdest.'/'.$dirsource, 0755);
 			}
-	
+
 			while($file = readdir($dir_handle))
 			{
 				if($file != "." && $file != "..")
@@ -254,8 +254,8 @@
 			closedir($dir_handle);
 		return true;
 		}
-	}	
-	
+	}
+
 	/**
 	 *	recursive delete function for php
 	 *
@@ -266,7 +266,7 @@
 	 *	@return		bool
 	 *
 	 */
-	
+
 	function delete_recursive($dir)
 	{
 		if(is_dir($dir))
@@ -278,7 +278,7 @@
 			echo ("delete_recursive error: directory ({$dir}) cannot be opened\n<br>\n");
 			return false;
 		}
-	
+
 		while($file = readdir($dir_handle))
 		{
 			if($file != "." && $file != "..")
@@ -293,7 +293,7 @@
 				}
 			}
 		}
-		
+
 		closedir($dir_handle);
 		if (is_dir($dir))
 		{
@@ -301,7 +301,7 @@
 		}
 		return true;
 	}
-	
+
 	/**
 	 *	recursive directory read for image upload
 	 *
@@ -316,13 +316,13 @@
 	 *	@return		bool
 	 *
 	 */
-	
+
 	function read_recursive($dir, &$files, &$remove)
 	{
 		if(is_dir($dir))
 		{
 			$dir_handle=opendir($dir);
-	
+
 			while($file = readdir($dir_handle))
 			{
 				if($file != "." && $file != "..")
@@ -338,7 +338,7 @@
 					}
 				}
 			}
-	
+
 			closedir($dir_handle);
 		}
 		else
@@ -354,10 +354,10 @@
 				return false;
 			}
 		}
-	
+
 		return true;
 	}
-	
+
 	/**
 	 *	user defined compare function
 	 *
@@ -369,12 +369,12 @@
 	 *	@return		int
 	 *
 	 */
-	
+
 	function cmp ($a, $b) {
 	   if (strlen($a) == ($b)) return 0;
 	   return (strlen($a) < strlen($b)) ? 1 : -1;
 	}
-	
+
 	/**
 	 *	determines the time that passed since a given year
 	 *
@@ -388,7 +388,7 @@
 	 *	@return		void
 	 *
 	 */
-	
+
 	function intervalFromYear( $year, $a = 0.0001, $b = 0.00008 )
 	{
 		$jd = GregorianToJD( 1, 1, intval( $year ));
@@ -397,7 +397,7 @@
 		$res = $d*$a + $d*$b*$b;
 		return round(max( 1, $res)) * ($year < -3500 ? 1 : 365);
 	}
-	
+
 	/**
 	 *	wrapper for GregorianToJD
 	 *
@@ -410,7 +410,7 @@
 	 *	@return		void
 	 *
 	 */
-	
+
 	function _GregorianToJD( $month, $day, $year )
 	{
 	//	echo "_GregorianToJD( $month, $day, $year )\n";
@@ -418,7 +418,7 @@
 		if( $year == 0 ) return GregorianToJD( $month, $day, 1 );
 	   return GregorianToJD( $month, $day, $year );
 	}
-	
+
 	/**
 	 *	formats a datespring according the DILPS-rules
 	 *
@@ -432,7 +432,7 @@
 	 *	@return		void
 	 *
 	 */
-	
+
 	function dating( $db, &$datestring, &$datelist )
 	{
 		global $db_prefix;
@@ -444,7 +444,7 @@
 			$sql = "SELECT * FROM {$db_prefix}dating_rules WHERE `type`='match' ORDER BY seq ASC";
 
 			$dating_match = $db->GetArray( $sql );
-			
+
 			for( $i = 0; $i < sizeof( $dating_match ); $i++ )
 			{
 				$dating_match[$i]['regexp'] = strtolower( stripslashes( $dating_match[$i]['regexp'] ));
@@ -454,7 +454,7 @@
 		{
 			$sql = "SELECT * FROM {$db_prefix}dating_rules WHERE `type`='replace' ORDER BY seq ASC";
 			$rs = $db->Execute( $sql );
-			
+
 			$dating_pattern = array();
 			$dating_replacement = array();
 			while( !$rs->EOF )
@@ -472,7 +472,7 @@
 		$dates = explode( ';', $datestring );
 	//    print_r( $dates );
 		foreach( $dates as $date )
-		{ 
+		{
 			for( $i = 0; $i < sizeof( $dating_match ); $i++ )
 			{
 				$matches = array();
@@ -487,7 +487,7 @@
 		}
 		return true;
 	}
-	
+
 	/**
 	 *	read a file's mimetype
 	 *
@@ -501,94 +501,94 @@
 	 *	@return		bool
 	 *
 	 */
-	
+
 	function read_mime($file, &$mime, $fallback_extension)
 	{
 		global $file_binary, $ext_to_mime;
-		
+
 		$mime = '';
-		
+
 		if (function_exists('mime_content_type'))
 		{
 			$mime = mime_content_type($file);
 		}
-		
+
 		if ($mime != '')
 		{
 			return true;
 		}
-		
+
 		if (function_exists('MIME_TYPE::autoDetect'))
 		{
 			$mime = MIME_Type::autoDetect($file);
 		}
-		
+
 		if ($mime != '')
 		{
 			return true;
 		}
-		
+
 		unset($result);
-		
+
 		$cmd = $file_binary." -b -i \"".$file."\"";
 		exec($cmd, $result);
-		
+
 		if (isset($result[0]))
 		{
-			if( preg_match( "/^[a-zA-Z0-9-]+\/[a-zA-Z0-9-]+$/", trim($result[0])))				
+			if( preg_match( "/^[a-zA-Z0-9-]+\/[a-zA-Z0-9-]+$/", trim($result[0])))
 			{
 				$mime = trim($result[0]);
 			}
 		}
-		else 
+		else
 		{
 			// probably this version of file is too old to understand "-b", try without
 			$cmd = $file_binary." \"".$file."\"";
 			exec($cmd, $result);
-			
+
 			// strip path from result
-			
+
 			$result[0] = trim(substr($result[0],strlen($file)+1));
-			
+
 			// combine the results
-			
+
 			$tmp_result = @explode(" ",$result[0]);
-			
+
 			if (isset($tmp_result[2]))
-			{			
+			{
 				if($tmp_result[2] == 'file')
 				{
 					$mime = $tmp_result[1].'/'.$tmp_result[0];
 				}
 			}
 		}
-		
-		if ($mime != '')
-		{
-			return true;
-		}
-		else 
-		{		
-			if ($fallback_extension)
-			{				
-				if (key_exists($fallback_extension,$ext_to_mime))
-				{
-					$mime = @$ext_to_mime[$fallback_extension];
-				}
-			}
-		}		
-	
+
 		if ($mime != '')
 		{
 			return true;
 		}
 		else
-		{			
+		{
+			if ($fallback_extension)
+			{
+				if (key_exists($fallback_extension,$ext_to_mime))
+				{
+					$mime = @$ext_to_mime[$fallback_extension];
+				}
+			}
+		}
+
+		if ($mime != '')
+		{
+			return true;
+		}
+		else
+		{
 			return false;
 		}
-		
+
 	}
-	
+
 	/**
 	 *	extract information from an image
 	 *
@@ -601,24 +601,24 @@
 	 *	@return		bool
 	 *
 	 */
-	
+
 	function read_image($file, &$imagedata)
 	{
 		global $imagemagick_identify;
-		
-		unset($result);		 
-		
+
+		unset($result);
+
 		$cmd = $imagemagick_identify
 						." -depth 8 -format "
 						."\"%m %w %h %b\" \"".$file."\"";
-		
+
 		exec($cmd, $result);
-		
+
 		if (!$result)
 		{
 			return false;
 		}
-		
+
 		if(!preg_match_all( "/[\w(\/|\.)]+/", trim($result[0]), $matches))
 		{
 			return false;
@@ -628,10 +628,10 @@
 			$imagedata["type"] 	= $matches[0][0];
 			$imagedata["width"]	= $matches[0][1];
 			$imagedata["height"]	= $matches[0][2];
-			
-			$imagedata["depth"]	= "8 bit";			
+
+			$imagedata["depth"]	= "8 bit";
 			$rawsize						= $matches[0][3];
-			
+
 			// some versions of image magick give incorrectly formatted sizes
 			if (strpos($rawsize,'m') > 0)
 			{
@@ -644,19 +644,19 @@
 			else
 			{
 				$imagedata["size"] = $rawsize;
-			}			
-			
+			}
+
 			/*
 			echo ("Imagedata:\n<br>\n");
 			print_r($imagedata);
 			*/
-			
+
 			return true;
-		}		
-		
-		
+		}
+
+
 	}
-	
+
 	/**
 	 *	convert an image to a JPEG-file
 	 *
@@ -674,11 +674,11 @@
 	 *	@return		bool
 	 *
 	 */
-	
+
 	function convert_image($input, $output, $to_res,$is_thumbnail = false)
 	{
-		global $imagemagick_convert;	
-		
+		global $imagemagick_convert;
+
 		if ($is_thumbnail)
 		{
 			// we sharpen thumbnails
@@ -694,17 +694,17 @@
 							."-flatten -resize ".$to_res
 							." -colorspace RGB \"".$output."\"";
 		}
-		
+
 		// echo ("Cmd: $cmd\n<br>\n");
-		
+
 		unset($result);
 		exec($cmd, $result, $ret);
-						
+
 		if (empty($result))
 		{
 			// probably this version of convert is too old, try parameter "-scale"
 			// instead of "-resize"
-			
+
 			if ($is_thumbnail)
 			{
 				// we sharpen thumbnails
@@ -720,12 +720,12 @@
 								."-flatten -scale ".$to_res
 								." -colorspace RGB \"".$output."\"";
 			}
-			
+
 			unset($result);
 			exec($cmd, $result, $ret);
-			
+
 		}
-		
+
 		if ($ret == 0)
 		{
 			return true;
@@ -734,66 +734,66 @@
 		{
 			return false;
 		}
-		
+
 	}
-	
+
 	/**
 	 *	convert an image to a JPEG-file (batch-mode)
 	 *
-	 *  converts an image to a series of JPEG files 
+	 *  converts an image to a series of JPEG files
 	 *  of the specified resolutions,
 	 *  sharpens thumbnails, applies some
 	 *  corrections to ensure conversion
 	 *  success
-	 * 
+	 *
 	 *  pass resolution with array values,
 	 *  optionally pass different resolution to be used as thumbnail
-	 * 
+	 *
 	 *  this requires ImageMagick version > 6
-	 * 
+	 *
 	 *
 	 *	@access		public
 	 *	@param 		string	$input
 	 *	@param		string	$output_directory
 	 *	@param		string	$output_file_basename
-	 *	@param 		array	$to_res	 
+	 *	@param 		array	$to_res
 	 *	@return		bool
 	 *
 	 */
-	
+
 	function convert_image_batch($input, $output_directory,$output_file_basename, $to_res, $thumbnail_res = '120x90')
 	{
-		global $imagemagick_convert;	
-		
+		global $imagemagick_convert;
+
 		// build up command
-		
+
 		// base part
-		
+
 		$cmd = 	$imagemagick_convert.' '.escapeshellarg($input)
 				.' -flatten -colorspace RGB ';
-				
+
 		// add options for target images
 		foreach ($to_res as $res)
 		{
 			if ($res != $thumbnail_res)
 			{
 				// standard image
-				$cmd .= ' ( +clone -resize '.$res.' -write '.escapeshellarg($output_directory.DIRECTORY_SEPARATOR.$res.DIRECTORY_SEPARATOR.$output_file_basename.'.jpg').' +delete ) ';
+				$cmd .= ' \( +clone -resize '.$res.' -write '.escapeshellarg($output_directory.DIRECTORY_SEPARATOR.$res.DIRECTORY_SEPARATOR.$output_file_basename.'.jpg').' +delete \) ';
 			}
-			else 
+			else
 			{
-				// thumbnail				
+				// thumbnail
 				$trail = ' -resize '.$res.' -sharpen 4 '.escapeshellarg($output_directory.DIRECTORY_SEPARATOR.$res.DIRECTORY_SEPARATOR.$output_file_basename.'.jpg');
 			}
-		}			
-		
+		}
+
 		$cmd .= $trail;
-		
+
 		// echo ("Cmd: $cmd\n<br>\n");
-		
+
 		unset($result);
 		exec($cmd, $result, $ret);
-						
+
 		if ($ret == 0)
 		{
 			return true;
@@ -802,14 +802,14 @@
 		{
 			return false;
 		}
-		
+
 	}
-	
-	
+
+
 	/**
 	 *	insert image data into database
 	 *
-	 *	
+	 *
 	 *
 	 *	@access		public
 	 *	@param 		int		$collectionid
@@ -821,12 +821,12 @@
 	 *	@return		bool
 	 *
 	 */
-	
+
 	function insert_img($collectionid, $imageid, $img_baseid, $filename, $img_data, $time)
 	{
-		global $db, $db_prefix;		
-		
-		// insert information into database	
+		global $db, $db_prefix;
+
+		// insert information into database
 		$sql = 	"INSERT INTO ".$db_prefix."img "
 				."(`collectionid`, `imageid`, `img_baseid`, `filename`, `width`, "
 				."`height`, `size`, `magick`, `insert_date`) "
@@ -840,9 +840,9 @@
 				.$db->qstr($img_data['size']).","
 				.$db->qstr($img_data['type']).","
 				.$db->qstr($time).")";
-	
+
 		$rs = @$db->Execute($sql);
-	
+
 		if (!$rs)
 		{
 			return false;
@@ -852,14 +852,14 @@
 			return true;
 		}
 	}
-	
+
 	/**
 	 *	update image data with new filename and imagedata
 	 *
 	 *	update image data in database with new
 	 *  filename and corresponding image data
 	 *  after uploading a new image for the given database
-	 * 
+	 *
 	 *
 	 *	@access		public
 	 *	@param 		int		$collectionid
@@ -871,12 +871,12 @@
 	 *	@return		bool
 	 *
 	 */
-	
+
 	function update_img($collectionid, $imageid, $img_baseid, $filename, $img_data, $time)
 	{
-		global $db, $db_prefix;		
-		
-		// insert information into database	
+		global $db, $db_prefix;
+
+		// insert information into database
 		$sql = 	"UPDATE ".$db_prefix."img "
 				."SET `filename` = ".$db->qstr($filename).","
 				." `width` = ".$db->qstr($img_data['width']).","
@@ -884,9 +884,9 @@
 				." `size` = ".$db->qstr($img_data['size']).","
 				." `magick` = ".$db->qstr($img_data['type']).","
 				." `insert_date` = ".$db->qstr($time);
-	
+
 		$rs = @$db->Execute($sql);
-	
+
 		if (!$rs)
 		{
 			return false;
@@ -896,8 +896,8 @@
 			return true;
 		}
 	}
-	
-	
+
+
 	/**
 	 *	insert image metadata into database
 	 *
@@ -912,12 +912,12 @@
 	 *	@return		bool
 	 *
 	 */
-	
+
 	function insert_meta($collectionid, $imageid, $time, $creator, $type = 'image')
 	{
-		global $db, $db_prefix;		
-		
-		// insert information into database	
+		global $db, $db_prefix;
+
+		// insert information into database
 		$sql = 	"INSERT INTO ".$db_prefix."meta "
 					."(`collectionid`, `imageid`, `type`, `status`, `insert_date`, `metacreator`) VALUES ("
 					.$db->qstr($collectionid).","
@@ -927,9 +927,9 @@
 					.$db->qstr($time).","
 					.$db->qstr($creator)
 					.")";
-	
-		$rs = @$db->Execute($sql);		
-	
+
+		$rs = @$db->Execute($sql);
+
 		if (!$rs)
 		{
 			return false;
@@ -939,8 +939,8 @@
 			return true;
 		}
 	}
-	
-	
+
+
 	/**
 	 *	insert image into a group
 	 *
@@ -953,10 +953,10 @@
 	 *	@return		bool
 	 *
 	 */
-	
+
 	function insert_img_group($groupid, $collectionid, $imageid)
 	{
-		global $db, $db_prefix;		
+		global $db, $db_prefix;
 
 		$sql = "INSERT INTO ".$db_prefix."img_group "
 				."(groupid, collectionid, imageid) "
@@ -965,8 +965,8 @@
 				.$db->qstr($collectionid)." ,"
 				.$db->qstr($imageid).")";
 
-		$rs  = @$db->Execute ($sql);		
-		
+		$rs  = @$db->Execute ($sql);
+
 		if (!$rs)
 		{
 			return false;
@@ -975,8 +975,8 @@
 		{
 			return true;
 		}
-	}	
-	
+	}
+
 	/**
 	 *	modified version of get_groupid_where_clause
 	 *
@@ -990,11 +990,11 @@
 	 *	@return		string
 	 *
 	 */
-	
+
 	function get_groupid_where($groupid, &$db, $db_prefix, $subgroups = true) {
-	    
+
 	    $where = '';
-	    
+
 		if (!empty($groupid))
 		{
 			// our result
@@ -1004,7 +1004,7 @@
 			$db->SetFetchMode(ADODB_FETCH_ASSOC);
 			$sql = "SELECT id FROM ".$db_prefix."group WHERE "
 						."parentid = ".$db->qstr($groupid)
-						." ORDER BY id"; 	
+						." ORDER BY id";
 			$rs  = $db->Execute($sql);
 			if (!$rs || !$subgroups)
 			{
@@ -1013,7 +1013,7 @@
 			}
 			else
 			{
-				// get next sublevel		
+				// get next sublevel
 				while (!$rs->EOF)
 				{
 					// add group to result array
@@ -1021,14 +1021,14 @@
 					// get next but one sublevel, if available
 					$sql2 = "SELECT id FROM ".$db_prefix."group WHERE "
 								."parentid = ".$db->qstr($rs->fields['id'])
-								." ORDER BY id"; 	
+								." ORDER BY id";
 					$rs2 = $db->Execute($sql2);
-					
+
 					while(!$rs2->EOF)
 					{
-						$groups[] = $rs2->fields['id'];				
+						$groups[] = $rs2->fields['id'];
 						$rs2->MoveNext();
-					}			
+					}
 					$rs->MoveNext();
 				}
 				$where .= " AND (0 ";
@@ -1041,7 +1041,7 @@
 		}
 	    return $where;
 	}
-	
+
 	/**
 	 *	generates a random alpha-numeric string of given length
 	 *
@@ -1054,7 +1054,7 @@
 	 *	@return		string
 	 *
 	 */
-	
+
 	function generate_random_string($length = 64)
 	{
 		$characters = "abcedfghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRTSUVWXYZ0123456789";
@@ -1062,14 +1062,14 @@
 
 	    // initialize seed
 	    srand ((double) microtime() * 1000000);
-	    
+
 		for ($i = 0; $i < $length; $i++ ) {
 			$random_string .= $characters{rand (0, strlen($characters) - 1)};
 		}
-		
+
 		return $random_string;
 	}
-	
+
 	/**
 	 *	insert an export into the database
 	 *
@@ -1084,10 +1084,10 @@
 	 *	@return		bool
 	 *
 	 */
-	
+
 	function insert_export($userid, $groupname, $filename, $comment = '')
 	{
-		global $db, $db_prefix;		
+		global $db, $db_prefix;
 
 		$sql = "INSERT INTO ".$db_prefix."export "
 				."(userid, groupname, filename, comment, creationtime) "
@@ -1098,8 +1098,8 @@
 				.$db->qstr($comment)." ,"
 				."NOW() )";
 
-		$rs  = @$db->Execute ($sql);		
-		
+		$rs  = @$db->Execute ($sql);
+
 		if (!$rs)
 		{
 			return false;
@@ -1109,5 +1109,5 @@
 			return true;
 		}
 	}
-	
+
 ?>
