@@ -61,7 +61,7 @@ BEGIN liste.tpl
   <link rel="stylesheet" type="text/css" href="css.php">
 
 </head>
-<body class="main" {if $config.soapresults }onload="updateRemoteCollectionFields('{$sessionid}','{$query.queryid}')"{/if}>
+<body class="main" {if $config.soapresults }onload="updateRemoteCollectionFields('{$sessionid}','{$query.queryid}')"{/if}">
 <form name="Main" action="{$SCRIPT_NAME}" method="GET">
 <input type="hidden" name="view[type]" value="liste">
 <input type="hidden" name="view[detail][id]" value="{$view.detail.id}">

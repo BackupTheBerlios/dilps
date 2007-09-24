@@ -36,58 +36,58 @@ BEGIN easy_query.tpl
 	{literal}
 	{
 		{/literal}
-		var confirmstring = "{#rotateimagewithid#}";		
-		var agree=confirm(confirmstring+": "+cid+":"+imageid+" ?");	
-		
+		var confirmstring = "{#rotateimagewithid#}";
+		var agree=confirm(confirmstring+": "+cid+":"+imageid+" ?");
+
 		{literal}
 		if (agree)
 		{
 			document.forms["Main"].elements["action[target]"].value = 'image';
 			document.forms["Main"].elements["action[function]"].value = 'rotate';
 			document.forms["Main"].elements["action[cid]"].value = cid;
-			document.forms["Main"].elements["action[imageid]"].value = imageid;			
-			document.forms["Main"].submit();			
+			document.forms["Main"].elements["action[imageid]"].value = imageid;
+			document.forms["Main"].submit();
 		}
-		
+
 	}
 	{/literal}
-	
+
 	function deleteimage(cid, imageid)
 	{literal}
 	{
-		{/literal}			
-		var confirmstring = "{#deleteimagewithid#}";		
-		var agree=confirm(confirmstring+": "+cid+":"+imageid+" ?");			
-		
+		{/literal}
+		var confirmstring = "{#deleteimagewithid#}";
+		var agree=confirm(confirmstring+": "+cid+":"+imageid+" ?");
+
 		if (agree)
 		{literal}
 		{
 			{/literal}
-			
+
 			document.forms["Main"].elements["action[target]"].value = 'image';
 			document.forms["Main"].elements["action[function]"].value = 'delete';
 			document.forms["Main"].elements["action[cid]"].value = cid;
-			document.forms["Main"].elements["action[imageid]"].value = imageid;			
+			document.forms["Main"].elements["action[imageid]"].value = imageid;
 			document.forms["Main"].submit();
 			{literal}
 		}
 	}
 	{/literal}
-	
+
 	function exchangeimage(cid, imageid)
 	{literal}
 	{
 		{/literal}
 		var sessionid		=	"{$sessionid}";
-		var confirmstring 	= 	"{#exchangeimagewithid#}";		
-		
-		var agree=confirm(confirmstring+": "+cid+":"+imageid+" ?");	
-		
+		var confirmstring 	= 	"{#exchangeimagewithid#}";
+
+		var agree=confirm(confirmstring+": "+cid+":"+imageid+" ?");
+
 		{literal}
 		if (agree)
 		{
 			props = 'toolbar=no,location=no,directories=no,status=yes,scrollbars=yes,resizable=yes,menubar=no,copyhistory=no';
-   			win = window.open( 
+   			win = window.open(
    						'image_exchange.php?PHPSESSID='+sessionid+'&query[id]='+cid+':'+imageid+'&query[remoteCollection]=0', 'imageExchange', props + ',width=700,height=420'
    							);
    			win.focus();
@@ -136,9 +136,9 @@ BEGIN easy_query.tpl
 		      <input type="hidden" name="query[querypiece][0][operator_list][0]" value="equals" />
 		   </td>-->
 		</tr>
-		
-		
-		
+
+
+
 		<tr>
 		   <td class="queryinputfieldtext">
 		      {#all#}
@@ -177,11 +177,11 @@ BEGIN easy_query.tpl
 			</td>
 			<td class="queryinputfield">
 				{if $query.group eq ""}
-					<input class="queryinputfield" type="text" name="query[group]" size="40" readonly="readonly" value=" ({#selecthere#|escape:htmlall}) " onclick="editGroupSelection('{$sessionid}','group','{$query.grouplastpath}','{$query.groupid}');">					
+					<input class="queryinputfield" type="text" name="query[group]" size="40" readonly="readonly" value=" ({#selecthere#|escape:htmlall}) " onclick="editGroupSelection('{$sessionid}','group','{$query.grouplastpath}','{$query.groupid}');">
 				{else}
 					<input class="queryinputfield" type="text" name="query[group]" size="40" readonly="readonly" value="{$query.group|escape:html}" onclick="editGroupSelection('{$sessionid}','group','{$query.grouplastpath}','{$query.groupid}');">
 				{/if}
-				
+
 				<input class="queryinputfield" type="hidden" name="query[groupid]" value="{$query.groupid|escape:html}">
 				<input class="queryinputfield" type="hidden" name="query[groupowner]" value="{$query.groupowner|escape:html}">
 				<input class="queryinputfield" type="hidden" name="query[grouplastpath]" value="{$query.lastpath|escape:html}">
@@ -221,7 +221,7 @@ BEGIN easy_query.tpl
 				<table class="query" cellpadding="0" cellspacing="0" style="width: 60%;">
 					<tr>
 						<td style="width: 55%; text-align: left;">
-							<button type="button" class="actionbutton" onClick="newQuery(); return true;" title="{#search#|escape:html}">{#search#|escape:html}</button>
+						  <button type="button" class="actionbutton" onClick="newQuery(); return true;" title="{#search#|escape:html}">{#search#|escape:html}</button>
 				<button type="button" class="actionbutton" onClick="clearSimpleQuery(); return true;" title="{#search#|escape:html}">{#newsearch#|escape:html}</button>
 						</td>
 						<td style="width: 45%; text-align: right;">

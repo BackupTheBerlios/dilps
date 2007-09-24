@@ -67,7 +67,7 @@ BEGIN grid_detail.tpl
   	// alert(window.name);
   </script>
 </head>
-<body class="main" {if $config.soapresults }onload="updateRemoteCollectionFields('{$sessionid}','{$query.queryid}')"{/if}>
+<body class="main" {if $config.soapresults }onload="updateRemoteCollectionFields('{$sessionid}','{$query.queryid}')"{/if} onkeypress="return newQueryOnEnter(event);">
 <table width="100%" cellspacing="0" cellpadding="0">
 <tr>
 <td>

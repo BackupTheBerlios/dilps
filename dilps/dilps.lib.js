@@ -20,59 +20,59 @@ function editNameElement( sessionid, imageid, element, docelements ) {
 
 function editArchaeologyElement( sessionid, imageid, element, docelements ) {
    var props = 'toolbar=no,location=no,directories=no,status=yes,scrollbars=yes,resizable=yes,menubar=no,copyhistory=no';
-   
+
    //	var fn_index = "edit["+element+"_fn]";
    //	var val_index = "edit["+element+"]";
    // 	var fn_val = docelements[fn_index].value;
    //	var val_val = docelements[val_index].value;
-   
+
    win = window.open( 'edit_archaeology_element.php?PHPSESSID='+sessionid+'&query[id]='+imageid+'&query[element]='+element, 'archaelogyEdit', props + ',width=900,height=720' );
    win.focus();
 }
 
 function editArchitectureElement( sessionid, imageid, element, docelements ) {
    var props = 'toolbar=no,location=no,directories=no,status=yes,scrollbars=yes,resizable=yes,menubar=no,copyhistory=no';
-   
+
    //	var fn_index = "edit["+element+"_fn]";
    //	var val_index = "edit["+element+"]";
    // 	var fn_val = docelements[fn_index].value;
    //	var val_val = docelements[val_index].value;
-   
+
    win = window.open( 'edit_architecture_element.php?PHPSESSID='+sessionid+'&query[id]='+imageid+'&query[element]='+element, 'archaelogyEdit', props + ',width=900,height=720' );
    win.focus();
 }
 
 function editThesaurus( sessionid, id, element, elementid, elementindex) {
    var props = 'toolbar=no,location=no,directories=no,status=yes,scrollbars=yes,resizable=yes,menubar=no,copyhistory=no';
-   
+
    win = window.open( 'edit_thesaurus.php?PHPSESSID='+sessionid+'&query[id]='+id+'&query[element]='+element+'&query[elementid]='+elementid+'&query[elementindex]='+elementindex, 'thesaurusEdit', props + ',width=600,height=350' );
    win.focus();
 }
 
 function editGroupSelection (sessionid, target, lastpath, currentid) {
 	var props = 'toolbar=no,location=no,directories=no,status=yes,scrollbars=yes,resizable=yes,menubar=no,copyhistory=no';
-	
+
 	win = window.open( 'group_select.php?PHPSESSID='+sessionid+'&target='+target+'&lastpath='+lastpath+'&currentid='+currentid, target+'Selection', props + ',width=800,height=300,left=10,top=250' );
 	win.focus();
 }
 
 function editGroups (sessionid) {
 	var props = 'toolbar=no,location=no,directories=no,status=yes,scrollbars=yes,resizable=yes,menubar=no,copyhistory=no';
-	
+
 	win = window.open( 'group_edit.php?PHPSESSID='+sessionid, 'editGroups', props + ',width=700,height=300,left=100,top=100' );
 	win.focus();
 }
 
 function addImages( sessionid ) {
 	var props = 'toolbar=no,location=no,directories=no,status=yes,scrollbars=yes,resizable=yes,menubar=no,copyhistory=no';
-	
+
 	win = window.open( 'image_add.php?PHPSESSID='+sessionid, 'addImages', props + ',width=900,height=420' );
 	win.focus();
 }
 
 function exportGroup( sessionid, groupid, groupname ) {
 	var props = 'toolbar=no,location=no,directories=no,status=yes,scrollbars=yes,resizable=yes,menubar=no,copyhistory=no';
-	
+
 	win = window.open( 'group_export.php?PHPSESSID='+sessionid+'&groupid='+groupid+'&groupname='+groupname, 'exportGroup', props + ',width=800,height=420' );
 	win.focus();
 }
@@ -152,14 +152,14 @@ function saveImage()
 {
 	document.forms["Main"].elements["view[detail][id]"].value=document.forms["Main"].elements["view[edit][id]"].value;
 	document.forms["Main"].elements["view[edit][id]"].value="";
-	
-	
+
+
 	if (document.forms["Main"].elements["edit[currentuser]"].value != "")
 	{
 		document.forms["Main"].elements["edit[metaeditor]"].value = document.forms["Main"].elements["edit[currentuser]"].value;
 	}
 	document.forms["Main"].elements["edit[loadtype]"].value="save";
-	
+
 	document.forms["Main"].submit();
 }
 
@@ -179,7 +179,7 @@ function ChangeQuery()
 	var inpstr = document.forms["Main"].elements["queryrows"].value;
 	var cols   = inpstr.substr(0,inpstr.indexOf('x'));
 	var rows   = inpstr.substr(inpstr.indexOf('x')+1, 10);
-	
+
 	document.forms["Main"].elements["query[cols]"].value = cols;
 	document.forms["Main"].elements["query[rows]"].value = rows;
 }
@@ -210,20 +210,20 @@ function UpdateSelectList(selectlist, operatorlist, field, form) {
     }
 
     j = 0;
-    
+
     if (PrototypeIncluded()) {
         // this syntax is necessary when prototype.js is included (regular "for i in obj" loops don't work as expected):
         $H(operators).each( function(val){
             form.elements[selectlist].options[j] = new Option(val.value, val.key, false, false);
-            j++;        
+            j++;
         });
     } else {
         for (i in operators) {
             form.elements[selectlist].options[j] = new Option(operators[i], i, false, false);
-            j++;        
+            j++;
         }
     }
-    
+
     form.elements[operatorlist].value=column_operators[field.value];
 
     // some things need a drop down list instead of a free text entry field, which requires a reload
@@ -296,24 +296,24 @@ function clearSimpleQuery()
 									'material_ext','location_ext',
 									'location','literature','imageid');
 	var actfn = '';
-	
+
 	for(var i =0; i < fieldnames.length; i++)
 	{
 		actfn = 'query['+fieldnames[i]+']';
-		
+
 		if (document.forms["Main"].elements[actfn] != null)
 		{
-				document.forms["Main"].elements[actfn].value = '';			
+				document.forms["Main"].elements[actfn].value = '';
 		}
 	}
-	
+
 	// reset image status query field
 	actfn = 'query[status]';
-	
+
 	document.forms["Main"].elements[actfn].options[0].selected = true;
-	
+
 	cleargroup();
-	
+
 	return true;
 }
 
@@ -359,7 +359,7 @@ function updatemygroup()
 	{
 		// set mygroupid as target
 		document.forms["Main"].elements["action[gid]"].value = document.forms["Main"].elements["query[mygroupid]"].value
-		
+
 		// update target for next action
 		document.forms["Main"].elements["action[target]"].value = 'mygroup';
 		document.forms["Main"].elements["action[function]"].value = 'update';
@@ -367,9 +367,9 @@ function updatemygroup()
 		// submit
 		document.forms["Main"].submit();
 	}
-	
+
 	// otherwise: do nothing
-	return;		
+	return;
 }
 
 function performlogout() {
@@ -400,43 +400,43 @@ function makeInvisible(divid) {
 }
 
 function showGroups(Indexes) {
-	
+
 	if (Indexes[0] != -1)
 	{
 		// set first selection and get the corresponding data
 		document.forms[0].elements["gid-0-groups"].selectedIndex = Indexes[0];
-		
+
 		var sElem1 		= document.forms[0].elements["gid-0-groups"].options[Indexes[0]].value;
 		var sElem1Parts = extractData(sElem1);
 		var sElem1ID 	= sElem1Parts[0];
-		
+
 		if ( sElem1ID != null)
 		{
 			// show the second level select box
 			sElem1Div = "gid-"+sElem1ID;
 			sElem1Select = "gid-"+sElem1ID+"-groups";
 			makeVisible(sElem1Div);
-			
+
 			if (Indexes[1] != -1)
 			{
 				// set second selection and get the corresponding data
 				document.forms[0].elements[sElem1Select].selectedIndex = Indexes[1];
-				
+
 				var sElem2 = document.forms[0].elements[sElem1Select].options[Indexes[1]].value;
 				var sElem2Parts = extractData(sElem2);
 				var sElem2ID = sElem2Parts[0];
-				
+
 				if ( sElem2ID != null)
 				{
 					// show the third level select box
 					sElem2Div = "gid-"+sElem2ID;
 					sElem2Select = "gid-"+sElem2ID+"-groups";
 					makeVisible(sElem2Div);
-					
+
 					if (Indexes[2] != -1) {
 						// set third selection
 						document.forms[0].elements[sElem2Select].selectedIndex = Indexes[2];
-					}							
+					}
 				}
 			}
 		}
@@ -444,47 +444,47 @@ function showGroups(Indexes) {
 	return;
 }
 
-function hideGroups(Indexes) 
+function hideGroups(Indexes)
 {
 	var curElem;
 	var nextElem;
-	
+
 	if (Indexes[0] != -1)
 	{
 		curElem = document.forms[0].elements["gid-0-groups"];
-		
+
 		// get old first element
 		var sElem1 		= curElem.options[Indexes[0]].value;
 		var sElem1Parts = extractData(sElem1);
 		var sElem1ID 	= sElem1Parts[0];
-		
+
 		if ( sElem1ID != null)
 		{
 			// hide the second level select box
 			sElem1Div = "gid-"+sElem1ID;
 			sElem1Select = "gid-"+sElem1ID+"-groups";
-			
+
 			// alert('div: '+sElem1Div);
-			
+
 			makeInvisible(sElem1Div);
-			
+
 			if (Indexes[1] != -1)
 			{
 				curElem = document.forms[0].elements[sElem1Select];
-				
+
 				// get old second element
 				var sElem2 		= curElem.options[Indexes[1]].value;
 				var sElem2Parts = extractData(sElem2);
 				var sElem2ID 	= sElem2Parts[0];
-				
+
 				if ( sElem2ID != null)
 				{
 					// hide the third level select box
 					sElem2Div = "gid-"+sElem2ID;
 					sElem2Select = "gid-"+sElem2ID+"-groups";
-					
+
 					// alert('div: '+sElem1Div);
-					
+
 					makeInvisible(sElem2Div);
 				}
 			}
@@ -495,40 +495,40 @@ function hideGroups(Indexes)
 
 function loadPath() {
 	// load group path
-	
+
 	if (document.forms[0].elements['lastpath'] != null)
 	{
 		var lastpath = document.forms[0].elements['lastpath'].value;
-		
-		if (lastpath != '')	{		
+
+		if (lastpath != '')	{
 			var Indexes = new Array();
 			Indexes = lastpath.split(":");
 		}
 		else {
 			var Indexes = new Array(-1,-1,-1);
 		}
-		
+
 		// alert('lastpath - load: '+lastpath);
-		
+
 		return Indexes;
 	}
-	
+
 	var Indexes = new Array(-1,-1,-1);
-	return Indexes;	
+	return Indexes;
 }
 
 function savePath(Indexes) {
 	// save group path
-	
+
 	// alert('length: '+Indexes.length);
-	
+
 	if (document.forms[0].elements['lastpath'] != null)
 	{
 		var path = Indexes.join(':');
 		document.forms[0].elements['lastpath'].value = path;
-		
+
 		// alert('lastpath - save: '+path);
-		
+
 		return true;
 	}
 	return false;
@@ -559,181 +559,181 @@ function checkParameter()
 {
 	// check whether we need an input box for a parameter
 	var currentAction = document.forms[0].elements["action"].value;
-	
+
 	if (currentAction == 'rename' || currentAction == 'addgroup' || currentAction == 'addsubgroup') {
 		document.getElementById('parameter').style.visibility = 'visible';
 	}
 	else {
 		document.getElementById('parameter').style.visibility = 'hidden';
 	}
-	
+
 	if (currentAction != 'nothing') {
 		document.getElementById('commit').style.visibility = 'visible';
 	}
-	
+
 	return;
 }
 
-function switchToAndSelect(currentlevel, currentid) 
+function switchToAndSelect(currentlevel, currentid)
 {
 	// alert ('currentlevel: '+currentlevel+', currentid: '+currentid);
 	// alert (document.forms[0].elements["gid-0-groups"].options[0].value);
-	
+
 	var curElemSelect = "gid-"+currentid+"-groups";
 	var curElem = document.forms[0].elements[curElemSelect];
-	
+
 	// check for hint element - if present, delete it
 	if (curElem.options[curElem.length - 1].value == -1)
 	{
 		curElem.options[curElem.length - 1] = null;
 	}
-	
+
 	var Indexes = loadPath();
-	
+
 	/*
 	for (i in Indexes) {
 		alert ('Indexes['+i+'] = '+Indexes[i]);
 	}
 	*/
-	
+
 	// if there are any old selection boxes, hide them
 	hideGroups(Indexes);
-	
+
 	// update path - everything right of current element is marked with -1
-	
+
 	Indexes[currentlevel] = document.forms[0].elements[curElemSelect].selectedIndex;
-	
+
 	for (i = currentlevel + 1; i < 3; i++) {
 		Indexes[i] = -1;
 	}
-	
+
 	/*
 	for (i in Indexes) {
 		alert ('Indexes['+i+'] = '+Indexes[i]);
 	}
 	*/
-			
+
 	// show new selection boxes
 	showGroups(Indexes);
-	
+
 	// copy the data to the operation fields
 	var groupData = extractData(document.forms[0].elements[curElemSelect].value);
-	
+
 	copyData(groupData);
-	
+
 	// we need the level when we delete something
 	document.forms[0].elements["currentlevel"].value = currentlevel;
-	
+
 	// store path
 	savePath(Indexes);
-	
+
 	return;
 }
 
-function restoreSelection(groupid, lastpath, userid, iseditor) 
+function restoreSelection(groupid, lastpath, userid, iseditor)
 {
 	// alert ('currentlevel: '+currentlevel+', currentid: '+currentid);
 	// alert (document.forms[0].elements["gid-0-groups"].options[0].value);
-	
+
 	if (lastpath != '')
 	{
 		var grouplevel = '';
 		var curElem;
-		
+
 		// extract selections
 		var Indexes = extractData(lastpath);
-		
+
 		if (Indexes[0] != -1)
 		{
 			curElem = document.forms[0].elements["gid-0-groups"];
-			
+
 			// set first selection and get the corresponding data
 			curElem.selectedIndex = Indexes[0];
-			
+
 			// check for hint element - if present, delete it
 			if (curElem.options[curElem.length - 1].value == -1)
 			{
 				curElem.options[curElem.length - 1] = null;
 			}
-			
+
 			var sElem1 		= curElem.options[Indexes[0]].value;
 			var sElem1Parts = extractData(sElem1);
 			var sElem1ID 	= sElem1Parts[0];
-			
+
 			// set grouplevel and copy groupdata
 			grouplevel = 0;
 			copyData(sElem1Parts);
-			
+
 			if ( sElem1ID != null)
 			{
 				// show the second level select box
 				sElem1Div = "gid-"+sElem1ID;
 				sElem1Select = "gid-"+sElem1ID+"-groups";
 				makeVisible(sElem1Div);
-				
+
 				if (Indexes[1] != -1)
 				{
 					curElem = document.forms[0].elements[sElem1Select];
-					
+
 					// set second selection and get the corresponding data
 					curElem.selectedIndex = Indexes[1];
-					
+
 					// check for hint element - if present, delete it
 					if (curElem.options[curElem.length - 1].value == -1)
 					{
 						curElem.options[curElem.length - 1] = null;
 					}
-					
+
 					var sElem2 = curElem.options[Indexes[1]].value;
 					var sElem2Parts = extractData(sElem2);
 					var sElem2ID = sElem2Parts[0];
-					
+
 					// set grouplevel and copy groupdata
 					grouplevel = 1;
 					copyData(sElem2Parts);
-					
+
 					if ( sElem2ID != null)
 					{
 						// show the third level select box
 						sElem2Div = "gid-"+sElem2ID;
 						sElem2Select = "gid-"+sElem2ID+"-groups";
 						makeVisible(sElem2Div);
-						
-						if (Indexes[2] != -1) 
+
+						if (Indexes[2] != -1)
 						{
-							
+
 							curElem = document.forms[0].elements[sElem2Select];
-					
+
 							// set third selection and get the corresponding data
 							curElem.selectedIndex = Indexes[2];
-							
+
 							// check for hint element - if present, delete it
 							if (curElem.options[curElem.length - 1].value == -1)
 							{
 								curElem.options[curElem.length - 1] = null;
 							}
-							
+
 							var sElem3 = curElem.options[Indexes[2]].value;
 							var sElem3Parts = extractData(sElem3);
-							
+
 							// set grouplevel and copy groupdata
 							grouplevel = 2;
 							copyData(sElem3Parts);
-						}							
+						}
 					}
 				}
 			}
 		}
-		
+
 		// store level information for the future
 		document.forms[0].elements["currentlevel"].value = grouplevel;
 
 		// re-get possible actions
 		getActions(userid,iseditor)
-			
+
 		return true;
 	}
-	
+
 	return false;
 }
 
@@ -800,4 +800,22 @@ function findISBN()
 {
 	document.forms["Main"].elements["edit[loadtype]"].value="isbn";
 	document.forms["Main"].submit();
+}
+
+function newQueryOnEnter(e)
+{
+  var keycode;
+  if (window.event) keycode = window.event.keyCode;
+  else if (e) keycode = e.which;
+  else return true;
+
+  if (keycode == 13)
+     {
+     newQuery();
+     return false;
+     }
+  else
+  {
+     return true;
+  }
 }
