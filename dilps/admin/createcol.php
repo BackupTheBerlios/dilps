@@ -464,7 +464,7 @@ $status = 0;
 
 	<td bgcolor="#ffffff">
 
-	  <input type="text" name="location" size="80" value="University of Somewhere"</input>	  
+	  <input type="text" name="location" size="80" value="University of Somewhere"></input>	  
 
 	</td>
 
